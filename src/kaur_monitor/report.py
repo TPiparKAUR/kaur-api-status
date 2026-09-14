@@ -34,6 +34,13 @@ _LABEL = {
 
 _WINDOWS = ((1.0, "24 h"), (7.0, "7 päeva"), (30.0, "30 päeva"))
 
+# How much history the report reads. One day more than the widest window above,
+# so the 30-day figure is complete. Without this bound the report re-parses the
+# entire log on every run: at this cadence that is about 630 000 records and
+# 2.3 seconds of pure JSON parsing after a year, growing without limit. Bounded,
+# the work stays flat no matter how long the log gets.
+_REPORT_DAYS = 31.0
+
 
 def _local(raw: str | None) -> str:
     stamp = store.parse_ts(raw)
@@ -122,7 +129,7 @@ def _uptime(series: list[dict[str, Any]], since: datetime) -> tuple[float | None
 
 
 def build(entries: list[dict[str, Any]]) -> str:
-    records = list(store.read_all())
+    records = list(store.read_all(since=store.window_start(_REPORT_DAYS)))
     grouped = _by_endpoint(records)
     by_id = {e["id"]: e for e in entries}
     now = datetime.now(UTC).astimezone(_TALLINN)
@@ -132,13 +139,13 @@ def build(entries: list[dict[str, Any]]) -> str:
         "",
         f"Koostatud: **{now:%Y-%m-%d %H:%M}** ({_TZ_LABEL}) · "
         f"jälgitavaid otspunkte: **{len(entries)}** · "
-        f"kontrollikirjeid logis: **{len(records)}**",
+        f"kontrollikirjeid viimase {int(_REPORT_DAYS)} päeva jooksul: **{len(records)}**",
         "",
     ]
 
     if not records:
         out += [
-            "> Logi on tühi — ühtegi kontrolli pole veel tehtud.",
+            f"> Viimase {int(_REPORT_DAYS)} päeva kohta kirjeid ei ole.",
             "> Käivita `python monitor.py check`.",
             "",
         ]
@@ -239,6 +246,9 @@ def build(entries: list[dict[str, Any]]) -> str:
 
     out += [
         "---",
+        "",
+        f"Raport katab viimased {int(_REPORT_DAYS)} päeva. Vanem ajalugu jääb "
+        "kaustas `logs/` alles, aga seda ei loeta.",
         "",
         f"Ajad on {_TZ_LABEL} vööndis. Logi hoiab UTC ISO 8601 kujul kaustas `logs/`.",
         "Seisund **TEADMATA** tähendab, et kontrollija ise ei saanud võrku — "

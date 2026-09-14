@@ -7,6 +7,7 @@ import sys
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlsplit
 
 from . import discover, inventory, report, store
 from .check import STATUS_UNKNOWN, check_endpoint, looks_like_local_network_failure
@@ -39,10 +40,11 @@ def cmd_check(args: argparse.Namespace) -> int:
     with ThreadPoolExecutor(max_workers=args.workers) as pool:
         records = list(pool.map(check_endpoint, entries))
 
-    if looks_like_local_network_failure(records):
+    hosts = {e["id"]: urlsplit(str(e["url"])).hostname for e in entries}
+    if looks_like_local_network_failure(records, hosts):
         print(
-            "HOIATUS: iga otspunkt ebaõnnestus enne vastust — tõenäoliselt on "
-            "katkenud kontrollija enda võrguühendus, mitte teenused.\n"
+            "HOIATUS: iga otspunkt mitmel eri hostil ebaõnnestus enne vastust — "
+            "tõenäoliselt on katkenud kontrollija enda võrguühendus, mitte teenused.\n"
             "Kirjed logitakse seisundiga TEADMATA ega mõjuta käideldavust.\n"
         )
         for record in records:

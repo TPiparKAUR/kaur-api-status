@@ -32,24 +32,47 @@ def append(records: list[dict[str, Any]]) -> Path:
     return path
 
 
+def _month_end(path: Path) -> datetime | None:
+    """The instant just after the last record a ``YYYY-MM.jsonl`` file can hold."""
+    try:
+        year, month = (int(part) for part in path.stem.split("-"))
+        return datetime(year + (month == 12), (month % 12) + 1, 1, tzinfo=UTC)
+    except ValueError:
+        return None
+
+
 def read_all(since: datetime | None = None) -> Iterator[dict[str, Any]]:
-    """Yield every logged record, oldest month first, skipping corrupt lines."""
+    """Yield logged records, oldest month first, skipping corrupt lines.
+
+    With ``since`` set, whole month files that end before it are skipped without
+    being opened. That is what keeps reading cheap as the log grows: the file
+    name already says which month it holds, so there is no reason to parse a
+    year of history to answer a question about the last 30 days.
+
+    Lines are streamed rather than read into memory, because a month of checks
+    at this cadence is on the order of 10 MB and there is no need to hold it.
+    """
     if not LOG_DIR.exists():
         return
     for path in sorted(LOG_DIR.glob("*.jsonl")):
-        for line in path.read_text(encoding="utf-8").splitlines():
-            line = line.strip()
-            if not line:
+        if since is not None:
+            end = _month_end(path)
+            if end is not None and end <= since:
                 continue
-            try:
-                record = json.loads(line)
-            except ValueError:
-                continue
-            if since is not None:
-                stamp = parse_ts(record.get("ts"))
-                if stamp is None or stamp < since:
+        with path.open(encoding="utf-8") as handle:
+            for line in handle:
+                line = line.strip()
+                if not line:
                     continue
-            yield record
+                try:
+                    record = json.loads(line)
+                except ValueError:
+                    continue
+                if since is not None:
+                    stamp = parse_ts(record.get("ts"))
+                    if stamp is None or stamp < since:
+                        continue
+                yield record
 
 
 def parse_ts(raw: str | None) -> datetime | None:

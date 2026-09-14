@@ -47,20 +47,39 @@ class TimestampParsing(unittest.TestCase):
 
 
 class LocalNetworkDetection(unittest.TestCase):
-    def test_all_unreachable_is_our_fault(self):
+    TWO_HOSTS: ClassVar[dict[str, str]] = {"a": "one.example", "b": "two.example"}
+    ONE_HOST: ClassVar[dict[str, str]] = {"a": "one.example", "b": "one.example"}
+
+    def test_unreachable_across_two_hosts_is_probably_our_fault(self):
         records = [_record("a", "down", 0, "dns"), _record("b", "down", 0, "connect")]
-        self.assertTrue(check.looks_like_local_network_failure(records))
+        self.assertTrue(check.looks_like_local_network_failure(records, self.TWO_HOSTS))
+
+    def test_a_single_host_going_dark_is_that_host_not_us(self):
+        """The whole inventory behind one name must still be able to raise an alarm."""
+        records = [_record("a", "down", 0, "connect"), _record("b", "down", 0, "connect")]
+        self.assertFalse(check.looks_like_local_network_failure(records, self.ONE_HOST))
 
     def test_one_success_means_network_is_fine(self):
         records = [_record("a", "down", 0, "dns"), _record("b", "ok", 0, "freshness")]
-        self.assertFalse(check.looks_like_local_network_failure(records))
+        self.assertFalse(check.looks_like_local_network_failure(records, self.TWO_HOSTS))
 
     def test_real_http_failure_is_not_a_network_failure(self):
         records = [_record("a", "down", 0, "http"), _record("b", "down", 0, "http")]
-        self.assertFalse(check.looks_like_local_network_failure(records))
+        self.assertFalse(check.looks_like_local_network_failure(records, self.TWO_HOSTS))
 
-    def test_single_endpoint_is_never_conclusive(self):
-        self.assertFalse(check.looks_like_local_network_failure([_record("a", "down", 0, "dns")]))
+    def test_a_lone_endpoint_going_dark_is_reported_not_excused(self):
+        self.assertFalse(
+            check.looks_like_local_network_failure(
+                [_record("a", "down", 0, "dns")], {"a": "one.example"}
+            )
+        )
+
+    def test_no_records_is_not_a_network_failure(self):
+        self.assertFalse(check.looks_like_local_network_failure([], {}))
+
+    def test_unknown_hosts_do_not_count_towards_the_two(self):
+        records = [_record("a", "down", 0, "dns"), _record("b", "down", 0, "dns")]
+        self.assertFalse(check.looks_like_local_network_failure(records, {"a": "one.example"}))
 
 
 class CheckEndpoint(unittest.TestCase):
@@ -650,6 +669,61 @@ class OpenApiDiscovery(unittest.TestCase):
     def test_a_prefix_matching_nothing_is_reported(self):
         with self.assertRaisesRegex(discover.DiscoveryError, "no table paths"):
             discover.from_openapi(self.base, table_prefix="zzz_")
+
+
+class LogWindowing(unittest.TestCase):
+    """Reading must stay cheap as the log grows, or the 15-minute job will not."""
+
+    def setUp(self):
+        self._original = store.LOG_DIR
+        store.LOG_DIR = Path(tempfile.mkdtemp())
+
+    def tearDown(self):
+        store.LOG_DIR = self._original
+
+    def _write(self, name: str, records: list[dict]) -> None:
+        (store.LOG_DIR / name).write_text(
+            "\n".join(json.dumps(r) for r in records) + "\n", encoding="utf-8"
+        )
+
+    def test_a_month_file_outside_the_window_is_never_opened(self):
+        """Proved by content that WOULD match if the file were read at all."""
+        recent = _record("a", "ok", 5)
+        self._write("2020-01.jsonl", [dict(recent, id="ancient")])
+        self._write(f"{datetime.now(UTC):%Y-%m}.jsonl", [recent])
+        ids = [r["id"] for r in store.read_all(since=store.window_start(1))]
+        self.assertEqual(ids, ["a"], "the 2020 file was read despite being out of window")
+
+    def test_without_a_window_every_month_is_read(self):
+        self._write("2020-01.jsonl", [_record("ancient", "ok", 5)])
+        self._write(f"{datetime.now(UTC):%Y-%m}.jsonl", [_record("a", "ok", 5)])
+        self.assertEqual(len(list(store.read_all())), 2)
+
+    def test_a_file_with_an_unparseable_name_is_still_read(self):
+        self._write("backup.jsonl", [_record("a", "ok", 5)])
+        self.assertEqual(len(list(store.read_all(since=store.window_start(1)))), 1)
+
+    def test_records_older_than_the_window_inside_a_current_file_are_dropped(self):
+        self._write(
+            f"{datetime.now(UTC):%Y-%m}.jsonl",
+            [_record("a", "ok", 5), _record("b", "ok", 60 * 24 * 40)],
+        )
+        ids = [r["id"] for r in store.read_all(since=store.window_start(1))]
+        self.assertEqual(ids, ["a"])
+
+    def test_corrupt_lines_are_skipped_not_fatal(self):
+        path = store.LOG_DIR / f"{datetime.now(UTC):%Y-%m}.jsonl"
+        path.write_text(json.dumps(_record("a", "ok", 5)) + "\n{truncated\n\n", encoding="utf-8")
+        self.assertEqual(len(list(store.read_all())), 1)
+
+    def test_the_report_only_counts_records_inside_its_window(self):
+        self._write(
+            f"{datetime.now(UTC):%Y-%m}.jsonl",
+            [_record("a", "ok", 5), _record("a", "ok", 60 * 24 * 40)],
+        )
+        text = report.build([{"id": "a", "name": "A", "url": "https://e.org", "verified": True}])
+        self.assertIn("**1**", text)
+        self.assertIn("31 päeva jooksul", text)
 
 
 class NaiveTimestamps(unittest.TestCase):

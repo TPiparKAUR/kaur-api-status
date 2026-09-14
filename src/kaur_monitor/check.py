@@ -23,16 +23,6 @@ from typing import Any
 
 USER_AGENT = "KAUR-API-monitor/1.0 (availability monitoring; Keskkonnaagentuur)"
 
-STAGES = (
-    "dns",
-    "connect",
-    "http",
-    "content_type",
-    "parse",
-    "service_exception",
-    "freshness",
-)
-
 STATUS_OK = "ok"
 STATUS_DEGRADED = "degraded"
 STATUS_DOWN = "down"
@@ -314,8 +304,25 @@ def _check_endpoint(endpoint: dict[str, Any]) -> dict[str, Any]:
     return record
 
 
-def looks_like_local_network_failure(records: list[dict[str, Any]]) -> bool:
-    """True when every endpoint failed before a response, i.e. probably our side."""
-    if len(records) < 2:
+def looks_like_local_network_failure(
+    records: list[dict[str, Any]], hosts: dict[str, str | None]
+) -> bool:
+    """True when the run looks like OUR network failed rather than the services.
+
+    Every endpoint has to have failed before getting a response, and those
+    failures have to span more than one host. A total failure confined to a
+    single host is that host being down, and must be reported as such — which
+    is the common case here, since most of the inventory sits behind one name.
+    Reading it as a local fault would mean an inventory covering one service
+    could never raise an alarm for that service going away.
+
+    Two hosts failing at once is genuinely ambiguous, and this errs towards
+    blaming ourselves: a false silence costs less than 18 false outages.
+    """
+    if not records:
         return False
-    return all(r["stage"] in _REACHABILITY_STAGES and r["status"] != STATUS_OK for r in records)
+    if not all(r["stage"] in _REACHABILITY_STAGES and r["status"] != STATUS_OK for r in records):
+        return False
+    failed_hosts = {hosts.get(r["id"]) for r in records}
+    failed_hosts.discard(None)
+    return len(failed_hosts) >= 2
