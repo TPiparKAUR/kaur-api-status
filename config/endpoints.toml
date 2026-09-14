@@ -1,147 +1,10 @@
-# Keskkonnaagentuuri avaandmete API otspunktid.
+# Keskkonnaagentuur API endpoint inventory.
 #
-# Allikas: Keskkonnaagentuuri ametlik andmeteenuste dokumentatsioon
-# (keskkonnaandmed.envir.ee, PostgREST). Kõik aadressid pärinevad sellest
-# dokumentatsioonist — ühtegi pole siin välja mõeldud.
+# verified = false means nobody has confirmed this URL yet. Unverified
+# entries are checked but flagged separately in the report.
 #
-# verified = true   päring on dokumentatsioonis sõna-sõnalt olemas
-# verified = false  teenus on dokumenteeritud, aga päringu koostasin mina
-#                   (tavaliselt lihtsalt ?limit=1) — vaata üle ja märgi õigeks
-#
-# Kõik teenused nõuavad päist "Accept-Profile: apijahiala" — see valib
-# andmebaasi skeemi. Ilma selleta vastab API määramata skeemist.
-#
-# NB! Dokumentatsioonis on selle väärtusena "apijahialad" (lõpus d).
-# Päris teenus lükkab selle tagasi koodiga 406 PGRST106 ja vastab:
-#   "The schema must be one of the following: apijahiala"
-# Siin on kasutusel teenuse enda nimetatud väärtus, mitte dokumendi oma.
-#
-# Mõõtmisteenustele on lisatud limit, et tunnine seire ei koormaks teenust.
-# Dokumentatsioon nõuab mõõtmispäringutes alati filtreid; metaandmete
-# teenuseid tohib pärida ilma argumentideta.
-
-# --- Teenuse juur ----------------------------------------------------------
-
-[[endpoint]]
-id = "keskkonnaandmed-root"
-name = "Juur-URL, OpenAPI teenusekirjeldus"
-system = "Keskkonnaandmed"
-url = "https://keskkonnaandmed.envir.ee"
-expect = "json"
-max_bytes = 65536
-headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
-source = "manual"
-verified = true
-note = "OpenAPI kirjeldus on ~4 MB ja vastab 3,7 s; max_bytes piirab lugemise 64 KB-le, sest tunnisele elushoiu kontrollile piisab staatusest"
-
-# --- Kliima metaandmed -----------------------------------------------------
-
-[[endpoint]]
-id = "kliima-element"
-name = "Kliima elementide metaandmed"
-system = "Kliima"
-url = "https://keskkonnaandmed.envir.ee/f_kliima_element"
-expect = "json"
-headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
-source = "manual"
-verified = true
-note = "Metaandmete teenus, dokumentatsiooni järgi lubatud ilma argumentideta"
-
-[[endpoint]]
-id = "kliima-jaam-vaatlus"
-name = "Kliima vaatlusjaamade metaandmed"
-system = "Kliima"
-url = "https://keskkonnaandmed.envir.ee/f_kliima_jaam_vaatlus?limit=1"
-expect = "json"
-headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
-source = "manual"
-verified = true
-note = "Metaandmete teenus; filtrita 1,1 MB, seega tunnisele kontrollile limit=1"
-
-# --- Kliima mõõtmised ------------------------------------------------------
-
-[[endpoint]]
-id = "kliima-paev"
-name = "Kliima ööpäeva andmed, Ruhnu ja Kihnu õhuniiskus 2023"
-system = "Kliima"
-url = "https://keskkonnaandmed.envir.ee/f_kliima_paev?aasta=eq.2023&kuu=gt.10&paev=lt.8&element_kood=eq.DRH08&jaam_kood=in.(AJRUHN01,AJKIHN01)&limit=5"
-expect = "json"
-headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
-source = "manual"
-verified = true
-note = "Dokumentatsiooni näidispäring; lisatud limit=5 koormuse hoidmiseks"
-
-[[endpoint]]
-id = "kliima-paev-nimefilter"
-name = "Kliima ööpäeva andmed, Võru 2006 (like-filter ja sortimine)"
-system = "Kliima"
-url = "https://keskkonnaandmed.envir.ee/f_kliima_paev?jaam_nimi=like.V%C3%B5ru&aasta=eq.2006&element_kood=like.DTA08&order=kuu.asc,paev.asc&limit=5"
-expect = "json"
-headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
-source = "manual"
-verified = true
-note = "Dokumentatsiooni näidispäring; katab like-filtri ja order-i"
-
-[[endpoint]]
-id = "kliima-kuu"
-name = "Kliima kuu andmed"
-system = "Kliima"
-url = "https://keskkonnaandmed.envir.ee/f_kliima_kuu?limit=1"
-expect = "json"
-headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
-source = "manual"
-verified = true
-note = "Teenus dokumenteeritud; ?limit=1 koostatud siin ja kinnitatud päris teenuse vastu 2026-09-14 (HTTP 200)"
-
-[[endpoint]]
-id = "kliima-tund"
-name = "Kliima tunniandmed"
-system = "Kliima"
-url = "https://keskkonnaandmed.envir.ee/f_kliima_tund?limit=1"
-expect = "json"
-headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
-source = "manual"
-verified = true
-note = "Teenus dokumenteeritud; ?limit=1 koostatud siin ja kinnitatud päris teenuse vastu 2026-09-14 (HTTP 200)"
-
-[[endpoint]]
-id = "kliima-minut"
-name = "Kliima 10-minuti andmed"
-system = "Kliima"
-url = "https://keskkonnaandmed.envir.ee/f_kliima_minut?limit=1"
-expect = "json"
-headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
-source = "manual"
-verified = true
-note = "Teenus dokumenteeritud; ?limit=1 koostatud siin ja kinnitatud päris teenuse vastu 2026-09-14 (HTTP 200)"
-
-# --- Hüdroloogiline seire --------------------------------------------------
-
-[[endpoint]]
-id = "hydroseire"
-name = "Hüdroloogiline seire, veetase 2023-01-02"
-system = "Hüdroloogia"
-url = "https://keskkonnaandmed.envir.ee/f_hydroseire?timeline_ts_utc=lt.2023-01-02T03:00:00&timeline_ts_utc=gt.2023-01-01T23:00:00&aegrida_nimi=eq.WL%20min&limit=5"
-expect = "json"
-headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
-source = "manual"
-verified = true
-note = "Dokumentatsiooni näidispäring; lisatud limit=5"
-
-# --- Keskkonnaseire --------------------------------------------------------
-
-[[endpoint]]
-id = "keskkonnaseire"
-name = "Keskkonnaseire, programm PR0127 aastal 2021"
-system = "Keskkonnaseire"
-url = "https://keskkonnaandmed.envir.ee/f_keskkonnaseire?seiretoo_seotud_programmi_kood_iv=eq.PR0127&seireaeg_algus=gte.2021-01-01T00:00:00&seireaeg_algus=lt.2022-01-01T00:00:00&naitaja_nimetus=in.(Kloriid,%C3%9Cldraud,Vee%20temperatuur,Elavh%C3%B5be,PAH%20summa)&limit=5"
-expect = "json"
-headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
-source = "manual"
-verified = true
-note = "Dokumentatsiooni näidispäring; lisatud limit=5. Teenusel on teadaolev pagineerimisprobleem"
-
-# --- EELIS -----------------------------------------------------------------
+# Regenerate discovered entries with: python monitor.py discover
+# Hand-written entries (source = "manual") are never overwritten.
 
 [[endpoint]]
 id = "eelis-rahvalad"
@@ -166,6 +29,17 @@ verified = true
 note = "Tabel dokumenteeritud; ?limit=1 koostatud siin ja kinnitatud päris teenuse vastu 2026-09-14 (HTTP 200)"
 
 [[endpoint]]
+id = "eelis-rahvalad-linnuala"
+name = "EELIS linnuala määramise õiguslik alus (pesastatud filter)"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_rahvalad?select=*,dok:f_rahvalad_dok(*)&kkr_kood=eq.RAH0000556&dok.on_linnuala_kohta=eq.1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+source = "manual"
+verified = true
+note = "Dokumentatsiooni näidispäring; katab pesastatud tabeli filtri"
+
+[[endpoint]]
 id = "eelis-rahvalad-seosed"
 name = "EELIS rahvusvahelised alad koos dokumentidega (embedding)"
 system = "EELIS"
@@ -177,44 +51,2943 @@ verified = true
 note = "Dokumentatsiooni näidispäring; katab PostgREST-i seoste sisestamise"
 
 [[endpoint]]
-id = "eelis-rahvalad-linnuala"
-name = "EELIS linnuala määramise õiguslik alus (pesastatud filter)"
+id = "f-alad"
+name = "Kaitsealused alad ja üksikobjektid"
 system = "EELIS"
-url = "https://keskkonnaandmed.envir.ee/f_rahvalad?select=*,dok:f_rahvalad_dok(*)&kkr_kood=eq.RAH0000556&dok.on_linnuala_kohta=eq.1"
+url = "https://keskkonnaandmed.envir.ee/f_alad?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-alad-dok"
+name = "Kaitsealuse ala või üksikobjektiga seotud õigusaktid."
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_alad_dok?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-alad-ehak"
+name = "Kaitsealuse ala või üksikobjekti kohanimi"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_alad_ehak?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-alad-elupaigatyyp"
+name = "Natura elupaigatüübid, mis on kaitse eesmärgiks"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_alad_elupaigatyyp?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-alad-fjisik"
+name = "Kaitsealuse ala või üksikobjekti valitsejad"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_alad_fjisik?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-alad-invelupaik"
+name = "Kaitsealusel alal või üksikobjektil asuvad Natura elupaigad (v.a I ja II kaitsekatekooriga liikide püsielupaigad)"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_alad_invelupaik?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-alad-kandealus"
+name = "Kaitsealuse ala või üksikobjekti kandealused"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_alad_kandealus?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-alad-kava"
+name = "Kaitsekorralduskavad"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_alad_kava?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-alad-kirjandus"
+name = "Kaitsealuse ala või üksikobjekti kirjandus ja uuringud"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_alad_kirjandus?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-alad-lkoht"
+name = "Kaitsealusel alal või üksikobjektil asuvad liikide leiukohad"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_alad_lkoht?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-alad-lkoht-py"
+name = "Leiukohad, mille kaitseks püsielupaik on loodud ( v.a I ja II kaitsekategooria liikide püsielupaigad)"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_alad_lkoht_py?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-alad-lnim"
+name = "Liigid, mis on kaitse eesmärgiks"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_alad_lnim?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-alad-rahvala"
+name = "Kaitsealune ala või üksikobjekt asub rahvusvahelise tähtsusega aladel"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_alad_rahvala?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-alad-seotud-ala"
+name = "Kaitsealusel alal või üksikobjektil asuvad kaitsealused alad või üksikobjektid ( v.a I ja II kaitsekatekooriga liikide püsielupaigad)"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_alad_seotud_ala?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-alad-veekogu"
+name = "Kaitsealusel alal või üksikobjektil asuvad veekogud ( v.a I ja II kaitsekatekooriga liikide püsielupaigad)."
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_alad_veekogu?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-alad-vep"
+name = "Kaitsealuse ala või üksikobjektiga kattuvad vääriselupaigad ( v.a I ja II kaitsekatekooriga liikide püsielupaigad)"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_alad_vep?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-alad-voond"
+name = "Üksikobjekti vööndid ( v.a I ja II kaitsekatekooriga liikide püsielupaigad)"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_alad_voond?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-alad-yksikobj-moot"
+name = "Üksikobjekti mõõdud"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_alad_yksikobj_moot?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-alad-yrg"
+name = "Kaitsealusel alal või üksikobjektil asuvad ürglooduse objektid ( v.a I ja II kaitsekatekooriga liikide püsielupaigad)"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_alad_yrg?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-hks-elemendid"
+name = "Mereala HKS mõõdetavad elemendid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_hks_elemendid?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-hks-elemendid-seirejaam"
+name = "Mereala HKS mõõdetavate elementide seirejaamad"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_hks_elemendid_seirejaam?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-hks-elemendid-veekogum"
+name = "Mereala HKS mõõdetavate elementide veekogumid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_hks_elemendid_veekogum?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-hks-indikaatorid"
+name = "MSRD HKS indikaatorid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_hks_indikaatorid?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-hks-indikaatorid-dok"
+name = "MSRD indikaatoritega seotud õigusaktid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_hks_indikaatorid_dok?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-hks-indikaatorid-kirjandus"
+name = "MSRD indikaatori kirjandus ja uuringud"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_hks_indikaatorid_kirjandus?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-hks-indikaatorid-veekogum"
+name = "MSRD indikaatorite hindamisüksused"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_hks_indikaatorid_veekogum?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-hks-kriteeriumid"
+name = "MSRD tunnused ja kriteeriumid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_hks_kriteeriumid?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-hks-kriteeriumid-dok"
+name = "MSRD indikaatoritega seotud õigusaktid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_hks_kriteeriumid_dok?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-hks-kriteeriumid-sr-programm"
+name = "HKS tunnusega/kriteeriumiga seotud MSRD seireprogrammid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_hks_kriteeriumid_sr_programm?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-hks-kriteeriumid-vmmeede"
+name = "HKS kriteeriumiga seotud meetmed"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_hks_kriteeriumid_vmmeede?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-hks-seisud"
+name = "Mereala seisundi hinnatud väärtused"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_hks_seisud?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-hks-sihid"
+name = "Merestrateegia keskkonnaalased sihid ja indikaatorid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_hks_sihid?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-hks-sihid-sr-programm"
+name = "MSRD sihtidega seotud seireprogrammid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_hks_sihid_sr_programm?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-hks-sihid-vmmeede"
+name = "MSRD sihtidega seotud meetmed"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_hks_sihid_vmmeede?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-hks-siht-seisud"
+name = "MSRD sihi/indikaatori andmerida"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_hks_siht_seisud?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-hydroseire"
+name = "Hüdroloogiliste seireandmete aegread"
+system = "Hüdroloogia"
+url = "https://keskkonnaandmed.envir.ee/f_hydroseire?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-invelupaigad"
+name = "NATURA elupaigad"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_invelupaigad?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-invelupaigad-ala"
+name = "Natura elupaik asub kaitsealusel alal ( v.a I ja II kaitsekatekooriga liikide püsielupaigad)"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_invelupaigad_ala?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-invelupaigad-ehak"
+name = "Natura elupaiga kohanimi"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_invelupaigad_ehak?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-invelupaigad-invelupaigatyyp"
+name = "Natura elupaigal esinevad põhilised ja kaasnevad elupaigatüübid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_invelupaigad_invelupaigatyyp?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-invelupaigad-invmojutegur"
+name = "Natura elupaigas esinevad mõjutegurid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_invelupaigad_invmojutegur?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-invelupaigad-invtunnus"
+name = "Natura elupaiga tunnused"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_invelupaigad_invtunnus?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-invelupaigad-kandealus"
+name = "Natura elupaiga kandealused"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_invelupaigad_kandealus?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-invelupaigad-lkoht"
+name = "Natura elupaiga liikide leiukohad (v.a I, II kaitsekategooria liigid)"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_invelupaigad_lkoht?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-invelupaigad-lnim"
+name = "Natura alal esinevad olulised, alusmetsa ja järelkasvu liigid, võõrliigid ning määratud dominantliigid (v.a I, II kaitsekategooria liigid)"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_invelupaigad_lnim?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-invelupaigad-rahvala"
+name = "Natura elupaik asub rahvusvahelise tähtsusega aladel"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_invelupaigad_rahvala?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-invelupaigad-veekogu"
+name = "Natura elupaigaga kattuvad veekogud"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_invelupaigad_veekogu?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-jaakreostusalad"
+name = "Jääkreostusobjektid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_jaakreostusalad?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-jaakreostusalad-alamobjekt"
+name = "Alamobjektid (jaakreostusala)"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_jaakreostusalad_alamobjekt?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-jaakreostusalad-ehak"
+name = "Jääkreostuseobjektide EHAK"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_jaakreostusalad_ehak?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-jaakreostusalad-kandealus"
+name = "Jääkreostusobjekti kirje kandealused"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_jaakreostusalad_kandealus?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-jaakreostusalad-kirjandus"
+name = "Jääkreostusala kirjandus ja uuringud"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_jaakreostusalad_kirjandus?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-jaakreostusalad-puurauk"
+name = "Jääkreostusala seirepuuraugud"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_jaakreostusalad_puurauk?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-jaakreostusalad-vesikond"
+name = "Jääkreostusala vesikonnad"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_jaakreostusalad_vesikond?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-jaatmejaamad-jaatmeliigid-curr"
+name = "f_jaatmejaamad_jaatmeliigid_curr"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_jaatmejaamad_jaatmeliigid_curr?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-jaatmekohad"
+name = "Kaadamisalad"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_jaatmekohad?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-jaatmekohad-kandealus"
+name = "Kaadamisala kandealus"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_jaatmekohad_kandealus?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-jaatmekohad-kirjandus"
+name = "Kaadamisala kirjandus ja uuringud"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_jaatmekohad_kirjandus?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-jaatmeliikumine-fix-riik"
+name = "Riigi taseme jäätmearuandluse statistika"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_jaatmeliikumine_fix_riik?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-jahiala"
+name = "Jahipiirkonnad"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_jahiala?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-jahiala-dokument"
+name = "Jahipiirkonnaga seotud õigusaktid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_jahiala_dokument?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-jahiala-kandealus"
+name = "Jahipiirkonnaga seotud kandealused"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_jahiala_kandealus?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-jahiala-seirejaam"
+name = "Jahipiirkonnaga seotud seirejaamad"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_jahiala_seirejaam?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-jkkregister-curr"
+name = "Jäätmekäitluskohtade register"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_jkkregister_curr?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-keskkonnaseire"
+name = "Keskkonnaseire avaandmete andmeteenused"
+system = "Keskkonnaseire"
+url = "https://keskkonnaandmed.envir.ee/f_keskkonnaseire?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-kliima-element"
+name = "f_kliima_element"
+system = "Kliima"
+url = "https://keskkonnaandmed.envir.ee/f_kliima_element?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-kliima-jaam-vaatlus"
+name = "Kliima: jaamade metaandmed ja elementide mõõtmisperioodid Climate: station metadata and element measurement periods"
+system = "Kliima"
+url = "https://keskkonnaandmed.envir.ee/f_kliima_jaam_vaatlus?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-kliima-kuu"
+name = "Kliima: kuuandmed Climate: monthly data"
+system = "Kliima"
+url = "https://keskkonnaandmed.envir.ee/f_kliima_kuu?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-kliima-minut"
+name = "Kliima: 10-minuti andmed Climate: 10-minute data"
+system = "Kliima"
+url = "https://keskkonnaandmed.envir.ee/f_kliima_minut?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-kliima-paev"
+name = "Kliima: ööpäevaandmed Climate: daily data"
+system = "Kliima"
+url = "https://keskkonnaandmed.envir.ee/f_kliima_paev?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-kliima-tund"
+name = "Kliima: tunniandmed  Climate: hourly data"
+system = "Kliima"
+url = "https://keskkonnaandmed.envir.ee/f_kliima_tund?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-kohustus-yld-curr"
+name = "f_kohustus_yld_curr"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_kohustus_yld_curr?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-lcp-poletusseadmed-allikas-curr"
+name = "Suured põletusseadmed"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_lcp_poletusseadmed_allikas_curr?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-lkohad"
+name = "Liikide leiukohad"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_lkohad?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-lkohad-ala"
+name = "Leiukohaga kattuv kaitseala (v.a I, II kaitsekategooria liikide püsielupaigad)"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_lkohad_ala?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-lkohad-alamosa"
+name = "Leiukoha alamosad"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_lkohad_alamosa?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-lkohad-ehak"
+name = "Leiukoha kohanimi"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_lkohad_ehak?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-lkohad-invelupaik"
+name = "Leiukohaga kattuv elupaik (v.a I, II kaitsekategooria liigid)"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_lkohad_invelupaik?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-lkohad-lnim"
+name = "Leiukoha liigi rühm ja liigi kaitsekategooria"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_lkohad_lnim?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-lkohad-py-ala"
+name = "Leiukoha kaitseks loodud püsielupaik"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_lkohad_py_ala?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-lkohad-veekogu"
+name = "Leiukohaga kattuv veekogu (v.a I, II kaitsekategooria liigid)"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_lkohad_veekogu?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-luba-curr"
+name = "f_luba_curr"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_luba_curr?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-maa-deklar-kaevand-maht-api"
+name = "Kaevandamise mahu deklaratsioonid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_maa_deklar_kaevand_maht_api?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-maa-deklar-tasu-api"
+name = "Deklaratsiooni tasu"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_maa_deklar_tasu_api?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-maa-deklar-tulusaaja-api"
+name = "Deklaratsiooni tulusaaja"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_maa_deklar_tulusaaja_api?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-maasoojussysteemid"
+name = "Maasoojussüsteemid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_maasoojussysteemid?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-maasoojussysteemid-ehak"
+name = "Maasoojussüsteemi EHAK"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_maasoojussysteemid_ehak?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-maasoojussysteemid-puurauk"
+name = "Puuraugud"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_maasoojussysteemid_puurauk?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-paisud"
+name = "Paisud"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_paisud?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-paisud-kandealus"
+name = "Paisu kandealused"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_paisud_kandealus?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-paisud-kirjandus"
+name = "Paisu kirjandus ja uuringud"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_paisud_kirjandus?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-paisud-klis-luba"
+name = "Paisu KOTKAS load"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_paisud_klis_luba?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-paisud-veekogum"
+name = "Paisu veekogumid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_paisud_veekogum?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-paisud-veekogum-seis"
+name = "Paisuga seotud veekogumi seisundi hinnang"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_paisud_veekogum_seis?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-paisud-vesiviljelus"
+name = "Paisuga seotud vesiviljelused"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_paisud_vesiviljelus?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-paisud-yld"
+name = "Paisu üldinfo (ajalugu)"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_paisud_yld?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-parandobjd"
+name = "Pärandkultuuri objektid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_parandobjd?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-parandobjd-ehak"
+name = "Pärandkultuuri objekti kohanimi"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_parandobjd_ehak?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-parandobjd-veekogu"
+name = "Pärandkultuuri objektiga kattuv veekogu"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_parandobjd_veekogu?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-pohjaveekogumi-seisud"
+name = "Põhjaveekogumi seisundid ja eesmärgid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_pohjaveekogumi_seisud?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-pohjaveekogumi-seisud-kandealus"
+name = "Põhjaveekogumi seisundi kandealused"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_pohjaveekogumi_seisud_kandealus?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-pohjaveekogumi-seisud-kirjandus"
+name = "Põhjaveekogumi seisundi kirjandus ja uuringud"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_pohjaveekogumi_seisud_kirjandus?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-pohjaveekogumid"
+name = "Põhjaveekogumid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_pohjaveekogumid?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-pohjaveekogumid-dok"
+name = "Põhjaveekogumiga seotud õigusaktid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_pohjaveekogumid_dok?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-pohjaveekogumid-eelnev-pohjaveekogum"
+name = "Eelnevad põhjaveekogumid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_pohjaveekogumid_eelnev_pohjaveekogum?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-pohjaveekogumid-jargnev-pohjaveekogum"
+name = "Järgnevad põhjaveekogumid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_pohjaveekogumid_jargnev_pohjaveekogum?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-pohjaveekogumid-kandealus"
+name = "Põhjaveekogumite kandealused"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_pohjaveekogumid_kandealus?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-pohjaveekogumid-pohjaveekogum-seis"
+name = "Põhjaveekogumi seisundihinnangud"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_pohjaveekogumid_pohjaveekogum_seis?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-pohjaveekogumid-pohjaveevaru"
+name = "Kinnitatud põhjaveevarud"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_pohjaveekogumid_pohjaveevaru?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-pohjaveekogumid-puurauk"
+name = "Põhjaveekogumi puuraugud"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_pohjaveekogumid_puurauk?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-pohjaveekogumid-puurauk-pealmine"
+name = "Põhjaveekogumi puuraugud (kus on pealmiseks kogumiks)"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_pohjaveekogumid_puurauk_pealmine?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-pohjaveekogumid-rahvala"
+name = "Põhjaveekogumiga seotud rahvusvahelise tähtsusega alad"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_pohjaveekogumid_rahvala?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-pohjaveekogumid-tundlik-ala"
+name = "Kinnitatud põhjaveevarud"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_pohjaveekogumid_tundlik_ala?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-pohjaveekogumid-vesikond"
+name = "Põhjaveekogumi vesikond (vesikond)"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_pohjaveekogumid_vesikond?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-pohjaveevarud"
+name = "Põhjaveevaruga alad"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_pohjaveevarud?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-pohjaveevarud-dok"
+name = "Põhjaveevaru kinnitamise käskkiri"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_pohjaveevarud_dok?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-pohjaveevarud-eelnev-pohjaveevaru"
+name = "Eelnevad põhjaveevarud"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_pohjaveevarud_eelnev_pohjaveevaru?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-pohjaveevarud-ehak"
+name = "Põhjaveevaru EHAK"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_pohjaveevarud_ehak?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-pohjaveevarud-jargnev-pohjaveevaru"
+name = "Järgnevad põhjaveevarud"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_pohjaveevarud_jargnev_pohjaveevaru?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-pohjaveevarud-kandealus"
+name = "Põhjaveevaru kandealused"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_pohjaveevarud_kandealus?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-pohjaveevarud-kirjandus"
+name = "Kinnitatud põhjaveevaruga ala kirjandus ja uuringud"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_pohjaveevarud_kirjandus?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-pohjaveevarud-pohjaveekogum-seis"
+name = "Põhjaveevaru seisundihinnangud"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_pohjaveevarud_pohjaveekogum_seis?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-pohjaveevarud-puurauk"
+name = "Põhjaveevaru puuraugud"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_pohjaveevarud_puurauk?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-puhastid"
+name = "Puhastid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_puhastid?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-puhastid-ehak"
+name = "Puhasti EHAK info"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_puhastid_ehak?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-puhastid-veehaare"
+name = "Puhastiga seotud veehaarded"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_puhastid_veehaare?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-puhastid-veelase"
+name = "Puhastiga seotud veelaskmed"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_puhastid_veelase?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-puuraugud"
+name = "Puuraugud"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_puuraugud?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-puuraugud-ehak"
+name = "Puuraugu EHAK info"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_puuraugud_ehak?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-puuraugud-konstruktsioon"
+name = "Puuraugu konstruktsiooni elemendid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_puuraugud_konstruktsioon?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-puuraugud-labiloige"
+name = "Puuraugu läbilõike maapõuekihid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_puuraugud_labiloige?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-puuraugud-pohjaveekogum-seis"
+name = "Puuraugu seisundihinnangud"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_puuraugud_pohjaveekogum_seis?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-puuraugud-pohjaveevaru"
+name = "Puuraugu põhjaveevarud"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_puuraugud_pohjaveevaru?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-puuraugud-puurauk-param"
+name = "Puuraugu parameetrid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_puuraugud_puurauk_param?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-puuraugud-seirejaam"
+name = "Puuraugu seirejaamad"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_puuraugud_seirejaam?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-puuraugud-vesikond"
+name = "Vesikond millele kuulub puurauk"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_puuraugud_vesikond?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-puuraugud-voond"
+name = "Puuraugu kaitsevööndid (sanitaarkaitseala)"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_puuraugud_voond?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-rahvalad"
+name = "Rahvusvahelised alad"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_rahvalad?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-rahvalad-dok"
+name = "Rahvusvahelise alaga seotud õigusaktid ning Natura alade loodus- või linnualaks määramise siseriiklik õiguslik alus"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_rahvalad_dok?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-rahvalad-ehak"
+name = "Rahvusvahelise tähtsusega ala kohanimi"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_rahvalad_ehak?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-rahvalad-elupaigatyyp"
+name = "Rahvusvahelise alaga seotud Natura elupaigatüübid, mis on kaitse eesmärgiks"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_rahvalad_elupaigatyyp?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-rahvalad-elupaikstat"
+name = "Natura ala elupaigatüüpide statistika (2025)"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_rahvalad_elupaikstat?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-rahvalad-invmojutegur"
+name = "Natura alal esinevad mõjutegurid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_rahvalad_invmojutegur?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-rahvalad-kandealus"
+name = "Rahvusvahelise tähtsusega ala kandealused"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_rahvalad_kandealus?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-rahvalad-lkohtstat"
+name = "Natura ala leiukohtade statistika, eesmärgiks olevad ja muud liigid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_rahvalad_lkohtstat?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-rahvalad-lnim"
+name = "Rahvusvahelise alaga seotud liigid, mis on kaitse eesmärgiks"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_rahvalad_lnim?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-reoveealad"
+name = "Reoveekogumisalad"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_reoveealad?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-reoveealad-dok"
+name = "Reoveekogumisalaga seotud õigusaktid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_reoveealad_dok?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-reoveealad-ehak"
+name = "Reoveekogumisalal asuvad haldusüksused"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_reoveealad_ehak?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-reoveealad-fjisik"
+name = "Reoveekogumisala veevärkide haldajad"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_reoveealad_fjisik?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-reoveealad-kandealus"
+name = "Reoveekogumisala kandealused"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_reoveealad_kandealus?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-reoveealad-kirjandus"
+name = "Reoveekogumisala kirjandus ja uuringud"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_reoveealad_kirjandus?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-reoveealad-koormus"
+name = "Reoveekogumisala reostuskoormuse jagunemine"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_reoveealad_koormus?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-reoveealad-puhasti"
+name = "Reoveekogumisala veevärkide puhastid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_reoveealad_puhasti?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-reoveealad-veekogum"
+name = "Reoveekogumisalal asuvad veekogumid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_reoveealad_veekogum?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-reoveealad-veekogum-seis"
+name = "Reoveeala seisundi eesmärk"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_reoveealad_veekogum_seis?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-reoveealad-veelase"
+name = "Reoveekogumisalal asuvad ilma veevärgi infota veelaskmed"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_reoveealad_veelase?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-reoveealad-vv-veelase"
+name = "Reoveekogumisala veevärkide veelaskmed"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_reoveealad_vv_veelase?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-rongastused"
+name = "Rõngastuste info"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_rongastused?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-saared"
+name = "Saared"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_saared?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-saared-ala"
+name = "Saarel asuvad kaitsealused alad ning üksikobjektid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_saared_ala?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-saared-ehak"
+name = "Saare haldusüksused"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_saared_ehak?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-saared-kandealus"
+name = "Saarega seotud kandealused"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_saared_kandealus?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-saared-saar"
+name = "Külge liitunud saared"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_saared_saar?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-saared-seirejaam"
+name = "Saare seirejaamad"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_saared_seirejaam?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-saared-veekogu"
+name = "Saar piirneb merealadega"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_saared_veekogu?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-seirejaamad"
+name = "Seirejaamade info"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_seirejaamad?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-seirejaamad-dok"
+name = "Seirejaamaga seotud õigusaktid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_seirejaamad_dok?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-seirejaamad-kandealus"
+name = "Seirejaama kirje kandealused"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_seirejaamad_kandealus?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-seirejaamad-mootekoht"
+name = "Seirejaama mõõtekohad"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_seirejaamad_mootekoht?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-seirejaamad-sr-programm"
+name = "Seirejaamaga seotud seireprogrammid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_seirejaamad_sr_programm?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-seirejaamad-valgla"
+name = "Seirejaama valglad"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_seirejaamad_valgla?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-smi-tulemused"
+name = "SMI arvutustulemused"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_smi_tulemused?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-toetused"
+name = "Metsatoetuse alad"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_toetused?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-toetused-ehak"
+name = "Metsatoetuse ala kohanimi"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_toetused_ehak?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-toetused-kandealus"
+name = "Metsatoetuse alaga seotud kandealused"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_toetused_kandealus?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-tundlikud-alad"
+name = "Tundlikud alad"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_tundlikud_alad?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-tundlikud-alad-alamobjekt"
+name = "Tundliku ala alamobjektid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_tundlikud_alad_alamobjekt?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-tundlikud-alad-dok"
+name = "Tundliku alaga seotud õigusaktid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_tundlikud_alad_dok?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-tundlikud-alad-ehak"
+name = "Tundliku ala kohanimi"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_tundlikud_alad_ehak?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-tundlikud-alad-kandealus"
+name = "Looduslikult tundliku ala kirje kandealused"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_tundlikud_alad_kandealus?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-tundlikud-alad-kirjandus"
+name = "Looduslikult tundliku ala kirjandus ja uuringud"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_tundlikud_alad_kirjandus?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-tundlikud-alad-pohjaveekogum-seis"
+name = "Tundliku ala seisundihinnangud"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_tundlikud_alad_pohjaveekogum_seis?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-tundlikud-alad-veekogu"
+name = "Tundlikul alal asuvad allikad"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_tundlikud_alad_veekogu?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veehaarded"
+name = "Veehaarded"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veehaarded?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veehaarded-dok"
+name = "Veehaardega seotud õigusaktid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veehaarded_dok?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veehaarded-ehak"
+name = "Veehaarde EHAK info"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veehaarded_ehak?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veehaarded-fjisik"
+name = "Veehaarde veevärgi haldaja"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veehaarded_fjisik?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veehaarded-kandealus"
+name = "Veehaarde kirje kandealused"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veehaarded_kandealus?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veehaarded-kirjandus"
+name = "Veehaarde kirjandus ja uuringud"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veehaarded_kirjandus?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veehaarded-puurauk"
+name = "Veehaarde puuraugud"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veehaarded_puurauk?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veehaarded-veekogum"
+name = "Veehaarde veekogumid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veehaarded_veekogum?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veehaarded-veekogum-seis"
+name = "Veehaarega seotud veekogumi seis"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veehaarded_veekogum_seis?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veehaarded-vesikond"
+name = "Vesikond, mille juurde kuulub veehaare"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veehaarded_vesikond?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veehaarded-vesiviljelus"
+name = "Veehaardega seotud vesiviljelused"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veehaarded_vesiviljelus?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veehaarded-voond"
+name = "Veehaarete vööndid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veehaarded_voond?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veekogud"
+name = "Veekogud"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veekogud?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veekogud-ala-kaitse-pyp"
+name = "Veekogus asub kaitstav kudemis- ja elupaik"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veekogud_ala_kaitse_pyp?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veekogud-ala-obj"
+name = "Veekogu kaitsealused alad ja üksikobjektid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veekogud_ala_obj?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veekogud-allikas-yrg"
+name = "Allikas asub ürglooduse objektil (allikaalal)"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veekogud_allikas_yrg?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veekogud-dok"
+name = "Veekoguga seotud õigusaktid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veekogud_dok?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veekogud-ehak"
+name = "Veekogu kohanimi"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veekogud_ehak?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veekogud-invelupaik"
+name = "Loodusdirektiivi elupaigad"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veekogud_invelupaik?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veekogud-jvv-pais"
+name = "Paisjärvega seotud paisud"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veekogud_jvv_pais?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veekogud-jvv-veekogu"
+name = "Läbib seisuveekogusid (paisjärved)"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veekogud_jvv_veekogu?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veekogud-jvv-veekogum"
+name = "Paisjärve veekogum"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veekogud_jvv_veekogum?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veekogud-kaitsealune-ala"
+name = "Veekogus asub kaitsealune kalade kudemis- ja elupaik"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veekogud_kaitsealune_ala?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veekogud-kandealus"
+name = "Veekogu kirje kandealused"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veekogud_kandealus?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veekogud-kirjandus"
+name = "Veekogu kirjandus ja uuringud"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veekogud_kirjandus?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veekogud-lahtuv-veekogu"
+name = "Sellest veekogust lähtuvad veekogud"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veekogud_lahtuv_veekogu?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veekogud-lkoht"
+name = "Veekoguga seotud liigi leiukohad"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veekogud_lkoht?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veekogud-mere-veekogu"
+name = "Mereala alamosad"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veekogud_mere_veekogu?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veekogud-pais"
+name = "Vooluveekogul asuvad paisud"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veekogud_pais?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veekogud-parandobj"
+name = "Veekogu pärandkultuuriobjekt"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veekogud_parandobj?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veekogud-rahvala"
+name = "Veekogu asub rahvusvahelise tähtsusega aladel"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veekogud_rahvala?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veekogud-saar"
+name = "Saared"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veekogud_saar?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veekogud-seirejaam"
+name = "Veekogu seirejaamad"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veekogud_seirejaam?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veekogud-suubuv-veekogu"
+name = "Suubuvad veekogud"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veekogud_suubuv_veekogu?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veekogud-veehaare"
+name = "Pinnaveehaarded veekogust"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veekogud_veehaare?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veekogud-veekogum-seis"
+name = "Veekogu seisundi eesmärk"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veekogud_veekogum_seis?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veekogud-veelase"
+name = "Veelaskmed veekogusse"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veekogud_veelase?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veekogud-vesikond"
+name = "Veekogu vesikond"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veekogud_vesikond?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veekogud-vesiviljelus"
+name = "Vesiviljelused"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veekogud_vesiviljelus?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veekogud-vkg-veekogum"
+name = "Veekogu veekogumid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veekogud_vkg_veekogum?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veekogud-yrg"
+name = "Veekogus asuvad ürglooduse objektid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veekogud_yrg?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veekogumi-seisundid"
+name = "Pinnaveekogumi seisundid ja eesmärgid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veekogumi_seisundid?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veekogumi-seisundid-kese-seirejaam"
+name = "KESE seirejaamad"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veekogumi_seisundid_kese_seirejaam?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veekogumi-seisundid-ose-seirejaam"
+name = "ÖSE seirejaamad"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veekogumi_seisundid_ose_seirejaam?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veekogumid"
+name = "Veekogumid ja hindamisüksused"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veekogumid?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veekogumid-eelnev"
+name = "Eelnevad veekogumid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veekogumid_eelnev?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veekogumid-hks-koondseis"
+name = "MSRD koondseisund"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veekogumid_hks_koondseis?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veekogumid-hks-siht"
+name = "MSRD hindamisüksuse sihid ja indikaatorid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veekogumid_hks_siht?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veekogumid-jargnev"
+name = "Järgnevad veekogumid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veekogumid_jargnev?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veekogumid-jvv-veekogu"
+name = "Paisjärve veekogum"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veekogumid_jvv_veekogu?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veekogumid-kandealus"
+name = "Veekogumiga seotud kandealused"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veekogumid_kandealus?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veekogumid-kirjandus"
+name = "Veekogumi kohta käiv kirjandus ja uuringud"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veekogumid_kirjandus?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veekogumid-koormus"
+name = "Veekogumile mõjuvad koormused"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veekogumid_koormus?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veekogumid-naitaja"
+name = "Veekogumi näitajad"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veekogumid_naitaja?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veekogumid-pais"
+name = "Veekogumis asuvad paisud"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veekogumid_pais?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veekogumid-pohjaveekogum"
+name = "Pinnaveekogumiga seotud põhjaveekogumid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veekogumid_pohjaveekogum?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veekogumid-veehaare"
+name = "Veekogumis asuvad veehaarded"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veekogumid_veehaare?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veekogumid-veekogu"
+name = "Vooluveekogumi lisajõed"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veekogumid_veekogu?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veekogumid-veekogum-seis"
+name = "Veekogumi seisundi eesmärk"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veekogumid_veekogum_seis?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veekogumid-veelase"
+name = "Veekogumis asuvad veelaskmed"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veekogumid_veelase?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veekogumid-vesikond"
+name = "Veekogumi vesikond"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veekogumid_vesikond?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veekogumid-vesiviljelus"
+name = "Veekogumis asuvad vesiviljelused"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veekogumid_vesiviljelus?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veelaskmed"
+name = "Veelaskmed"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veelaskmed?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veelaskmed-ehak"
+name = "Veelaskme EHAK info"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veelaskmed_ehak?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veelaskmed-kandealus"
+name = "Veelaskmete kandealused"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veelaskmed_kandealus?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veelaskmed-veekogum"
+name = "Veelaskme veekogumid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veelaskmed_veekogum?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veelaskmed-veekogum-seis"
+name = "Veelaskme veekogumi seisundid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veelaskmed_veekogum_seis?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veelaskmed-vesikond"
+name = "Vesikond, mille juurde kuulub veehaare (vesikond)"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veelaskmed_vesikond?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-veenaitajad-w10-w1-public"
+name = "f_veenaitajad_W10_W1_public"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_veenaitajad_W10_W1_public?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-vepid"
+name = "Vääriselupaigad"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_vepid?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-vepid-dok"
+name = "Vääriselupaigaga seotud õigusaktid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_vepid_dok?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-vepid-ehak"
+name = "Vääriselupaiga kohanimi"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_vepid_ehak?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-vepid-kandealus"
+name = "Vääriselupaiga kirje kandealused"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_vepid_kandealus?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-vepid-majandamine"
+name = "Vääriselupaiga majandamine"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_vepid_majandamine?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-vepid-mojutegur"
+name = "Vääriselupaiga mõjutegurid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_vepid_mojutegur?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-vepid-tunnus"
+name = "Vääriselupaiga tunnused ja indikaatorliigid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_vepid_tunnus?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-yrgid"
+name = "Ürglooduse objektid"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_yrgid?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-yrgid-ala"
+name = "Ürglooduse objektiga kattuv kaitselala"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_yrgid_ala?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-yrgid-ehak"
+name = "Ürglooduse objekti kohanimi"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_yrgid_ehak?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-yrgid-kandealus"
+name = "Ürglooduse objekti kandealused"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_yrgid_kandealus?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "f-yrgid-veekogu"
+name = "Ürglooduse objektiga kattuv veekogu"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_yrgid_veekogu?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+enabled = true
+source = "openapi"
+verified = false
+
+[[endpoint]]
+id = "hydroseire"
+name = "Hüdroloogiline seire, veetase 2023-01-02"
+system = "Hüdroloogia"
+url = "https://keskkonnaandmed.envir.ee/f_hydroseire?timeline_ts_utc=lt.2023-01-02T03:00:00&timeline_ts_utc=gt.2023-01-01T23:00:00&aegrida_nimi=eq.WL%20min&limit=5"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
 source = "manual"
 verified = true
-note = "Dokumentatsiooni näidispäring; katab pesastatud tabeli filtri"
-
-# =============================================================================
-# KAIA — Looduskeskkonna avaandmete failide allalaadimise teenus
-# Allikas: avaandmed.keskkonnaportaal.ee Swagger UI (OpenAPI 3.0)
-#
-# Teadlikult VÄLJA JÄETUD otspunktid:
-#   PUT  /api/lists/{list}/items/{id}/files/{fileId}
-#        kirjutusoperatsioon, nõuab write-õigust. Jälgija ei tohi kunagi
-#        muuta jälgitavat süsteemi — inventar keeldub PUT-ist juba
-#        valideerimisel.
-#   GET  /api/lists/{list}/items/{id}/files/{fileId}
-#        vajab päris dokumendi ID-d, mida siin ei ole. Väljamõeldud ID
-#        annaks 404 ja näitaks tervet teenust katkisena.
-#   POST /api/lists/{list}/items/zipped-files
-#        tagastab ZIP-paki; maht sõltub filtrist ega sobi iga 15 minuti
-#        tagant tõmbamiseks.
-# =============================================================================
+note = "Dokumentatsiooni näidispäring; lisatud limit=5"
 
 [[endpoint]]
-id = "kaia-swagger"
-name = "KAIA OpenAPI teenusekirjeldus"
+id = "kaia-items-query"
+name = "KAIA dokumentide metaandmete päring"
 system = "KAIA"
-url = "https://avaandmed.keskkonnaportaal.ee/swagger/v1/swagger.json"
+url = "https://avaandmed.keskkonnaportaal.ee/api/lists/active/items/query"
 expect = "json"
-max_bytes = 262144
-headers = { "Accept" = "application/json" }
+method = "POST"
+headers = { "Accept" = "application/json", "Content-Type" = "application/json" }
+body = "{\"pageSize\":1,\"includeFileMetadata\":false}"
 source = "manual"
 verified = true
-note = "Dokumentatsioonis viidatud aadress; ühtlasi kõige odavam elushoiu kontroll"
+note = "Otspunkt dokumenteeritud, päringukeha koostatud siin ja kinnitatud päris teenuse vastu 2026-09-14 (HTTP 200, 1016 B)"
 
 [[endpoint]]
 id = "kaia-lists-active"
@@ -239,14 +3012,113 @@ verified = true
 note = "GET /api/lists/{list}; dokumentatsioon: list on 'active or archive'"
 
 [[endpoint]]
-id = "kaia-items-query"
-name = "KAIA dokumentide metaandmete päring"
+id = "kaia-swagger"
+name = "KAIA OpenAPI teenusekirjeldus"
 system = "KAIA"
-url = "https://avaandmed.keskkonnaportaal.ee/api/lists/active/items/query"
+url = "https://avaandmed.keskkonnaportaal.ee/swagger/v1/swagger.json"
 expect = "json"
-method = "POST"
-headers = { "Accept" = "application/json", "Content-Type" = "application/json" }
-body = "{\"pageSize\":1,\"includeFileMetadata\":false}"
+headers = { "Accept" = "application/json" }
+max_bytes = 262144
 source = "manual"
 verified = true
-note = "Otspunkt dokumenteeritud, päringukeha koostatud siin ja kinnitatud päris teenuse vastu 2026-09-14 (HTTP 200, 1016 B)"
+note = "Dokumentatsioonis viidatud aadress; ühtlasi kõige odavam elushoiu kontroll"
+
+[[endpoint]]
+id = "keskkonnaandmed-root"
+name = "Juur-URL, OpenAPI teenusekirjeldus"
+system = "Keskkonnaandmed"
+url = "https://keskkonnaandmed.envir.ee"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+max_bytes = 65536
+source = "manual"
+verified = true
+note = "OpenAPI kirjeldus on ~4 MB ja vastab 3,7 s; max_bytes piirab lugemise 64 KB-le, sest tunnisele elushoiu kontrollile piisab staatusest"
+
+[[endpoint]]
+id = "keskkonnaseire"
+name = "Keskkonnaseire, programm PR0127 aastal 2021"
+system = "Keskkonnaseire"
+url = "https://keskkonnaandmed.envir.ee/f_keskkonnaseire?seiretoo_seotud_programmi_kood_iv=eq.PR0127&seireaeg_algus=gte.2021-01-01T00:00:00&seireaeg_algus=lt.2022-01-01T00:00:00&naitaja_nimetus=in.(Kloriid,%C3%9Cldraud,Vee%20temperatuur,Elavh%C3%B5be,PAH%20summa)&limit=5"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+source = "manual"
+verified = true
+note = "Dokumentatsiooni näidispäring; lisatud limit=5. Teenusel on teadaolev pagineerimisprobleem"
+
+[[endpoint]]
+id = "kliima-element"
+name = "Kliima elementide metaandmed"
+system = "Kliima"
+url = "https://keskkonnaandmed.envir.ee/f_kliima_element"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+source = "manual"
+verified = true
+note = "Metaandmete teenus, dokumentatsiooni järgi lubatud ilma argumentideta"
+
+[[endpoint]]
+id = "kliima-jaam-vaatlus"
+name = "Kliima vaatlusjaamade metaandmed"
+system = "Kliima"
+url = "https://keskkonnaandmed.envir.ee/f_kliima_jaam_vaatlus?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+source = "manual"
+verified = true
+note = "Metaandmete teenus; filtrita 1,1 MB, seega tunnisele kontrollile limit=1"
+
+[[endpoint]]
+id = "kliima-kuu"
+name = "Kliima kuu andmed"
+system = "Kliima"
+url = "https://keskkonnaandmed.envir.ee/f_kliima_kuu?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+source = "manual"
+verified = true
+note = "Teenus dokumenteeritud; ?limit=1 koostatud siin ja kinnitatud päris teenuse vastu 2026-09-14 (HTTP 200)"
+
+[[endpoint]]
+id = "kliima-minut"
+name = "Kliima 10-minuti andmed"
+system = "Kliima"
+url = "https://keskkonnaandmed.envir.ee/f_kliima_minut?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+source = "manual"
+verified = true
+note = "Teenus dokumenteeritud; ?limit=1 koostatud siin ja kinnitatud päris teenuse vastu 2026-09-14 (HTTP 200)"
+
+[[endpoint]]
+id = "kliima-paev"
+name = "Kliima ööpäeva andmed, Ruhnu ja Kihnu õhuniiskus 2023"
+system = "Kliima"
+url = "https://keskkonnaandmed.envir.ee/f_kliima_paev?aasta=eq.2023&kuu=gt.10&paev=lt.8&element_kood=eq.DRH08&jaam_kood=in.(AJRUHN01,AJKIHN01)&limit=5"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+source = "manual"
+verified = true
+note = "Dokumentatsiooni näidispäring; lisatud limit=5 koormuse hoidmiseks"
+
+[[endpoint]]
+id = "kliima-paev-nimefilter"
+name = "Kliima ööpäeva andmed, Võru 2006 (like-filter ja sortimine)"
+system = "Kliima"
+url = "https://keskkonnaandmed.envir.ee/f_kliima_paev?jaam_nimi=like.V%C3%B5ru&aasta=eq.2006&element_kood=like.DTA08&order=kuu.asc,paev.asc&limit=5"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+source = "manual"
+verified = true
+note = "Dokumentatsiooni näidispäring; katab like-filtri ja order-i"
+
+[[endpoint]]
+id = "kliima-tund"
+name = "Kliima tunniandmed"
+system = "Kliima"
+url = "https://keskkonnaandmed.envir.ee/f_kliima_tund?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
+source = "manual"
+verified = true
+note = "Teenus dokumenteeritud; ?limit=1 koostatud siin ja kinnitatud päris teenuse vastu 2026-09-14 (HTTP 200)"
