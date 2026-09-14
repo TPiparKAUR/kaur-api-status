@@ -90,8 +90,15 @@ day, hour and 10 minutes, `f_hydroseire`, `f_keskkonnaseire`, and four EELIS
 `f_rahvalad` queries covering plain reads, PostgREST embedding and nested
 filters.
 
-Every request sends `Accept-Profile: apijahialad`. Without it the service
+Every request sends `Accept-Profile: apijahiala`. Without it the service
 answers from an unspecified schema, so the header is not optional.
+
+**The published documentation gets this value wrong.** It gives `apijahialad`,
+with a trailing d. The live service rejects that with 406 PGRST106 and names
+the value it will accept. Every documented example query, curl invocation
+included, fails as written. Do not "correct" the inventory back to the
+documented spelling — the monitor found this on its first live run, and the
+first run after the fix returned 200 on all fourteen endpoints.
 
 Measurement queries must be filtered — the documentation says so, and the
 service caps a response at 20 000 rows. The inventory uses the documented
@@ -99,19 +106,24 @@ example queries with a small `limit` added, which keeps an hourly probe cheap
 and makes the response deterministic enough that a changed body hash is
 meaningful.
 
-Ten entries are the documented queries verbatim and are `verified = true`.
-Four are `verified = false`: the service is documented but the query (usually
-just `?limit=1`) was constructed here rather than copied. Unverified endpoints
-appear in the report but never open an issue, because a failure there is as
-likely to be a wrong query as an outage.
+All fourteen are `verified = true`: ten are the documented queries verbatim,
+and four were constructed here as `?limit=1` probes and then confirmed against
+the live service. An endpoint left `verified = false` appears in the report but
+never opens an issue, because a failure there is as likely to be a wrong query
+as an outage — keep that property when adding entries.
+
+Two endpoints are capped deliberately. The OpenAPI root returns about 4 MB and
+the station metadata table 1.1 MB unfiltered; hourly, that is real bandwidth
+taken from a public service for a status code, so the root reads at most 64 KB
+and the station query uses `limit=1`.
 
 ## Open work
 
-- The four `verified = false` queries need someone to confirm them against the
-  real service, then flip the flag.
 - No endpoint sets `freshness_regex` yet. Doing so needs someone who knows each
   payload's timestamp field; the documented queries are historical and would
   always read as stale.
+- `f_hydroseire` response times are erratic — 1.2 s to 13.3 s across four
+  samples. Too few to conclude anything, but worth watching as the log grows.
 - `discover.from_ckan` assumes a CKAN-shaped API. The Estonian open data
   portal's actual API has not been verified. It reports a mismatch rather than
   guessing, but it may simply not apply.
