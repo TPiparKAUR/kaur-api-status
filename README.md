@@ -183,11 +183,35 @@ otse. Näidisandmeid ei genereerita kunagi.
 
 GitHubis: **Settings → Pages → Source: Deploy from a branch → `main` / `/docs`**.
 
-> **NB!** See repo on privaatne. GitHub Pages privaatsele repole nõuab tasulist
-> plaani (Pro, Team või Enterprise). Tasuta plaanil tuleb repo avalikuks teha —
-> mis lahendaks ühtlasi Actionsi minutite piirangu, sest avalikel repodel on
-> Actions piiramatu. Seirelogi ise ei sisalda midagi salajast: ainult avalike
-> API-de vastuseaegu ja staatuskoode.
+Pärast seda on leht aadressil:
+
+```
+https://tpiparkaur.github.io/kaur-api-status/
+```
+
+> **NB!** GitHub Pages ei serveeri privaatset repot tasuta plaanil. Leht ilmub
+> alles siis, kui repo on avalik (või plaan tasuline).
+
+## Enne avalikuks tegemist
+
+Kontroll-loend. Esimesed kolm on üle vaadatud 2026-09-14 seisuga.
+
+- [x] **Logis ei ole tundlikku sisu.** 1 263 kirjet skannitud: ei leitud
+      autoriseerimispäiseid, API-võtmeid, tokeneid, isikukoode, e-posti
+      aadresse, JWT-sid ega sisevõrgu hoste. Logikirje väljad on ainult
+      `ts, id, status, stage, http, ms, bytes, sha256, cert_days, age_s,
+      detail, members, ok`.
+- [x] **Koodis ei ole saladusi.** GitHubi teavituste token tuleb jooksu ajal
+      `${{ github.token }}`-ist ega satu kunagi repos olevasse faili.
+- [x] **Litsents on olemas** — MIT, vt `LICENSE`.
+- [ ] **Repo kirjeldus GitHubis** on veel vana („Laeb alla KAUR-i andmed
+      arhiveerimiseks") — see ei kirjelda enam projekti.
+- [ ] **Ümbernimetamine ja nähtavus** Settings-i alt.
+- [ ] Pärast ümbernimetamist kohalikus koopias:
+      `git remote set-url origin https://github.com/TPiparKAUR/kaur-api-status`
+
+Repo ümbernimetamine ei nõua koodimuudatust: projektis ei ole ühtegi viidet
+oma repo nimele. Vanad lingid suunatakse GitHubis automaatselt ümber.
 
 ### Teenuste kirjeldused
 
