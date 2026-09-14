@@ -1,0 +1,96 @@
+"""Turning check records into the things people ask about: outages and uptime.
+
+One implementation, used by both the Markdown report and the dashboard data.
+If each rendered its own idea of when an outage started, the two would disagree
+in front of the reader eventually.
+"""
+
+from __future__ import annotations
+
+from datetime import datetime
+from typing import Any
+
+from . import store
+
+# Reading the whole log costs time that grows without limit; every caller wants
+# a window, and one day past the widest reported window keeps that window whole.
+WINDOW_DAYS = 31.0
+
+
+def by_endpoint(records: list[dict[str, Any]]) -> dict[str, list[dict[str, Any]]]:
+    """Group records per endpoint, each series oldest first."""
+    grouped: dict[str, list[dict[str, Any]]] = {}
+    for record in records:
+        grouped.setdefault(record.get("id", "?"), []).append(record)
+    for series in grouped.values():
+        series.sort(key=lambda r: r.get("ts") or "")
+    return grouped
+
+
+def incidents(series: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Contiguous runs of non-ok status.
+
+    'unknown' is treated as a gap rather than an outage: it means our own check
+    could not reach the network, which says nothing about the service.
+    """
+    found: list[dict[str, Any]] = []
+    current: dict[str, Any] | None = None
+
+    for record in series:
+        status = record.get("status")
+        if status == "unknown":
+            continue
+        if status == "ok":
+            if current is not None:
+                current["end"] = record.get("ts")
+                found.append(current)
+                current = None
+            continue
+        if current is None:
+            current = {
+                "start": record.get("ts"),
+                "end": None,
+                "worst": status,
+                "detail": record.get("detail") or "",
+                "checks": 0,
+            }
+        if status == "down":
+            current["worst"] = "down"
+            if record.get("detail"):
+                current["detail"] = record["detail"]
+        current["checks"] += 1
+
+    if current is not None:
+        found.append(current)
+    return found
+
+
+def uptime(series: list[dict[str, Any]], since: datetime) -> tuple[float | None, int]:
+    """Share of checks that succeeded, and how many were counted.
+
+    Records in the 'unknown' state are left out of both: they say our own
+    checker had no network, which is not evidence about the service. A record
+    whose timestamp will not parse is dropped rather than counted, matching
+    what store.read_all does, so the two paths cannot disagree.
+    """
+    considered = []
+    for record in series:
+        if record.get("status") == "unknown":
+            continue
+        stamp = store.parse_ts(record.get("ts"))
+        if stamp is None or stamp < since:
+            continue
+        considered.append(record)
+    if not considered:
+        return None, 0
+    ok = sum(1 for r in considered if r.get("status") == "ok")
+    return 100.0 * ok / len(considered), len(considered)
+
+
+def duration_seconds(incident: dict[str, Any], now: datetime) -> float | None:
+    """How long an outage lasted, or has lasted so far if it is still open."""
+    start = store.parse_ts(incident.get("start"))
+    if start is None:
+        return None
+    end = store.parse_ts(incident.get("end")) or now
+    return max(0.0, (end - start).total_seconds())

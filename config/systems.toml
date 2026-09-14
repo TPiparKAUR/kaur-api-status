@@ -1,0 +1,44 @@
+# Süsteemide kirjeldused avalikule seisundilehele.
+#
+# Iga kirje vastab inventari `system` väljale. Tekst on mõeldud lugejale, kes
+# ei tegele API-dega iga päev: mida see teenus pakub ja milleks seda vaja on.
+# Kirjeldused pärinevad teenuste ametlikust dokumentatsioonist.
+#
+# Süsteemi, millel siin kirjeldust ei ole, näidatakse lehel ilma tekstita —
+# uue süsteemi lisamiseks piisab siia ühe ploki lisamisest.
+
+["Keskkonnaandmed"]
+description = """
+Keskkonna- ja ilmavaldkonna andmeteenuste keskkonna juurteenus. See loetleb \
+kõik saadaolevad andmestikud ja nende kuju, mistõttu on see esimene koht, \
+kust arendaja alustab. Kui see teenus ei vasta, ei ole ka ülejäänud \
+andmeteenused leitavad."""
+
+["Kliima"]
+description = """
+Ilmajaamade mõõtmisandmed kuu, ööpäeva, tunni ja 10 minuti täpsusega, koos \
+jaamade ja mõõdetavate suuruste kirjeldustega. Neid andmeid kasutatakse \
+kliimastatistikas, aruandluses ja uuringutes."""
+
+["Hüdroloogia"]
+description = """
+Hüdroloogilise seire tunniandmed: veetasemed ja muud veekogude näitajad \
+jõgedel ja rannikumeres, koos mõõtejaamade asukohtadega. Kasutatakse \
+veeolukorra jälgimiseks ja veemajanduses."""
+
+["Keskkonnaseire"]
+description = """
+Riikliku keskkonnaseire mõõtmistulemused seireprogrammide ja näitajate \
+kaupa. Kasutatakse keskkonnaseisundi hindamisel ja aruandluses."""
+
+["EELIS"]
+description = """
+Eesti Looduse Infosüsteemi andmed: kaitsealad, kaitstavad loodusobjektid ja \
+nendega seotud dokumendid ning õiguslikud alused. Kasutatakse looduskaitse \
+korralduses ja planeerimisel."""
+
+["KAIA"]
+description = """
+Looduskeskkonna avaandmete failide allalaadimise teenus. Võimaldab \
+masinliidese kaudu otsida ja alla laadida meteoroloogia ja hüdroloogia \
+andmefaile."""

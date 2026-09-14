@@ -33,14 +33,23 @@ src/kaur_monitor/
   check.py                   staged endpoint checks, TLS expiry, OGC exceptions
   inventory.py               endpoints.toml load / validate / save / merge
   store.py                   append-only JSONL log, monthly partitions
+  analysis.py                incidents and uptime — one definition, two readers
   report.py                  log -> REPORT.md
-  discover.py                CKAN harvest + plain URL import
+  dashboard.py               log -> docs/data/status.json
+  discover.py                CKAN + OpenAPI harvest, plain URL import
   cli.py                     argparse
 scripts/notify_issues.py     GitHub issues as the notification channel
+scripts/commit_and_push.sh   shared by both committing workflows
 config/endpoints.toml        the inventory (data, not code)
+config/systems.toml          plain-language system descriptions for the page
 logs/YYYY-MM.jsonl           append-only check log, committed
 REPORT.md                    generated, committed
+docs/                        static GitHub Pages status page, Chart.js vendored
+docs/data/status.json        generated, committed — the only thing the page reads
 ```
+
+**The page never invents data.** Too little history means a sentence saying so,
+not a line drawn through two points. Keep that property.
 
 ## Design decisions worth keeping
 
@@ -83,48 +92,62 @@ python3 -m unittest discover -s tests
 
 ## What is monitored
 
-`keskkonnaandmed.envir.ee`, a PostgREST service, via 14 endpoints taken from
-Keskkonnaagentuur's own API documentation: the OpenAPI root, climate metadata
-(`f_kliima_element`, `f_kliima_jaam_vaatlus`), climate measurements by month,
-day, hour and 10 minutes, `f_hydroseire`, `f_keskkonnaseire`, and four EELIS
-`f_rahvalad` queries covering plain reads, PostgREST embedding and nested
-filters.
+283 endpoints across two services, checked every 30 minutes.
 
-Every request sends `Accept-Profile: apijahiala`. Without it the service
-answers from an unspecified schema, so the header is not optional.
+`keskkonnaandmed.envir.ee` is a PostgREST service. Eighteen entries were written
+by hand from Keskkonnaagentuur's documentation; the remaining 261 were harvested
+from the service's own OpenAPI description (`discover --from-inventory
+keskkonnaandmed-root`), which is the only honest way to cover EELIS's several
+hundred tables.
+
+`avaandmed.keskkonnaportaal.ee` is KAIA, the file download service: four
+entries covering its OpenAPI document, both list hierarchies, and the document
+search, which is a read but only reachable by POST with a query body.
+
+Every keskkonnaandmed request sends `Accept-Profile: apijahiala`. Without it
+the service answers from an unspecified schema, so the header is not optional.
 
 **The published documentation gets this value wrong.** It gives `apijahialad`,
 with a trailing d. The live service rejects that with 406 PGRST106 and names
 the value it will accept. Every documented example query, curl invocation
 included, fails as written. Do not "correct" the inventory back to the
 documented spelling — the monitor found this on its first live run, and the
-first run after the fix returned 200 on all fourteen endpoints.
+first run after the fix returned 200 on every endpoint.
 
 Measurement queries must be filtered — the documentation says so, and the
-service caps a response at 20 000 rows. The inventory uses the documented
-example queries with a small `limit` added, which keeps an hourly probe cheap
-and makes the response deterministic enough that a changed body hash is
-meaningful.
+service caps a response at 20 000 rows. Harvested entries carry `?limit=1` and
+the hand-written ones use the documented example queries with a small limit,
+which keeps a probe cheap and makes the response deterministic enough that a
+changed body hash means something.
 
-All fourteen are `verified = true`: ten are the documented queries verbatim,
-and four were constructed here as `?limit=1` probes and then confirmed against
-the live service. An endpoint left `verified = false` appears in the report but
+An endpoint left `verified = false` appears in the report and on the page but
 never opens an issue, because a failure there is as likely to be a wrong query
-as an outage — keep that property when adding entries.
+as an outage — keep that property. The 261 harvested entries are unverified.
 
 Two endpoints are capped deliberately. The OpenAPI root returns about 4 MB and
-the station metadata table 1.1 MB unfiltered; hourly, that is real bandwidth
-taken from a public service for a status code, so the root reads at most 64 KB
+the station metadata table 1.1 MB unfiltered, so the root reads at most 64 KB
 and the station query uses `limit=1`.
 
 ## Open work
 
-- No endpoint sets `freshness_regex` yet. Doing so needs someone who knows each
+**Log growth is the pressing one.** 283 endpoints every 30 minutes is 13 584
+requests a day and about 5 million log records a year — roughly **1 GB of
+committed text per year**, against GitHub's 1 GB recommended repository size.
+Reading is already bounded (the report and page window to 31 days), so this is
+purely a storage question, and it needs a decision rather than a code change:
+a slower cadence for the harvested tail, per-endpoint intervals, rolling old
+months up into daily aggregates and dropping the raw lines, or accepting it.
+Nothing here prunes anything on its own.
+
+- The 261 harvested endpoints are `verified = false`. Confirming them is a
+  human job; until then they are watched but never alert.
+- No endpoint sets `freshness_regex`. Doing so needs someone who knows each
   payload's timestamp field; the documented queries are historical and would
   always read as stale.
-- `f_hydroseire` response times are erratic — 1.2 s to 13.3 s across four
-  samples. Too few to conclude anything, but worth watching as the log grows.
-- `discover.from_ckan` assumes a CKAN-shaped API. The Estonian open data
-  portal's actual API has not been verified. It reports a mismatch rather than
-  guessing, but it may simply not apply.
-- EELIS has around 250 APIs; four are covered.
+- `f_hydroseire` response times are erratic — three of six samples over 13 s
+  against a 30 s timeout. Worth watching as the log grows.
+- `discover.from_ckan` assumes a CKAN-shaped API and has never been exercised
+  against a real catalogue.
+- GitHub Pages does not serve a private repository on the free plan, so the
+  page is built and committed but not published until the repo is public or
+  the plan changes.

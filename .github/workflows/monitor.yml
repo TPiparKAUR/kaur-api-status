@@ -3,12 +3,25 @@ name: API monitor
 # Every 30 minutes. A GitHub-hosted runner reaches the Estonian services
 # directly; the authoring environment cannot.
 #
-# The interval is a billing decision, not a technical one. This repository is
-# private and GitHub bills a private repo a minimum of one minute per job, so
-# 30 minutes is 1 440 runs a month and fits inside the 2 000 minute free
-# allowance. Every 15 minutes would be 2 880 and would stop partway through
-# the month. Run duration does not change this: billing rounds up to the
-# minute either way, so only the frequency matters.
+# BILLING, and it does not currently add up. This repository is private, where
+# GitHub bills whole minutes per job. With 283 endpoints a run takes roughly
+# 75 seconds — about 50 s of checking at 12 threads plus fixed runner overhead —
+# so every run is billed as 2 minutes: 1 440 runs x 2 = 2 880 minutes a month
+# against a 2 000 minute free allowance.
+#
+# More threads do not fix it. Even 16 leaves the job just over a minute, and
+# they raise the request rate against a single public service.
+#
+# Three ways out, in order of preference:
+#   1. Make the repository public. Actions is then unmetered, and GitHub Pages
+#      starts serving the status page, which a private free repo will not.
+#      The log holds nothing sensitive: response times and status codes for
+#      public APIs.
+#   2. Hourly instead: 720 x 2 = 1 440 minutes, which fits.
+#   3. Buy minutes.
+#
+# 30 minutes is kept because it is what was asked for; the arithmetic is here
+# so that Actions going quiet mid-month reads as this, not as a mystery.
 on:
   schedule:
     - cron: "*/30 * * * *"
@@ -17,7 +30,7 @@ on:
       workers:
         description: "Parallel checks"
         required: false
-        default: "8"
+        default: "12"
   # Also run when what is monitored, or how, changes — this verifies a new
   # endpoint immediately instead of waiting for the hour. It is additionally
   # the only way to run this workflow from a branch: schedule fires on the
@@ -52,7 +65,7 @@ jobs:
 
       # No dependency install step: the monitor is standard library only.
       - name: Run checks
-        run: python monitor.py check --workers "${{ inputs.workers || '8' }}"
+        run: python monitor.py check --workers "${{ inputs.workers || '12' }}"
 
       - name: Open or close incident issues
         env:
@@ -63,7 +76,7 @@ jobs:
       - name: Commit results
         env:
           REGEN_CMD: python monitor.py report
-        run: scripts/commit_and_push.sh "Monitoring run $(date -u +%Y-%m-%dT%H:%MZ)" logs REPORT.md
+        run: scripts/commit_and_push.sh "Monitoring run $(date -u +%Y-%m-%dT%H:%MZ)" logs REPORT.md docs/data
 
       - name: Job summary
         if: always()

@@ -12,7 +12,7 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import urlsplit
 
-from . import store
+from . import analysis, store
 
 try:
     from zoneinfo import ZoneInfo
@@ -33,13 +33,6 @@ _LABEL = {
 }
 
 _WINDOWS = ((1.0, "24 h"), (7.0, "7 päeva"), (30.0, "30 päeva"))
-
-# How much history the report reads. One day more than the widest window above,
-# so the 30-day figure is complete. Without this bound the report re-parses the
-# entire log on every run: at this cadence that is about 630 000 records and
-# 2.3 seconds of pure JSON parsing after a year, growing without limit. Bounded,
-# the work stays flat no matter how long the log gets.
-_REPORT_DAYS = 31.0
 
 
 def _local(raw: str | None) -> str:
@@ -63,74 +56,9 @@ def _duration(seconds: float) -> str:
     return f"{days} p {hrs} h"
 
 
-def _by_endpoint(records: list[dict[str, Any]]) -> dict[str, list[dict[str, Any]]]:
-    grouped: dict[str, list[dict[str, Any]]] = {}
-    for record in records:
-        grouped.setdefault(record.get("id", "?"), []).append(record)
-    for series in grouped.values():
-        series.sort(key=lambda r: r.get("ts") or "")
-    return grouped
-
-
-def _incidents(series: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    """Contiguous runs of non-ok status.
-
-    'unknown' is treated as a gap rather than an outage: it means our own check
-    could not reach the network, which says nothing about the service.
-    """
-    incidents: list[dict[str, Any]] = []
-    current: dict[str, Any] | None = None
-
-    for record in series:
-        status = record.get("status")
-        if status == "unknown":
-            continue
-        if status == "ok":
-            if current is not None:
-                current["end"] = record.get("ts")
-                incidents.append(current)
-                current = None
-            continue
-        if current is None:
-            current = {
-                "start": record.get("ts"),
-                "end": None,
-                "worst": status,
-                "detail": record.get("detail") or "",
-                "checks": 0,
-            }
-        if status == "down":
-            current["worst"] = "down"
-            if record.get("detail"):
-                current["detail"] = record["detail"]
-        current["checks"] += 1
-
-    if current is not None:
-        incidents.append(current)
-    return incidents
-
-
-def _uptime(series: list[dict[str, Any]], since: datetime) -> tuple[float | None, int]:
-    # A record whose timestamp will not parse is dropped rather than counted:
-    # treating it as in-window would let stale entries inflate the 24 h figure,
-    # and store.read_all already drops them, so the two paths must agree.
-    considered = []
-    for record in series:
-        if record.get("status") == "unknown":
-            continue
-        stamp = store.parse_ts(record.get("ts"))
-        if stamp is None or stamp < since:
-            continue
-        considered.append(record)
-    if not considered:
-        return None, 0
-    ok = sum(1 for r in considered if r.get("status") == "ok")
-    return 100.0 * ok / len(considered), len(considered)
-
-
 def build(entries: list[dict[str, Any]]) -> str:
-    records = list(store.read_all(since=store.window_start(_REPORT_DAYS)))
-    grouped = _by_endpoint(records)
+    records = list(store.read_all(since=store.window_start(analysis.WINDOW_DAYS)))
+    grouped = analysis.by_endpoint(records)
     by_id = {e["id"]: e for e in entries}
     now = datetime.now(UTC).astimezone(_TALLINN)
 
@@ -139,13 +67,13 @@ def build(entries: list[dict[str, Any]]) -> str:
         "",
         f"Koostatud: **{now:%Y-%m-%d %H:%M}** ({_TZ_LABEL}) · "
         f"jälgitavaid otspunkte: **{len(entries)}** · "
-        f"kontrollikirjeid viimase {int(_REPORT_DAYS)} päeva jooksul: **{len(records)}**",
+        f"kontrollikirjeid viimase {int(analysis.WINDOW_DAYS)} päeva jooksul: **{len(records)}**",
         "",
     ]
 
     if not records:
         out += [
-            f"> Viimase {int(_REPORT_DAYS)} päeva kohta kirjeid ei ole.",
+            f"> Viimase {int(analysis.WINDOW_DAYS)} päeva kohta kirjeid ei ole.",
             "> Käivita `python monitor.py check`.",
             "",
         ]
@@ -183,7 +111,7 @@ def build(entries: list[dict[str, Any]]) -> str:
     for eid in sorted(grouped):
         cells = []
         for days, _ in _WINDOWS:
-            pct, count = _uptime(grouped[eid], store.window_start(days))
+            pct, count = analysis.uptime(grouped[eid], store.window_start(days))
             cells.append(f"{pct:.1f} % <sub>(n={count})</sub>" if pct is not None else "-")
         out.append(f"| `{eid}` | " + " | ".join(cells) + " |")
     out.append("")
@@ -191,7 +119,7 @@ def build(entries: list[dict[str, Any]]) -> str:
     out += ["## Katkestused", ""]
     rows: list[tuple[str, str, dict[str, Any]]] = []
     for eid, series in grouped.items():
-        for incident in _incidents(series):
+        for incident in analysis.incidents(series):
             rows.append((incident["start"] or "", eid, incident))
     # Sort on the key alone: two incidents can share a start, and falling
     # through to compare the dicts would raise.
@@ -204,15 +132,10 @@ def build(entries: list[dict[str, Any]]) -> str:
             "| Algus | Lõpp | Kestus | Otspunkt | Tüüp | Põhjus |",
             "|---|---|---|---|---|---|",
         ]
+        moment = datetime.now(UTC)
         for _, eid, incident in rows[:100]:
-            start = store.parse_ts(incident["start"])
-            end = store.parse_ts(incident["end"])
-            if start and end:
-                length = _duration((end - start).total_seconds())
-            elif start:
-                length = _duration((datetime.now(UTC) - start).total_seconds())
-            else:
-                length = "-"
+            seconds = analysis.duration_seconds(incident, moment)
+            length = "-" if seconds is None else _duration(seconds)
             ongoing = incident["end"] is None
             detail = (incident.get("detail") or "").replace("|", "/")[:90]
             out.append(
@@ -247,7 +170,7 @@ def build(entries: list[dict[str, Any]]) -> str:
     out += [
         "---",
         "",
-        f"Raport katab viimased {int(_REPORT_DAYS)} päeva. Vanem ajalugu jääb "
+        f"Raport katab viimased {int(analysis.WINDOW_DAYS)} päeva. Vanem ajalugu jääb "
         "kaustas `logs/` alles, aga seda ei loeta.",
         "",
         f"Ajad on {_TZ_LABEL} vööndis. Logi hoiab UTC ISO 8601 kujul kaustas `logs/`.",

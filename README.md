@@ -110,12 +110,13 @@ Seisund **TEADMATA** ei ava kunagi Issue't.
 
 | Töövoog | Millal | Mida teeb |
 |---|---|---|
-| `monitor.yml` | iga tund + käsitsi | kontrollib, logib, commitib, teavitab |
-| `discover.yml` | ainult käsitsi | avastab otspunktid kataloogist |
+| `monitor.yml` | iga 30 min + käsitsi + `config/**` muudatusel | kontrollib, logib, uuendab raporti ja lehe, teavitab |
+| `discover.yml` | ainult käsitsi | avastab teenuse otspunktid selle enda kirjeldusest |
 | `tests.yml` | iga push | testid + inventari süntaks |
 
-Tunnine sagedus on ~730 jooksu kuus, mis mahub tasuta privaatse repo limiiti.
-Avalikul repol on Actions piiramatu — seal võib sagedust tõsta.
+30-minutiline sagedus on 1 440 jooksu kuus. GitHub arvestab privaatsele repole
+miinimum ühe minuti töö kohta, seega see mahub 2 000-minutilisse tasuta
+kvooti; 15 minutit oleks 2 880 ja jääks kuu keskel seisma.
 
 ---
 
@@ -148,31 +149,103 @@ Käsitsi parandatud kirjet ei kirjutata uuel avastamisel üle.
 
 ---
 
-## Praegune piirang
+## Avalik seisundileht (GitHub Pages)
 
-**Inventar on tühi.** Selle repo autoril ei olnud ligipääsu Eesti riigi
-süsteemidele — puhverserver vastas kõigile `.ee` domeenidele `403 policy
-denial` — mistõttu ühtegi otspunkti ei ole kontrollitud ega koodi kirjutatud.
-Vale URL oleks halvem kui puuduv URL.
+Kaustas `docs/` on staatiline leht, mis näitab sama infot inimloetaval kujul:
+hetkeseis, teenuste kirjeldused, kättesaadavuse ja vastuseaja graafikud ning
+katkestuste logi. Leht on eestikeelne ja mõeldud lugejale, kes API-dega iga
+päev ei tegele.
 
-Nimekirja täitmiseks vaata:
+### Kuidas see töötab
 
-- **avaandmed.eesti.ee** — filtreeri avaldaja järgi
-- **RIHA** (riha.eesti.ee) — riigi infosüsteemide ametlik register
-- **keskkonnaportaal.ee**
-- KAUR-i INSPIRE/OGC teenuste metaandmed (WMS/WFS `GetCapabilities`)
+```
+logs/*.jsonl                 ← seire kirjutab, üks rida kontrolli kohta
+      │
+      │  monitor.py check  (või  report)
+      ▼
+docs/data/status.json        ← koondatud: hetkeseis, päevastatistika, katkestused
+      │
+      │  brauser laeb ühe faili
+      ▼
+docs/index.html + app.js     ← joonistab tahvli ja graafikud
+```
 
-Otsi otspunkte nende süsteemide juurest: KESE (keskkonnaseire), EELIS (looduse
-infosüsteem), Metsaregister, Riigi Ilmateenistus, Keskkonnaportaal.
+Kogu arvutus käib jooksu ajal Pythonis. Brauser saab ühe ~100 KB faili, mitte
+kogu logi. Leht ei pöördu ühegi välise teenuse poole — ka Chart.js on repos
+kaustas `docs/vendor/`.
 
----
+Kui logis on liiga vähe ajalugu, ei joonista leht graafikut, vaid ütleb seda
+otse. Näidisandmeid ei genereerita kunagi.
+
+### Lehe sisselülitamine
+
+GitHubis: **Settings → Pages → Source: Deploy from a branch → `main` / `/docs`**.
+
+> **NB!** See repo on privaatne. GitHub Pages privaatsele repole nõuab tasulist
+> plaani (Pro, Team või Enterprise). Tasuta plaanil tuleb repo avalikuks teha —
+> mis lahendaks ühtlasi Actionsi minutite piirangu, sest avalikel repodel on
+> Actions piiramatu. Seirelogi ise ei sisalda midagi salajast: ainult avalike
+> API-de vastuseaegu ja staatuskoode.
+
+### Teenuste kirjeldused
+
+Lehel kuvatavad kirjeldused on failis `config/systems.toml`, mitte koodis.
+Süsteemi nimi seal peab kattuma inventari `system` väljaga. Kirjelduseta
+süsteem kuvatakse ilma tekstita.
+
+## Uue API lisamine jälgimisele
+
+Kolm sammu, ainult andmefailides — koodi muuta pole vaja.
+
+**1. Lisa otspunkt** faili `config/endpoints.toml`:
+
+```toml
+[[endpoint]]
+id = "minu-teenus"                  # unikaalne lühinimi
+name = "Minu teenuse lühikirjeldus" # kuvatakse tahvlil
+system = "Kliima"                   # rühmitab lehel; vt config/systems.toml
+url = "https://..."
+expect = "json"                     # json | xml | any
+headers = { "Accept" = "application/json" }
+verified = true                     # alles siis, kui oled URL-i üle vaadanud
+```
+
+**2. Kontrolli, et fail on korrektne:**
+
+```bash
+python3 monitor.py validate
+python3 monitor.py check          # kontrollib kohe ja uuendab lehe andmed
+```
+
+**3. Commiti.** Töövoog `monitor.yml` käivitub `config/**` muudatusel kohe,
+nii et uus otspunkt saab esimese kontrolli ilma järgmist tsüklit ootamata.
+
+Kui teenus on PostgREST-i tüüpi ja avaldab OpenAPI kirjelduse, saab kõik selle
+tabelid korraga lisada — Actionsis **Discover endpoints → from_inventory** ja
+sinna olemasoleva juurotspunkti id. Nii lisandus 261 EELIS-e otspunkti.
+
+Uued avastatud kirjed on alati `verified = false`: need on lehel ja raportis
+näha, aga ei ava GitHubi Issue't, sest vale päring ei ole teenuse katkestus.
+
+### Väljad, mida tasub teada
+
+| Väli | Milleks |
+|---|---|
+| `method` + `body` | kui lugemispäring käib POST-iga (nt KAIA dokumendiotsing) |
+| `max_bytes` | piirab lugemist, kui vastus on suur |
+| `timeout_s` | vaikimisi 30 s |
+| `freshness_regex` + `max_age_s` | märgib HÄIRE-ks, kui andmed on seisma jäänud |
+| `enabled = false` | jätab otspunkti ajutiselt vahele |
+
+Kirjutavad meetodid (`PUT`, `PATCH`, `DELETE`) on keelatud — inventar keeldub
+neist juba valideerimisel.
 
 ## Käsud
 
 ```
-python3 monitor.py check              # kontrolli, logi, uuenda raport
+python3 monitor.py check              # kontrolli, logi, uuenda raport ja leht
 python3 monitor.py check --dry-run    # kontrolli, ära kirjuta midagi
-python3 monitor.py report             # koosta raport logist
+python3 monitor.py report             # koosta raport ja lehe andmed logist
 python3 monitor.py list               # näita inventari
 python3 monitor.py validate           # kontrolli inventari süntaksit
 python3 monitor.py import-urls FAIL   # impordi URL-id tekstifailist

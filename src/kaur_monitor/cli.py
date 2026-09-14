@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import urlsplit
 
-from . import discover, inventory, report, store
+from . import dashboard, discover, inventory, report, store
 from .check import STATUS_UNKNOWN, check_endpoint, looks_like_local_network_failure
 
 _MARK = {"ok": "  OK  ", "degraded": "HÄIRE ", "down": " MAAS ", "unknown": "  ??  "}
@@ -34,6 +34,7 @@ def cmd_check(args: argparse.Namespace) -> int:
         # Still refresh the report so it carries today's date and states plainly
         # that nothing is being monitored yet.
         print(f"Raport: {report.write([])}")
+        print(f"Dashboard: {dashboard.write([])}")
         return 0
 
     print(f"Kontrollin {len(entries)} otspunkti ({args.workers} lõime)...\n")
@@ -54,8 +55,10 @@ def cmd_check(args: argparse.Namespace) -> int:
 
     if not args.dry_run:
         log_path = store.append(records)
-        report_path = report.write(inventory.load_or_empty(config))
-        print(f"\nLogitud: {log_path}\nRaport:  {report_path}")
+        known = inventory.load_or_empty(config)
+        report_path = report.write(known)
+        data_path = dashboard.write(known)
+        print(f"\nLogitud:   {log_path}\nRaport:    {report_path}\nDashboard: {data_path}")
     else:
         print("\n(--dry-run: midagi ei kirjutatud)")
 
@@ -65,8 +68,10 @@ def cmd_check(args: argparse.Namespace) -> int:
 
 
 def cmd_report(args: argparse.Namespace) -> int:
-    path = report.write(inventory.load_or_empty(Path(args.config)))
-    print(f"Raport kirjutatud: {path}")
+    """Rebuild both rendered views of the log: the Markdown report and the page data."""
+    known = inventory.load_or_empty(Path(args.config))
+    print(f"Raport kirjutatud:    {report.write(known)}")
+    print(f"Dashboard kirjutatud: {dashboard.write(known)}")
     return 0
 
 
@@ -197,7 +202,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     check.set_defaults(func=cmd_check)
 
-    rep = sub.add_parser("report", help="koosta REPORT.md olemasolevast logist")
+    rep = sub.add_parser("report", help="koosta REPORT.md ja dashboardi andmed logist")
     rep.set_defaults(func=cmd_report)
 
     lst = sub.add_parser("list", help="näita inventari")

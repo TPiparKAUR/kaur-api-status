@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="et">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Keskkonnaagentuuri avalike API-de seisund</title>
+<meta name="description" content="Keskkonnaagentuuri avalike andmeteenuste kättesaadavuse ülevaade.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='6' fill='%230ca30c'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#sisu">Liigu sisu juurde</a>
+
+<header class="page-head">
+  <div class="wrap">
+    <p class="eyebrow">Keskkonnaagentuur</p>
+    <h1>Avalike API-de seisund</h1>
+    <p class="lede">
+      See leht näitab, kas Keskkonnaagentuuri avalikud andmeteenused vastavad ja
+      kui usaldusväärselt nad on viimasel ajal töötanud. Seisundit kontrollitakse
+      automaatselt iga 30 minuti järel ja tulemused salvestatakse, nii et
+      katkestused jäävad tagantjärele nähtavaks.
+    </p>
+    <p class="updated" id="updated">Laen andmeid…</p>
+  </div>
+</header>
+
+<main id="sisu" class="wrap">
+
+  <section class="panel" aria-labelledby="h-hetkeseis">
+    <h2 id="h-hetkeseis">Hetkeseis</h2>
+    <div class="tiles" id="tiles"></div>
+  </section>
+
+  <section class="panel" aria-labelledby="h-teenused">
+    <h2 id="h-teenused">Jälgitavad teenused</h2>
+    <p class="note">
+      Iga teenus koosneb mitmest otspunktist — eraldi päringust, mida
+      kontrollitakse omaette.
+    </p>
+    <div class="cards" id="systems"></div>
+  </section>
+
+  <section class="panel" aria-labelledby="h-graafikud">
+    <h2 id="h-graafikud">Ajatrendid</h2>
+
+    <figure class="chart">
+      <figcaption>
+        <h3>Kättesaadavus päevade lõikes</h3>
+        <p>Osakaal kontrollidest, mis päeva jooksul õnnestusid. Kuni 30 päeva.</p>
+      </figcaption>
+      <div class="canvas-box"><canvas id="chart-avail" aria-label="Kättesaadavuse ajajoon"></canvas></div>
+      <p class="empty" id="empty-avail" hidden></p>
+    </figure>
+
+    <figure class="chart">
+      <figcaption>
+        <h3>Vastuseaeg</h3>
+        <p>Kui kaua teenused vastamiseks aega võtsid. Mediaan on tüüpiline päring;
+           95. protsentiil näitab aeglasemat otsa.</p>
+      </figcaption>
+      <div class="canvas-box"><canvas id="chart-latency" aria-label="Vastuseaja trend"></canvas></div>
+      <p class="empty" id="empty-latency" hidden></p>
+    </figure>
+
+    <figure class="chart">
+      <figcaption>
+        <h3>Katkestuste arv otspunkti kohta</h3>
+        <p>Kümme kõige sagedamini katkenud otspunkti logitud perioodil.</p>
+      </figcaption>
+      <div class="canvas-box"><canvas id="chart-outages" aria-label="Katkestuste sagedus"></canvas></div>
+      <p class="empty" id="empty-outages" hidden></p>
+    </figure>
+  </section>
+
+  <section class="panel" aria-labelledby="h-tahvel">
+    <h2 id="h-tahvel">Otspunktide tahvel</h2>
+    <div class="toolbar">
+      <label class="toggle">
+        <input type="checkbox" id="show-all">
+        <span>Näita kõiki otspunkte</span>
+      </label>
+      <span class="note" id="table-note"></span>
+    </div>
+    <div class="table-scroll">
+      <table id="endpoints">
+        <thead>
+          <tr>
+            <th scope="col">Otspunkt</th>
+            <th scope="col">Teenus</th>
+            <th scope="col">Seisund</th>
+            <th scope="col">Vastus</th>
+            <th scope="col">24 h</th>
+            <th scope="col">7 päeva</th>
+            <th scope="col">Viimane kontroll</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="panel" aria-labelledby="h-katkestused">
+    <h2 id="h-katkestused">Katkestuste logi</h2>
+    <p class="note">Millal, milline otspunkt ja kui kaua. Uuemad eespool.</p>
+    <div class="table-scroll">
+      <table id="incidents">
+        <thead>
+          <tr>
+            <th scope="col">Algus</th>
+            <th scope="col">Lõpp</th>
+            <th scope="col">Kestus</th>
+            <th scope="col">Otspunkt</th>
+            <th scope="col">Põhjus</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <p class="empty" id="empty-incidents" hidden></p>
+  </section>
+
+  <section class="panel" aria-labelledby="h-metoodika">
+    <h2 id="h-metoodika">Kuidas seda mõõdetakse</h2>
+    <dl class="method">
+      <dt>Kontroll õnnestus</dt>
+      <dd>Teenus vastas koodiga 2xx, vastus oli loetav ja see ei olnud veateade.</dd>
+
+      <dt>Kontroll ebaõnnestus</dt>
+      <dd>Vastus ei tulnud 30 sekundi jooksul, staatuskood ei olnud 2xx, vastus ei
+          olnud loetav, või teenus vastas veateatega. Ebaõnnestumine läheb
+          kättesaadavuse arvestusse.</dd>
+
+      <dt>Teadmata</dt>
+      <dd>Kontrollija enda võrguühendus ei töötanud. Need kirjed jäetakse
+          kättesaadavuse arvestusest välja, sest need ei ütle teenuse kohta midagi.</dd>
+
+      <dt>Kättesaadavus</dt>
+      <dd>Õnnestunud kontrollide osakaal kõigist kontrollidest valitud ajavahemikus.</dd>
+    </dl>
+    <p class="note" id="provenance"></p>
+  </section>
+</main>
+
+<footer class="page-foot">
+  <div class="wrap">
+    <p>Andmed pärinevad automaatsest seirest. Leht on staatiline ja uueneb iga
+       kontrollitsükli järel.</p>
+  </div>
+</footer>
+
+<!-- Chart.js is vendored rather than loaded from a CDN: this page is read from
+     inside a government network where an outbound CDN request is one more thing
+     that can be blocked, and a status page that cannot draw its own charts is a
+     poor advertisement for availability monitoring. Licence in vendor/. -->
+<script src="vendor/chart.umd.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

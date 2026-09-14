@@ -13,7 +13,7 @@ from typing import ClassVar
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
-from kaur_monitor import check, discover, inventory, report, store
+from kaur_monitor import analysis, check, dashboard, discover, inventory, report, store
 
 
 def _record(endpoint_id: str, status: str, minutes_ago: int, stage: str = "http") -> dict:
@@ -104,7 +104,7 @@ class Incidents(unittest.TestCase):
             _record("a", "down", 30),
             _record("a", "ok", 20),
         ]
-        incidents = report._incidents(series)
+        incidents = analysis.incidents(series)
         self.assertEqual(len(incidents), 1)
         self.assertIsNotNone(incidents[0]["end"])
         self.assertEqual(incidents[0]["worst"], "down")
@@ -112,26 +112,26 @@ class Incidents(unittest.TestCase):
 
     def test_ongoing_incident_has_no_end(self):
         series = [_record("a", "ok", 30), _record("a", "down", 10)]
-        self.assertIsNone(report._incidents(series)[0]["end"])
+        self.assertIsNone(analysis.incidents(series)[0]["end"])
 
     def test_unknown_does_not_start_or_end_an_incident(self):
         series = [_record("a", "ok", 40), _record("a", "unknown", 30), _record("a", "ok", 20)]
-        self.assertEqual(report._incidents(series), [])
+        self.assertEqual(analysis.incidents(series), [])
 
     def test_down_outranks_degraded_as_worst(self):
         series = [_record("a", "degraded", 30), _record("a", "down", 20)]
-        self.assertEqual(report._incidents(series)[0]["worst"], "down")
+        self.assertEqual(analysis.incidents(series)[0]["worst"], "down")
 
 
 class Uptime(unittest.TestCase):
     def test_unknown_is_excluded_from_the_denominator(self):
         series = [_record("a", "ok", 30), _record("a", "unknown", 20), _record("a", "down", 10)]
-        pct, count = report._uptime(series, store.window_start(1))
+        pct, count = analysis.uptime(series, store.window_start(1))
         self.assertEqual(count, 2)
         self.assertAlmostEqual(pct, 50.0)
 
     def test_no_usable_records_yields_none(self):
-        pct, count = report._uptime([_record("a", "unknown", 5)], store.window_start(1))
+        pct, count = analysis.uptime([_record("a", "unknown", 5)], store.window_start(1))
         self.assertIsNone(pct)
         self.assertEqual(count, 0)
 
@@ -726,17 +726,137 @@ class LogWindowing(unittest.TestCase):
         self.assertIn("31 päeva jooksul", text)
 
 
+class DashboardData(unittest.TestCase):
+    """The page draws exactly this file, so an error here is an error in public."""
+
+    def setUp(self):
+        self._log = store.LOG_DIR
+        store.LOG_DIR = Path(tempfile.mkdtemp())
+
+    def tearDown(self):
+        store.LOG_DIR = self._log
+
+    def _write(self, records: list[dict]) -> None:
+        (store.LOG_DIR / f"{datetime.now(UTC):%Y-%m}.jsonl").write_text(
+            "\n".join(json.dumps(r) for r in records) + "\n", encoding="utf-8"
+        )
+
+    @staticmethod
+    def _entry(eid: str, system: str = "Kliima") -> dict:
+        return {"id": eid, "name": eid.upper(), "url": "https://e.org/x", "system": system}
+
+    def test_an_endpoint_with_no_checks_reads_as_unchecked_not_broken(self):
+        data = dashboard.build([self._entry("a")])
+        self.assertEqual(data["endpoints"][0]["status"], "unchecked")
+        self.assertIsNone(data["endpoints"][0]["avail_24h"])
+        self.assertEqual(data["totals"]["unchecked"], 1)
+
+    def test_no_log_produces_empty_series_rather_than_invented_ones(self):
+        data = dashboard.build([self._entry("a")])
+        self.assertEqual(data["daily"], [])
+        self.assertEqual(data["incidents"], [])
+        self.assertEqual(data["outages_by_endpoint"], [])
+        self.assertIsNone(data["first_record"])
+        self.assertIsNone(data["availability"]["h24"])
+
+    def test_availability_counts_only_real_outcomes(self):
+        self._write(
+            [
+                dict(_record("a", "ok", 10), ms=100),
+                dict(_record("a", "down", 20), ms=None),
+                _record("a", "unknown", 30),
+            ]
+        )
+        data = dashboard.build([self._entry("a")])
+        self.assertAlmostEqual(data["endpoints"][0]["avail_24h"], 50.0)
+        self.assertEqual(data["endpoints"][0]["checks_24h"], 2)
+
+    def test_daily_rows_skip_unknown_and_carry_latency_percentiles(self):
+        self._write(
+            [dict(_record("a", "ok", 5 + i), ms=100 * (i + 1)) for i in range(10)]
+            + [_record("a", "unknown", 6)]
+        )
+        data = dashboard.build([self._entry("a")])
+        self.assertEqual(len(data["daily"]), 1)
+        row = data["daily"][0]
+        self.assertEqual(row["checks"], 10)
+        self.assertEqual(row["avail_pct"], 100.0)
+        self.assertIsNotNone(row["p50_ms"])
+        self.assertGreaterEqual(row["p95_ms"], row["p50_ms"])
+
+    def test_a_day_without_checks_is_absent_rather_than_zero(self):
+        """A zero-availability row would read as a total outage that never happened."""
+        self._write([dict(_record("a", "ok", 5), ms=100)])
+        dates = [r["date"] for r in dashboard.build([self._entry("a")])["daily"]]
+        self.assertEqual(len(dates), 1)
+
+    def test_systems_are_grouped_and_described(self):
+        self._write([dict(_record("a", "ok", 5), ms=100), dict(_record("b", "down", 5), ms=None)])
+        data = dashboard.build([self._entry("a", "Kliima"), self._entry("b", "EELIS")])
+        systems = {s["name"]: s for s in data["systems"]}
+        self.assertEqual(systems["Kliima"]["ok"], 1)
+        self.assertEqual(systems["EELIS"]["problem"], 1)
+        self.assertTrue(
+            systems["EELIS"]["description"], "config/systems.toml should describe EELIS"
+        )
+
+    def test_outages_are_listed_and_counted_per_endpoint(self):
+        self._write(
+            [
+                _record("a", "ok", 60),
+                _record("a", "down", 50),
+                _record("a", "ok", 40),
+                _record("a", "down", 30),
+                _record("a", "ok", 20),
+            ]
+        )
+        data = dashboard.build([self._entry("a")])
+        self.assertEqual(len(data["incidents"]), 2)
+        self.assertEqual(data["outages_by_endpoint"][0]["count"], 2)
+        self.assertTrue(all(i["duration_s"] is not None for i in data["incidents"]))
+
+    def test_written_file_is_valid_json_and_utf8(self):
+        self._write([dict(_record("a", "ok", 5), ms=100)])
+        target = Path(tempfile.mkdtemp()) / "status.json"
+        dashboard.write([self._entry("a", "Hüdroloogia")], target)
+        parsed = json.loads(target.read_text(encoding="utf-8"))
+        self.assertEqual(parsed["endpoints"][0]["id"], "a")
+        self.assertIn("Hüdroloogia", target.read_text(encoding="utf-8"))
+
+    def test_percentiles_of_one_value(self):
+        self.assertEqual(dashboard._percentile([7], 0.95), 7)
+        self.assertIsNone(dashboard._percentile([], 0.5))
+
+
+class IncidentDuration(unittest.TestCase):
+    def test_closed_incident_measures_start_to_end(self):
+        incident = {"start": "2026-09-01T00:00:00Z", "end": "2026-09-01T01:00:00Z"}
+        self.assertEqual(analysis.duration_seconds(incident, datetime.now(UTC)), 3600)
+
+    def test_open_incident_measures_to_now(self):
+        start = datetime.now(UTC) - timedelta(minutes=30)
+        incident = {"start": start.strftime("%Y-%m-%dT%H:%M:%SZ"), "end": None}
+        seconds = analysis.duration_seconds(incident, datetime.now(UTC))
+        self.assertGreater(seconds, 1700)
+        self.assertLess(seconds, 1900)
+
+    def test_unparseable_start_yields_no_duration(self):
+        self.assertIsNone(
+            analysis.duration_seconds({"start": "eile", "end": None}, datetime.now(UTC))
+        )
+
+
 class NaiveTimestamps(unittest.TestCase):
     def test_parse_ts_always_returns_aware(self):
         self.assertIsNotNone(store.parse_ts("2026-09-14T10:00:00").tzinfo)
 
     def test_naive_log_entry_does_not_break_uptime(self):
         series = [{"ts": "2026-09-14T10:00:00", "id": "a", "status": "ok"}]
-        report._uptime(series, store.window_start(365000))
+        analysis.uptime(series, store.window_start(365000))
 
     def test_unparseable_ts_is_excluded_from_the_window(self):
         series = [_record("a", "ok", 5), {"ts": "eile", "id": "a", "status": "down"}]
-        pct, count = report._uptime(series, store.window_start(1))
+        pct, count = analysis.uptime(series, store.window_start(1))
         self.assertEqual(count, 1)
         self.assertAlmostEqual(pct, 100.0)
 
@@ -807,7 +927,7 @@ class ReportRendering(unittest.TestCase):
 
     def test_incidents_sharing_a_start_do_not_crash_the_sort(self):
         series = [_record("a", "down", 10), _record("a", "down", 10)]
-        self.assertEqual(len(report._incidents(series)), 1)
+        self.assertEqual(len(analysis.incidents(series)), 1)
 
 
 if __name__ == "__main__":
