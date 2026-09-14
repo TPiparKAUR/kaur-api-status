@@ -18,7 +18,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 USER_AGENT = "KAUR-API-monitor/1.0 (availability monitoring; Keskkonnaagentuur)"
@@ -58,12 +58,12 @@ def _parse_timestamp(raw: str) -> datetime | None:
         value = int(raw)
         if value > 10_000_000_000:
             value //= 1000
-        return datetime.fromtimestamp(value, tz=timezone.utc)
+        return datetime.fromtimestamp(value, tz=UTC)
     try:
         parsed = datetime.fromisoformat(raw.replace("Z", "+00:00"))
     except ValueError:
         return None
-    return parsed if parsed.tzinfo else parsed.replace(tzinfo=timezone.utc)
+    return parsed if parsed.tzinfo else parsed.replace(tzinfo=UTC)
 
 
 def _tls_expiry_days(host: str, port: int, timeout: float) -> int | None:
@@ -78,15 +78,20 @@ def _tls_expiry_days(host: str, port: int, timeout: float) -> int | None:
     if not cert or "notAfter" not in cert:
         return None
     try:
-        expires = datetime.strptime(cert["notAfter"], "%b %d %H:%M:%S %Y %Z")
+        expires = datetime.strptime(str(cert["notAfter"]), "%b %d %H:%M:%S %Y %Z")
     except ValueError:
         return None
-    return (expires.replace(tzinfo=timezone.utc) - datetime.now(timezone.utc)).days
+    return (expires.replace(tzinfo=UTC) - datetime.now(UTC)).days
 
 
-def _find_service_exception(body: bytes, kind: str) -> str | None:
-    """Return the exception text if the payload is an OGC/OWS exception report."""
-    if kind != "xml":
+def _find_service_exception(body: bytes) -> str | None:
+    """Return the exception text if the payload is an OGC/OWS exception report.
+
+    The body is sniffed rather than trusted to match a declared ``expect``:
+    the default is "any", and a service answering 200 with an exception report
+    would otherwise pass as healthy.
+    """
+    if not body[:200].lstrip().startswith(b"<"):
         return None
     try:
         root = ET.fromstring(body)
@@ -102,17 +107,39 @@ def _find_service_exception(body: bytes, kind: str) -> str | None:
 def check_endpoint(endpoint: dict[str, Any]) -> dict[str, Any]:
     """Run one endpoint through every configured stage.
 
-    Returns a flat record suitable for one JSONL line. Never raises: any
-    unexpected failure is reported as a ``down`` result with a detail message,
-    so a single bad endpoint can never abort a monitoring run.
+    Returns a flat record suitable for one JSONL line, and never raises. The
+    guarantee is enforced here rather than trusted to the body below, because
+    the caller maps this over every endpoint: one escaping exception would lose
+    the whole run's log, report and notifications, not just this endpoint.
+    Malformed config reaches us as ordinary data (a bad regex, a non-numeric
+    timeout), so it must degrade to a result, not a crash.
     """
+    try:
+        return _check_endpoint(endpoint)
+    except Exception as exc:
+        return {
+            "ts": datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "id": str(endpoint.get("id", "?")),
+            "status": STATUS_DOWN,
+            "stage": "config",
+            "http": None,
+            "ms": None,
+            "bytes": None,
+            "sha256": None,
+            "cert_days": None,
+            "age_s": None,
+            "detail": f"check aborted: {type(exc).__name__}: {exc}"[:300],
+        }
+
+
+def _check_endpoint(endpoint: dict[str, Any]) -> dict[str, Any]:
     url = endpoint["url"]
     timeout = float(endpoint.get("timeout_s", _DEFAULT_TIMEOUT_S))
     max_bytes = int(endpoint.get("max_bytes", _DEFAULT_MAX_BYTES))
     expect = str(endpoint.get("expect", "any")).lower()
 
     record: dict[str, Any] = {
-        "ts": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "ts": datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "id": endpoint["id"],
         "status": STATUS_DOWN,
         "stage": "dns",
@@ -145,9 +172,10 @@ def check_endpoint(endpoint: dict[str, Any]) -> dict[str, Any]:
     if parts.scheme == "https":
         record["cert_days"] = _tls_expiry_days(host, port, timeout)
 
+    method = str(endpoint.get("method", "GET")).upper()
     request = urllib.request.Request(
         url,
-        method=str(endpoint.get("method", "GET")).upper(),
+        method=method,
         headers={"User-Agent": USER_AGENT, "Accept": "*/*"},
     )
 
@@ -169,7 +197,7 @@ def check_endpoint(endpoint: dict[str, Any]) -> dict[str, Any]:
         record["ms"] = int((time.monotonic() - started) * 1000)
         record["detail"] = f"http {exc.code} {exc.reason}"
         return record
-    except (urllib.error.URLError, TimeoutError, ssl.SSLError, socket.timeout) as exc:
+    except (urllib.error.URLError, TimeoutError, ssl.SSLError) as exc:
         reason = getattr(exc, "reason", exc)
         record["detail"] = f"connection failed: {reason}"
         record["ms"] = int((time.monotonic() - started) * 1000)
@@ -184,8 +212,9 @@ def check_endpoint(endpoint: dict[str, Any]) -> dict[str, Any]:
     record["sha256"] = hashlib.sha256(body).hexdigest()[:16]
 
     if not body:
-        record["status"] = STATUS_DEGRADED
-        record["detail"] = "empty response body"
+        # A HEAD request is supposed to come back empty.
+        record["status"] = STATUS_OK if method == "HEAD" else STATUS_DEGRADED
+        record["detail"] = "" if method == "HEAD" else "empty response body"
         return record
 
     record["stage"] = "content_type"
@@ -196,8 +225,18 @@ def check_endpoint(endpoint: dict[str, Any]) -> dict[str, Any]:
 
     record["stage"] = "parse"
     if truncated:
-        record["status"] = STATUS_OK
-        record["detail"] = f"body truncated at {max_bytes} bytes, parse skipped"
+        # An exception report is never megabytes long, so skipping that stage is
+        # safe. Skipping freshness is not: the endpoint asked to be checked for
+        # staleness and silently reporting ok would hide a frozen feed.
+        if endpoint.get("freshness_regex"):
+            record["status"] = STATUS_DEGRADED
+            record["detail"] = (
+                f"body truncated at {max_bytes} bytes, freshness could not be checked "
+                f"— raise max_bytes for this endpoint"
+            )
+        else:
+            record["status"] = STATUS_OK
+            record["detail"] = f"body truncated at {max_bytes} bytes, parse skipped"
         return record
 
     if expect == "json":
@@ -216,7 +255,7 @@ def check_endpoint(endpoint: dict[str, Any]) -> dict[str, Any]:
             return record
 
     record["stage"] = "service_exception"
-    exception_text = _find_service_exception(body, expect)
+    exception_text = _find_service_exception(body)
     if exception_text:
         record["status"] = STATUS_DOWN
         record["detail"] = f"OGC service exception: {exception_text}"
@@ -226,13 +265,18 @@ def check_endpoint(endpoint: dict[str, Any]) -> dict[str, Any]:
     pattern = endpoint.get("freshness_regex")
     if pattern:
         text = body.decode("utf-8", errors="replace")
-        stamps = [_parse_timestamp(m) for m in re.findall(pattern, text)]
-        found = [s for s in stamps if s is not None]
+        # re.findall returns tuples once a pattern has two or more groups and
+        # bare strings otherwise, so match objects are used instead.
+        raw_stamps = [
+            match.group(1) if match.groups() else match.group(0)
+            for match in re.finditer(pattern, text)
+        ]
+        found = [s for s in (_parse_timestamp(r) for r in raw_stamps) if s is not None]
         if not found:
             record["status"] = STATUS_DEGRADED
             record["detail"] = "freshness_regex matched no parseable timestamp"
             return record
-        age = (datetime.now(timezone.utc) - max(found)).total_seconds()
+        age = (datetime.now(UTC) - max(found)).total_seconds()
         record["age_s"] = int(age)
         max_age = endpoint.get("max_age_s")
         if max_age is not None and age > float(max_age):

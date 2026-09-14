@@ -23,10 +23,17 @@ def _print_results(records: list[dict[str, Any]]) -> None:
 
 
 def cmd_check(args: argparse.Namespace) -> int:
-    entries = inventory.enabled_only(inventory.load(Path(args.config)))
+    config = Path(args.config)
+    entries = inventory.enabled_only(inventory.load_or_empty(config))
     if not entries:
-        print("Inventar on tühi — lisa otspunkte käsuga 'import-urls' või 'discover'.")
-        return 2
+        print(
+            f"Inventar on tühi ({config}) — kontrollida pole midagi.\n"
+            f"Lisa otspunkte: python monitor.py import-urls urls.txt"
+        )
+        # Still refresh the report so it carries today's date and states plainly
+        # that nothing is being monitored yet.
+        print(f"Raport: {report.write([])}")
+        return 0
 
     print(f"Kontrollin {len(entries)} otspunkti ({args.workers} lõime)...\n")
     with ThreadPoolExecutor(max_workers=args.workers) as pool:
@@ -45,7 +52,7 @@ def cmd_check(args: argparse.Namespace) -> int:
 
     if not args.dry_run:
         log_path = store.append(records)
-        report_path = report.write(inventory.load(Path(args.config)))
+        report_path = report.write(inventory.load_or_empty(config))
         print(f"\nLogitud: {log_path}\nRaport:  {report_path}")
     else:
         print("\n(--dry-run: midagi ei kirjutatud)")
@@ -56,7 +63,7 @@ def cmd_check(args: argparse.Namespace) -> int:
 
 
 def cmd_report(args: argparse.Namespace) -> int:
-    path = report.write(inventory.load(Path(args.config)))
+    path = report.write(inventory.load_or_empty(Path(args.config)))
     print(f"Raport kirjutatud: {path}")
     return 0
 

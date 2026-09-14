@@ -11,9 +11,10 @@ about 35 MB per year, which git handles comfortably.
 from __future__ import annotations
 
 import json
-from datetime import datetime, timedelta, timezone
+from collections.abc import Iterator
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
-from typing import Any, Iterator
+from typing import Any
 
 LOG_DIR = Path("logs")
 
@@ -24,7 +25,7 @@ def _month_path(when: datetime) -> Path:
 
 def append(records: list[dict[str, Any]]) -> Path:
     LOG_DIR.mkdir(parents=True, exist_ok=True)
-    path = _month_path(datetime.now(timezone.utc))
+    path = _month_path(datetime.now(UTC))
     with path.open("a", encoding="utf-8") as handle:
         for record in records:
             handle.write(json.dumps(record, ensure_ascii=False, sort_keys=True) + "\n")
@@ -52,13 +53,21 @@ def read_all(since: datetime | None = None) -> Iterator[dict[str, Any]]:
 
 
 def parse_ts(raw: str | None) -> datetime | None:
+    """Parse a log timestamp, always timezone-aware.
+
+    A naive value can reach the log through a hand edit, a union-merge artefact
+    or a foreign writer. Returning it naive would make every later comparison
+    against an aware 'now' raise TypeError and take down report generation and
+    notifications, so naive input is read as UTC, which is what the log stores.
+    """
     if not raw:
         return None
     try:
-        return datetime.fromisoformat(raw.replace("Z", "+00:00"))
-    except ValueError:
+        stamp = datetime.fromisoformat(raw.replace("Z", "+00:00"))
+    except (ValueError, AttributeError):
         return None
+    return stamp if stamp.tzinfo else stamp.replace(tzinfo=UTC)
 
 
 def window_start(days: float) -> datetime:
-    return datetime.now(timezone.utc) - timedelta(days=days)
+    return datetime.now(UTC) - timedelta(days=days)

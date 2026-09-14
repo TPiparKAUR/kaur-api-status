@@ -7,7 +7,7 @@ machines.
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime, timezone
 from pathlib import Path
 from typing import Any
 from urllib.parse import urlsplit
@@ -20,7 +20,7 @@ try:
     _TALLINN: ZoneInfo | timezone = ZoneInfo("Europe/Tallinn")
     _TZ_LABEL = "EET/EEST"
 except Exception:  # tz database unavailable
-    _TALLINN = timezone.utc
+    _TALLINN = UTC
     _TZ_LABEL = "UTC"
 
 REPORT_PATH = Path("REPORT.md")
@@ -46,7 +46,7 @@ def _duration(seconds: float) -> str:
     seconds = int(seconds)
     if seconds < 60:
         return f"{seconds} s"
-    minutes, secs = divmod(seconds, 60)
+    minutes, _ = divmod(seconds, 60)
     if minutes < 60:
         return f"{minutes} min"
     hours, mins = divmod(minutes, 60)
@@ -104,11 +104,17 @@ def _incidents(series: list[dict[str, Any]]) -> list[dict[str, Any]]:
 
 
 def _uptime(series: list[dict[str, Any]], since: datetime) -> tuple[float | None, int]:
-    considered = [
-        r
-        for r in series
-        if r.get("status") != "unknown" and (store.parse_ts(r.get("ts")) or since) >= since
-    ]
+    # A record whose timestamp will not parse is dropped rather than counted:
+    # treating it as in-window would let stale entries inflate the 24 h figure,
+    # and store.read_all already drops them, so the two paths must agree.
+    considered = []
+    for record in series:
+        if record.get("status") == "unknown":
+            continue
+        stamp = store.parse_ts(record.get("ts"))
+        if stamp is None or stamp < since:
+            continue
+        considered.append(record)
     if not considered:
         return None, 0
     ok = sum(1 for r in considered if r.get("status") == "ok")
@@ -119,7 +125,7 @@ def build(entries: list[dict[str, Any]]) -> str:
     records = list(store.read_all())
     grouped = _by_endpoint(records)
     by_id = {e["id"]: e for e in entries}
-    now = datetime.now(timezone.utc).astimezone(_TALLINN)
+    now = datetime.now(UTC).astimezone(_TALLINN)
 
     out: list[str] = [
         "# Keskkonnaagentuuri API-de seisundiraport",
@@ -158,8 +164,9 @@ def build(entries: list[dict[str, Any]]) -> str:
         response = f"{http} · {ms} ms" if http else (f"{ms} ms" if ms else "-")
         age = f"{_duration(record['age_s'])}" if record.get("age_s") is not None else "-"
         detail = (record.get("detail") or "").replace("|", "/")[:80]
+        label = _LABEL.get(str(record.get("status")), "?")
         out.append(
-            f"| `{eid}`<br><sub>{name}</sub> | **{_LABEL.get(record.get('status'), '?')}** "
+            f"| `{eid}`<br><sub>{name}</sub> | **{label}** "
             f"| {response} | {age} | {_local(record.get('ts'))} | {detail} |"
         )
     out.append("")
@@ -179,7 +186,9 @@ def build(entries: list[dict[str, Any]]) -> str:
     for eid, series in grouped.items():
         for incident in _incidents(series):
             rows.append((incident["start"] or "", eid, incident))
-    rows.sort(reverse=True)
+    # Sort on the key alone: two incidents can share a start, and falling
+    # through to compare the dicts would raise.
+    rows.sort(key=lambda row: (row[0], row[1]), reverse=True)
 
     if not rows:
         out += ["Logitud perioodil katkestusi ei ole.", ""]
@@ -194,7 +203,7 @@ def build(entries: list[dict[str, Any]]) -> str:
             if start and end:
                 length = _duration((end - start).total_seconds())
             elif start:
-                length = _duration((datetime.now(timezone.utc) - start).total_seconds())
+                length = _duration((datetime.now(UTC) - start).total_seconds())
             else:
                 length = "-"
             ongoing = incident["end"] is None
@@ -211,10 +220,11 @@ def build(entries: list[dict[str, Any]]) -> str:
     warnings: list[str] = []
     expiring: dict[str, int] = {}
     for eid, record in latest.items():
-        days = record.get("cert_days")
-        if days is None or days >= 30:
+        raw_days = record.get("cert_days")
+        if raw_days is None or int(raw_days) >= 30:
             continue
-        host = urlsplit(by_id.get(eid, {}).get("url", "")).hostname or eid
+        days = int(raw_days)
+        host = urlsplit(str(by_id.get(eid, {}).get("url", ""))).hostname or eid
         expiring[host] = min(expiring.get(host, days), days)
     for host, days in sorted(expiring.items()):
         warnings.append(f"- `{host}`: TLS-sertifikaat aegub **{days} päeva** pärast")

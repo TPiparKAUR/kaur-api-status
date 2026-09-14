@@ -13,18 +13,19 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import sys
-import urllib.error
 import urllib.request
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
-from kaur_monitor import inventory, store  # noqa: E402
+from kaur_monitor import inventory, store
 
 API = "https://api.github.com"
 LABEL = "api-incident"
 MARKER = "<!-- kaur-monitor:{id} -->"
+MARKER_PATTERN = re.compile(r"<!-- kaur-monitor:([^\s>]+) -->")
 
 
 def _request(method: str, path: str, token: str, payload: dict | None = None) -> object:
@@ -44,6 +45,28 @@ def _request(method: str, path: str, token: str, payload: dict | None = None) ->
     with urllib.request.urlopen(request, timeout=30) as response:
         body = response.read()
     return json.loads(body) if body else {}
+
+
+def _all_open_issues(repo: str, token: str, max_pages: int = 20) -> list[dict]:
+    """Every open incident issue, following pagination.
+
+    Without this, a repository with more than one page of open incident issues
+    would look as though the later ones did not exist and duplicates would be
+    opened on every run.
+    """
+    issues: list[dict] = []
+    for page in range(1, max_pages + 1):
+        batch = _request(
+            "GET",
+            f"/repos/{repo}/issues?state=open&labels={LABEL}&per_page=100&page={page}",
+            token,
+        )
+        if not isinstance(batch, list) or not batch:
+            break
+        issues.extend(batch)
+        if len(batch) < 100:
+            break
+    return issues
 
 
 def _latest_by_endpoint() -> dict[str, dict]:
@@ -77,19 +100,19 @@ def main() -> int:
         return 0
 
     try:
-        open_issues = _request(
-            "GET", f"/repos/{repo}/issues?state=open&labels={LABEL}&per_page=100", token
-        )
-    except (urllib.error.URLError, ValueError) as exc:
+        open_issues = _all_open_issues(repo, token)
+    except Exception as exc:
         print(f"Ei saanud Issue'sid lugeda: {exc}")
         return 0
 
+    # Keyed by the marker embedded in the issue body, not by the endpoints seen
+    # recently: an endpoint that was disabled or stopped being checked must
+    # still have its open issue found, or it stays open forever.
     by_endpoint: dict[str, int] = {}
-    for issue in open_issues if isinstance(open_issues, list) else []:
-        body = issue.get("body") or ""
-        for endpoint_id in latest:
-            if MARKER.format(id=endpoint_id) in body:
-                by_endpoint[endpoint_id] = issue["number"]
+    for issue in open_issues:
+        found = MARKER_PATTERN.search(issue.get("body") or "")
+        if found:
+            by_endpoint[found.group(1)] = issue["number"]
 
     opened = closed = 0
     for endpoint_id, record in sorted(latest.items()):
@@ -127,7 +150,12 @@ def main() -> int:
                     "POST",
                     f"/repos/{repo}/issues/{existing}/comments",
                     token,
-                    {"body": f"Teenus taastus {record.get('ts')} (UTC). Vastas {record.get('ms')} ms."},
+                    {
+                        "body": (
+                            f"Teenus taastus {record.get('ts')} (UTC). "
+                            f"Vastas {record.get('ms')} ms."
+                        )
+                    },
                 )
                 _request(
                     "PATCH",
@@ -136,7 +164,10 @@ def main() -> int:
                     {"state": "closed", "state_reason": "completed"},
                 )
                 closed += 1
-        except (urllib.error.URLError, ValueError) as exc:
+        # Deliberately broad: a read timeout raises TimeoutError, not URLError,
+        # and one slow GitHub call must not stop the remaining endpoints from
+        # being notified.
+        except Exception as exc:
             print(f"Issue'de uuendamine ebaõnnestus ({endpoint_id}): {exc}")
 
     print(f"Teavitused: {opened} avatud, {closed} suletud.")

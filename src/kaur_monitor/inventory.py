@@ -8,6 +8,7 @@ person has confirmed the URL is the one the service actually publishes.
 
 from __future__ import annotations
 
+import re
 import tomllib
 from pathlib import Path
 from typing import Any
@@ -73,10 +74,31 @@ def load(path: Path = CONFIG_PATH) -> list[dict[str, Any]]:
             raise InventoryError(f"{where}: expect must be one of {sorted(_VALID_EXPECT)}")
         if not str(entry["url"]).startswith(("http://", "https://")):
             raise InventoryError(f"{where}: url must be http(s)")
+        # Caught here so a typo fails one clear validation instead of surfacing
+        # as a mystery aborted check on every run.
+        for key in ("timeout_s", "max_bytes", "max_age_s"):
+            if key in entry and not isinstance(entry[key], (int, float)):
+                raise InventoryError(f"{where}: {key} must be a number, got {entry[key]!r}")
+        if "freshness_regex" in entry:
+            try:
+                re.compile(str(entry["freshness_regex"]))
+            except re.error as exc:
+                raise InventoryError(f"{where}: freshness_regex does not compile: {exc}") from exc
         seen.add(entry["id"])
         validated.append(entry)
 
     return validated
+
+
+def load_or_empty(path: Path = CONFIG_PATH) -> list[dict[str, Any]]:
+    """Load the inventory, treating a missing file as empty rather than an error.
+
+    Used by the scheduled check: having nothing to monitor yet is a normal
+    starting state, and failing the job hourly until someone populates the file
+    would train everyone to ignore the alerts. A file that exists but is
+    malformed still raises, because that is a real mistake.
+    """
+    return load(path) if path.exists() else []
 
 
 def enabled_only(entries: list[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -101,7 +123,7 @@ def save(entries: list[dict[str, Any]], path: Path = CONFIG_PATH) -> None:
         "# entries are checked but flagged separately in the report.",
         "#",
         "# Regenerate discovered entries with: python monitor.py discover",
-        "# Hand-written entries (source = \"manual\") are never overwritten.",
+        '# Hand-written entries (source = "manual") are never overwritten.',
         "",
     ]
     for entry in sorted(entries, key=lambda e: e["id"]):

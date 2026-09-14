@@ -61,6 +61,13 @@ grows without bound. Roughly 35 MB a year at twenty endpoints checked hourly.
 **Merge never overwrites.** A human correcting a discovered URL keeps that
 correction on the next discovery run.
 
+**`check` exits 0 on a missing inventory.** Nothing to monitor is a normal
+starting state; failing the hourly job until someone populates the file would
+train everyone to ignore its alerts. A file that exists but is malformed still
+exits non-zero. `check_endpoint` likewise never raises — it is mapped over
+every endpoint, so one escaping exception would lose the whole run's log,
+report and notifications rather than just that endpoint.
+
 **Report in Estonian local time, log in UTC.** Data and code are UTC ISO 8601;
 `REPORT.md` renders EET/EEST and labels it.
 

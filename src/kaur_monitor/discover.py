@@ -106,8 +106,12 @@ def from_ckan(
             declared = str(resource.get("format") or "")
             found.append(
                 {
-                    "id": slug(dataset.get("name") or dataset_name, resource.get("name") or declared),
-                    "name": f"{dataset_name} — {resource.get('name') or declared or 'ressurss'}"[:160],
+                    "id": slug(
+                        dataset.get("name") or dataset_name, resource.get("name") or declared
+                    ),
+                    "name": f"{dataset_name} — {resource.get('name') or declared or 'ressurss'}"[
+                        :160
+                    ],
                     "system": str(
                         (dataset.get("organization") or {}).get("title")
                         or dataset.get("organization")
