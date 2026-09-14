@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import sys
 import tempfile
 import threading
@@ -451,6 +452,102 @@ class LocalServer(unittest.TestCase):
         self.bodies["/ua"] = (200, "application/json", b"[]")
         check.check_endpoint({"id": "ua", "url": f"{self.base}/ua"})
         self.assertIn("KAUR-API-monitor", self.last_headers.get("User-Agent", ""))
+
+
+class OpenApiDiscovery(unittest.TestCase):
+    """PostgREST documents its own tables; discovery must read them, not guess."""
+
+    spec: ClassVar[bytes] = json.dumps(
+        {
+            "swagger": "2.0",
+            "paths": {
+                "/": {"get": {}},
+                "/f_rahvalad": {"get": {"summary": "Rahvusvahelised alad"}},
+                "/f_rahvalad_dok": {"get": {}},
+                "/f_kliima_paev": {"get": {}},
+                "/f_hydroseire": {"get": {}},
+                "/rpc/some_function": {"post": {}},
+                "/other_table": {"get": {}},
+            },
+        }
+    ).encode()
+
+    @classmethod
+    def setUpClass(cls):
+        from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+
+        outer = cls
+
+        class Handler(BaseHTTPRequestHandler):
+            def do_GET(self):
+                outer.last_headers = dict(self.headers.items())
+                # Anything but the root is a document with no "paths" key at
+                # all, which is a different failure from one with no matches.
+                body = outer.spec if self.path == "/" else b'{"swagger":"2.0"}'
+                self.send_response(200)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Content-Length", str(len(body)))
+                self.end_headers()
+                self.wfile.write(body)
+
+            def log_message(self, *args):
+                pass
+
+        cls.server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+        cls.base = f"http://127.0.0.1:{cls.server.server_port}"
+        cls.thread = threading.Thread(target=cls.server.serve_forever, daemon=True)
+        cls.thread.start()
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.server.shutdown()
+        cls.server.server_close()
+
+    last_headers: ClassVar[dict[str, str]] = {}
+
+    def test_finds_prefixed_tables_only(self):
+        ids = [e["id"] for e in discover.from_openapi(self.base)]
+        self.assertEqual(ids, ["f-hydroseire", "f-kliima-paev", "f-rahvalad", "f-rahvalad-dok"])
+
+    def test_skips_the_root_and_stored_procedures(self):
+        urls = [e["url"] for e in discover.from_openapi(self.base)]
+        self.assertFalse(any("rpc/" in u for u in urls))
+        self.assertTrue(all(u != self.base for u in urls))
+
+    def test_empty_prefix_includes_unprefixed_tables(self):
+        ids = [e["id"] for e in discover.from_openapi(self.base, table_prefix="")]
+        self.assertIn("other-table", ids)
+
+    def test_row_limit_is_applied_to_every_url(self):
+        for entry in discover.from_openapi(self.base, row_limit=3):
+            self.assertTrue(entry["url"].endswith("?limit=3"))
+
+    def test_summary_becomes_the_name_when_present(self):
+        by_id = {e["id"]: e for e in discover.from_openapi(self.base)}
+        self.assertEqual(by_id["f-rahvalad"]["name"], "Rahvusvahelised alad")
+        self.assertEqual(by_id["f-rahvalad-dok"]["name"], "f_rahvalad_dok")
+
+    def test_system_is_inferred_from_the_table_prefix(self):
+        by_id = {e["id"]: e for e in discover.from_openapi(self.base)}
+        self.assertEqual(by_id["f-kliima-paev"]["system"], "Kliima")
+        self.assertEqual(by_id["f-hydroseire"]["system"], "Hüdroloogia")
+        self.assertEqual(by_id["f-rahvalad"]["system"], "EELIS")
+
+    def test_headers_are_sent_and_stored_on_each_entry(self):
+        entries = discover.from_openapi(self.base, extra_headers={"Accept-Profile": "apijahiala"})
+        self.assertEqual(self.last_headers.get("Accept-Profile"), "apijahiala")
+        self.assertEqual(entries[0]["headers"]["Accept-Profile"], "apijahiala")
+
+    def test_nothing_is_ever_marked_verified(self):
+        self.assertTrue(all(e["verified"] is False for e in discover.from_openapi(self.base)))
+
+    def test_a_document_without_paths_is_rejected_not_guessed(self):
+        with self.assertRaisesRegex(discover.DiscoveryError, "not an OpenAPI document"):
+            discover.from_openapi(f"{self.base}/not-root")
+
+    def test_a_prefix_matching_nothing_is_reported(self):
+        with self.assertRaisesRegex(discover.DiscoveryError, "no table paths"):
+            discover.from_openapi(self.base, table_prefix="zzz_")
 
 
 class NaiveTimestamps(unittest.TestCase):

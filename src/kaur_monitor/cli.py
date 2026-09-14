@@ -100,12 +100,52 @@ def _merge_and_save(found: list[dict[str, Any]], config: Path) -> int:
     return 0
 
 
+def _parse_headers(pairs: list[str] | None) -> dict[str, str]:
+    headers: dict[str, str] = {}
+    for pair in pairs or []:
+        key, sep, value = pair.partition("=")
+        if not sep or not key.strip():
+            raise ValueError(f"--header ootab kuju 'Nimi=väärtus', sain {pair!r}")
+        headers[key.strip()] = value.strip()
+    return headers
+
+
 def cmd_discover(args: argparse.Namespace) -> int:
     try:
-        found = discover.from_ckan(args.ckan, query=args.query, rows=args.rows)
+        headers = _parse_headers(args.header)
+    except ValueError as exc:
+        print(str(exc), file=sys.stderr)
+        return 2
+
+    try:
+        if args.openapi:
+            found = discover.from_openapi(
+                args.openapi,
+                extra_headers=headers or None,
+                table_prefix=args.table_prefix,
+                row_limit=args.row_limit,
+            )
+        else:
+            found = discover.from_ckan(args.ckan, query=args.query, rows=args.rows)
     except discover.DiscoveryError as exc:
         print(f"Avastamine ebaõnnestus: {exc}", file=sys.stderr)
         return 2
+
+    if args.dry_run:
+        systems: dict[str, int] = {}
+        for entry in found:
+            systems[str(entry.get("system") or "-")] = systems.get(str(entry.get("system")), 0) + 1
+        print(f"Leitud {len(found)} otspunkti. Süsteemide kaupa:")
+        for system, count in sorted(systems.items(), key=lambda kv: -kv[1]):
+            print(f"  {count:>4}  {system}")
+        print("\nEsimesed 40:")
+        for entry in found[:40]:
+            print(f"  {entry['id']:<44} {entry['url']}")
+        if len(found) > 40:
+            print(f"  … ja veel {len(found) - 40}")
+        print("\n(--dry-run: inventari ei muudetud)")
+        return 0
+
     return _merge_and_save(found, Path(args.config))
 
 
@@ -145,10 +185,21 @@ def build_parser() -> argparse.ArgumentParser:
     val = sub.add_parser("validate", help="kontrolli inventari süntaksit")
     val.set_defaults(func=cmd_validate)
 
-    disc = sub.add_parser("discover", help="avasta otspunktid CKAN-tüüpi kataloogist")
-    disc.add_argument("--ckan", required=True, help="kataloogi baas-URL")
-    disc.add_argument("--query", default="", help="otsingupäring")
-    disc.add_argument("--rows", type=int, default=1000, help="maksimaalne andmestike arv")
+    disc = sub.add_parser("discover", help="avasta otspunktid kataloogist või OpenAPI kirjeldusest")
+    source = disc.add_mutually_exclusive_group(required=True)
+    source.add_argument("--openapi", help="PostgREST-i juur-URL, mis annab OpenAPI kirjelduse")
+    source.add_argument("--ckan", help="CKAN-tüüpi kataloogi baas-URL")
+    disc.add_argument(
+        "--header",
+        action="append",
+        metavar="NIMI=VÄÄRTUS",
+        help="päis avastuspäringule ja kõigile leitud kirjetele, korduv",
+    )
+    disc.add_argument("--table-prefix", default="f_", help="ainult selle eesliitega tabelid")
+    disc.add_argument("--row-limit", type=int, default=1, help="limit leitud päringutes")
+    disc.add_argument("--query", default="", help="CKAN: otsingupäring")
+    disc.add_argument("--rows", type=int, default=1000, help="CKAN: maks andmestike arv")
+    disc.add_argument("--dry-run", action="store_true", help="näita leitut, ära muuda inventari")
     disc.set_defaults(func=cmd_discover)
 
     imp = sub.add_parser("import-urls", help="impordi otspunktid tekstifailist (üks URL reas)")

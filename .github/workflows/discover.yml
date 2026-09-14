@@ -1,22 +1,35 @@
 name: Discover endpoints
 
-# Manual only, deliberately. The catalogue API shape has not been verified, so
-# this is not put on a schedule until someone has run it once and confirmed it
-# returns something usable. A weekly job that always fails is worse than no job.
+# Manual only. Discovery reaches out to a service and can add a lot of entries
+# at once, so it runs when a person asks for it, not on a schedule.
+#
+# The URL and headers are inputs rather than defaults on purpose: no endpoint
+# address belongs in this repository's source, only in config/endpoints.toml.
 on:
   workflow_dispatch:
     inputs:
-      catalogue:
-        description: "CKAN-style catalogue base URL"
+      mode:
+        description: "Source of truth"
         required: true
-      query:
-        description: "Search query (e.g. publisher name)"
+        type: choice
+        options: [openapi, ckan]
+        default: openapi
+      url:
+        description: "Service root (openapi) or catalogue base URL (ckan)"
+        required: true
+      header:
+        description: "Request header, NAME=VALUE (e.g. the Accept-Profile a PostgREST service needs)"
         required: false
         default: ""
-      rows:
-        description: "Max datasets to harvest"
+      table_prefix:
+        description: "openapi: only tables with this prefix"
         required: false
-        default: "1000"
+        default: "f_"
+      dry_run:
+        description: "Show what was found without touching the inventory"
+        required: false
+        type: boolean
+        default: true
 
 permissions:
   contents: write
@@ -34,17 +47,38 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Harvest catalogue
+      - name: Discover
+        env:
+          MODE: ${{ inputs.mode }}
+          URL: ${{ inputs.url }}
+          HEADER: ${{ inputs.header }}
+          TABLE_PREFIX: ${{ inputs.table_prefix }}
+          DRY_RUN: ${{ inputs.dry_run }}
         run: |
-          python monitor.py discover \
-            --ckan "${{ inputs.catalogue }}" \
-            --query "${{ inputs.query }}" \
-            --rows "${{ inputs.rows }}"
+          set -euo pipefail
+          args=()
+          if [ "$MODE" = "openapi" ]; then
+            args+=(--openapi "$URL" --table-prefix "$TABLE_PREFIX")
+          else
+            args+=(--ckan "$URL")
+          fi
+          [ -n "$HEADER" ] && args+=(--header "$HEADER")
+          [ "$DRY_RUN" = "true" ] && args+=(--dry-run)
+          python monitor.py discover "${args[@]}" | tee discovery.txt
 
-      - name: Show what would be monitored
-        run: python monitor.py list
+      - name: Job summary
+        if: always()
+        run: |
+          {
+            echo '## Avastamise tulemus'
+            echo
+            echo '```'
+            head -80 discovery.txt 2>/dev/null || echo 'väljundit ei ole'
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Commit inventory
+        if: ${{ inputs.dry_run == false }}
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
@@ -54,8 +88,10 @@ jobs:
             echo "Inventory unchanged."
             exit 0
           fi
-          git commit -m "Discover endpoints from catalogue
+          git commit -m "Discover endpoints from ${MODE:-catalogue}
 
-          All new entries are verified=false and need a human to confirm the URL
-          before they can be trusted."
+          New entries are verified=false: a person still has to confirm each
+          one before it can raise an alert."
           git push
+        env:
+          MODE: ${{ inputs.mode }}

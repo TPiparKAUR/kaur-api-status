@@ -57,10 +57,11 @@ def _expect_for(url: str, declared_format: str = "") -> str:
     return "any"
 
 
-def _fetch_json(url: str, timeout: float) -> Any:
-    request = urllib.request.Request(
-        url, headers={"User-Agent": USER_AGENT, "Accept": "application/json"}
-    )
+def _fetch_json(url: str, timeout: float, extra_headers: dict[str, str] | None = None) -> Any:
+    headers = {"User-Agent": USER_AGENT, "Accept": "application/json"}
+    if extra_headers:
+        headers.update(extra_headers)
+    request = urllib.request.Request(url, headers=headers)
     try:
         with urllib.request.urlopen(request, timeout=timeout) as response:
             body = response.read(16 * 1024 * 1024)
@@ -125,6 +126,88 @@ def from_ckan(
                     "verified": False,
                 }
             )
+    return found
+
+
+# A table's prefix is the only clue the OpenAPI document gives about which
+# system it belongs to. Used for grouping in the report; a human can correct it.
+_SYSTEM_BY_PREFIX = (
+    ("f_kliima_", "Kliima"),
+    ("f_hydroseire", "Hüdroloogia"),
+    ("f_keskkonnaseire", "Keskkonnaseire"),
+)
+_DEFAULT_SYSTEM = "EELIS"
+
+
+def _system_for(table: str) -> str:
+    for prefix, system in _SYSTEM_BY_PREFIX:
+        if table.startswith(prefix):
+            return system
+    return _DEFAULT_SYSTEM
+
+
+def from_openapi(
+    base_url: str,
+    extra_headers: dict[str, str] | None = None,
+    timeout: float = 180.0,
+    table_prefix: str = "f_",
+    row_limit: int = 1,
+) -> list[dict[str, Any]]:
+    """Enumerate every table a PostgREST service publishes, from its own spec.
+
+    The service documents itself: its root returns an OpenAPI description whose
+    ``paths`` are the readable tables. That is the authoritative list, and the
+    only honest way to cover a system with hundreds of endpoints — the
+    alternative is guessing at table names.
+
+    Stored procedures (``/rpc/...``) are skipped: they need arguments this
+    cannot know. Each entry gets ``?limit=<row_limit>`` so an availability probe
+    stays cheap regardless of how large the table is.
+    """
+    payload = _fetch_json(base_url, timeout, extra_headers)
+    if not isinstance(payload, dict):
+        raise DiscoveryError(f"{base_url} did not return a JSON object")
+
+    paths = payload.get("paths")
+    if not isinstance(paths, dict):
+        raise DiscoveryError(
+            f"{base_url} has no 'paths' object, so it is not an OpenAPI document. "
+            f"Check the URL and any Accept-Profile header the service requires."
+        )
+
+    found: list[dict[str, Any]] = []
+    for path, spec in sorted(paths.items()):
+        table = str(path).lstrip("/")
+        if not table or table.startswith("rpc/"):
+            continue
+        if table_prefix and not table.startswith(table_prefix):
+            continue
+        if isinstance(spec, dict) and spec and "get" not in spec:
+            continue
+        description = ""
+        if isinstance(spec, dict):
+            get_spec = spec.get("get")
+            if isinstance(get_spec, dict):
+                description = str(get_spec.get("summary") or get_spec.get("description") or "")
+        found.append(
+            {
+                "id": slug(table),
+                "name": (description.strip() or table)[:160],
+                "system": _system_for(table),
+                "url": f"{base_url.rstrip('/')}/{table}?limit={row_limit}",
+                "expect": "json",
+                "headers": dict(extra_headers) if extra_headers else None,
+                "enabled": True,
+                "source": "openapi",
+                "verified": False,
+            }
+        )
+
+    if not found:
+        raise DiscoveryError(
+            f"{base_url} returned an OpenAPI document with no table paths matching "
+            f"prefix {table_prefix!r}. Pass a different --table-prefix, or an empty one."
+        )
     return found
 
 
