@@ -1,0 +1,64 @@
+# Näidisinventar. Kopeeri failiks config/endpoints.toml ja täida päris URL-idega.
+#
+# TÄHTIS: siin failis EI OLE ühtegi päris Keskkonnaagentuuri URL-i. Kõik
+# aadressid on example.org peal. Autor ei pääsenud Eesti riigi süsteemidele
+# ligi ega saanud otspunkte kontrollida, seepärast ei ole siia ühtegi
+# arvatavat aadressi kirjutatud — vale URL on halvem kui puuduv URL.
+#
+# Kiireim viis alustada:
+#   1. kogu URL-id kokku tekstifaili, üks reas
+#   2. python monitor.py import-urls urls.txt
+#   3. python monitor.py check
+#
+# Kust URL-e otsida:
+#   - avaandmed.eesti.ee — filtreeri avaldaja järgi
+#   - RIHA (riha.eesti.ee) — riigi infosüsteemide ametlik register
+#   - keskkonnaportaal.ee
+#   - KAUR-i INSPIRE/OGC teenuste metaandmed (WMS/WFS GetCapabilities)
+#
+# Süsteemid, mille kohta tasub otspunkte otsida (nimed, mitte aadressid):
+#   KESE            keskkonnaseire infosüsteem
+#   EELIS           Eesti Looduse Infosüsteem
+#   Metsaregister   metsanduse register
+#   Riigi Ilmateenistus  vaatlus- ja prognoosiandmed
+#   Keskkonnaportaal     avalik portaal
+
+# --- Väljad -----------------------------------------------------------------
+# id               kohustuslik, unikaalne lühinimi
+# name             kohustuslik, inimloetav nimi
+# url              kohustuslik
+# system           mis andmekogu juurde kuulub
+# expect           "json" | "xml" | "any" — mida keha peaks sisaldama
+# method           vaikimisi GET
+# timeout_s        vaikimisi 30
+# max_bytes        vaikimisi 4 MiB
+# freshness_regex  regulaaravaldis, mille 1. rühm on ajatempel kehas
+# max_age_s        kui vanim lubatud andmete vanus ületatakse -> HÄIRE
+# enabled          vaikimisi true
+# source           kust kirje tuli: manual | import | ckan
+# verified         kas inimene on URL-i üle vaadanud (vaikimisi false)
+# ----------------------------------------------------------------------------
+
+# Lihtne saadavuse kontroll: piisab, et vastus tuleb ja on valiidne XML.
+[[endpoint]]
+id = "naidis-wfs"
+name = "Näidis WFS GetCapabilities"
+system = "Näidissüsteem"
+url = "https://example.org/geoserver/wfs?service=WFS&request=GetCapabilities"
+expect = "xml"
+source = "manual"
+verified = false
+
+# Värskuse kontroll: teenus võib vastata HTTP 200-ga ka siis, kui andmed on
+# kaks päeva seisnud. See kirje märgib HÄIRE-ks, kui uusim ajatempel kehas on
+# vanem kui tund.
+[[endpoint]]
+id = "naidis-vaatlused"
+name = "Näidis vaatlusandmed"
+system = "Näidissüsteem"
+url = "https://example.org/observations.json"
+expect = "json"
+freshness_regex = '"timestamp"\s*:\s*"([^"]+)"'
+max_age_s = 3600
+source = "manual"
+verified = false
