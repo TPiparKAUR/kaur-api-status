@@ -139,6 +139,10 @@ a slower cadence for the harvested tail, per-endpoint intervals, rolling old
 months up into daily aggregates and dropping the raw lines, or accepting it.
 Nothing here prunes anything on its own.
 
+Actions minutes are fine by contrast: a measured run is 43 seconds, so 1 440
+minutes a month against a 2 000 allowance. The margin is one slow day wide,
+though — crossing 60 seconds doubles the bill.
+
 - The 261 harvested endpoints are `verified = false`. Confirming them is a
   human job; until then they are watched but never alert.
 - No endpoint sets `freshness_regex`. Doing so needs someone who knows each

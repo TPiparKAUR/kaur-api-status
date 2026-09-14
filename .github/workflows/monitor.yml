@@ -3,25 +3,17 @@ name: API monitor
 # Every 30 minutes. A GitHub-hosted runner reaches the Estonian services
 # directly; the authoring environment cannot.
 #
-# BILLING, and it does not currently add up. This repository is private, where
-# GitHub bills whole minutes per job. With 283 endpoints a run takes roughly
-# 75 seconds — about 50 s of checking at 12 threads plus fixed runner overhead —
-# so every run is billed as 2 minutes: 1 440 runs x 2 = 2 880 minutes a month
-# against a 2 000 minute free allowance.
+# BILLING, measured rather than estimated. This repository is private, where
+# GitHub bills whole minutes per job. A full run over 283 endpoints took 43
+# seconds end to end (median response 741 ms, twelve threads), so a run bills
+# as one minute: 1 440 runs x 1 = 1 440 minutes a month against the 2 000
+# minute free allowance. It fits, but the headroom is one slow day wide — a
+# run crossing 60 seconds bills as two and puts the month at 2 880.
 #
-# More threads do not fix it. Even 16 leaves the job just over a minute, and
-# they raise the request rate against a single public service.
-#
-# Three ways out, in order of preference:
-#   1. Make the repository public. Actions is then unmetered, and GitHub Pages
-#      starts serving the status page, which a private free repo will not.
-#      The log holds nothing sensitive: response times and status codes for
-#      public APIs.
-#   2. Hourly instead: 720 x 2 = 1 440 minutes, which fits.
-#   3. Buy minutes.
-#
-# 30 minutes is kept because it is what was asked for; the arithmetic is here
-# so that Actions going quiet mid-month reads as this, not as a mystery.
+# Watch the run duration when adding endpoints. If it approaches a minute:
+# make the repository public (Actions becomes unmetered, and GitHub Pages
+# starts serving the status page, which a private free repo will not — the log
+# holds only response times and status codes for public APIs), or go hourly.
 on:
   schedule:
     - cron: "*/30 * * * *"

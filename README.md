@@ -114,9 +114,11 @@ Seisund **TEADMATA** ei ava kunagi Issue't.
 | `discover.yml` | ainult käsitsi | avastab teenuse otspunktid selle enda kirjeldusest |
 | `tests.yml` | iga push | testid + inventari süntaks |
 
-30-minutiline sagedus on 1 440 jooksu kuus. GitHub arvestab privaatsele repole
-miinimum ühe minuti töö kohta, seega see mahub 2 000-minutilisse tasuta
-kvooti; 15 minutit oleks 2 880 ja jääks kuu keskel seisma.
+30-minutiline sagedus on 1 440 jooksu kuus. Mõõdetud jooks 283 otspunktiga
+kestab 43 sekundit, seega arvestatakse üks minut jooksu kohta — kokku 1 440
+minutit, mis mahub 2 000-minutilisse tasuta kvooti. Varu on siiski õhuke:
+kui jooks ületab minuti, arvestatakse kaks ja kuu maht on 2 880. Otspunkte
+lisades tasub jooksu kestust jälgida.
 
 ---
 
