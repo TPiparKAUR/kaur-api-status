@@ -408,6 +408,24 @@ class LocalServer(unittest.TestCase):
         result = check.check_endpoint({"id": "empty", "url": f"{self.base}/empty"})
         self.assertEqual(result["status"], "degraded")
 
+    def test_http_error_body_is_captured_in_the_detail(self):
+        """The error body is usually the only thing that says what is wrong."""
+        self.bodies["/406"] = (
+            406,
+            "application/json",
+            b'{"message":"The schema must be one of the following: public, api"}',
+        )
+        result = check.check_endpoint({"id": "e406", "url": f"{self.base}/406"})
+        self.assertEqual(result["status"], "down")
+        self.assertEqual(result["http"], 406)
+        self.assertIn("schema must be one of", result["detail"])
+
+    def test_error_body_snippet_is_bounded_and_single_line(self):
+        self.bodies["/big-err"] = (500, "text/plain", b"line one\nline two\n" + b"z" * 5000)
+        result = check.check_endpoint({"id": "e500", "url": f"{self.base}/big-err"})
+        self.assertNotIn("\n", result["detail"])
+        self.assertLess(len(result["detail"]), 400)
+
     def test_configured_headers_reach_the_server(self):
         """PostgREST needs Accept-Profile to select the right schema."""
         self.bodies["/hdr"] = (200, "application/json", b"[]")

@@ -46,6 +46,7 @@ _OWS_EXCEPTION_TAGS = frozenset({"serviceexceptionreport", "exceptionreport"})
 
 _DEFAULT_TIMEOUT_S = 30.0
 _DEFAULT_MAX_BYTES = 4 * 1024 * 1024
+_ERROR_BODY_BYTES = 1024
 
 
 def _localname(tag: str) -> str:
@@ -199,6 +200,16 @@ def _check_endpoint(endpoint: dict[str, Any]) -> dict[str, Any]:
         record["http"] = exc.code
         record["ms"] = int((time.monotonic() - started) * 1000)
         record["detail"] = f"http {exc.code} {exc.reason}"
+        # The error body usually says what is actually wrong — PostgREST, for
+        # one, answers 406 with the list of schemas it will accept. Throwing it
+        # away turns a self-explaining failure into a guessing game.
+        try:
+            snippet = exc.read(_ERROR_BODY_BYTES).decode("utf-8", errors="replace")
+        except Exception:
+            snippet = ""
+        snippet = " ".join(snippet.split())
+        if snippet:
+            record["detail"] = f"{record['detail']} — {snippet[:300]}"
         return record
     except (urllib.error.URLError, TimeoutError, ssl.SSLError) as exc:
         reason = getattr(exc, "reason", exc)
