@@ -248,5 +248,5 @@ method = "POST"
 headers = { "Accept" = "application/json", "Content-Type" = "application/json" }
 body = "{\"pageSize\":1,\"includeFileMetadata\":false}"
 source = "manual"
-verified = false
-note = "Otspunkt dokumenteeritud, päringukeha koostasin ise. DocumentsQuery väljad on kõik valikulised, seega minimaalne keha peaks kehtima — kinnitada päris teenuse vastu"
+verified = true
+note = "Otspunkt dokumenteeritud, päringukeha koostatud siin ja kinnitatud päris teenuse vastu 2026-09-14 (HTTP 200, 1016 B)"
