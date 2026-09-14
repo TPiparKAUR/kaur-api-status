@@ -1,154 +1,188 @@
-# KAUR allalaadimine
+# Keskkonnaagentuuri API-de seire
 
-Keskkonnaagentuuri avalike API-de andmete automaatne allalaadimine, töötlemine ja versioonimine.
+Kontrollib Keskkonnaagentuuri avalikke API-sid, peab arvet selle üle, **millal
+ja kui kaua** iga teenus maas on olnud, ning koostab sellest raporti. Teenuse
+kukkumisel avaneb GitHubi Issue ja taastumisel sulgub.
 
-## Ülevaade
+Töötab **ainult Pythoni standardteegiga**. Ei ole `pip install`-i, virtuaal‑
+keskkonda ega väliseid teenuseid.
 
-Lahendus laeb alla Keskkonnaagentuuri ja seotud avalike andmebaasidest andmeid, salvestab need Parquet formaadis ning versioone need Gitis. Iga muutus loob automaatselt committi metaandmetega (checksum, timestamp).
+```bash
+python3 monitor.py check
+```
 
-## Iseärasused
-
-- ✅ **Inkrementaalne** - ainult muutunud andmeid salvestatakse (SHA256 checksum)
-- ✅ **Automatiseeritud** - GitHub Actions ajastatud käivitused
-- ✅ **Käsitsi käivitav** - `manual run` GitHub Actions
-- ✅ **Parquet** - tõhus binaarformaat andmetega
-- ✅ **Laiendatav** - uute andmeallikate lisamine lihtne
-- ✅ **Auditeeritav** - täielik git ajalugu iga muutusega
+---
 
 ## Kiire alustamine
 
-### Käsitsi allalaadimine
+Kolm sammu, umbes kaks minutit.
+
+**1. Pane URL-id faili**, üks reas. Silt pärast tühikut on vabatahtlik.
+
+```
+# urls.txt
+https://example.org/geoserver/wfs?service=WFS&request=GetCapabilities   EELIS WFS
+https://example.org/observations.php                                     Vaatlusandmed
+```
+
+**2. Impordi**
 
 ```bash
-# Paigaldus
-pip install -r requirements.txt
-
-# Kõik andmeallikad
-python main.py download
-
-# Konkreetne allikas
-python main.py download --source kese
-
-# Saadaolevad allikad
-python main.py list-sources
+python3 monitor.py import-urls urls.txt
 ```
 
-### Makefile käsud
+**3. Kontrolli**
 
 ```bash
-make install          # Sõltuvused
-make download         # Allalaadimine
-make list            # Andmeallikad
-make lint            # Koodi kontroll
-make test            # Testid
-make clean           # Puhastus
+python3 monitor.py check
 ```
 
-## Automaatne allalaadimine
+Tulemus tuleb ekraanile, logitakse `logs/` kausta ja raport kirjutatakse
+faili `REPORT.md`.
 
-GitHub Actions töövoog käivitub:
-1. **Ajastatud**: Nädala esmaspäeval kell 06:00 UTC
-2. **Käsitsi**: GitHub Actions interface'st (manual trigger)
+Kui otspunktid on kataloogis (CKAN-tüüpi avaandmete portaal), saab need
+importimise asemel avastada:
 
-Iga käivitus:
-- Laeb andmed alla
-- Kontrolliseerib muutusi (checksum)
-- Teeb `git commit` kui andmed muutunud
-- Tõukab repo-sse
-
-## Struktuur
-
-```
-.
-├── src/kaur/
-│   ├── config.py          # Andmeallikate deklaratsioon
-│   ├── downloader.py      # Allalaadimise loogika
-│   ├── cli.py             # Käsureainterfeis (Typer)
-│   └── __init__.py
-├── tests/                  # Ühik-testid
-├── data/                   # Andmefailid (Parquet)
-├── .github/workflows/      # GitHub Actions
-├── main.py                # Sisenemine
-├── pyproject.toml         # Python projekt
-├── requirements.txt       # pip sõltuvused
-├── CLAUDE.md             # Tehniline dokumentatsioon
-└── Makefile              # Valikud
-```
-
-## Andmefailid ja metaandmed
-
-### Andmed
-- Asukoht: `data/{allikas}.parquet`
-- Formaat: Apache Parquet (tihendatud, kolonnaalne)
-
-### Metaandmed
-- Asukoht: `data/.metadata/{allikas}.json`
-- Sisaldus:
-  ```json
-  {
-    "checksum": "sha256...",
-    "timestamp": "2024-01-15T12:34:56Z",
-    "version": "1.0",
-    "rows": 1234
-  }
-  ```
-
-## Andmeallikad
-
-| Allikas | Nimi | Kirjeldus |
-|---------|------|-----------|
-| `kese` | KESE | Keskkonnateabe süsteemi avalik kuvand |
-| `ilm` | Ilmateade | Eesti Meteoroloogia - ilmaandmed (XML) |
-| `emo` | EMO | Meteoroloogilised andmed REST API |
-
-## Uue andmeallikaga liitmine
-
-1. **Konfigureeri** (`src/kaur/config.py`):
-```python
-"uus_allikas": DataSourceConfig(
-    name="Nimi",
-    url="https://api.example.com/data",
-    format="json",  # või "xml"
-    description="Kirjeldus"
-)
-```
-
-2. **Töötlemine** (`src/kaur/downloader.py`):
-   - JSON: juba toetatud
-   - XML: juba toetatud
-   - Custom: täienda `_process_*` meetodit
-
-3. **Testi**:
 ```bash
-python main.py download --source uus_allikas
+python3 monitor.py discover --ckan https://<portaali-aadress> --query Keskkonnaagentuur
 ```
 
-## Versioonihaldus
+---
 
-Git track'ib:
-- ✅ Kood (Python, YAML, etc)
-- ✅ Metaandmed (JSON)
-- ✅ Andmefailid (Parquet) - ainult muutused
+## Mida tähendab „töötab“
 
-Iga muutus genereerib committi kujul:
+HTTP 200 **ei tähenda**, et teenus on korras. WFS võib vastata koodiga 200 ja
+kehas olla `ows:ExceptionReport`. Ilmateenistuse API võib vastata koodiga 200
+ja anda andmeid, mis lakkasid uuenemast kaks päeva tagasi. Kumbki ei ole
+tavalise seirerakenduse jaoks nähtav.
+
+Iga otspunkt läbib seepärast järjestatud etapid ja logitakse see, kui kaugele
+ta jõudis:
+
+| Etapp | Kontrollib |
+|---|---|
+| `dns` | nimi laheneb |
+| `connect` | TCP + TLS ühendus, sertifikaadi aegumine |
+| `http` | vastuse staatuskood |
+| `content_type` | päis vastab oodatule |
+| `parse` | keha on valiidne XML/JSON |
+| `service_exception` | keha **ei ole** OGC veateade |
+| `freshness` | uusim ajatempel kehas ei ole liiga vana |
+
+Seisundeid on neli:
+
+- **KORRAS** — kõik seadistatud etapid läbitud
+- **HÄIRE** — teenus vastab, aga sisu on vigane või seisev
+- **MAAS** — ei vasta, või vastab veateatega
+- **TEADMATA** — *meie* kontrollija ei saanud võrku
+
+**TEADMATA** on oluline. Kui kõik otspunktid ebaõnnestuvad enne vastuse
+saamist, on tõenäoliselt katki kontrollija enda võrk, mitte kõik Eesti
+teenused korraga. Sellised kirjed jäetakse käideldavuse arvestusest välja, et
+runneri tõrge ei näiks katkestusena.
+
+---
+
+## Raport
+
+`REPORT.md` genereeritakse iga kontrolli järel ja sisaldab:
+
+- **Praegune seis** — iga otspunkti seisund, vastuseaeg, andmete vanus
+- **Käideldavus** — protsent 24 h, 7 ja 30 päeva kohta
+- **Katkestused** — millal algas, millal lõppes, kui kaua kestis, miks
+- **Hoiatused** — aeguvad TLS-sertifikaadid, kontrollimata URL-id
+
+Ajad on raportis Eesti aja järgi (EET/EEST), logis UTC ISO 8601 kujul.
+
+---
+
+## Teavitused
+
+Teenuse kukkumisel avab töövoog GitHubi Issue sildiga `api-incident` ja
+taastumisel kommenteerib ning sulgeb selle. Repo jälgijad saavad e-kirja
+automaatselt — SMTP-d ega saladusi ei ole vaja seadistada.
+
+Seisund **TEADMATA** ei ava kunagi Issue't.
+
+---
+
+## Automaatika
+
+| Töövoog | Millal | Mida teeb |
+|---|---|---|
+| `monitor.yml` | iga tund + käsitsi | kontrollib, logib, commitib, teavitab |
+| `discover.yml` | ainult käsitsi | avastab otspunktid kataloogist |
+| `tests.yml` | iga push | testid + inventari süntaks |
+
+Tunnine sagedus on ~730 jooksu kuus, mis mahub tasuta privaatse repo limiiti.
+Avalikul repol on Actions piiramatu — seal võib sagedust tõsta.
+
+---
+
+## Inventar
+
+`config/endpoints.toml`. Otspunktid on **andmed, mitte kood** — koodis ei ole
+ühtegi URL-i.
+
+```toml
+[[endpoint]]
+id = "eelis-wfs"
+name = "EELIS WFS GetCapabilities"
+system = "EELIS"
+url = "https://..."
+expect = "xml"              # json | xml | any
+freshness_regex = '"ts":"([^"]+)"'
+max_age_s = 3600
+verified = true
 ```
-chore: Keskkonnaagentuuri andmete allalaadimine
 
-Andmefailid: parquet
-Metaandmed: checksum, timestamp, versioon
+Täielik väljade loend: `config/endpoints.example.toml`.
+
+### `verified`
+
+Iga kirje algab väärtusega `verified = false` ja raport märgib sellised eraldi
+ära. Lipu tõstab **inimene**, kui on veendunud, et URL on õige. Avastamine ega
+importimine ei märgi kunagi midagi kontrollituks.
+
+Käsitsi parandatud kirjet ei kirjutata uuel avastamisel üle.
+
+---
+
+## Praegune piirang
+
+**Inventar on tühi.** Selle repo autoril ei olnud ligipääsu Eesti riigi
+süsteemidele — puhverserver vastas kõigile `.ee` domeenidele `403 policy
+denial` — mistõttu ühtegi otspunkti ei ole kontrollitud ega koodi kirjutatud.
+Vale URL oleks halvem kui puuduv URL.
+
+Nimekirja täitmiseks vaata:
+
+- **avaandmed.eesti.ee** — filtreeri avaldaja järgi
+- **RIHA** (riha.eesti.ee) — riigi infosüsteemide ametlik register
+- **keskkonnaportaal.ee**
+- KAUR-i INSPIRE/OGC teenuste metaandmed (WMS/WFS `GetCapabilities`)
+
+Otsi otspunkte nende süsteemide juurest: KESE (keskkonnaseire), EELIS (looduse
+infosüsteem), Metsaregister, Riigi Ilmateenistus, Keskkonnaportaal.
+
+---
+
+## Käsud
+
+```
+python3 monitor.py check              # kontrolli, logi, uuenda raport
+python3 monitor.py check --dry-run    # kontrolli, ära kirjuta midagi
+python3 monitor.py report             # koosta raport logist
+python3 monitor.py list               # näita inventari
+python3 monitor.py validate           # kontrolli inventari süntaksit
+python3 monitor.py import-urls FAIL   # impordi URL-id tekstifailist
+python3 monitor.py discover --ckan U  # avasta kataloogist
 ```
 
-## Metoodoloogia
+Testid: `python3 -m unittest discover -s tests`
 
-- **Inkrementaalne**: Checksum võrdlemine - sama andmed = ei commit
-- **Idempotentne**: Korduvad käivitused ohutud
-- **Audit trail**: Git ajalugu näitab kõiki muutusi
-- **Reproducible**: Parquet formaat universaalus ja stabiilne
-
-## Tehniline teabeleht
-
-Vaata [CLAUDE.md](./CLAUDE.md) arhitektuuri üksikasjade jaoks.
+---
 
 ## Litsents
 
-MIT License - vt. [LICENSE](./LICENSE)
+MIT — vaata [LICENSE](./LICENSE).

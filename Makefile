@@ -1,38 +1,37 @@
-.PHONY: install download download-all download-single list help clean test lint
+.PHONY: help check report list validate test lint clean
 
 help:
-	@echo "Keskkonnaagentuuri andmelaadimine - saadaolevad käsud"
-	@echo ""
-	@echo "  make install          - Sõltuvuste paigaldamine"
-	@echo "  make download         - Kõigi andmeallikate allalaadimine"
-	@echo "  make download-kese    - KESE andmete allalaadimine"
-	@echo "  make list             - Saadaolevate andmeallikate loend"
-	@echo "  make lint             - Koodikontroll (ruff + mypy)"
-	@echo "  make test             - Testide käivitamine"
-	@echo "  make clean            - Puhastamine"
+	@echo "Keskkonnaagentuuri API-de seire"
+	@echo
+	@echo "  make check      - kontrolli kõiki otspunkte, uuenda logi ja raport"
+	@echo "  make report     - koosta REPORT.md olemasolevast logist"
+	@echo "  make list       - näita inventari"
+	@echo "  make validate   - kontrolli inventari süntaksit"
+	@echo "  make test       - käivita testid"
+	@echo "  make lint       - ruff + mypy (kui paigaldatud)"
+	@echo "  make clean      - kustuta vahefailid"
+	@echo
+	@echo "Alustamiseks: python monitor.py import-urls urls.txt && make check"
 
-install:
-	pip install -r requirements.txt
+check:
+	python3 monitor.py check
 
-download:
-	python main.py download
-
-download-single:
-	@read -p "Andmeallikas: " source; \
-	python main.py download --source $$source
+report:
+	python3 monitor.py report
 
 list:
-	python main.py list-sources
+	python3 monitor.py list
 
-lint:
-	ruff check src/ main.py || true
-	mypy src/ main.py || true
+validate:
+	python3 monitor.py validate
 
 test:
-	pytest tests/ -v || true
+	python3 -m unittest discover -s tests -v
+
+lint:
+	@command -v ruff >/dev/null && ruff check src tests scripts || echo "ruff pole paigaldatud, jäetakse vahele"
+	@command -v mypy >/dev/null && mypy src || echo "mypy pole paigaldatud, jäetakse vahele"
 
 clean:
-	find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
-	find . -type f -name "*.pyc" -delete
-	rm -rf .pytest_cache .mypy_cache .ruff_cache 2>/dev/null || true
-	rm -rf build/ dist/ *.egg-info 2>/dev/null || true
+	find . -type d -name __pycache__ -prune -exec rm -rf {} +
+	rm -rf .ruff_cache .mypy_cache

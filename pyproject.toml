@@ -1,38 +1,17 @@
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
-
-[project]
-name = "kaur-allalaadimine"
-version = "0.1.0"
-description = "Keskkonnaagentuuri andmete allalaadija ja arhiveerimine"
-requires-python = ">=3.12"
-dependencies = [
-    "polars>=1.0.0",
-    "pyarrow>=14.0.0",
-    "requests>=2.31.0",
-    "pydantic>=2.0.0",
-    "python-dateutil>=2.8.0",
-    "typer>=0.9.0",
-    "rich>=13.0.0",
-]
-
-[project.optional-dependencies]
-dev = [
-    "pytest>=7.4.0",
-    "pytest-cov>=4.1.0",
-    "ruff>=0.1.0",
-    "mypy>=1.5.0",
-]
+# Tool configuration only. The monitor is not an installable package and has no
+# runtime dependencies: it runs with `python monitor.py` on any Python 3.11+.
 
 [tool.ruff]
 line-length = 100
 target-version = "py312"
+src = ["src", "tests", "scripts"]
 
 [tool.ruff.lint]
-select = ["E", "F", "W", "I", "N", "RUF"]
+select = ["E", "F", "W", "I", "N", "UP", "B", "RUF"]
 
 [tool.mypy]
 python_version = "3.12"
-strict = true
 warn_unused_ignores = true
+warn_redundant_casts = true
+disallow_untyped_defs = false
+mypy_path = "src"
