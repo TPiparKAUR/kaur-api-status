@@ -28,10 +28,11 @@ name = "Juur-URL, OpenAPI teenusekirjeldus"
 system = "Keskkonnaandmed"
 url = "https://keskkonnaandmed.envir.ee"
 expect = "json"
+max_bytes = 65536
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
 source = "manual"
 verified = true
-note = "Dokumentatsioon: juurURL annab OpenAPI formaadis teenuse kirjelduse"
+note = "OpenAPI kirjeldus on ~4 MB ja vastab 3,7 s; max_bytes piirab lugemise 64 KB-le, sest tunnisele elushoiu kontrollile piisab staatusest"
 
 # --- Kliima metaandmed -----------------------------------------------------
 
@@ -50,12 +51,12 @@ note = "Metaandmete teenus, dokumentatsiooni järgi lubatud ilma argumentideta"
 id = "kliima-jaam-vaatlus"
 name = "Kliima vaatlusjaamade metaandmed"
 system = "Kliima"
-url = "https://keskkonnaandmed.envir.ee/f_kliima_jaam_vaatlus"
+url = "https://keskkonnaandmed.envir.ee/f_kliima_jaam_vaatlus?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
 source = "manual"
 verified = true
-note = "Metaandmete teenus, dokumentatsiooni järgi lubatud ilma argumentideta"
+note = "Metaandmete teenus; filtrita 1,1 MB, seega tunnisele kontrollile limit=1"
 
 # --- Kliima mõõtmised ------------------------------------------------------
 
@@ -89,8 +90,8 @@ url = "https://keskkonnaandmed.envir.ee/f_kliima_kuu?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
 source = "manual"
-verified = false
-note = "Teenus dokumenteeritud, päringu koostasin ise: limit=1 elushoiu kontrolliks"
+verified = true
+note = "Teenus dokumenteeritud; ?limit=1 koostatud siin ja kinnitatud päris teenuse vastu 2026-09-14 (HTTP 200)"
 
 [[endpoint]]
 id = "kliima-tund"
@@ -100,8 +101,8 @@ url = "https://keskkonnaandmed.envir.ee/f_kliima_tund?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
 source = "manual"
-verified = false
-note = "Teenus dokumenteeritud, päringu koostasin ise: limit=1 elushoiu kontrolliks"
+verified = true
+note = "Teenus dokumenteeritud; ?limit=1 koostatud siin ja kinnitatud päris teenuse vastu 2026-09-14 (HTTP 200)"
 
 [[endpoint]]
 id = "kliima-minut"
@@ -111,8 +112,8 @@ url = "https://keskkonnaandmed.envir.ee/f_kliima_minut?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
 source = "manual"
-verified = false
-note = "Teenus dokumenteeritud, päringu koostasin ise: limit=1 elushoiu kontrolliks"
+verified = true
+note = "Teenus dokumenteeritud; ?limit=1 koostatud siin ja kinnitatud päris teenuse vastu 2026-09-14 (HTTP 200)"
 
 # --- Hüdroloogiline seire --------------------------------------------------
 
@@ -161,8 +162,8 @@ url = "https://keskkonnaandmed.envir.ee/f_rahvalad_dok?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
 source = "manual"
-verified = false
-note = "Tabel dokumenteeritud, päringu koostasin ise: limit=1"
+verified = true
+note = "Tabel dokumenteeritud; ?limit=1 koostatud siin ja kinnitatud päris teenuse vastu 2026-09-14 (HTTP 200)"
 
 [[endpoint]]
 id = "eelis-rahvalad-seosed"
