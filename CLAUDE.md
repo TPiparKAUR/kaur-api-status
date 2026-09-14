@@ -77,6 +77,20 @@ exits non-zero. `check_endpoint` likewise never raises — it is mapped over
 every endpoint, so one escaping exception would lose the whole run's log,
 report and notifications rather than just that endpoint.
 
+**Groups collapse many endpoints into one recorded unit.** EELIS publishes 261
+tables behind one service. All are checked every run; one record is written.
+A single failing member takes the group down and the record names which
+members failed, so the aggregate never hides the cause. Without this the log
+would grow by a gigabyte a year to repeat "all 261 fine" every half hour, and
+a reader would scan 261 rows to learn one thing. `[[group]]` in the inventory
+defines them; `inventory.units()` is what the report and page actually iterate.
+
+**`inventory.save()` preserves the file preamble.** A discovery run rewrites
+the inventory wholesale and once deleted the notes explaining the wrong
+documented header value and the deliberately excluded KAIA endpoints. Comments
+above the first table now survive; comments between tables still do not,
+because the tables are regenerated.
+
 **Report in Estonian local time, log in UTC.** Data and code are UTC ISO 8601;
 `REPORT.md` renders EET/EEST and labels it.
 
@@ -130,18 +144,14 @@ and the station query uses `limit=1`.
 
 ## Open work
 
-**Log growth is the pressing one.** 283 endpoints every 30 minutes is 13 584
-requests a day and about 5 million log records a year — roughly **1 GB of
-committed text per year**, against GitHub's 1 GB recommended repository size.
-Reading is already bounded (the report and page window to 31 days), so this is
-purely a storage question, and it needs a decision rather than a code change:
-a slower cadence for the harvested tail, per-endpoint intervals, rolling old
-months up into daily aggregates and dropping the raw lines, or accepting it.
-Nothing here prunes anything on its own.
+Log growth is handled by grouping (see below): 23 units rather than 283
+endpoints is about 400 000 records and 84 MB a year, down from a projected
+1 GB. Nothing prunes anything automatically; if it ever needs to, the reading
+side is already windowed to 31 days.
 
-Actions minutes are fine by contrast: a measured run is 43 seconds, so 1 440
-minutes a month against a 2 000 allowance. The margin is one slow day wide,
-though — crossing 60 seconds doubles the bill.
+Actions minutes: a measured run is 43 seconds, so 1 440 minutes a month against
+a 2 000 allowance. The margin is one slow day wide — crossing 60 seconds
+doubles the bill.
 
 - The 261 harvested endpoints are `verified = false`. Confirming them is a
   human job; until then they are watched but never alert.

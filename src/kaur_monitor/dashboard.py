@@ -116,6 +116,9 @@ def build(entries: list[dict[str, Any]]) -> dict[str, Any]:
                 "avail_24h": None if avail_24h is None else round(avail_24h, 2),
                 "avail_7d": None if avail_7d is None else round(avail_7d, 2),
                 "checks_24h": checks_24h,
+                # A grouped unit stands for many endpoints; say how many rather
+                # than letting one row quietly represent 261.
+                "members": entry.get("members"),
             }
         )
 

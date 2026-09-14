@@ -17,6 +17,84 @@ from . import store
 WINDOW_DAYS = 31.0
 
 
+# 'unknown' is not a severity, it is an absence of evidence, so it is set aside
+# when picking the group's status and only wins when it is all there is.
+_WORST_FIRST = ("down", "degraded", "ok")
+_NAMED_FAILURES = 5
+
+
+def _median(values: list[int]) -> int | None:
+    if not values:
+        return None
+    ordered = sorted(values)
+    return ordered[len(ordered) // 2]
+
+
+def collapse_groups(
+    records: list[dict[str, Any]], group_of: dict[str, str]
+) -> list[dict[str, Any]]:
+    """Replace each group's member records with one record standing for the group.
+
+    Every member is still checked; only the recording is collapsed. One failing
+    member makes the group fail — that is the point, since a reader wants to
+    know EELIS is not fully answering, not to scan 261 rows to find out.
+
+    The record names the members that failed, so the aggregate never hides
+    which one it was, and keeps the counts so availability stays meaningful.
+    """
+    if not group_of:
+        return records
+
+    kept: list[dict[str, Any]] = []
+    grouped: dict[str, list[dict[str, Any]]] = {}
+    for record in records:
+        group_id = group_of.get(str(record.get("id")))
+        if group_id is None:
+            kept.append(record)
+        else:
+            grouped.setdefault(group_id, []).append(record)
+
+    for group_id, members in sorted(grouped.items()):
+        statuses = {str(m.get("status")) for m in members}
+        if statuses == {"unknown"}:
+            status = "unknown"
+        else:
+            evidence = statuses - {"unknown"}
+            status = next((s for s in _WORST_FIRST if s in evidence), "ok")
+
+        failed = [m for m in members if m.get("status") not in ("ok", "unknown")]
+        detail = ""
+        if failed:
+            named = ", ".join(
+                f"{m.get('id')} ({(m.get('detail') or m.get('status') or '')[:60]})"
+                for m in failed[:_NAMED_FAILURES]
+            )
+            more = (
+                f" ja veel {len(failed) - _NAMED_FAILURES}" if len(failed) > _NAMED_FAILURES else ""
+            )
+            detail = f"{len(failed)}/{len(members)} ei vasta: {named}{more}"
+
+        certs = [m["cert_days"] for m in members if isinstance(m.get("cert_days"), int)]
+        kept.append(
+            {
+                "ts": members[0].get("ts"),
+                "id": group_id,
+                "status": status,
+                "stage": "group",
+                "http": None,
+                "ms": _median([m["ms"] for m in members if isinstance(m.get("ms"), int)]),
+                "bytes": None,
+                "sha256": None,
+                "cert_days": min(certs) if certs else None,
+                "age_s": None,
+                "detail": detail[:300],
+                "members": len(members),
+                "ok": sum(1 for m in members if m.get("status") == "ok"),
+            }
+        )
+    return kept
+
+
 def by_endpoint(records: list[dict[str, Any]]) -> dict[str, list[dict[str, Any]]]:
     """Group records per endpoint, each series oldest first."""
     grouped: dict[str, list[dict[str, Any]]] = {}

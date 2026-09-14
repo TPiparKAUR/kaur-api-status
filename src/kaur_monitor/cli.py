@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import urlsplit
 
-from . import dashboard, discover, inventory, report, store
+from . import analysis, dashboard, discover, inventory, report, store
 from .check import STATUS_UNKNOWN, check_endpoint, looks_like_local_network_failure
 
 _MARK = {"ok": "  OK  ", "degraded": "HÄIRE ", "down": " MAAS ", "unknown": "  ??  "}
@@ -53,9 +53,17 @@ def cmd_check(args: argparse.Namespace) -> int:
 
     _print_results(records)
 
+    # Every endpoint was checked; grouped ones are recorded as one. A reader
+    # wants to know whether EELIS answers, and the repository does not want 261
+    # lines every half hour to say that it did.
+    group_of = {e["id"]: str(e["group"]) for e in entries if e.get("group")}
+    logged = analysis.collapse_groups(records, group_of)
+    if group_of:
+        print(f"\n{len(records)} kontrolli koondatud {len(logged)} kirjeks.")
+
     if not args.dry_run:
-        log_path = store.append(records)
-        known = inventory.load_or_empty(config)
+        log_path = store.append(logged)
+        known = inventory.units(inventory.load_or_empty(config), inventory.load_groups(config))
         report_path = report.write(known)
         data_path = dashboard.write(known)
         print(f"\nLogitud:   {log_path}\nRaport:    {report_path}\nDashboard: {data_path}")
@@ -69,7 +77,8 @@ def cmd_check(args: argparse.Namespace) -> int:
 
 def cmd_report(args: argparse.Namespace) -> int:
     """Rebuild both rendered views of the log: the Markdown report and the page data."""
-    known = inventory.load_or_empty(Path(args.config))
+    config = Path(args.config)
+    known = inventory.units(inventory.load_or_empty(config), inventory.load_groups(config))
     print(f"Raport kirjutatud:    {report.write(known)}")
     print(f"Dashboard kirjutatud: {dashboard.write(known)}")
     return 0

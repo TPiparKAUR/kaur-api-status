@@ -114,7 +114,7 @@ function renderSystems(data) {
       const meta = document.createElement("p");
       meta.className = "meta";
       meta.textContent =
-        `${system.ok} / ${system.endpoints} otspunkti korras · ` +
+        `${system.ok} / ${system.endpoints} jälgitavat üksust korras · ` +
         `kättesaadavus 24 h ${pct(system.avail_24h)}`;
 
       card.append(title, text, meta);
@@ -146,7 +146,7 @@ function renderEndpoints(data) {
       name.textContent = item.name;
       const id = document.createElement("span");
       id.className = "id";
-      id.textContent = item.id;
+      id.textContent = item.members ? `${item.id} · ${item.members} otspunkti` : item.id;
       name.append(id);
 
       const system = document.createElement("td");

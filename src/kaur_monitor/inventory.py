@@ -35,6 +35,7 @@ _ALLOWED = frozenset(
         "note",
         "headers",
         "body",
+        "group",
     }
 )
 _VALID_EXPECT = frozenset({"json", "xml", "any"})
@@ -117,7 +118,75 @@ def load(path: Path = CONFIG_PATH) -> list[dict[str, Any]]:
         seen.add(entry["id"])
         validated.append(entry)
 
+    known_groups = {g["id"] for g in load_groups(path)}
+    for entry in validated:
+        group_id = entry.get("group")
+        if group_id and group_id not in known_groups:
+            raise InventoryError(
+                f"{path}: endpoint '{entry['id']}' names group '{group_id}', "
+                f"which has no [[group]] entry"
+            )
+
     return validated
+
+
+_GROUP_ALLOWED = frozenset({"id", "name", "system", "url", "verified", "note"})
+
+
+def load_groups(path: Path = CONFIG_PATH) -> list[dict[str, Any]]:
+    """Groups: sets of endpoints that are one thing to a reader.
+
+    EELIS publishes 261 tables behind one service. A reader wants to know
+    whether EELIS answers, not which of 261 tables did; and logging all 261
+    every half hour is most of a gigabyte a year of committed text. A group is
+    checked in full but recorded, reported and displayed as one.
+    """
+    if not path.exists():
+        return []
+    raw = tomllib.loads(path.read_text(encoding="utf-8"))
+    groups = raw.get("group", [])
+    if not isinstance(groups, list):
+        raise InventoryError(f"{path}: 'group' must be an array of tables")
+    for index, group in enumerate(groups):
+        where = f"{path} group #{index + 1}"
+        if not group.get("id") or not group.get("name"):
+            raise InventoryError(f"{where}: a group needs both 'id' and 'name'")
+        unknown = set(group) - _GROUP_ALLOWED
+        if unknown:
+            raise InventoryError(f"{where}: unknown keys {sorted(unknown)}")
+    return groups
+
+
+def units(entries: list[dict[str, Any]], groups: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """What the log, the report and the page each count as one monitored thing.
+
+    An ungrouped endpoint is its own unit. Grouped endpoints become a single
+    synthetic unit carrying the group's name, so everything downstream can stay
+    unaware that a unit might stand for hundreds of requests.
+    """
+    meta = {g["id"]: g for g in groups}
+    members: dict[str, list[dict[str, Any]]] = {}
+    out: list[dict[str, Any]] = []
+    for entry in entries:
+        group_id = entry.get("group")
+        if group_id:
+            members.setdefault(str(group_id), []).append(entry)
+        else:
+            out.append(entry)
+    for group_id, group_members in sorted(members.items()):
+        info = meta.get(group_id, {})
+        out.append(
+            {
+                "id": group_id,
+                "name": info.get("name", group_id),
+                "system": info.get("system") or group_members[0].get("system") or "Muu",
+                "url": info.get("url") or str(group_members[0]["url"]).split("?")[0],
+                "verified": bool(info.get("verified", False)),
+                "note": info.get("note", ""),
+                "members": len(group_members),
+            }
+        )
+    return out
 
 
 def load_or_empty(path: Path = CONFIG_PATH) -> list[dict[str, Any]]:
@@ -147,41 +216,88 @@ def _fmt(value: Any) -> str:
     return f'"{text}"'
 
 
-def save(entries: list[dict[str, Any]], path: Path = CONFIG_PATH) -> None:
-    """Write the inventory back as TOML, preserving hand-editability."""
-    lines = [
-        "# Keskkonnaagentuur API endpoint inventory.",
-        "#",
-        "# verified = false means nobody has confirmed this URL yet. Unverified",
-        "# entries are checked but flagged separately in the report.",
-        "#",
-        "# Regenerate discovered entries with: python monitor.py discover",
-        '# Hand-written entries (source = "manual") are never overwritten.',
-        "",
+def _preamble(path: Path) -> list[str]:
+    """Whatever a human wrote above the first table in an existing file.
+
+    A discovery run rewrites this file wholesale, and once silently deleted the
+    notes explaining why a documented header value is wrong and why certain
+    endpoints are excluded — knowledge that belongs exactly where the next
+    person edits. Anything above the first table is now carried across.
+    """
+    if not path.exists():
+        return []
+    lines = path.read_text(encoding="utf-8").splitlines()
+    kept: list[str] = []
+    for line in lines:
+        if line.lstrip().startswith("[["):
+            break
+        kept.append(line)
+    while kept and not kept[-1].strip():
+        kept.pop()
+    return kept
+
+
+_DEFAULT_PREAMBLE = [
+    "# Keskkonnaagentuur API endpoint inventory.",
+    "#",
+    "# verified = false means nobody has confirmed this URL yet. Unverified",
+    "# entries are checked but flagged separately in the report and never alert.",
+    "#",
+    "# Comments above the first table are preserved across a discovery run;",
+    "# comments between tables are not, because the tables are regenerated.",
+]
+
+_ENTRY_ORDER = (
+    "id",
+    "name",
+    "system",
+    "group",
+    "url",
+    "expect",
+    "method",
+    "headers",
+    "body",
+    "timeout_s",
+    "max_bytes",
+    "freshness_regex",
+    "max_age_s",
+    "enabled",
+    "source",
+    "verified",
+    "note",
+)
+
+_GROUP_ORDER = ("id", "name", "system", "url", "verified", "note")
+
+
+def _table(kind: str, entry: dict[str, Any], order: tuple[str, ...]) -> list[str]:
+    lines = [f"[[{kind}]]"]
+    lines += [
+        f"{key} = {_fmt(entry[key])}" for key in order if key in entry and entry[key] is not None
     ]
+    lines.append("")
+    return lines
+
+
+def save(
+    entries: list[dict[str, Any]],
+    path: Path = CONFIG_PATH,
+    groups: list[dict[str, Any]] | None = None,
+) -> None:
+    """Write the inventory back as TOML, preserving hand-editability.
+
+    Groups are re-emitted rather than dropped: without this a discovery run
+    would quietly delete the definition that makes 261 endpoints report as one.
+    """
+    if groups is None:
+        groups = load_groups(path)
+
+    lines = _preamble(path) or list(_DEFAULT_PREAMBLE)
+    lines.append("")
+    for group in sorted(groups, key=lambda g: g["id"]):
+        lines += _table("group", group, _GROUP_ORDER)
     for entry in sorted(entries, key=lambda e: e["id"]):
-        lines.append("[[endpoint]]")
-        for key in (
-            "id",
-            "name",
-            "system",
-            "url",
-            "expect",
-            "method",
-            "headers",
-            "body",
-            "timeout_s",
-            "max_bytes",
-            "freshness_regex",
-            "max_age_s",
-            "enabled",
-            "source",
-            "verified",
-            "note",
-        ):
-            if key in entry and entry[key] is not None:
-                lines.append(f"{key} = {_fmt(entry[key])}")
-        lines.append("")
+        lines += _table("endpoint", entry, _ENTRY_ORDER)
 
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(lines), encoding="utf-8")

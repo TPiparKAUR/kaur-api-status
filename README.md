@@ -195,6 +195,36 @@ Lehel kuvatavad kirjeldused on failis `config/systems.toml`, mitte koodis.
 Süsteemi nimi seal peab kattuma inventari `system` väljaga. Kirjelduseta
 süsteem kuvatakse ilma tekstita.
 
+## Rühmad: palju otspunkte, üks rida
+
+EELIS avaldab 261 tabelit ühe teenuse taga. Juhtkonnale on oluline, kas EELIS
+vastab, mitte milline 261-st — ja 261 logirida iga poole tunni tagant oleks
+umbes gigabait committitud teksti aastas.
+
+Rühm lahendab mõlemad. **Kõiki otspunkte kontrollitakse endiselt igal jooksul**,
+aga logisse, raportisse ja lehele läheb üks kirje:
+
+- kasvõi üks tabel ei vasta → **rühm on maas**, ja kirje nimetab, millised
+- kõik vastavad → rühm on korras
+- kirje hoiab ka loendurid (`258/261`), nii et käideldavuse protsent jääb õigeks
+
+Mahuvõit: 283 üksuse asemel 23 → **84 MB aastas 1 GB asemel**.
+
+Rühma määramine:
+
+```toml
+[[group]]
+id = "eelis"
+name = "EELIS andmestikud"
+system = "EELIS"
+verified = true
+
+[[endpoint]]
+id = "f-alad"
+group = "eelis"      # <- viide rühmale
+...
+```
+
 ## Uue API lisamine jälgimisele
 
 Kolm sammu, ainult andmefailides — koodi muuta pole vaja.

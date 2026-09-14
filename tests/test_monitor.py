@@ -726,6 +726,155 @@ class LogWindowing(unittest.TestCase):
         self.assertIn("31 päeva jooksul", text)
 
 
+class GroupCollapsing(unittest.TestCase):
+    """261 EELIS tables are one thing to a reader and one line to the log."""
+
+    GROUP: ClassVar[dict[str, str]] = {"a": "g", "b": "g", "c": "g"}
+
+    def test_all_members_ok_makes_the_group_ok(self):
+        records = [dict(_record(i, "ok", 1), ms=100) for i in "abc"]
+        [row] = analysis.collapse_groups(records, self.GROUP)
+        self.assertEqual(row["id"], "g")
+        self.assertEqual(row["status"], "ok")
+        self.assertEqual(row["members"], 3)
+        self.assertEqual(row["ok"], 3)
+        self.assertEqual(row["detail"], "")
+
+    def test_one_member_down_takes_the_whole_group_down(self):
+        records = [
+            dict(_record("a", "ok", 1), ms=100),
+            dict(_record("b", "down", 1), ms=None, detail="http 500 Server Error"),
+            dict(_record("c", "ok", 1), ms=200),
+        ]
+        [row] = analysis.collapse_groups(records, self.GROUP)
+        self.assertEqual(row["status"], "down")
+        self.assertEqual(row["ok"], 2)
+        self.assertIn("1/3 ei vasta", row["detail"])
+        self.assertIn("b", row["detail"])
+        self.assertIn("http 500", row["detail"])
+
+    def test_degraded_loses_to_down_but_beats_ok(self):
+        records = [dict(_record("a", "ok", 1)), dict(_record("b", "degraded", 1))]
+        [row] = analysis.collapse_groups(records, {"a": "g", "b": "g"})
+        self.assertEqual(row["status"], "degraded")
+
+    def test_a_group_is_unknown_only_when_every_member_is(self):
+        allu = [dict(_record(i, "unknown", 1)) for i in "abc"]
+        self.assertEqual(analysis.collapse_groups(allu, self.GROUP)[0]["status"], "unknown")
+        mixed = [dict(_record("a", "unknown", 1)), dict(_record("b", "ok", 1))]
+        self.assertEqual(analysis.collapse_groups(mixed, {"a": "g", "b": "g"})[0]["status"], "ok")
+
+    def test_many_failures_are_summarised_not_dumped(self):
+        records = [dict(_record(f"e{i}", "down", 1), detail="boom") for i in range(20)]
+        [row] = analysis.collapse_groups(records, {f"e{i}": "g" for i in range(20)})
+        self.assertIn("20/20 ei vasta", row["detail"])
+        self.assertIn("ja veel 15", row["detail"])
+        self.assertLessEqual(len(row["detail"]), 300)
+
+    def test_ungrouped_records_pass_through_untouched(self):
+        records = [dict(_record("a", "ok", 1), ms=1), dict(_record("solo", "down", 1))]
+        out = analysis.collapse_groups(records, {"a": "g"})
+        self.assertEqual({r["id"] for r in out}, {"g", "solo"})
+
+    def test_no_groups_configured_changes_nothing(self):
+        records = [dict(_record("a", "ok", 1))]
+        self.assertIs(analysis.collapse_groups(records, {}), records)
+
+    def test_the_group_carries_a_typical_latency_and_the_worst_certificate(self):
+        records = [
+            dict(_record("a", "ok", 1), ms=100, cert_days=90),
+            dict(_record("b", "ok", 1), ms=200, cert_days=10),
+            dict(_record("c", "ok", 1), ms=300, cert_days=50),
+        ]
+        [row] = analysis.collapse_groups(records, self.GROUP)
+        self.assertEqual(row["ms"], 200)
+        self.assertEqual(row["cert_days"], 10)
+
+
+class Units(unittest.TestCase):
+    def _entries(self) -> list[dict]:
+        return [
+            {"id": "solo", "name": "Solo", "url": "https://e.org/s", "system": "Kliima"},
+            {
+                "id": "a",
+                "name": "A",
+                "url": "https://e.org/a?limit=1",
+                "system": "EELIS",
+                "group": "eelis",
+                "verified": False,
+            },
+            {
+                "id": "b",
+                "name": "B",
+                "url": "https://e.org/b?limit=1",
+                "system": "EELIS",
+                "group": "eelis",
+                "verified": False,
+            },
+        ]
+
+    def test_a_group_becomes_one_unit_named_by_the_group(self):
+        groups = [{"id": "eelis", "name": "EELIS andmestikud", "system": "EELIS", "verified": True}]
+        units = inventory.units(self._entries(), groups)
+        self.assertEqual(len(units), 2)
+        group_unit = next(u for u in units if u["id"] == "eelis")
+        self.assertEqual(group_unit["name"], "EELIS andmestikud")
+        self.assertEqual(group_unit["members"], 2)
+
+    def test_the_group_decides_its_own_verified_flag_not_its_members(self):
+        """Members are unverified queries; the aggregate was confirmed to work."""
+        groups = [{"id": "eelis", "name": "EELIS", "verified": True}]
+        unit = next(u for u in inventory.units(self._entries(), groups) if u["id"] == "eelis")
+        self.assertTrue(unit["verified"])
+
+    def test_a_group_with_no_definition_still_yields_a_usable_unit(self):
+        unit = next(u for u in inventory.units(self._entries(), []) if u["id"] == "eelis")
+        self.assertEqual(unit["name"], "eelis")
+        self.assertEqual(unit["system"], "EELIS")
+
+    def test_endpoints_naming_a_missing_group_are_rejected(self):
+        path = Path(tempfile.mkdtemp()) / "endpoints.toml"
+        path.write_text(
+            '[[endpoint]]\nid="a"\nname="A"\nurl="https://e.org"\ngroup="nope"\n', encoding="utf-8"
+        )
+        with self.assertRaisesRegex(inventory.InventoryError, "no \\[\\[group\\]\\] entry"):
+            inventory.load(path)
+
+
+class InventoryRewriting(unittest.TestCase):
+    """A discovery run rewrites this file; it must not eat what a human wrote."""
+
+    def test_comments_above_the_first_table_survive_a_rewrite(self):
+        path = Path(tempfile.mkdtemp()) / "endpoints.toml"
+        path.write_text(
+            "# Do not correct the header value back.\n# It is wrong in the docs.\n\n"
+            '[[endpoint]]\nid="a"\nname="A"\nurl="https://e.org"\n',
+            encoding="utf-8",
+        )
+        inventory.save(inventory.load(path), path)
+        after = path.read_text(encoding="utf-8")
+        self.assertIn("Do not correct the header value back.", after)
+        self.assertIn("It is wrong in the docs.", after)
+
+    def test_groups_survive_a_rewrite(self):
+        path = Path(tempfile.mkdtemp()) / "endpoints.toml"
+        inventory.save(
+            [{"id": "a", "name": "A", "url": "https://e.org", "group": "g"}],
+            path,
+            groups=[{"id": "g", "name": "Group", "verified": True}],
+        )
+        inventory.save(inventory.load(path), path)
+        groups = inventory.load_groups(path)
+        self.assertEqual(len(groups), 1)
+        self.assertEqual(groups[0]["name"], "Group")
+
+    def test_a_group_needs_a_name(self):
+        path = Path(tempfile.mkdtemp()) / "endpoints.toml"
+        path.write_text('[[group]]\nid="g"\n', encoding="utf-8")
+        with self.assertRaisesRegex(inventory.InventoryError, "needs both"):
+            inventory.load_groups(path)
+
+
 class DashboardData(unittest.TestCase):
     """The page draws exactly this file, so an error here is an error in public."""
 

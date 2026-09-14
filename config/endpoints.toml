@@ -1,15 +1,35 @@
-# Keskkonnaagentuur API endpoint inventory.
+# Keskkonnaagentuuri API-de inventar.
 #
-# verified = false means nobody has confirmed this URL yet. Unverified
-# entries are checked but flagged separately in the report.
+# verified = false tähendab, et keegi pole seda URL-i üle vaadanud. Selliseid
+# otspunkte kontrollitakse, need on raportis ja lehel näha, aga need ei ava
+# kunagi Issue't — vale päring ei ole teenuse katkestus.
 #
-# Regenerate discovered entries with: python monitor.py discover
-# Hand-written entries (source = "manual") are never overwritten.
+# NB! Accept-Profile väärtus on "apijahiala". Dokumentatsioonis on
+# "apijahialad" (lõpus d) ja päris teenus lükkab selle tagasi koodiga
+# 406 PGRST106. Ära "paranda" seda dokumendi kuju poole tagasi.
+#
+# KAIA teenusest on teadlikult välja jäetud:
+#   PUT  /api/lists/{list}/items/{id}/files/{fileId}  — kirjutusoperatsioon
+#   GET  .../files/{fileId}                           — vajab päris dokumendi ID-d
+#   POST .../items/zipped-files                       — tagastab ZIP-i, maht lahtine
+# Kirjutavad meetodid on inventaris nagunii keelatud.
+#
+# Selle joone kohal olev tekst säilib avastusjooksu üle; tabelite vahel olevad
+# kommentaarid mitte, sest tabelid genereeritakse uuesti.
+
+[[group]]
+id = "eelis"
+name = "EELIS andmestikud"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/"
+verified = true
+note = "261 tabelit ühe kirjena: kõiki kontrollitakse igal jooksul, aga logisse läheb üks rida. Kui kasvõi üks tabel ei vasta, on rühm maas ja kirje nimetab, millised."
 
 [[endpoint]]
 id = "eelis-rahvalad"
 name = "EELIS rahvusvahelised alad, Kurese loodusala"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_rahvalad?kkr_kood=eq.RAH0000556"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -21,6 +41,7 @@ note = "Dokumentatsiooni näidispäring, põhitabel"
 id = "eelis-rahvalad-dok"
 name = "EELIS rahvusvaheliste alade dokumendid, seosetabel"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_rahvalad_dok?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -32,6 +53,7 @@ note = "Tabel dokumenteeritud; ?limit=1 koostatud siin ja kinnitatud päris teen
 id = "eelis-rahvalad-linnuala"
 name = "EELIS linnuala määramise õiguslik alus (pesastatud filter)"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_rahvalad?select=*,dok:f_rahvalad_dok(*)&kkr_kood=eq.RAH0000556&dok.on_linnuala_kohta=eq.1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -43,6 +65,7 @@ note = "Dokumentatsiooni näidispäring; katab pesastatud tabeli filtri"
 id = "eelis-rahvalad-seosed"
 name = "EELIS rahvusvahelised alad koos dokumentidega (embedding)"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_rahvalad?select=*,dok:f_rahvalad_dok(*)&kkr_kood=eq.RAH0000556"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -54,6 +77,7 @@ note = "Dokumentatsiooni näidispäring; katab PostgREST-i seoste sisestamise"
 id = "f-alad"
 name = "Kaitsealused alad ja üksikobjektid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_alad?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -65,6 +89,7 @@ verified = false
 id = "f-alad-dok"
 name = "Kaitsealuse ala või üksikobjektiga seotud õigusaktid."
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_alad_dok?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -76,6 +101,7 @@ verified = false
 id = "f-alad-ehak"
 name = "Kaitsealuse ala või üksikobjekti kohanimi"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_alad_ehak?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -87,6 +113,7 @@ verified = false
 id = "f-alad-elupaigatyyp"
 name = "Natura elupaigatüübid, mis on kaitse eesmärgiks"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_alad_elupaigatyyp?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -98,6 +125,7 @@ verified = false
 id = "f-alad-fjisik"
 name = "Kaitsealuse ala või üksikobjekti valitsejad"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_alad_fjisik?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -109,6 +137,7 @@ verified = false
 id = "f-alad-invelupaik"
 name = "Kaitsealusel alal või üksikobjektil asuvad Natura elupaigad (v.a I ja II kaitsekatekooriga liikide püsielupaigad)"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_alad_invelupaik?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -120,6 +149,7 @@ verified = false
 id = "f-alad-kandealus"
 name = "Kaitsealuse ala või üksikobjekti kandealused"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_alad_kandealus?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -131,6 +161,7 @@ verified = false
 id = "f-alad-kava"
 name = "Kaitsekorralduskavad"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_alad_kava?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -142,6 +173,7 @@ verified = false
 id = "f-alad-kirjandus"
 name = "Kaitsealuse ala või üksikobjekti kirjandus ja uuringud"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_alad_kirjandus?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -153,6 +185,7 @@ verified = false
 id = "f-alad-lkoht"
 name = "Kaitsealusel alal või üksikobjektil asuvad liikide leiukohad"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_alad_lkoht?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -164,6 +197,7 @@ verified = false
 id = "f-alad-lkoht-py"
 name = "Leiukohad, mille kaitseks püsielupaik on loodud ( v.a I ja II kaitsekategooria liikide püsielupaigad)"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_alad_lkoht_py?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -175,6 +209,7 @@ verified = false
 id = "f-alad-lnim"
 name = "Liigid, mis on kaitse eesmärgiks"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_alad_lnim?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -186,6 +221,7 @@ verified = false
 id = "f-alad-rahvala"
 name = "Kaitsealune ala või üksikobjekt asub rahvusvahelise tähtsusega aladel"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_alad_rahvala?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -197,6 +233,7 @@ verified = false
 id = "f-alad-seotud-ala"
 name = "Kaitsealusel alal või üksikobjektil asuvad kaitsealused alad või üksikobjektid ( v.a I ja II kaitsekatekooriga liikide püsielupaigad)"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_alad_seotud_ala?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -208,6 +245,7 @@ verified = false
 id = "f-alad-veekogu"
 name = "Kaitsealusel alal või üksikobjektil asuvad veekogud ( v.a I ja II kaitsekatekooriga liikide püsielupaigad)."
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_alad_veekogu?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -219,6 +257,7 @@ verified = false
 id = "f-alad-vep"
 name = "Kaitsealuse ala või üksikobjektiga kattuvad vääriselupaigad ( v.a I ja II kaitsekatekooriga liikide püsielupaigad)"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_alad_vep?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -230,6 +269,7 @@ verified = false
 id = "f-alad-voond"
 name = "Üksikobjekti vööndid ( v.a I ja II kaitsekatekooriga liikide püsielupaigad)"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_alad_voond?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -241,6 +281,7 @@ verified = false
 id = "f-alad-yksikobj-moot"
 name = "Üksikobjekti mõõdud"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_alad_yksikobj_moot?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -252,6 +293,7 @@ verified = false
 id = "f-alad-yrg"
 name = "Kaitsealusel alal või üksikobjektil asuvad ürglooduse objektid ( v.a I ja II kaitsekatekooriga liikide püsielupaigad)"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_alad_yrg?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -263,6 +305,7 @@ verified = false
 id = "f-hks-elemendid"
 name = "Mereala HKS mõõdetavad elemendid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_hks_elemendid?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -274,6 +317,7 @@ verified = false
 id = "f-hks-elemendid-seirejaam"
 name = "Mereala HKS mõõdetavate elementide seirejaamad"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_hks_elemendid_seirejaam?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -285,6 +329,7 @@ verified = false
 id = "f-hks-elemendid-veekogum"
 name = "Mereala HKS mõõdetavate elementide veekogumid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_hks_elemendid_veekogum?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -296,6 +341,7 @@ verified = false
 id = "f-hks-indikaatorid"
 name = "MSRD HKS indikaatorid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_hks_indikaatorid?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -307,6 +353,7 @@ verified = false
 id = "f-hks-indikaatorid-dok"
 name = "MSRD indikaatoritega seotud õigusaktid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_hks_indikaatorid_dok?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -318,6 +365,7 @@ verified = false
 id = "f-hks-indikaatorid-kirjandus"
 name = "MSRD indikaatori kirjandus ja uuringud"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_hks_indikaatorid_kirjandus?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -329,6 +377,7 @@ verified = false
 id = "f-hks-indikaatorid-veekogum"
 name = "MSRD indikaatorite hindamisüksused"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_hks_indikaatorid_veekogum?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -340,6 +389,7 @@ verified = false
 id = "f-hks-kriteeriumid"
 name = "MSRD tunnused ja kriteeriumid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_hks_kriteeriumid?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -351,6 +401,7 @@ verified = false
 id = "f-hks-kriteeriumid-dok"
 name = "MSRD indikaatoritega seotud õigusaktid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_hks_kriteeriumid_dok?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -362,6 +413,7 @@ verified = false
 id = "f-hks-kriteeriumid-sr-programm"
 name = "HKS tunnusega/kriteeriumiga seotud MSRD seireprogrammid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_hks_kriteeriumid_sr_programm?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -373,6 +425,7 @@ verified = false
 id = "f-hks-kriteeriumid-vmmeede"
 name = "HKS kriteeriumiga seotud meetmed"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_hks_kriteeriumid_vmmeede?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -384,6 +437,7 @@ verified = false
 id = "f-hks-seisud"
 name = "Mereala seisundi hinnatud väärtused"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_hks_seisud?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -395,6 +449,7 @@ verified = false
 id = "f-hks-sihid"
 name = "Merestrateegia keskkonnaalased sihid ja indikaatorid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_hks_sihid?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -406,6 +461,7 @@ verified = false
 id = "f-hks-sihid-sr-programm"
 name = "MSRD sihtidega seotud seireprogrammid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_hks_sihid_sr_programm?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -417,6 +473,7 @@ verified = false
 id = "f-hks-sihid-vmmeede"
 name = "MSRD sihtidega seotud meetmed"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_hks_sihid_vmmeede?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -428,6 +485,7 @@ verified = false
 id = "f-hks-siht-seisud"
 name = "MSRD sihi/indikaatori andmerida"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_hks_siht_seisud?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -450,6 +508,7 @@ verified = false
 id = "f-invelupaigad"
 name = "NATURA elupaigad"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_invelupaigad?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -461,6 +520,7 @@ verified = false
 id = "f-invelupaigad-ala"
 name = "Natura elupaik asub kaitsealusel alal ( v.a I ja II kaitsekatekooriga liikide püsielupaigad)"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_invelupaigad_ala?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -472,6 +532,7 @@ verified = false
 id = "f-invelupaigad-ehak"
 name = "Natura elupaiga kohanimi"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_invelupaigad_ehak?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -483,6 +544,7 @@ verified = false
 id = "f-invelupaigad-invelupaigatyyp"
 name = "Natura elupaigal esinevad põhilised ja kaasnevad elupaigatüübid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_invelupaigad_invelupaigatyyp?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -494,6 +556,7 @@ verified = false
 id = "f-invelupaigad-invmojutegur"
 name = "Natura elupaigas esinevad mõjutegurid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_invelupaigad_invmojutegur?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -505,6 +568,7 @@ verified = false
 id = "f-invelupaigad-invtunnus"
 name = "Natura elupaiga tunnused"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_invelupaigad_invtunnus?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -516,6 +580,7 @@ verified = false
 id = "f-invelupaigad-kandealus"
 name = "Natura elupaiga kandealused"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_invelupaigad_kandealus?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -527,6 +592,7 @@ verified = false
 id = "f-invelupaigad-lkoht"
 name = "Natura elupaiga liikide leiukohad (v.a I, II kaitsekategooria liigid)"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_invelupaigad_lkoht?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -538,6 +604,7 @@ verified = false
 id = "f-invelupaigad-lnim"
 name = "Natura alal esinevad olulised, alusmetsa ja järelkasvu liigid, võõrliigid ning määratud dominantliigid (v.a I, II kaitsekategooria liigid)"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_invelupaigad_lnim?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -549,6 +616,7 @@ verified = false
 id = "f-invelupaigad-rahvala"
 name = "Natura elupaik asub rahvusvahelise tähtsusega aladel"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_invelupaigad_rahvala?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -560,6 +628,7 @@ verified = false
 id = "f-invelupaigad-veekogu"
 name = "Natura elupaigaga kattuvad veekogud"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_invelupaigad_veekogu?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -571,6 +640,7 @@ verified = false
 id = "f-jaakreostusalad"
 name = "Jääkreostusobjektid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_jaakreostusalad?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -582,6 +652,7 @@ verified = false
 id = "f-jaakreostusalad-alamobjekt"
 name = "Alamobjektid (jaakreostusala)"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_jaakreostusalad_alamobjekt?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -593,6 +664,7 @@ verified = false
 id = "f-jaakreostusalad-ehak"
 name = "Jääkreostuseobjektide EHAK"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_jaakreostusalad_ehak?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -604,6 +676,7 @@ verified = false
 id = "f-jaakreostusalad-kandealus"
 name = "Jääkreostusobjekti kirje kandealused"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_jaakreostusalad_kandealus?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -615,6 +688,7 @@ verified = false
 id = "f-jaakreostusalad-kirjandus"
 name = "Jääkreostusala kirjandus ja uuringud"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_jaakreostusalad_kirjandus?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -626,6 +700,7 @@ verified = false
 id = "f-jaakreostusalad-puurauk"
 name = "Jääkreostusala seirepuuraugud"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_jaakreostusalad_puurauk?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -637,6 +712,7 @@ verified = false
 id = "f-jaakreostusalad-vesikond"
 name = "Jääkreostusala vesikonnad"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_jaakreostusalad_vesikond?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -648,6 +724,7 @@ verified = false
 id = "f-jaatmejaamad-jaatmeliigid-curr"
 name = "f_jaatmejaamad_jaatmeliigid_curr"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_jaatmejaamad_jaatmeliigid_curr?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -659,6 +736,7 @@ verified = false
 id = "f-jaatmekohad"
 name = "Kaadamisalad"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_jaatmekohad?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -670,6 +748,7 @@ verified = false
 id = "f-jaatmekohad-kandealus"
 name = "Kaadamisala kandealus"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_jaatmekohad_kandealus?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -681,6 +760,7 @@ verified = false
 id = "f-jaatmekohad-kirjandus"
 name = "Kaadamisala kirjandus ja uuringud"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_jaatmekohad_kirjandus?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -692,6 +772,7 @@ verified = false
 id = "f-jaatmeliikumine-fix-riik"
 name = "Riigi taseme jäätmearuandluse statistika"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_jaatmeliikumine_fix_riik?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -703,6 +784,7 @@ verified = false
 id = "f-jahiala"
 name = "Jahipiirkonnad"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_jahiala?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -714,6 +796,7 @@ verified = false
 id = "f-jahiala-dokument"
 name = "Jahipiirkonnaga seotud õigusaktid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_jahiala_dokument?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -725,6 +808,7 @@ verified = false
 id = "f-jahiala-kandealus"
 name = "Jahipiirkonnaga seotud kandealused"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_jahiala_kandealus?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -736,6 +820,7 @@ verified = false
 id = "f-jahiala-seirejaam"
 name = "Jahipiirkonnaga seotud seirejaamad"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_jahiala_seirejaam?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -747,6 +832,7 @@ verified = false
 id = "f-jkkregister-curr"
 name = "Jäätmekäitluskohtade register"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_jkkregister_curr?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -835,6 +921,7 @@ verified = false
 id = "f-kohustus-yld-curr"
 name = "f_kohustus_yld_curr"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_kohustus_yld_curr?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -846,6 +933,7 @@ verified = false
 id = "f-lcp-poletusseadmed-allikas-curr"
 name = "Suured põletusseadmed"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_lcp_poletusseadmed_allikas_curr?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -857,6 +945,7 @@ verified = false
 id = "f-lkohad"
 name = "Liikide leiukohad"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_lkohad?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -868,6 +957,7 @@ verified = false
 id = "f-lkohad-ala"
 name = "Leiukohaga kattuv kaitseala (v.a I, II kaitsekategooria liikide püsielupaigad)"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_lkohad_ala?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -879,6 +969,7 @@ verified = false
 id = "f-lkohad-alamosa"
 name = "Leiukoha alamosad"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_lkohad_alamosa?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -890,6 +981,7 @@ verified = false
 id = "f-lkohad-ehak"
 name = "Leiukoha kohanimi"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_lkohad_ehak?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -901,6 +993,7 @@ verified = false
 id = "f-lkohad-invelupaik"
 name = "Leiukohaga kattuv elupaik (v.a I, II kaitsekategooria liigid)"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_lkohad_invelupaik?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -912,6 +1005,7 @@ verified = false
 id = "f-lkohad-lnim"
 name = "Leiukoha liigi rühm ja liigi kaitsekategooria"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_lkohad_lnim?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -923,6 +1017,7 @@ verified = false
 id = "f-lkohad-py-ala"
 name = "Leiukoha kaitseks loodud püsielupaik"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_lkohad_py_ala?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -934,6 +1029,7 @@ verified = false
 id = "f-lkohad-veekogu"
 name = "Leiukohaga kattuv veekogu (v.a I, II kaitsekategooria liigid)"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_lkohad_veekogu?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -945,6 +1041,7 @@ verified = false
 id = "f-luba-curr"
 name = "f_luba_curr"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_luba_curr?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -956,6 +1053,7 @@ verified = false
 id = "f-maa-deklar-kaevand-maht-api"
 name = "Kaevandamise mahu deklaratsioonid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_maa_deklar_kaevand_maht_api?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -967,6 +1065,7 @@ verified = false
 id = "f-maa-deklar-tasu-api"
 name = "Deklaratsiooni tasu"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_maa_deklar_tasu_api?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -978,6 +1077,7 @@ verified = false
 id = "f-maa-deklar-tulusaaja-api"
 name = "Deklaratsiooni tulusaaja"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_maa_deklar_tulusaaja_api?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -989,6 +1089,7 @@ verified = false
 id = "f-maasoojussysteemid"
 name = "Maasoojussüsteemid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_maasoojussysteemid?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1000,6 +1101,7 @@ verified = false
 id = "f-maasoojussysteemid-ehak"
 name = "Maasoojussüsteemi EHAK"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_maasoojussysteemid_ehak?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1011,6 +1113,7 @@ verified = false
 id = "f-maasoojussysteemid-puurauk"
 name = "Puuraugud"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_maasoojussysteemid_puurauk?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1022,6 +1125,7 @@ verified = false
 id = "f-paisud"
 name = "Paisud"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_paisud?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1033,6 +1137,7 @@ verified = false
 id = "f-paisud-kandealus"
 name = "Paisu kandealused"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_paisud_kandealus?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1044,6 +1149,7 @@ verified = false
 id = "f-paisud-kirjandus"
 name = "Paisu kirjandus ja uuringud"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_paisud_kirjandus?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1055,6 +1161,7 @@ verified = false
 id = "f-paisud-klis-luba"
 name = "Paisu KOTKAS load"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_paisud_klis_luba?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1066,6 +1173,7 @@ verified = false
 id = "f-paisud-veekogum"
 name = "Paisu veekogumid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_paisud_veekogum?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1077,6 +1185,7 @@ verified = false
 id = "f-paisud-veekogum-seis"
 name = "Paisuga seotud veekogumi seisundi hinnang"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_paisud_veekogum_seis?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1088,6 +1197,7 @@ verified = false
 id = "f-paisud-vesiviljelus"
 name = "Paisuga seotud vesiviljelused"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_paisud_vesiviljelus?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1099,6 +1209,7 @@ verified = false
 id = "f-paisud-yld"
 name = "Paisu üldinfo (ajalugu)"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_paisud_yld?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1110,6 +1221,7 @@ verified = false
 id = "f-parandobjd"
 name = "Pärandkultuuri objektid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_parandobjd?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1121,6 +1233,7 @@ verified = false
 id = "f-parandobjd-ehak"
 name = "Pärandkultuuri objekti kohanimi"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_parandobjd_ehak?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1132,6 +1245,7 @@ verified = false
 id = "f-parandobjd-veekogu"
 name = "Pärandkultuuri objektiga kattuv veekogu"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_parandobjd_veekogu?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1143,6 +1257,7 @@ verified = false
 id = "f-pohjaveekogumi-seisud"
 name = "Põhjaveekogumi seisundid ja eesmärgid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_pohjaveekogumi_seisud?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1154,6 +1269,7 @@ verified = false
 id = "f-pohjaveekogumi-seisud-kandealus"
 name = "Põhjaveekogumi seisundi kandealused"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_pohjaveekogumi_seisud_kandealus?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1165,6 +1281,7 @@ verified = false
 id = "f-pohjaveekogumi-seisud-kirjandus"
 name = "Põhjaveekogumi seisundi kirjandus ja uuringud"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_pohjaveekogumi_seisud_kirjandus?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1176,6 +1293,7 @@ verified = false
 id = "f-pohjaveekogumid"
 name = "Põhjaveekogumid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_pohjaveekogumid?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1187,6 +1305,7 @@ verified = false
 id = "f-pohjaveekogumid-dok"
 name = "Põhjaveekogumiga seotud õigusaktid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_pohjaveekogumid_dok?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1198,6 +1317,7 @@ verified = false
 id = "f-pohjaveekogumid-eelnev-pohjaveekogum"
 name = "Eelnevad põhjaveekogumid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_pohjaveekogumid_eelnev_pohjaveekogum?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1209,6 +1329,7 @@ verified = false
 id = "f-pohjaveekogumid-jargnev-pohjaveekogum"
 name = "Järgnevad põhjaveekogumid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_pohjaveekogumid_jargnev_pohjaveekogum?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1220,6 +1341,7 @@ verified = false
 id = "f-pohjaveekogumid-kandealus"
 name = "Põhjaveekogumite kandealused"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_pohjaveekogumid_kandealus?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1231,6 +1353,7 @@ verified = false
 id = "f-pohjaveekogumid-pohjaveekogum-seis"
 name = "Põhjaveekogumi seisundihinnangud"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_pohjaveekogumid_pohjaveekogum_seis?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1242,6 +1365,7 @@ verified = false
 id = "f-pohjaveekogumid-pohjaveevaru"
 name = "Kinnitatud põhjaveevarud"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_pohjaveekogumid_pohjaveevaru?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1253,6 +1377,7 @@ verified = false
 id = "f-pohjaveekogumid-puurauk"
 name = "Põhjaveekogumi puuraugud"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_pohjaveekogumid_puurauk?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1264,6 +1389,7 @@ verified = false
 id = "f-pohjaveekogumid-puurauk-pealmine"
 name = "Põhjaveekogumi puuraugud (kus on pealmiseks kogumiks)"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_pohjaveekogumid_puurauk_pealmine?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1275,6 +1401,7 @@ verified = false
 id = "f-pohjaveekogumid-rahvala"
 name = "Põhjaveekogumiga seotud rahvusvahelise tähtsusega alad"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_pohjaveekogumid_rahvala?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1286,6 +1413,7 @@ verified = false
 id = "f-pohjaveekogumid-tundlik-ala"
 name = "Kinnitatud põhjaveevarud"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_pohjaveekogumid_tundlik_ala?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1297,6 +1425,7 @@ verified = false
 id = "f-pohjaveekogumid-vesikond"
 name = "Põhjaveekogumi vesikond (vesikond)"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_pohjaveekogumid_vesikond?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1308,6 +1437,7 @@ verified = false
 id = "f-pohjaveevarud"
 name = "Põhjaveevaruga alad"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_pohjaveevarud?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1319,6 +1449,7 @@ verified = false
 id = "f-pohjaveevarud-dok"
 name = "Põhjaveevaru kinnitamise käskkiri"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_pohjaveevarud_dok?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1330,6 +1461,7 @@ verified = false
 id = "f-pohjaveevarud-eelnev-pohjaveevaru"
 name = "Eelnevad põhjaveevarud"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_pohjaveevarud_eelnev_pohjaveevaru?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1341,6 +1473,7 @@ verified = false
 id = "f-pohjaveevarud-ehak"
 name = "Põhjaveevaru EHAK"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_pohjaveevarud_ehak?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1352,6 +1485,7 @@ verified = false
 id = "f-pohjaveevarud-jargnev-pohjaveevaru"
 name = "Järgnevad põhjaveevarud"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_pohjaveevarud_jargnev_pohjaveevaru?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1363,6 +1497,7 @@ verified = false
 id = "f-pohjaveevarud-kandealus"
 name = "Põhjaveevaru kandealused"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_pohjaveevarud_kandealus?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1374,6 +1509,7 @@ verified = false
 id = "f-pohjaveevarud-kirjandus"
 name = "Kinnitatud põhjaveevaruga ala kirjandus ja uuringud"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_pohjaveevarud_kirjandus?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1385,6 +1521,7 @@ verified = false
 id = "f-pohjaveevarud-pohjaveekogum-seis"
 name = "Põhjaveevaru seisundihinnangud"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_pohjaveevarud_pohjaveekogum_seis?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1396,6 +1533,7 @@ verified = false
 id = "f-pohjaveevarud-puurauk"
 name = "Põhjaveevaru puuraugud"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_pohjaveevarud_puurauk?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1407,6 +1545,7 @@ verified = false
 id = "f-puhastid"
 name = "Puhastid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_puhastid?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1418,6 +1557,7 @@ verified = false
 id = "f-puhastid-ehak"
 name = "Puhasti EHAK info"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_puhastid_ehak?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1429,6 +1569,7 @@ verified = false
 id = "f-puhastid-veehaare"
 name = "Puhastiga seotud veehaarded"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_puhastid_veehaare?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1440,6 +1581,7 @@ verified = false
 id = "f-puhastid-veelase"
 name = "Puhastiga seotud veelaskmed"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_puhastid_veelase?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1451,6 +1593,7 @@ verified = false
 id = "f-puuraugud"
 name = "Puuraugud"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_puuraugud?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1462,6 +1605,7 @@ verified = false
 id = "f-puuraugud-ehak"
 name = "Puuraugu EHAK info"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_puuraugud_ehak?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1473,6 +1617,7 @@ verified = false
 id = "f-puuraugud-konstruktsioon"
 name = "Puuraugu konstruktsiooni elemendid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_puuraugud_konstruktsioon?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1484,6 +1629,7 @@ verified = false
 id = "f-puuraugud-labiloige"
 name = "Puuraugu läbilõike maapõuekihid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_puuraugud_labiloige?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1495,6 +1641,7 @@ verified = false
 id = "f-puuraugud-pohjaveekogum-seis"
 name = "Puuraugu seisundihinnangud"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_puuraugud_pohjaveekogum_seis?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1506,6 +1653,7 @@ verified = false
 id = "f-puuraugud-pohjaveevaru"
 name = "Puuraugu põhjaveevarud"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_puuraugud_pohjaveevaru?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1517,6 +1665,7 @@ verified = false
 id = "f-puuraugud-puurauk-param"
 name = "Puuraugu parameetrid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_puuraugud_puurauk_param?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1528,6 +1677,7 @@ verified = false
 id = "f-puuraugud-seirejaam"
 name = "Puuraugu seirejaamad"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_puuraugud_seirejaam?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1539,6 +1689,7 @@ verified = false
 id = "f-puuraugud-vesikond"
 name = "Vesikond millele kuulub puurauk"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_puuraugud_vesikond?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1550,6 +1701,7 @@ verified = false
 id = "f-puuraugud-voond"
 name = "Puuraugu kaitsevööndid (sanitaarkaitseala)"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_puuraugud_voond?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1561,6 +1713,7 @@ verified = false
 id = "f-rahvalad"
 name = "Rahvusvahelised alad"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_rahvalad?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1572,6 +1725,7 @@ verified = false
 id = "f-rahvalad-dok"
 name = "Rahvusvahelise alaga seotud õigusaktid ning Natura alade loodus- või linnualaks määramise siseriiklik õiguslik alus"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_rahvalad_dok?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1583,6 +1737,7 @@ verified = false
 id = "f-rahvalad-ehak"
 name = "Rahvusvahelise tähtsusega ala kohanimi"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_rahvalad_ehak?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1594,6 +1749,7 @@ verified = false
 id = "f-rahvalad-elupaigatyyp"
 name = "Rahvusvahelise alaga seotud Natura elupaigatüübid, mis on kaitse eesmärgiks"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_rahvalad_elupaigatyyp?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1605,6 +1761,7 @@ verified = false
 id = "f-rahvalad-elupaikstat"
 name = "Natura ala elupaigatüüpide statistika (2025)"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_rahvalad_elupaikstat?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1616,6 +1773,7 @@ verified = false
 id = "f-rahvalad-invmojutegur"
 name = "Natura alal esinevad mõjutegurid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_rahvalad_invmojutegur?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1627,6 +1785,7 @@ verified = false
 id = "f-rahvalad-kandealus"
 name = "Rahvusvahelise tähtsusega ala kandealused"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_rahvalad_kandealus?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1638,6 +1797,7 @@ verified = false
 id = "f-rahvalad-lkohtstat"
 name = "Natura ala leiukohtade statistika, eesmärgiks olevad ja muud liigid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_rahvalad_lkohtstat?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1649,6 +1809,7 @@ verified = false
 id = "f-rahvalad-lnim"
 name = "Rahvusvahelise alaga seotud liigid, mis on kaitse eesmärgiks"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_rahvalad_lnim?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1660,6 +1821,7 @@ verified = false
 id = "f-reoveealad"
 name = "Reoveekogumisalad"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_reoveealad?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1671,6 +1833,7 @@ verified = false
 id = "f-reoveealad-dok"
 name = "Reoveekogumisalaga seotud õigusaktid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_reoveealad_dok?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1682,6 +1845,7 @@ verified = false
 id = "f-reoveealad-ehak"
 name = "Reoveekogumisalal asuvad haldusüksused"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_reoveealad_ehak?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1693,6 +1857,7 @@ verified = false
 id = "f-reoveealad-fjisik"
 name = "Reoveekogumisala veevärkide haldajad"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_reoveealad_fjisik?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1704,6 +1869,7 @@ verified = false
 id = "f-reoveealad-kandealus"
 name = "Reoveekogumisala kandealused"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_reoveealad_kandealus?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1715,6 +1881,7 @@ verified = false
 id = "f-reoveealad-kirjandus"
 name = "Reoveekogumisala kirjandus ja uuringud"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_reoveealad_kirjandus?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1726,6 +1893,7 @@ verified = false
 id = "f-reoveealad-koormus"
 name = "Reoveekogumisala reostuskoormuse jagunemine"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_reoveealad_koormus?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1737,6 +1905,7 @@ verified = false
 id = "f-reoveealad-puhasti"
 name = "Reoveekogumisala veevärkide puhastid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_reoveealad_puhasti?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1748,6 +1917,7 @@ verified = false
 id = "f-reoveealad-veekogum"
 name = "Reoveekogumisalal asuvad veekogumid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_reoveealad_veekogum?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1759,6 +1929,7 @@ verified = false
 id = "f-reoveealad-veekogum-seis"
 name = "Reoveeala seisundi eesmärk"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_reoveealad_veekogum_seis?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1770,6 +1941,7 @@ verified = false
 id = "f-reoveealad-veelase"
 name = "Reoveekogumisalal asuvad ilma veevärgi infota veelaskmed"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_reoveealad_veelase?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1781,6 +1953,7 @@ verified = false
 id = "f-reoveealad-vv-veelase"
 name = "Reoveekogumisala veevärkide veelaskmed"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_reoveealad_vv_veelase?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1792,6 +1965,7 @@ verified = false
 id = "f-rongastused"
 name = "Rõngastuste info"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_rongastused?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1803,6 +1977,7 @@ verified = false
 id = "f-saared"
 name = "Saared"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_saared?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1814,6 +1989,7 @@ verified = false
 id = "f-saared-ala"
 name = "Saarel asuvad kaitsealused alad ning üksikobjektid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_saared_ala?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1825,6 +2001,7 @@ verified = false
 id = "f-saared-ehak"
 name = "Saare haldusüksused"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_saared_ehak?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1836,6 +2013,7 @@ verified = false
 id = "f-saared-kandealus"
 name = "Saarega seotud kandealused"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_saared_kandealus?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1847,6 +2025,7 @@ verified = false
 id = "f-saared-saar"
 name = "Külge liitunud saared"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_saared_saar?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1858,6 +2037,7 @@ verified = false
 id = "f-saared-seirejaam"
 name = "Saare seirejaamad"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_saared_seirejaam?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1869,6 +2049,7 @@ verified = false
 id = "f-saared-veekogu"
 name = "Saar piirneb merealadega"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_saared_veekogu?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1880,6 +2061,7 @@ verified = false
 id = "f-seirejaamad"
 name = "Seirejaamade info"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_seirejaamad?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1891,6 +2073,7 @@ verified = false
 id = "f-seirejaamad-dok"
 name = "Seirejaamaga seotud õigusaktid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_seirejaamad_dok?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1902,6 +2085,7 @@ verified = false
 id = "f-seirejaamad-kandealus"
 name = "Seirejaama kirje kandealused"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_seirejaamad_kandealus?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1913,6 +2097,7 @@ verified = false
 id = "f-seirejaamad-mootekoht"
 name = "Seirejaama mõõtekohad"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_seirejaamad_mootekoht?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1924,6 +2109,7 @@ verified = false
 id = "f-seirejaamad-sr-programm"
 name = "Seirejaamaga seotud seireprogrammid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_seirejaamad_sr_programm?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1935,6 +2121,7 @@ verified = false
 id = "f-seirejaamad-valgla"
 name = "Seirejaama valglad"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_seirejaamad_valgla?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1946,6 +2133,7 @@ verified = false
 id = "f-smi-tulemused"
 name = "SMI arvutustulemused"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_smi_tulemused?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1957,6 +2145,7 @@ verified = false
 id = "f-toetused"
 name = "Metsatoetuse alad"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_toetused?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1968,6 +2157,7 @@ verified = false
 id = "f-toetused-ehak"
 name = "Metsatoetuse ala kohanimi"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_toetused_ehak?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1979,6 +2169,7 @@ verified = false
 id = "f-toetused-kandealus"
 name = "Metsatoetuse alaga seotud kandealused"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_toetused_kandealus?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -1990,6 +2181,7 @@ verified = false
 id = "f-tundlikud-alad"
 name = "Tundlikud alad"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_tundlikud_alad?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2001,6 +2193,7 @@ verified = false
 id = "f-tundlikud-alad-alamobjekt"
 name = "Tundliku ala alamobjektid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_tundlikud_alad_alamobjekt?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2012,6 +2205,7 @@ verified = false
 id = "f-tundlikud-alad-dok"
 name = "Tundliku alaga seotud õigusaktid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_tundlikud_alad_dok?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2023,6 +2217,7 @@ verified = false
 id = "f-tundlikud-alad-ehak"
 name = "Tundliku ala kohanimi"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_tundlikud_alad_ehak?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2034,6 +2229,7 @@ verified = false
 id = "f-tundlikud-alad-kandealus"
 name = "Looduslikult tundliku ala kirje kandealused"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_tundlikud_alad_kandealus?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2045,6 +2241,7 @@ verified = false
 id = "f-tundlikud-alad-kirjandus"
 name = "Looduslikult tundliku ala kirjandus ja uuringud"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_tundlikud_alad_kirjandus?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2056,6 +2253,7 @@ verified = false
 id = "f-tundlikud-alad-pohjaveekogum-seis"
 name = "Tundliku ala seisundihinnangud"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_tundlikud_alad_pohjaveekogum_seis?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2067,6 +2265,7 @@ verified = false
 id = "f-tundlikud-alad-veekogu"
 name = "Tundlikul alal asuvad allikad"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_tundlikud_alad_veekogu?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2078,6 +2277,7 @@ verified = false
 id = "f-veehaarded"
 name = "Veehaarded"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veehaarded?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2089,6 +2289,7 @@ verified = false
 id = "f-veehaarded-dok"
 name = "Veehaardega seotud õigusaktid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veehaarded_dok?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2100,6 +2301,7 @@ verified = false
 id = "f-veehaarded-ehak"
 name = "Veehaarde EHAK info"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veehaarded_ehak?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2111,6 +2313,7 @@ verified = false
 id = "f-veehaarded-fjisik"
 name = "Veehaarde veevärgi haldaja"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veehaarded_fjisik?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2122,6 +2325,7 @@ verified = false
 id = "f-veehaarded-kandealus"
 name = "Veehaarde kirje kandealused"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veehaarded_kandealus?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2133,6 +2337,7 @@ verified = false
 id = "f-veehaarded-kirjandus"
 name = "Veehaarde kirjandus ja uuringud"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veehaarded_kirjandus?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2144,6 +2349,7 @@ verified = false
 id = "f-veehaarded-puurauk"
 name = "Veehaarde puuraugud"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veehaarded_puurauk?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2155,6 +2361,7 @@ verified = false
 id = "f-veehaarded-veekogum"
 name = "Veehaarde veekogumid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veehaarded_veekogum?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2166,6 +2373,7 @@ verified = false
 id = "f-veehaarded-veekogum-seis"
 name = "Veehaarega seotud veekogumi seis"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veehaarded_veekogum_seis?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2177,6 +2385,7 @@ verified = false
 id = "f-veehaarded-vesikond"
 name = "Vesikond, mille juurde kuulub veehaare"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veehaarded_vesikond?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2188,6 +2397,7 @@ verified = false
 id = "f-veehaarded-vesiviljelus"
 name = "Veehaardega seotud vesiviljelused"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veehaarded_vesiviljelus?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2199,6 +2409,7 @@ verified = false
 id = "f-veehaarded-voond"
 name = "Veehaarete vööndid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veehaarded_voond?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2210,6 +2421,7 @@ verified = false
 id = "f-veekogud"
 name = "Veekogud"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veekogud?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2221,6 +2433,7 @@ verified = false
 id = "f-veekogud-ala-kaitse-pyp"
 name = "Veekogus asub kaitstav kudemis- ja elupaik"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veekogud_ala_kaitse_pyp?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2232,6 +2445,7 @@ verified = false
 id = "f-veekogud-ala-obj"
 name = "Veekogu kaitsealused alad ja üksikobjektid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veekogud_ala_obj?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2243,6 +2457,7 @@ verified = false
 id = "f-veekogud-allikas-yrg"
 name = "Allikas asub ürglooduse objektil (allikaalal)"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veekogud_allikas_yrg?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2254,6 +2469,7 @@ verified = false
 id = "f-veekogud-dok"
 name = "Veekoguga seotud õigusaktid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veekogud_dok?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2265,6 +2481,7 @@ verified = false
 id = "f-veekogud-ehak"
 name = "Veekogu kohanimi"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veekogud_ehak?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2276,6 +2493,7 @@ verified = false
 id = "f-veekogud-invelupaik"
 name = "Loodusdirektiivi elupaigad"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veekogud_invelupaik?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2287,6 +2505,7 @@ verified = false
 id = "f-veekogud-jvv-pais"
 name = "Paisjärvega seotud paisud"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veekogud_jvv_pais?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2298,6 +2517,7 @@ verified = false
 id = "f-veekogud-jvv-veekogu"
 name = "Läbib seisuveekogusid (paisjärved)"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veekogud_jvv_veekogu?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2309,6 +2529,7 @@ verified = false
 id = "f-veekogud-jvv-veekogum"
 name = "Paisjärve veekogum"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veekogud_jvv_veekogum?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2320,6 +2541,7 @@ verified = false
 id = "f-veekogud-kaitsealune-ala"
 name = "Veekogus asub kaitsealune kalade kudemis- ja elupaik"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veekogud_kaitsealune_ala?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2331,6 +2553,7 @@ verified = false
 id = "f-veekogud-kandealus"
 name = "Veekogu kirje kandealused"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veekogud_kandealus?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2342,6 +2565,7 @@ verified = false
 id = "f-veekogud-kirjandus"
 name = "Veekogu kirjandus ja uuringud"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veekogud_kirjandus?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2353,6 +2577,7 @@ verified = false
 id = "f-veekogud-lahtuv-veekogu"
 name = "Sellest veekogust lähtuvad veekogud"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veekogud_lahtuv_veekogu?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2364,6 +2589,7 @@ verified = false
 id = "f-veekogud-lkoht"
 name = "Veekoguga seotud liigi leiukohad"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veekogud_lkoht?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2375,6 +2601,7 @@ verified = false
 id = "f-veekogud-mere-veekogu"
 name = "Mereala alamosad"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veekogud_mere_veekogu?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2386,6 +2613,7 @@ verified = false
 id = "f-veekogud-pais"
 name = "Vooluveekogul asuvad paisud"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veekogud_pais?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2397,6 +2625,7 @@ verified = false
 id = "f-veekogud-parandobj"
 name = "Veekogu pärandkultuuriobjekt"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veekogud_parandobj?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2408,6 +2637,7 @@ verified = false
 id = "f-veekogud-rahvala"
 name = "Veekogu asub rahvusvahelise tähtsusega aladel"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veekogud_rahvala?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2419,6 +2649,7 @@ verified = false
 id = "f-veekogud-saar"
 name = "Saared"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veekogud_saar?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2430,6 +2661,7 @@ verified = false
 id = "f-veekogud-seirejaam"
 name = "Veekogu seirejaamad"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veekogud_seirejaam?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2441,6 +2673,7 @@ verified = false
 id = "f-veekogud-suubuv-veekogu"
 name = "Suubuvad veekogud"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veekogud_suubuv_veekogu?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2452,6 +2685,7 @@ verified = false
 id = "f-veekogud-veehaare"
 name = "Pinnaveehaarded veekogust"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veekogud_veehaare?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2463,6 +2697,7 @@ verified = false
 id = "f-veekogud-veekogum-seis"
 name = "Veekogu seisundi eesmärk"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veekogud_veekogum_seis?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2474,6 +2709,7 @@ verified = false
 id = "f-veekogud-veelase"
 name = "Veelaskmed veekogusse"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veekogud_veelase?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2485,6 +2721,7 @@ verified = false
 id = "f-veekogud-vesikond"
 name = "Veekogu vesikond"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veekogud_vesikond?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2496,6 +2733,7 @@ verified = false
 id = "f-veekogud-vesiviljelus"
 name = "Vesiviljelused"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veekogud_vesiviljelus?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2507,6 +2745,7 @@ verified = false
 id = "f-veekogud-vkg-veekogum"
 name = "Veekogu veekogumid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veekogud_vkg_veekogum?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2518,6 +2757,7 @@ verified = false
 id = "f-veekogud-yrg"
 name = "Veekogus asuvad ürglooduse objektid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veekogud_yrg?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2529,6 +2769,7 @@ verified = false
 id = "f-veekogumi-seisundid"
 name = "Pinnaveekogumi seisundid ja eesmärgid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veekogumi_seisundid?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2540,6 +2781,7 @@ verified = false
 id = "f-veekogumi-seisundid-kese-seirejaam"
 name = "KESE seirejaamad"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veekogumi_seisundid_kese_seirejaam?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2551,6 +2793,7 @@ verified = false
 id = "f-veekogumi-seisundid-ose-seirejaam"
 name = "ÖSE seirejaamad"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veekogumi_seisundid_ose_seirejaam?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2562,6 +2805,7 @@ verified = false
 id = "f-veekogumid"
 name = "Veekogumid ja hindamisüksused"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veekogumid?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2573,6 +2817,7 @@ verified = false
 id = "f-veekogumid-eelnev"
 name = "Eelnevad veekogumid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veekogumid_eelnev?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2584,6 +2829,7 @@ verified = false
 id = "f-veekogumid-hks-koondseis"
 name = "MSRD koondseisund"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veekogumid_hks_koondseis?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2595,6 +2841,7 @@ verified = false
 id = "f-veekogumid-hks-siht"
 name = "MSRD hindamisüksuse sihid ja indikaatorid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veekogumid_hks_siht?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2606,6 +2853,7 @@ verified = false
 id = "f-veekogumid-jargnev"
 name = "Järgnevad veekogumid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veekogumid_jargnev?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2617,6 +2865,7 @@ verified = false
 id = "f-veekogumid-jvv-veekogu"
 name = "Paisjärve veekogum"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veekogumid_jvv_veekogu?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2628,6 +2877,7 @@ verified = false
 id = "f-veekogumid-kandealus"
 name = "Veekogumiga seotud kandealused"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veekogumid_kandealus?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2639,6 +2889,7 @@ verified = false
 id = "f-veekogumid-kirjandus"
 name = "Veekogumi kohta käiv kirjandus ja uuringud"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veekogumid_kirjandus?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2650,6 +2901,7 @@ verified = false
 id = "f-veekogumid-koormus"
 name = "Veekogumile mõjuvad koormused"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veekogumid_koormus?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2661,6 +2913,7 @@ verified = false
 id = "f-veekogumid-naitaja"
 name = "Veekogumi näitajad"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veekogumid_naitaja?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2672,6 +2925,7 @@ verified = false
 id = "f-veekogumid-pais"
 name = "Veekogumis asuvad paisud"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veekogumid_pais?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2683,6 +2937,7 @@ verified = false
 id = "f-veekogumid-pohjaveekogum"
 name = "Pinnaveekogumiga seotud põhjaveekogumid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veekogumid_pohjaveekogum?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2694,6 +2949,7 @@ verified = false
 id = "f-veekogumid-veehaare"
 name = "Veekogumis asuvad veehaarded"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veekogumid_veehaare?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2705,6 +2961,7 @@ verified = false
 id = "f-veekogumid-veekogu"
 name = "Vooluveekogumi lisajõed"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veekogumid_veekogu?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2716,6 +2973,7 @@ verified = false
 id = "f-veekogumid-veekogum-seis"
 name = "Veekogumi seisundi eesmärk"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veekogumid_veekogum_seis?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2727,6 +2985,7 @@ verified = false
 id = "f-veekogumid-veelase"
 name = "Veekogumis asuvad veelaskmed"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veekogumid_veelase?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2738,6 +2997,7 @@ verified = false
 id = "f-veekogumid-vesikond"
 name = "Veekogumi vesikond"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veekogumid_vesikond?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2749,6 +3009,7 @@ verified = false
 id = "f-veekogumid-vesiviljelus"
 name = "Veekogumis asuvad vesiviljelused"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veekogumid_vesiviljelus?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2760,6 +3021,7 @@ verified = false
 id = "f-veelaskmed"
 name = "Veelaskmed"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veelaskmed?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2771,6 +3033,7 @@ verified = false
 id = "f-veelaskmed-ehak"
 name = "Veelaskme EHAK info"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veelaskmed_ehak?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2782,6 +3045,7 @@ verified = false
 id = "f-veelaskmed-kandealus"
 name = "Veelaskmete kandealused"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veelaskmed_kandealus?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2793,6 +3057,7 @@ verified = false
 id = "f-veelaskmed-veekogum"
 name = "Veelaskme veekogumid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veelaskmed_veekogum?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2804,6 +3069,7 @@ verified = false
 id = "f-veelaskmed-veekogum-seis"
 name = "Veelaskme veekogumi seisundid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veelaskmed_veekogum_seis?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2815,6 +3081,7 @@ verified = false
 id = "f-veelaskmed-vesikond"
 name = "Vesikond, mille juurde kuulub veehaare (vesikond)"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veelaskmed_vesikond?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2826,6 +3093,7 @@ verified = false
 id = "f-veenaitajad-w10-w1-public"
 name = "f_veenaitajad_W10_W1_public"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_veenaitajad_W10_W1_public?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2837,6 +3105,7 @@ verified = false
 id = "f-vepid"
 name = "Vääriselupaigad"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_vepid?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2848,6 +3117,7 @@ verified = false
 id = "f-vepid-dok"
 name = "Vääriselupaigaga seotud õigusaktid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_vepid_dok?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2859,6 +3129,7 @@ verified = false
 id = "f-vepid-ehak"
 name = "Vääriselupaiga kohanimi"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_vepid_ehak?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2870,6 +3141,7 @@ verified = false
 id = "f-vepid-kandealus"
 name = "Vääriselupaiga kirje kandealused"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_vepid_kandealus?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2881,6 +3153,7 @@ verified = false
 id = "f-vepid-majandamine"
 name = "Vääriselupaiga majandamine"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_vepid_majandamine?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2892,6 +3165,7 @@ verified = false
 id = "f-vepid-mojutegur"
 name = "Vääriselupaiga mõjutegurid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_vepid_mojutegur?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2903,6 +3177,7 @@ verified = false
 id = "f-vepid-tunnus"
 name = "Vääriselupaiga tunnused ja indikaatorliigid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_vepid_tunnus?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2914,6 +3189,7 @@ verified = false
 id = "f-yrgid"
 name = "Ürglooduse objektid"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_yrgid?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2925,6 +3201,7 @@ verified = false
 id = "f-yrgid-ala"
 name = "Ürglooduse objektiga kattuv kaitselala"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_yrgid_ala?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2936,6 +3213,7 @@ verified = false
 id = "f-yrgid-ehak"
 name = "Ürglooduse objekti kohanimi"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_yrgid_ehak?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2947,6 +3225,7 @@ verified = false
 id = "f-yrgid-kandealus"
 name = "Ürglooduse objekti kandealused"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_yrgid_kandealus?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
@@ -2958,6 +3237,7 @@ verified = false
 id = "f-yrgid-veekogu"
 name = "Ürglooduse objektiga kattuv veekogu"
 system = "EELIS"
+group = "eelis"
 url = "https://keskkonnaandmed.envir.ee/f_yrgid_veekogu?limit=1"
 expect = "json"
 headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
