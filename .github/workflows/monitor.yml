@@ -61,30 +61,9 @@ jobs:
         run: python scripts/notify_issues.py
 
       - name: Commit results
-        run: |
-          set -euo pipefail
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add logs REPORT.md
-          if git diff --cached --quiet; then
-            echo "Nothing changed."
-            exit 0
-          fi
-          git commit -m "Monitoring run $(date -u +%Y-%m-%dT%H:%MZ)"
-          for attempt in 1 2 3 4 5; do
-            if git push; then
-              exit 0
-            fi
-            echo "Push failed, attempt $attempt; rebasing onto remote."
-            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" || true
-            # REPORT.md is generated, so never resolve it by hand.
-            python monitor.py report
-            git add logs REPORT.md
-            git diff --cached --quiet || git commit --amend --no-edit
-            sleep $((attempt * 3))
-          done
-          echo "Could not push after 5 attempts." >&2
-          exit 1
+        env:
+          REGEN_CMD: python monitor.py report
+        run: scripts/commit_and_push.sh "Monitoring run $(date -u +%Y-%m-%dT%H:%MZ)" logs REPORT.md
 
       - name: Job summary
         if: always()
