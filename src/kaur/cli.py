@@ -6,9 +6,12 @@ from typing import Optional
 import typer
 from rich.console import Console
 from rich.logging import RichHandler
+from rich.table import Table
 
 from .config import KESKKONNAAGENTUURI_SOURCES
 from .downloader import DataDownloader
+from .health import HealthChecker
+from .sources import SOURCES_METADATA
 
 app = typer.Typer(help="Keskkonnaagentuuri andmete allalaadija")
 console = Console()
@@ -70,6 +73,45 @@ def list_sources() -> None:
         console.print(f"    {config.description}")
         console.print(f"    URL: {config.url}")
         console.print()
+
+@app.command()
+def health(source: Optional[str] = typer.Option(None, "--source", "-s", help="Konkreetse andmeallikate kontrollimine")) -> None:
+    """Kontrolli andmeallikate kättesaadavust."""
+    checker = HealthChecker()
+
+    if source:
+        if source not in KESKKONNAAGENTUURI_SOURCES:
+            console.print(f"[red]Tundmatu andmeallikas: {source}[/red]")
+            raise typer.Exit(1)
+        results = [checker.check_endpoint(source)]
+    else:
+        console.print("[cyan]Kontrollime andmeallikate seisundit...[/cyan]\n")
+        results = checker.check_all()
+
+    table = Table(title="Andmeallikate seisund", show_header=True)
+    table.add_column("Allikas", style="cyan")
+    table.add_column("Nimi", style="magenta")
+    table.add_column("Seisund", style="green")
+    table.add_column("Aeg (ms)", style="yellow")
+
+    for result in results:
+        status = result["status"]
+        status_style = "green" if status == "healthy" else "red"
+        response_time = result.get("response_time_ms", "-")
+
+        table.add_row(
+            result["source"],
+            result.get("name", "-")[:30],
+            f"[{status_style}]{status}[/{status_style}]",
+            str(response_time)
+        )
+
+    console.print(table)
+    console.print()
+    console.print("[cyan]Detailid:[/cyan]")
+    for result in results:
+        if result["status"] != "healthy":
+            console.print(f"[red]{result['source']}[/red]: {result.get('error', 'Unknown error')}")
 
 if __name__ == "__main__":
     app()
