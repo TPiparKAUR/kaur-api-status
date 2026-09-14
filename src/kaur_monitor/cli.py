@@ -117,10 +117,29 @@ def cmd_discover(args: argparse.Namespace) -> int:
         print(str(exc), file=sys.stderr)
         return 2
 
+    root = args.openapi
+    if args.from_inventory:
+        # Reuse an entry already in the inventory rather than repeating the
+        # service address as an argument. The root endpoint of a PostgREST
+        # service is both the thing we monitor and the thing that lists its
+        # tables, so it already carries the URL and the headers discovery needs.
+        known = {e["id"]: e for e in inventory.load_or_empty(Path(args.config))}
+        entry = known.get(args.from_inventory)
+        if entry is None:
+            print(
+                f"Inventaris pole otspunkti {args.from_inventory!r}. "
+                f"Saadaval: {', '.join(sorted(known)) or '(tühi)'}",
+                file=sys.stderr,
+            )
+            return 2
+        root = str(entry["url"]).split("?")[0]
+        headers = {**dict(entry.get("headers") or {}), **headers}
+        print(f"Avastan otspunkti {args.from_inventory!r} põhjal: {root}")
+
     try:
-        if args.openapi:
+        if root:
             found = discover.from_openapi(
-                args.openapi,
+                root,
                 extra_headers=headers or None,
                 table_prefix=args.table_prefix,
                 row_limit=args.row_limit,
@@ -189,6 +208,11 @@ def build_parser() -> argparse.ArgumentParser:
     source = disc.add_mutually_exclusive_group(required=True)
     source.add_argument("--openapi", help="PostgREST-i juur-URL, mis annab OpenAPI kirjelduse")
     source.add_argument("--ckan", help="CKAN-tüüpi kataloogi baas-URL")
+    source.add_argument(
+        "--from-inventory",
+        metavar="ID",
+        help="võta teenuse juur ja päised olemasolevast inventari kirjest",
+    )
     disc.add_argument(
         "--header",
         action="append",

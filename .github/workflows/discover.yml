@@ -30,6 +30,13 @@ on:
         required: false
         type: boolean
         default: true
+  # Changing how discovery works runs a dry run against the service the
+  # inventory already monitors, so a broken parser surfaces here rather than
+  # the next time someone tries to add endpoints. Never writes anything.
+  push:
+    paths:
+      - "src/kaur_monitor/discover.py"
+      - ".github/workflows/discover.yml"
 
 permissions:
   contents: write
@@ -57,13 +64,19 @@ jobs:
         run: |
           set -euo pipefail
           args=()
-          if [ "$MODE" = "openapi" ]; then
+          if [ "${{ github.event_name }}" = "push" ]; then
+            # No inputs on a push: verify the parser against the service the
+            # inventory already knows, and never write.
+            args+=(--from-inventory keskkonnaandmed-root --dry-run)
+          elif [ "$MODE" = "openapi" ]; then
             args+=(--openapi "$URL" --table-prefix "$TABLE_PREFIX")
+            [ -n "$HEADER" ] && args+=(--header "$HEADER")
+            [ "$DRY_RUN" = "true" ] && args+=(--dry-run)
           else
             args+=(--ckan "$URL")
+            [ -n "$HEADER" ] && args+=(--header "$HEADER")
+            [ "$DRY_RUN" = "true" ] && args+=(--dry-run)
           fi
-          [ -n "$HEADER" ] && args+=(--header "$HEADER")
-          [ "$DRY_RUN" = "true" ] && args+=(--dry-run)
           python monitor.py discover "${args[@]}" | tee discovery.txt
 
       - name: Job summary
