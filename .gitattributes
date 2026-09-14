@@ -1,0 +1,3 @@
+# The check log is append-only, so concurrent runs should combine rather than
+# conflict. The built-in union merge driver keeps both sides' new lines.
+logs/*.jsonl merge=union

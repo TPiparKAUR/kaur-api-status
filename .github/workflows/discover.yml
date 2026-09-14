@@ -1,0 +1,61 @@
+name: Discover endpoints
+
+# Manual only, deliberately. The catalogue API shape has not been verified, so
+# this is not put on a schedule until someone has run it once and confirmed it
+# returns something usable. A weekly job that always fails is worse than no job.
+on:
+  workflow_dispatch:
+    inputs:
+      catalogue:
+        description: "CKAN-style catalogue base URL"
+        required: true
+      query:
+        description: "Search query (e.g. publisher name)"
+        required: false
+        default: ""
+      rows:
+        description: "Max datasets to harvest"
+        required: false
+        default: "1000"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: api-discover
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Harvest catalogue
+        run: |
+          python monitor.py discover \
+            --ckan "${{ inputs.catalogue }}" \
+            --query "${{ inputs.query }}" \
+            --rows "${{ inputs.rows }}"
+
+      - name: Show what would be monitored
+        run: python monitor.py list
+
+      - name: Commit inventory
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add config/endpoints.toml
+          if git diff --cached --quiet; then
+            echo "Inventory unchanged."
+            exit 0
+          fi
+          git commit -m "Discover endpoints from catalogue
+
+          All new entries are verified=false and need a human to confirm the URL
+          before they can be trusted."
+          git push

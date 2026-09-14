@@ -1,0 +1,80 @@
+name: API monitor
+
+# Hourly. A GitHub-hosted runner reaches the Estonian services directly.
+#
+# Cadence note: hourly is roughly 730 runs a month, which fits the free private
+# repo allowance. Every 15 minutes would not. Public repos are unmetered, so
+# raise the frequency there if a finer outage resolution is wanted.
+on:
+  schedule:
+    - cron: "17 * * * *"
+  workflow_dispatch:
+    inputs:
+      workers:
+        description: "Parallel checks"
+        required: false
+        default: "8"
+
+permissions:
+  contents: write
+  issues: write
+
+# Never let two runs append to the log at once.
+concurrency:
+  group: api-monitor
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # No dependency install step: the monitor is standard library only.
+      - name: Run checks
+        run: python monitor.py check --workers "${{ inputs.workers || '8' }}"
+
+      - name: Open or close incident issues
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: python scripts/notify_issues.py
+
+      - name: Commit results
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add logs REPORT.md
+          if git diff --cached --quiet; then
+            echo "Nothing changed."
+            exit 0
+          fi
+          git commit -m "Monitoring run $(date -u +%Y-%m-%dT%H:%MZ)"
+          for attempt in 1 2 3 4 5; do
+            if git push; then
+              exit 0
+            fi
+            echo "Push failed, attempt $attempt; rebasing onto remote."
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" || true
+            # REPORT.md is generated, so never resolve it by hand.
+            python monitor.py report
+            git add logs REPORT.md
+            git diff --cached --quiet || git commit --amend --no-edit
+            sleep $((attempt * 3))
+          done
+          echo "Could not push after 5 attempts." >&2
+          exit 1
+
+      - name: Job summary
+        if: always()
+        run: |
+          {
+            echo "## Seisundiraport"
+            echo
+            sed -n '1,60p' REPORT.md 2>/dev/null || echo "REPORT.md puudub."
+          } >> "$GITHUB_STEP_SUMMARY"
