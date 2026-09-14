@@ -8,15 +8,20 @@ name: Discover endpoints
 on:
   workflow_dispatch:
     inputs:
+      from_inventory:
+        description: "Easiest path: id of an existing entry whose service root to harvest"
+        required: false
+        default: ""
       mode:
-        description: "Source of truth"
-        required: true
+        description: "Ignored when from_inventory is set"
+        required: false
         type: choice
         options: [openapi, ckan]
         default: openapi
       url:
-        description: "Service root (openapi) or catalogue base URL (ckan)"
-        required: true
+        description: "Service root (openapi) or catalogue base URL (ckan). Leave empty when using from_inventory"
+        required: false
+        default: ""
       header:
         description: "Request header, NAME=VALUE (e.g. the Accept-Profile a PostgREST service needs)"
         required: false
@@ -57,6 +62,7 @@ jobs:
       - name: Discover
         env:
           MODE: ${{ inputs.mode }}
+          FROM_INVENTORY: ${{ inputs.from_inventory }}
           URL: ${{ inputs.url }}
           HEADER: ${{ inputs.header }}
           TABLE_PREFIX: ${{ inputs.table_prefix }}
@@ -68,6 +74,10 @@ jobs:
             # No inputs on a push: verify the parser against the service the
             # inventory already knows, and never write.
             args+=(--from-inventory keskkonnaandmed-root --dry-run)
+          elif [ -n "$FROM_INVENTORY" ]; then
+            args+=(--from-inventory "$FROM_INVENTORY" --table-prefix "$TABLE_PREFIX")
+            [ -n "$HEADER" ] && args+=(--header "$HEADER")
+            [ "$DRY_RUN" = "true" ] && args+=(--dry-run)
           elif [ "$MODE" = "openapi" ]; then
             args+=(--openapi "$URL" --table-prefix "$TABLE_PREFIX")
             [ -n "$HEADER" ] && args+=(--header "$HEADER")

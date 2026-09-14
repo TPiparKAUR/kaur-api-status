@@ -1,18 +1,17 @@
 name: API monitor
 
-# Every 15 minutes. A GitHub-hosted runner reaches the Estonian services
+# Every 30 minutes. A GitHub-hosted runner reaches the Estonian services
 # directly; the authoring environment cannot.
 #
-# COST WARNING, read before assuming this keeps running. This repository is
-# private, and GitHub bills a private repo a minimum of one minute per job.
-# Every 15 minutes is 2 880 runs a month against a 2 000 minute free
-# allowance, so Actions will stop partway through the month unless the
-# repository is made public (public repos are unmetered), extra minutes are
-# bought, or the interval is relaxed — */30 is 1 440 runs and fits.
-# Run duration does not help: billing rounds up to the minute either way.
+# The interval is a billing decision, not a technical one. This repository is
+# private and GitHub bills a private repo a minimum of one minute per job, so
+# 30 minutes is 1 440 runs a month and fits inside the 2 000 minute free
+# allowance. Every 15 minutes would be 2 880 and would stop partway through
+# the month. Run duration does not change this: billing rounds up to the
+# minute either way, so only the frequency matters.
 on:
   schedule:
-    - cron: "*/15 * * * *"
+    - cron: "*/30 * * * *"
   workflow_dispatch:
     inputs:
       workers:
