@@ -265,6 +265,7 @@ class LocalServer(unittest.TestCase):
 
     bodies: ClassVar[dict[str, tuple[int, str, bytes]]] = {}
     last_headers: ClassVar[dict[str, str]] = {}
+    last_body: ClassVar[bytes] = b""
 
     @classmethod
     def setUpClass(cls):
@@ -281,6 +282,11 @@ class LocalServer(unittest.TestCase):
                 self.send_header("Content-Length", str(len(body)))
                 self.end_headers()
                 self.wfile.write(body)
+
+            def do_POST(self):
+                length = int(self.headers.get("Content-Length") or 0)
+                outer.last_body = self.rfile.read(length) if length else b""
+                self.do_GET()
 
             def do_HEAD(self):
                 status, ctype, _ = outer.bodies.get(self.path, (404, "text/plain", b""))
@@ -452,6 +458,102 @@ class LocalServer(unittest.TestCase):
         self.bodies["/ua"] = (200, "application/json", b"[]")
         check.check_endpoint({"id": "ua", "url": f"{self.base}/ua"})
         self.assertIn("KAUR-API-monitor", self.last_headers.get("User-Agent", ""))
+
+    def test_post_body_reaches_the_server(self):
+        """KAIA's document search is a read, but only reachable by POST."""
+        self.bodies["/query"] = (200, "application/json", b'{"numFound":0}')
+        result = check.check_endpoint(
+            {
+                "id": "q",
+                "url": f"{self.base}/query",
+                "method": "POST",
+                "expect": "json",
+                "body": '{"pageSize":1}',
+            }
+        )
+        self.assertEqual(result["status"], "ok")
+        self.assertEqual(self.last_body, b'{"pageSize":1}')
+
+    def test_body_sets_a_json_content_type_by_default(self):
+        self.bodies["/ct"] = (200, "application/json", b"{}")
+        check.check_endpoint({"id": "ct", "url": f"{self.base}/ct", "method": "POST", "body": "{}"})
+        self.assertEqual(self.last_headers.get("Content-Type"), "application/json")
+
+    def test_an_explicit_content_type_wins_over_the_default(self):
+        self.bodies["/ct2"] = (200, "application/json", b"{}")
+        check.check_endpoint(
+            {
+                "id": "ct2",
+                "url": f"{self.base}/ct2",
+                "method": "POST",
+                "body": "a=1",
+                "headers": {"Content-Type": "application/x-www-form-urlencoded"},
+            }
+        )
+        self.assertEqual(self.last_headers.get("Content-Type"), "application/x-www-form-urlencoded")
+
+    def test_a_get_without_a_body_sends_none(self):
+        self.bodies["/nobody"] = (200, "application/json", b"{}")
+        self.last_body = b"sentinel"
+        check.check_endpoint({"id": "nb", "url": f"{self.base}/nobody"})
+        self.assertEqual(self.last_body, b"sentinel", "GET must not have posted a body")
+
+
+class SafeMethods(unittest.TestCase):
+    """A monitor runs unattended; it must never be configurable to write."""
+
+    def _write(self, method: str) -> Path:
+        tmp = Path(tempfile.mkdtemp()) / "endpoints.toml"
+        tmp.write_text(
+            f'[[endpoint]]\nid="a"\nname="A"\nurl="https://e.org"\nmethod="{method}"\n',
+            encoding="utf-8",
+        )
+        return tmp
+
+    def test_write_methods_are_refused(self):
+        for method in ("PUT", "PATCH", "DELETE", "put"):
+            with self.subTest(method=method):
+                with self.assertRaisesRegex(inventory.InventoryError, "can change state"):
+                    inventory.load(self._write(method))
+
+    def test_read_methods_are_allowed(self):
+        for method in ("GET", "HEAD", "POST", "OPTIONS", "get"):
+            with self.subTest(method=method):
+                self.assertEqual(len(inventory.load(self._write(method))), 1)
+
+
+class RequestBodies(unittest.TestCase):
+    def _write(self, text: str) -> Path:
+        tmp = Path(tempfile.mkdtemp()) / "endpoints.toml"
+        tmp.write_text(text, encoding="utf-8")
+        return tmp
+
+    def test_malformed_json_body_is_rejected_before_it_ever_runs(self):
+        path = self._write(
+            '[[endpoint]]\nid="a"\nname="A"\nurl="https://e.org"\nmethod="POST"\nbody="{not json"\n'
+        )
+        with self.assertRaisesRegex(inventory.InventoryError, "does not parse"):
+            inventory.load(path)
+
+    def test_a_non_json_body_is_left_alone(self):
+        path = self._write(
+            '[[endpoint]]\nid="a"\nname="A"\nurl="https://e.org"\nmethod="POST"\nbody="a=1&b=2"\n'
+        )
+        self.assertEqual(inventory.load(path)[0]["body"], "a=1&b=2")
+
+    def test_non_string_body_is_rejected(self):
+        path = self._write('[[endpoint]]\nid="a"\nname="A"\nurl="https://e.org"\nbody=7\n')
+        with self.assertRaisesRegex(inventory.InventoryError, "body must be a string"):
+            inventory.load(path)
+
+    def test_body_survives_the_toml_round_trip(self):
+        path = Path(tempfile.mkdtemp()) / "endpoints.toml"
+        body = '{"pageSize":1,"includeFileMetadata":false}'
+        inventory.save(
+            [{"id": "a", "name": "A", "url": "https://e.org", "method": "POST", "body": body}],
+            path,
+        )
+        self.assertEqual(inventory.load(path)[0]["body"], body)
 
 
 class OpenApiDiscovery(unittest.TestCase):

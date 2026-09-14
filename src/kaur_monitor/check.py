@@ -181,7 +181,16 @@ def _check_endpoint(endpoint: dict[str, Any]) -> dict[str, Any]:
     extra = endpoint.get("headers")
     if isinstance(extra, dict):
         headers.update({str(key): str(value) for key, value in extra.items()})
-    request = urllib.request.Request(url, method=method, headers=headers)
+
+    # Some read paths are reachable only by POST with a query document — KAIA's
+    # document search is one — so a request body is part of describing an
+    # endpoint, not a sign that the check mutates anything.
+    raw_body = endpoint.get("body")
+    data = None if raw_body is None else str(raw_body).encode("utf-8")
+    if data is not None:
+        headers.setdefault("Content-Type", "application/json")
+
+    request = urllib.request.Request(url, data=data, method=method, headers=headers)
 
     body = b""
     content_type = ""

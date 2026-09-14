@@ -8,6 +8,7 @@ person has confirmed the URL is the one the service actually publishes.
 
 from __future__ import annotations
 
+import json
 import re
 import tomllib
 from pathlib import Path
@@ -33,9 +34,15 @@ _ALLOWED = frozenset(
         "verified",
         "note",
         "headers",
+        "body",
     }
 )
 _VALID_EXPECT = frozenset({"json", "xml", "any"})
+
+# A monitor runs unattended every few minutes. Methods that can change state on
+# the far side are refused outright rather than trusted to be harmless: KAIA,
+# for one, publishes a PUT on the same path as its file download.
+_SAFE_METHODS = frozenset({"GET", "HEAD", "POST", "OPTIONS"})
 
 
 class InventoryError(Exception):
@@ -91,6 +98,22 @@ def load(path: Path = CONFIG_PATH) -> list[dict[str, Any]]:
             for key, value in entry["headers"].items():
                 if not isinstance(value, str):
                     raise InventoryError(f"{where}: header {key!r} must be a string")
+        method = str(entry.get("method", "GET")).upper()
+        if method not in _SAFE_METHODS:
+            raise InventoryError(
+                f"{where}: method {method} can change state on the monitored service; "
+                f"only {', '.join(sorted(_SAFE_METHODS))} are allowed"
+            )
+        if "body" in entry:
+            if not isinstance(entry["body"], str):
+                raise InventoryError(f"{where}: body must be a string")
+            if entry["body"].lstrip()[:1] in ("{", "["):
+                try:
+                    json.loads(entry["body"])
+                except ValueError as exc:
+                    raise InventoryError(
+                        f"{where}: body looks like JSON but does not parse: {exc}"
+                    ) from exc
         seen.add(entry["id"])
         validated.append(entry)
 
@@ -146,6 +169,7 @@ def save(entries: list[dict[str, Any]], path: Path = CONFIG_PATH) -> None:
             "expect",
             "method",
             "headers",
+            "body",
             "timeout_s",
             "max_bytes",
             "freshness_regex",

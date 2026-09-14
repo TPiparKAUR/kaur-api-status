@@ -186,3 +186,67 @@ headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
 source = "manual"
 verified = true
 note = "Dokumentatsiooni näidispäring; katab pesastatud tabeli filtri"
+
+# =============================================================================
+# KAIA — Looduskeskkonna avaandmete failide allalaadimise teenus
+# Allikas: avaandmed.keskkonnaportaal.ee Swagger UI (OpenAPI 3.0)
+#
+# Teadlikult VÄLJA JÄETUD otspunktid:
+#   PUT  /api/lists/{list}/items/{id}/files/{fileId}
+#        kirjutusoperatsioon, nõuab write-õigust. Jälgija ei tohi kunagi
+#        muuta jälgitavat süsteemi — inventar keeldub PUT-ist juba
+#        valideerimisel.
+#   GET  /api/lists/{list}/items/{id}/files/{fileId}
+#        vajab päris dokumendi ID-d, mida siin ei ole. Väljamõeldud ID
+#        annaks 404 ja näitaks tervet teenust katkisena.
+#   POST /api/lists/{list}/items/zipped-files
+#        tagastab ZIP-paki; maht sõltub filtrist ega sobi iga 15 minuti
+#        tagant tõmbamiseks.
+# =============================================================================
+
+[[endpoint]]
+id = "kaia-swagger"
+name = "KAIA OpenAPI teenusekirjeldus"
+system = "KAIA"
+url = "https://avaandmed.keskkonnaportaal.ee/swagger/v1/swagger.json"
+expect = "json"
+max_bytes = 262144
+headers = { "Accept" = "application/json" }
+source = "manual"
+verified = true
+note = "Dokumentatsioonis viidatud aadress; ühtlasi kõige odavam elushoiu kontroll"
+
+[[endpoint]]
+id = "kaia-lists-active"
+name = "KAIA aktiivse valikuhierarhia metaandmed"
+system = "KAIA"
+url = "https://avaandmed.keskkonnaportaal.ee/api/lists/active"
+expect = "json"
+headers = { "Accept" = "application/json" }
+source = "manual"
+verified = true
+note = "GET /api/lists/{list}, dokumenteeritud vaikeväärtus list=active"
+
+[[endpoint]]
+id = "kaia-lists-archive"
+name = "KAIA arhiivi valikuhierarhia metaandmed"
+system = "KAIA"
+url = "https://avaandmed.keskkonnaportaal.ee/api/lists/archive"
+expect = "json"
+headers = { "Accept" = "application/json" }
+source = "manual"
+verified = true
+note = "GET /api/lists/{list}; dokumentatsioon: list on 'active or archive'"
+
+[[endpoint]]
+id = "kaia-items-query"
+name = "KAIA dokumentide metaandmete päring"
+system = "KAIA"
+url = "https://avaandmed.keskkonnaportaal.ee/api/lists/active/items/query"
+expect = "json"
+method = "POST"
+headers = { "Accept" = "application/json", "Content-Type" = "application/json" }
+body = "{\"pageSize\":1,\"includeFileMetadata\":false}"
+source = "manual"
+verified = false
+note = "Otspunkt dokumenteeritud, päringukeha koostasin ise. DocumentsQuery väljad on kõik valikulised, seega minimaalne keha peaks kehtima — kinnitada päris teenuse vastu"
