@@ -120,9 +120,16 @@ def main() -> int:
         # 'unknown' means our own checker had no network. Never page on that.
         if status == "unknown":
             continue
-        name = entries.get(endpoint_id, {}).get("name", endpoint_id)
-        url = entries.get(endpoint_id, {}).get("url", "")
+        entry = entries.get(endpoint_id, {})
         existing = by_endpoint.get(endpoint_id)
+        # An unverified endpoint is one nobody has confirmed is real, so a
+        # failure is as likely to be a wrong query as a service outage. It stays
+        # in the report, but it does not page anyone. Recovery still closes an
+        # issue that is already open, in case the flag was cleared later.
+        if not entry.get("verified", False) and existing is None:
+            continue
+        name = entry.get("name", endpoint_id)
+        url = entry.get("url", "")
 
         try:
             if status in ("down", "degraded") and existing is None:

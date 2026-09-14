@@ -14,6 +14,18 @@ on:
         description: "Parallel checks"
         required: false
         default: "8"
+  # Also run when what is monitored, or how, changes — this verifies a new
+  # endpoint immediately instead of waiting for the hour. It is additionally
+  # the only way to run this workflow from a branch: schedule fires on the
+  # default branch only, and workflow_dispatch needs the file to exist there.
+  # The paths deliberately exclude logs/ and REPORT.md, which this job itself
+  # commits, so it cannot retrigger itself.
+  push:
+    paths:
+      - "config/**"
+      - "src/kaur_monitor/**"
+      - "scripts/**"
+      - ".github/workflows/monitor.yml"
 
 permissions:
   contents: write

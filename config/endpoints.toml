@@ -1,0 +1,182 @@
+# Keskkonnaagentuuri avaandmete API otspunktid.
+#
+# Allikas: Keskkonnaagentuuri ametlik andmeteenuste dokumentatsioon
+# (keskkonnaandmed.envir.ee, PostgREST). Kõik aadressid pärinevad sellest
+# dokumentatsioonist — ühtegi pole siin välja mõeldud.
+#
+# verified = true   päring on dokumentatsioonis sõna-sõnalt olemas
+# verified = false  teenus on dokumenteeritud, aga päringu koostasin mina
+#                   (tavaliselt lihtsalt ?limit=1) — vaata üle ja märgi õigeks
+#
+# Kõik teenused nõuavad päist "Accept-Profile: apijahialad" — see valib
+# andmebaasi skeemi. Ilma selleta vastab API määramata skeemist.
+#
+# Mõõtmisteenustele on lisatud limit, et tunnine seire ei koormaks teenust.
+# Dokumentatsioon nõuab mõõtmispäringutes alati filtreid; metaandmete
+# teenuseid tohib pärida ilma argumentideta.
+
+# --- Teenuse juur ----------------------------------------------------------
+
+[[endpoint]]
+id = "keskkonnaandmed-root"
+name = "Juur-URL, OpenAPI teenusekirjeldus"
+system = "Keskkonnaandmed"
+url = "https://keskkonnaandmed.envir.ee"
+expect = "json"
+headers = { "Accept-Profile" = "apijahialad", "Accept" = "application/json" }
+source = "manual"
+verified = true
+note = "Dokumentatsioon: juurURL annab OpenAPI formaadis teenuse kirjelduse"
+
+# --- Kliima metaandmed -----------------------------------------------------
+
+[[endpoint]]
+id = "kliima-element"
+name = "Kliima elementide metaandmed"
+system = "Kliima"
+url = "https://keskkonnaandmed.envir.ee/f_kliima_element"
+expect = "json"
+headers = { "Accept-Profile" = "apijahialad", "Accept" = "application/json" }
+source = "manual"
+verified = true
+note = "Metaandmete teenus, dokumentatsiooni järgi lubatud ilma argumentideta"
+
+[[endpoint]]
+id = "kliima-jaam-vaatlus"
+name = "Kliima vaatlusjaamade metaandmed"
+system = "Kliima"
+url = "https://keskkonnaandmed.envir.ee/f_kliima_jaam_vaatlus"
+expect = "json"
+headers = { "Accept-Profile" = "apijahialad", "Accept" = "application/json" }
+source = "manual"
+verified = true
+note = "Metaandmete teenus, dokumentatsiooni järgi lubatud ilma argumentideta"
+
+# --- Kliima mõõtmised ------------------------------------------------------
+
+[[endpoint]]
+id = "kliima-paev"
+name = "Kliima ööpäeva andmed, Ruhnu ja Kihnu õhuniiskus 2023"
+system = "Kliima"
+url = "https://keskkonnaandmed.envir.ee/f_kliima_paev?aasta=eq.2023&kuu=gt.10&paev=lt.8&element_kood=eq.DRH08&jaam_kood=in.(AJRUHN01,AJKIHN01)&limit=5"
+expect = "json"
+headers = { "Accept-Profile" = "apijahialad", "Accept" = "application/json" }
+source = "manual"
+verified = true
+note = "Dokumentatsiooni näidispäring; lisatud limit=5 koormuse hoidmiseks"
+
+[[endpoint]]
+id = "kliima-paev-nimefilter"
+name = "Kliima ööpäeva andmed, Võru 2006 (like-filter ja sortimine)"
+system = "Kliima"
+url = "https://keskkonnaandmed.envir.ee/f_kliima_paev?jaam_nimi=like.V%C3%B5ru&aasta=eq.2006&element_kood=like.DTA08&order=kuu.asc,paev.asc&limit=5"
+expect = "json"
+headers = { "Accept-Profile" = "apijahialad", "Accept" = "application/json" }
+source = "manual"
+verified = true
+note = "Dokumentatsiooni näidispäring; katab like-filtri ja order-i"
+
+[[endpoint]]
+id = "kliima-kuu"
+name = "Kliima kuu andmed"
+system = "Kliima"
+url = "https://keskkonnaandmed.envir.ee/f_kliima_kuu?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahialad", "Accept" = "application/json" }
+source = "manual"
+verified = false
+note = "Teenus dokumenteeritud, päringu koostasin ise: limit=1 elushoiu kontrolliks"
+
+[[endpoint]]
+id = "kliima-tund"
+name = "Kliima tunniandmed"
+system = "Kliima"
+url = "https://keskkonnaandmed.envir.ee/f_kliima_tund?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahialad", "Accept" = "application/json" }
+source = "manual"
+verified = false
+note = "Teenus dokumenteeritud, päringu koostasin ise: limit=1 elushoiu kontrolliks"
+
+[[endpoint]]
+id = "kliima-minut"
+name = "Kliima 10-minuti andmed"
+system = "Kliima"
+url = "https://keskkonnaandmed.envir.ee/f_kliima_minut?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahialad", "Accept" = "application/json" }
+source = "manual"
+verified = false
+note = "Teenus dokumenteeritud, päringu koostasin ise: limit=1 elushoiu kontrolliks"
+
+# --- Hüdroloogiline seire --------------------------------------------------
+
+[[endpoint]]
+id = "hydroseire"
+name = "Hüdroloogiline seire, veetase 2023-01-02"
+system = "Hüdroloogia"
+url = "https://keskkonnaandmed.envir.ee/f_hydroseire?timeline_ts_utc=lt.2023-01-02T03:00:00&timeline_ts_utc=gt.2023-01-01T23:00:00&aegrida_nimi=eq.WL%20min&limit=5"
+expect = "json"
+headers = { "Accept-Profile" = "apijahialad", "Accept" = "application/json" }
+source = "manual"
+verified = true
+note = "Dokumentatsiooni näidispäring; lisatud limit=5"
+
+# --- Keskkonnaseire --------------------------------------------------------
+
+[[endpoint]]
+id = "keskkonnaseire"
+name = "Keskkonnaseire, programm PR0127 aastal 2021"
+system = "Keskkonnaseire"
+url = "https://keskkonnaandmed.envir.ee/f_keskkonnaseire?seiretoo_seotud_programmi_kood_iv=eq.PR0127&seireaeg_algus=gte.2021-01-01T00:00:00&seireaeg_algus=lt.2022-01-01T00:00:00&naitaja_nimetus=in.(Kloriid,%C3%9Cldraud,Vee%20temperatuur,Elavh%C3%B5be,PAH%20summa)&limit=5"
+expect = "json"
+headers = { "Accept-Profile" = "apijahialad", "Accept" = "application/json" }
+source = "manual"
+verified = true
+note = "Dokumentatsiooni näidispäring; lisatud limit=5. Teenusel on teadaolev pagineerimisprobleem"
+
+# --- EELIS -----------------------------------------------------------------
+
+[[endpoint]]
+id = "eelis-rahvalad"
+name = "EELIS rahvusvahelised alad, Kurese loodusala"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_rahvalad?kkr_kood=eq.RAH0000556"
+expect = "json"
+headers = { "Accept-Profile" = "apijahialad", "Accept" = "application/json" }
+source = "manual"
+verified = true
+note = "Dokumentatsiooni näidispäring, põhitabel"
+
+[[endpoint]]
+id = "eelis-rahvalad-dok"
+name = "EELIS rahvusvaheliste alade dokumendid, seosetabel"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_rahvalad_dok?limit=1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahialad", "Accept" = "application/json" }
+source = "manual"
+verified = false
+note = "Tabel dokumenteeritud, päringu koostasin ise: limit=1"
+
+[[endpoint]]
+id = "eelis-rahvalad-seosed"
+name = "EELIS rahvusvahelised alad koos dokumentidega (embedding)"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_rahvalad?select=*,dok:f_rahvalad_dok(*)&kkr_kood=eq.RAH0000556"
+expect = "json"
+headers = { "Accept-Profile" = "apijahialad", "Accept" = "application/json" }
+source = "manual"
+verified = true
+note = "Dokumentatsiooni näidispäring; katab PostgREST-i seoste sisestamise"
+
+[[endpoint]]
+id = "eelis-rahvalad-linnuala"
+name = "EELIS linnuala määramise õiguslik alus (pesastatud filter)"
+system = "EELIS"
+url = "https://keskkonnaandmed.envir.ee/f_rahvalad?select=*,dok:f_rahvalad_dok(*)&kkr_kood=eq.RAH0000556&dok.on_linnuala_kohta=eq.1"
+expect = "json"
+headers = { "Accept-Profile" = "apijahialad", "Accept" = "application/json" }
+source = "manual"
+verified = true
+note = "Dokumentatsiooni näidispäring; katab pesastatud tabeli filtri"

@@ -263,6 +263,7 @@ class LocalServer(unittest.TestCase):
     """Exercise the full pipeline against a real socket, offline and deterministic."""
 
     bodies: ClassVar[dict[str, tuple[int, str, bytes]]] = {}
+    last_headers: ClassVar[dict[str, str]] = {}
 
     @classmethod
     def setUpClass(cls):
@@ -272,6 +273,7 @@ class LocalServer(unittest.TestCase):
 
         class Handler(BaseHTTPRequestHandler):
             def do_GET(self):
+                outer.last_headers = dict(self.headers.items())
                 status, ctype, body = outer.bodies.get(self.path, (404, "text/plain", b"not found"))
                 self.send_response(status)
                 self.send_header("Content-Type", ctype)
@@ -406,6 +408,32 @@ class LocalServer(unittest.TestCase):
         result = check.check_endpoint({"id": "empty", "url": f"{self.base}/empty"})
         self.assertEqual(result["status"], "degraded")
 
+    def test_configured_headers_reach_the_server(self):
+        """PostgREST needs Accept-Profile to select the right schema."""
+        self.bodies["/hdr"] = (200, "application/json", b"[]")
+        check.check_endpoint(
+            {
+                "id": "hdr",
+                "url": f"{self.base}/hdr",
+                "expect": "json",
+                "headers": {"Accept-Profile": "apijahialad", "Accept": "application/json"},
+            }
+        )
+        self.assertEqual(self.last_headers.get("Accept-Profile"), "apijahialad")
+        self.assertEqual(self.last_headers.get("Accept"), "application/json")
+
+    def test_configured_headers_override_the_defaults(self):
+        self.bodies["/hdr2"] = (200, "application/json", b"[]")
+        check.check_endpoint(
+            {"id": "hdr2", "url": f"{self.base}/hdr2", "headers": {"Accept": "text/csv"}}
+        )
+        self.assertEqual(self.last_headers.get("Accept"), "text/csv")
+
+    def test_user_agent_is_sent_when_no_headers_configured(self):
+        self.bodies["/ua"] = (200, "application/json", b"[]")
+        check.check_endpoint({"id": "ua", "url": f"{self.base}/ua"})
+        self.assertIn("KAUR-API-monitor", self.last_headers.get("User-Agent", ""))
+
 
 class NaiveTimestamps(unittest.TestCase):
     def test_parse_ts_always_returns_aware(self):
@@ -447,6 +475,37 @@ class ConfigValidation(unittest.TestCase):
         path = self._write('[[endpoint]]\nid="a"\n')
         with self.assertRaises(inventory.InventoryError):
             inventory.load_or_empty(path)
+
+    def test_headers_are_accepted_and_parsed(self):
+        path = self._write(
+            '[[endpoint]]\nid="a"\nname="A"\nurl="https://e.org"\n'
+            'headers = { "Accept-Profile" = "apijahialad" }\n'
+        )
+        self.assertEqual(inventory.load(path)[0]["headers"]["Accept-Profile"], "apijahialad")
+
+    def test_non_string_header_value_is_rejected(self):
+        path = self._write(
+            '[[endpoint]]\nid="a"\nname="A"\nurl="https://e.org"\nheaders = { "X" = 7 }\n'
+        )
+        with self.assertRaisesRegex(inventory.InventoryError, "must be a string"):
+            inventory.load(path)
+
+    def test_headers_survive_the_toml_round_trip(self):
+        path = Path(tempfile.mkdtemp()) / "endpoints.toml"
+        inventory.save(
+            [
+                {
+                    "id": "a",
+                    "name": "A",
+                    "url": "https://e.org",
+                    "headers": {"Accept-Profile": "apijahialad", "Accept": "application/json"},
+                }
+            ],
+            path,
+        )
+        loaded = inventory.load(path)[0]
+        self.assertEqual(loaded["headers"]["Accept-Profile"], "apijahialad")
+        self.assertEqual(loaded["headers"]["Accept"], "application/json")
 
 
 class ReportRendering(unittest.TestCase):

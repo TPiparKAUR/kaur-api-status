@@ -173,11 +173,14 @@ def _check_endpoint(endpoint: dict[str, Any]) -> dict[str, Any]:
         record["cert_days"] = _tls_expiry_days(host, port, timeout)
 
     method = str(endpoint.get("method", "GET")).upper()
-    request = urllib.request.Request(
-        url,
-        method=method,
-        headers={"User-Agent": USER_AGENT, "Accept": "*/*"},
-    )
+    # Per-endpoint headers matter for content negotiation: a PostgREST service
+    # needs Accept-Profile to select the right database schema, and without it
+    # answers from an unspecified one.
+    headers = {"User-Agent": USER_AGENT, "Accept": "*/*"}
+    extra = endpoint.get("headers")
+    if isinstance(extra, dict):
+        headers.update({str(key): str(value) for key, value in extra.items()})
+    request = urllib.request.Request(url, method=method, headers=headers)
 
     body = b""
     content_type = ""

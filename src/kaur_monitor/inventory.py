@@ -32,6 +32,7 @@ _ALLOWED = frozenset(
         "source",
         "verified",
         "note",
+        "headers",
     }
 )
 _VALID_EXPECT = frozenset({"json", "xml", "any"})
@@ -84,6 +85,12 @@ def load(path: Path = CONFIG_PATH) -> list[dict[str, Any]]:
                 re.compile(str(entry["freshness_regex"]))
             except re.error as exc:
                 raise InventoryError(f"{where}: freshness_regex does not compile: {exc}") from exc
+        if "headers" in entry:
+            if not isinstance(entry["headers"], dict):
+                raise InventoryError(f"{where}: headers must be a table of strings")
+            for key, value in entry["headers"].items():
+                if not isinstance(value, str):
+                    raise InventoryError(f"{where}: header {key!r} must be a string")
         seen.add(entry["id"])
         validated.append(entry)
 
@@ -110,6 +117,9 @@ def _fmt(value: Any) -> str:
         return "true" if value else "false"
     if isinstance(value, (int, float)):
         return str(value)
+    if isinstance(value, dict):
+        pairs = ", ".join(f"{_fmt(str(k))} = {_fmt(str(v))}" for k, v in value.items())
+        return f"{{ {pairs} }}"
     text = str(value).replace("\\", "\\\\").replace('"', '\\"')
     return f'"{text}"'
 
@@ -135,6 +145,7 @@ def save(entries: list[dict[str, Any]], path: Path = CONFIG_PATH) -> None:
             "url",
             "expect",
             "method",
+            "headers",
             "timeout_s",
             "max_bytes",
             "freshness_regex",

@@ -81,10 +81,38 @@ python3 monitor.py discover --ckan URL [--query Q] [--rows N]
 python3 -m unittest discover -s tests
 ```
 
+## What is monitored
+
+`keskkonnaandmed.envir.ee`, a PostgREST service, via 14 endpoints taken from
+Keskkonnaagentuur's own API documentation: the OpenAPI root, climate metadata
+(`f_kliima_element`, `f_kliima_jaam_vaatlus`), climate measurements by month,
+day, hour and 10 minutes, `f_hydroseire`, `f_keskkonnaseire`, and four EELIS
+`f_rahvalad` queries covering plain reads, PostgREST embedding and nested
+filters.
+
+Every request sends `Accept-Profile: apijahialad`. Without it the service
+answers from an unspecified schema, so the header is not optional.
+
+Measurement queries must be filtered — the documentation says so, and the
+service caps a response at 20 000 rows. The inventory uses the documented
+example queries with a small `limit` added, which keeps an hourly probe cheap
+and makes the response deterministic enough that a changed body hash is
+meaningful.
+
+Ten entries are the documented queries verbatim and are `verified = true`.
+Four are `verified = false`: the service is documented but the query (usually
+just `?limit=1`) was constructed here rather than copied. Unverified endpoints
+appear in the report but never open an issue, because a failure there is as
+likely to be a wrong query as an outage.
+
 ## Open work
 
-- The inventory is empty; nobody has supplied verified endpoints yet.
+- The four `verified = false` queries need someone to confirm them against the
+  real service, then flip the flag.
+- No endpoint sets `freshness_regex` yet. Doing so needs someone who knows each
+  payload's timestamp field; the documented queries are historical and would
+  always read as stale.
 - `discover.from_ckan` assumes a CKAN-shaped API. The Estonian open data
   portal's actual API has not been verified. It reports a mismatch rather than
   guessing, but it may simply not apply.
-- Per-endpoint `freshness_regex` needs a human who knows each payload's shape.
+- EELIS has around 250 APIs; four are covered.
