@@ -23,6 +23,42 @@
    "p95_ms": 1191
   }
  ],
+ "daily_kaia": [
+  {
+   "avail_pct": 100.0,
+   "checks": 44,
+   "date": "2026-09-14",
+   "ok": 44,
+   "p50_ms": 1559,
+   "p95_ms": 2165
+  },
+  {
+   "avail_pct": 100.0,
+   "checks": 8,
+   "date": "2026-09-15",
+   "ok": 8,
+   "p50_ms": 958,
+   "p95_ms": 1031
+  }
+ ],
+ "daily_postgrest": [
+  {
+   "avail_pct": 100.0,
+   "checks": 151,
+   "date": "2026-09-14",
+   "ok": 151,
+   "p50_ms": 1162,
+   "p95_ms": 2459
+  },
+  {
+   "avail_pct": 100.0,
+   "checks": 38,
+   "date": "2026-09-15",
+   "ok": 38,
+   "p50_ms": 524,
+   "p95_ms": 1191
+  }
+ ],
  "endpoints": [
   {
    "avail_24h": 100.0,
@@ -394,7 +430,7 @@
   }
  ],
  "first_record": "2026-09-14T13:40:24Z",
- "generated_at": "2026-09-15T09:03:48Z",
+ "generated_at": "2026-09-15T10:57:17Z",
  "incident_count": 0,
  "incidents": [],
  "interval_minutes": 30,

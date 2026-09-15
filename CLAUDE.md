@@ -37,12 +37,16 @@ src/kaur_monitor/
   report.py                  log -> REPORT.md
   dashboard.py               log -> docs/data/status.json
   discover.py                CKAN + OpenAPI harvest, plain URL import
+  retention.py               roll old raw months into logs/daily/, then delete them
   cli.py                     argparse
 scripts/notify_issues.py     GitHub issues as the notification channel
 scripts/commit_and_push.sh   shared by both committing workflows
 config/endpoints.toml        the inventory (data, not code)
 config/systems.toml          plain-language system descriptions for the page
 logs/YYYY-MM.jsonl           append-only check log, committed
+logs/daily/YYYY-MM.jsonl     one row per (unit, day) for months past retention.py's
+                             cutoff; archival only — nothing in report.py, dashboard.py
+                             or analysis.py reads it, see retention.py
 REPORT.md                    generated, committed
 docs/                        static GitHub Pages status page, Chart.js vendored
 docs/data/status.json        generated, committed — the only thing the page reads
@@ -230,26 +234,54 @@ failures rather than assuming the 43 s figure still holds under load.
   page is built and committed but not published until the repo is public or
   the plan changes.
 
-Decisions pending explicit sign-off rather than a unilateral code change,
-because each has a real trade-off or needs a fact only a human here has:
+Decided (2026-09-15) — each had a real trade-off or needed a fact only a
+human here could supply, so each was put to the project owner rather than
+assumed:
 
-- **Retention policy.** Nothing prunes or rolls up `logs/*.jsonl`; every
-  month's file is kept in git forever. Fine for years at 84 MB/year, but the
-  policy itself — keep raw indefinitely, or roll old months up into daily
-  aggregates after N months and drop the raw — has not been decided.
-- **Load on `keskkonnaandmed.envir.ee`.** 283 endpoints behind two hosts,
-  12-way parallel, every 30 minutes, with no per-host concurrency cap,
-  `Accept-Encoding`, or conditional request. Whether this needs a lower
-  per-host cap depends on whether the service owner has been told a monitor
-  is polling it — a fact this file can't supply.
-- **SLO targets.** The page reports availability with no target to compare it
-  against. Setting one (e.g. 99.5% during business hours) is an agreement
-  with the systems' owners, not a code change.
-- **`discover.from_ckan`.** Untested against a real catalogue because none is
-  known to this file. Needs either a real CKAN endpoint to test against, or a
-  decision to remove the untested code path.
-- **Per-system latency.** The response-time chart pools KAIA (file downloads)
-  and every PostgREST system into one median/p95 line, which is comparing
-  different things. Splitting it into one line per system needs 4 more
-  chart colours validated the way the existing two are (see the `dataviz`
-  skill) — a small design task, not a one-line fix.
+- **Retention: roll up, don't keep raw forever.** `retention.py` collapses
+  a raw month into one `logs/daily/YYYY-MM.jsonl` row per (unit, day) —
+  checks, ok, avail_pct, p50_ms, p95_ms — then deletes the raw file. Nothing
+  runs this automatically from `check`; `monitor.py rollup` is invoked by
+  hand or by `.github/workflows/rollup.yml` (monthly, 1st of the month,
+  `workflow_dispatch` also available with `--dry-run`). Default cutoff is
+  365 days — comfortably past the 31-day window everything else reads, so
+  this is about capping raw growth, not shrinking what report.py/dashboard.py
+  see. Re-running is always safe: a month with an existing daily file is
+  skipped, never redone. The daily archive is not read by anything today;
+  a future multi-year-trend feature reads `logs/daily/*.jsonl` directly.
+- **Per-host concurrency cap: yes, default 4.** The service owner has not
+  confirmed the monitor's load is fine, so `check.HostLimiter` now bounds
+  concurrent in-flight requests per host independent of `--workers`
+  (`cli.py`'s `--max-per-host`, default `check.DEFAULT_MAX_PER_HOST`). Timing
+  starts only once a slot is actually held, for the same reason `CertCache`'s
+  timing starts after the certificate probe — a queueing wait is not the
+  service's response time. Since keskkonnaandmed.envir.ee carries 279 of 283
+  endpoints, capping it to 4 concurrent (down from up to 12) will very likely
+  lengthen the run; **re-measure against a real run and update the Actions
+  billing note below** — this was not measured before merging, only reasoned
+  about, and the 43 s figure predates this change more thoroughly than it
+  predates the retry change already noted there.
+- **SLO targets: not decided here.** Still an agreement to make with the
+  monitored systems' owners, not a code change — genuinely out of scope for
+  this file.
+- **`discover.from_ckan`: kept, documented as untested, now unit-tested
+  against a synthetic payload.** No real CKAN catalogue was available to this
+  project to verify it against. `cli.py` prints a warning whenever `--ckan` is
+  used; the module and function docstrings say so plainly. Unit tests
+  (`CkanDiscovery` in `tests/test_monitor.py`) exercise the parsing logic
+  against a payload shaped like CKAN's own `package_search` documentation —
+  that is not the same claim as "tested against a real catalogue", and the
+  docstring is careful to say so.
+- **Per-system latency: two groups, not six.** The response-time chart used
+  to pool everything into one line, comparing KAIA (file downloads) against
+  every PostgREST system. Splitting into all six systems was rejected as more
+  chart complexity than the management audience needs and would have needed
+  a new 6-colour validated palette; splitting into exactly two groups
+  (PostgREST-backed systems vs. KAIA) reuses the two series colours already
+  validated. `dashboard.py` partitions raw records by `system_of[id] ==
+  "KAIA"` (a record naming an id outside the current unit list goes to
+  neither side, same reasoning as Hetkeseis) and pools each side through
+  `_daily` separately into `daily_postgrest`/`daily_kaia`; `app.js` draws one
+  line per group with a real gap (not an interpolated value) on any day a
+  group had no checks, and states each group's median range in the chart's
+  text summary.

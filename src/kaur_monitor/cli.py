@@ -10,8 +10,15 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import urlsplit
 
-from . import analysis, dashboard, discover, inventory, report, store
-from .check import STATUS_UNKNOWN, CertCache, check_endpoint, looks_like_local_network_failure
+from . import analysis, dashboard, discover, inventory, report, retention, store
+from .check import (
+    DEFAULT_MAX_PER_HOST,
+    STATUS_UNKNOWN,
+    CertCache,
+    HostLimiter,
+    check_endpoint,
+    looks_like_local_network_failure,
+)
 
 _MARK = {"ok": "  OK  ", "degraded": "HÄIRE ", "down": " MAAS ", "unknown": "  ??  "}
 
@@ -38,14 +45,24 @@ def cmd_check(args: argparse.Namespace) -> int:
         print(f"Dashboard: {dashboard.write([])}")
         return 0
 
-    print(f"Kontrollin {len(entries)} otspunkti ({args.workers} lõime)...\n")
+    print(
+        f"Kontrollin {len(entries)} otspunkti ({args.workers} lõime, "
+        f"kuni {args.max_per_host} korraga sama hosti vastu)...\n"
+    )
     # One TLS-expiry cache shared across the whole run: most endpoints sit
     # behind two hosts, so without it every endpoint would open its own extra
     # handshake just to read a certificate identical to its neighbour's.
     # retry=True: a failing endpoint is rechecked once a few seconds later
     # before the result is logged, so one dropped packet cannot by itself
-    # become a recorded outage.
-    run_check = functools.partial(check_endpoint, cert_cache=CertCache(), retry=True)
+    # become a recorded outage. host_limiter caps concurrency per host,
+    # independent of --workers: almost the whole inventory sits behind one
+    # PostgREST host, and a monitor is a guest on the service it watches.
+    run_check = functools.partial(
+        check_endpoint,
+        cert_cache=CertCache(),
+        retry=True,
+        host_limiter=HostLimiter(args.max_per_host),
+    )
     with ThreadPoolExecutor(max_workers=args.workers) as pool:
         records = list(pool.map(run_check, entries))
 
@@ -169,6 +186,12 @@ def cmd_discover(args: argparse.Namespace) -> int:
                 row_limit=args.row_limit,
             )
         else:
+            print(
+                "HOIATUS: --ckan pole kunagi päris CKAN-kataloogi vastu testitud "
+                "(vt discover.py docstring). Kasuta kindlasti --dry-run ja vaata "
+                "tulemus käsitsi üle, enne kui lased sellel inventari muuta.\n",
+                file=sys.stderr,
+            )
             found = discover.from_ckan(args.ckan, query=args.query, rows=args.rows)
     except discover.DiscoveryError as exc:
         print(f"Avastamine ebaõnnestus: {exc}", file=sys.stderr)
@@ -201,6 +224,21 @@ def cmd_import_urls(args: argparse.Namespace) -> int:
     return _merge_and_save(found, Path(args.config))
 
 
+def cmd_rollup(args: argparse.Namespace) -> int:
+    results = retention.rollup(older_than_days=args.older_than_days, dry_run=args.dry_run)
+    if not results:
+        print(f"Ei ole üle {args.older_than_days} päeva vanu toorlogisid koondamata.")
+        return 0
+    verb = "koondataks" if args.dry_run else "koondati"
+    for row in results:
+        print(
+            f"{row['month']}: {row['raw_lines']} toorkirjet {verb} {row['daily_rows']} päevakirjeks"
+        )
+    if args.dry_run:
+        print("\n(--dry-run: midagi ei kirjutatud ega kustutatud)")
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="monitor.py",
@@ -213,6 +251,14 @@ def build_parser() -> argparse.ArgumentParser:
 
     check = sub.add_parser("check", help="kontrolli kõiki otspunkte ja uuenda raport")
     check.add_argument("--workers", type=int, default=8, help="paralleelsete kontrollide arv")
+    check.add_argument(
+        "--max-per-host",
+        type=int,
+        default=DEFAULT_MAX_PER_HOST,
+        help="rohkem kui selle arvu päringuid ei saadeta samale hostile korraga, "
+        "sõltumata --workers väärtusest (vaikimisi 4 — enamik inventarist "
+        "jagab üht hosti)",
+    )
     check.add_argument("--dry-run", action="store_true", help="ära kirjuta logi ega raportit")
     check.add_argument(
         "--fail-on-down", action="store_true", help="lõpeta veakoodiga, kui midagi on maas"
@@ -231,7 +277,11 @@ def build_parser() -> argparse.ArgumentParser:
     disc = sub.add_parser("discover", help="avasta otspunktid kataloogist või OpenAPI kirjeldusest")
     source = disc.add_mutually_exclusive_group(required=True)
     source.add_argument("--openapi", help="PostgREST-i juur-URL, mis annab OpenAPI kirjelduse")
-    source.add_argument("--ckan", help="CKAN-tüüpi kataloogi baas-URL")
+    source.add_argument(
+        "--ckan",
+        help="CKAN-tüüpi kataloogi baas-URL — TESTIMATA: pole kunagi päris "
+        "kataloogi vastu proovitud, kasuta koos --dry-run'iga",
+    )
     source.add_argument(
         "--from-inventory",
         metavar="ID",
@@ -253,6 +303,21 @@ def build_parser() -> argparse.ArgumentParser:
     imp = sub.add_parser("import-urls", help="impordi otspunktid tekstifailist (üks URL reas)")
     imp.add_argument("file", help="tekstifail URL-idega")
     imp.set_defaults(func=cmd_import_urls)
+
+    roll = sub.add_parser(
+        "rollup",
+        help="koonda vanad kuufailid päevakirjeteks ja kustuta toorlogi (logs/daily/)",
+    )
+    roll.add_argument(
+        "--older-than-days",
+        type=int,
+        default=retention.DEFAULT_RAW_RETENTION_DAYS,
+        help=f"kui vana kuufail koondada (vaikimisi {retention.DEFAULT_RAW_RETENTION_DAYS})",
+    )
+    roll.add_argument(
+        "--dry-run", action="store_true", help="näita, mida tehtaks, ära muuda midagi"
+    )
+    roll.set_defaults(func=cmd_rollup)
 
     return parser
 

@@ -6,6 +6,7 @@ import json
 import sys
 import tempfile
 import threading
+import time
 import unittest
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
@@ -14,7 +15,7 @@ from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
-from kaur_monitor import analysis, check, dashboard, discover, inventory, report, store
+from kaur_monitor import analysis, check, dashboard, discover, inventory, report, retention, store
 
 
 def _record(endpoint_id: str, status: str, minutes_ago: int, stage: str = "http") -> dict:
@@ -310,7 +311,7 @@ class RetryOnFailure(unittest.TestCase):
     def test_a_failure_is_rechecked_once_before_being_returned(self):
         calls = 0
 
-        def fake_safe_check(endpoint, cache):
+        def fake_safe_check(endpoint, cache, host_limiter=None):
             nonlocal calls
             calls += 1
             return {"id": "x", "status": check.STATUS_DOWN, "attempts": 1}
@@ -329,7 +330,7 @@ class RetryOnFailure(unittest.TestCase):
     def test_a_success_is_never_rechecked(self):
         calls = 0
 
-        def fake_safe_check(endpoint, cache):
+        def fake_safe_check(endpoint, cache, host_limiter=None):
             nonlocal calls
             calls += 1
             return {"id": "x", "status": check.STATUS_OK, "attempts": 1}
@@ -342,6 +343,52 @@ class RetryOnFailure(unittest.TestCase):
         self.assertEqual(calls, 1)
         sleep.assert_not_called()
         self.assertEqual(result["attempts"], 1)
+
+
+class HostLimiterTest(unittest.TestCase):
+    """Caps concurrency per host, independent of how many workers call in."""
+
+    def test_a_host_never_exceeds_its_cap(self):
+        limiter = check.HostLimiter(max_per_host=2)
+        in_flight = 0
+        peak = 0
+        lock = threading.Lock()
+
+        def worker():
+            nonlocal in_flight, peak
+            with limiter.slot("example.org"):
+                with lock:
+                    in_flight += 1
+                    peak = max(peak, in_flight)
+                time.sleep(0.05)
+                with lock:
+                    in_flight -= 1
+
+        threads = [threading.Thread(target=worker) for _ in range(8)]
+        for t in threads:
+            t.start()
+        for t in threads:
+            t.join()
+        self.assertLessEqual(peak, 2)
+        self.assertGreater(peak, 0)
+
+    def test_different_hosts_do_not_share_a_cap(self):
+        limiter = check.HostLimiter(max_per_host=1)
+        results = []
+
+        def worker(host):
+            with limiter.slot(host):
+                results.append(host)
+
+        threads = [
+            threading.Thread(target=worker, args=("a.example",)),
+            threading.Thread(target=worker, args=("b.example",)),
+        ]
+        for t in threads:
+            t.start()
+        for t in threads:
+            t.join(timeout=2)
+        self.assertEqual(sorted(results), ["a.example", "b.example"])
 
 
 class LocalServer(unittest.TestCase):
@@ -582,6 +629,17 @@ class LocalServer(unittest.TestCase):
         check.check_endpoint({"id": "nb", "url": f"{self.base}/nobody"})
         self.assertEqual(self.last_body, b"sentinel", "GET must not have posted a body")
 
+    def test_host_limiter_gates_the_actual_request(self):
+        """Wired correctly end to end, not just accepted and ignored."""
+        self.bodies["/limited"] = (200, "application/json", b"{}")
+        limiter = check.HostLimiter(max_per_host=2)
+        result = check.check_endpoint(
+            {"id": "lim", "url": f"{self.base}/limited", "expect": "json"},
+            host_limiter=limiter,
+        )
+        self.assertEqual(result["status"], "ok")
+        self.assertIn("127.0.0.1", limiter._semaphores)
+
 
 class SafeMethods(unittest.TestCase):
     """A monitor runs unattended; it must never be configurable to write."""
@@ -638,6 +696,69 @@ class RequestBodies(unittest.TestCase):
             path,
         )
         self.assertEqual(inventory.load(path)[0]["body"], body)
+
+
+class CkanDiscovery(unittest.TestCase):
+    """from_ckan against a synthetic CKAN-shaped payload.
+
+    No real catalogue was available to test this against (see discover.py's
+    module docstring) — _fetch_json is mocked so these exercise from_ckan's
+    own parsing logic against the shape CKAN's package_search documents,
+    not a claim that any real service answers exactly like this.
+    """
+
+    CKAN_PAYLOAD: ClassVar[dict] = {
+        "result": {
+            "results": [
+                {
+                    "name": "test-dataset",
+                    "title": "Test Dataset",
+                    "organization": {"title": "Test Org"},
+                    "resources": [
+                        {"name": "CSV export", "format": "CSV", "url": "https://e.org/a.csv"},
+                        {"name": "", "format": "JSON", "url": "https://e.org/a.json"},
+                        {"name": "no url", "format": "XML"},
+                        {"name": "not a dict"},
+                    ],
+                },
+                "not-a-dict",
+            ]
+        }
+    }
+
+    def test_extracts_one_entry_per_resource_with_a_url(self):
+        with mock.patch("kaur_monitor.discover._fetch_json", return_value=self.CKAN_PAYLOAD):
+            found = discover.from_ckan("https://catalogue.example")
+        self.assertEqual(len(found), 2)
+        self.assertEqual({e["url"] for e in found}, {"https://e.org/a.csv", "https://e.org/a.json"})
+
+    def test_expect_is_inferred_from_the_declared_format(self):
+        with mock.patch("kaur_monitor.discover._fetch_json", return_value=self.CKAN_PAYLOAD):
+            found = discover.from_ckan("https://catalogue.example")
+        by_url = {e["url"]: e for e in found}
+        self.assertEqual(by_url["https://e.org/a.json"]["expect"], "json")
+
+    def test_nothing_is_ever_marked_verified(self):
+        with mock.patch("kaur_monitor.discover._fetch_json", return_value=self.CKAN_PAYLOAD):
+            found = discover.from_ckan("https://catalogue.example")
+        self.assertTrue(all(e["verified"] is False for e in found))
+
+    def test_organization_becomes_the_system(self):
+        with mock.patch("kaur_monitor.discover._fetch_json", return_value=self.CKAN_PAYLOAD):
+            found = discover.from_ckan("https://catalogue.example")
+        self.assertTrue(all(e["system"] == "Test Org" for e in found))
+
+    def test_a_response_without_a_result_key_is_rejected_not_guessed(self):
+        with mock.patch("kaur_monitor.discover._fetch_json", return_value={"unexpected": True}):
+            with self.assertRaisesRegex(discover.DiscoveryError, "CKAN shape"):
+                discover.from_ckan("https://catalogue.example")
+
+    def test_a_non_list_results_field_is_rejected(self):
+        with mock.patch(
+            "kaur_monitor.discover._fetch_json", return_value={"result": {"results": "oops"}}
+        ):
+            with self.assertRaisesRegex(discover.DiscoveryError, "not a list"):
+                discover.from_ckan("https://catalogue.example")
 
 
 class OpenApiDiscovery(unittest.TestCase):
@@ -789,6 +910,101 @@ class LogWindowing(unittest.TestCase):
         text = report.build([{"id": "a", "name": "A", "url": "https://e.org", "verified": True}])
         self.assertIn("**1**", text)
         self.assertIn("31 päeva jooksul", text)
+
+
+class Retention(unittest.TestCase):
+    """Old raw months collapse into one row per (unit, day); recent ones don't."""
+
+    def setUp(self):
+        self._log_dir = store.LOG_DIR
+        self._daily_dir = retention.DAILY_DIR
+        base = Path(tempfile.mkdtemp())
+        store.LOG_DIR = base / "logs"
+        store.LOG_DIR.mkdir()
+        retention.DAILY_DIR = base / "logs" / "daily"
+
+    def tearDown(self):
+        store.LOG_DIR = self._log_dir
+        retention.DAILY_DIR = self._daily_dir
+
+    def _write_month(self, name: str, records: list[dict]) -> Path:
+        path = store.LOG_DIR / name
+        path.write_text("\n".join(json.dumps(r) for r in records) + "\n", encoding="utf-8")
+        return path
+
+    def test_aggregate_month_groups_by_id_and_day(self):
+        path = self._write_month(
+            "2020-01.jsonl",
+            [
+                {"ts": "2020-01-05T10:00:00Z", "id": "a", "status": "ok", "ms": 100},
+                {"ts": "2020-01-05T11:00:00Z", "id": "a", "status": "ok", "ms": 200},
+                {"ts": "2020-01-05T12:00:00Z", "id": "a", "status": "down", "ms": None},
+                {"ts": "2020-01-06T10:00:00Z", "id": "a", "status": "ok", "ms": 50},
+            ],
+        )
+        rows = retention.aggregate_month(path)
+        by_date = {r["date"]: r for r in rows}
+        self.assertEqual(by_date["2020-01-05"]["checks"], 3)
+        self.assertEqual(by_date["2020-01-05"]["ok"], 2)
+        self.assertAlmostEqual(by_date["2020-01-05"]["avail_pct"], 200 / 3, places=2)
+        self.assertEqual(by_date["2020-01-06"]["checks"], 1)
+
+    def test_unknown_records_are_excluded_like_analysis_uptime(self):
+        path = self._write_month(
+            "2020-01.jsonl",
+            [
+                {"ts": "2020-01-05T10:00:00Z", "id": "a", "status": "ok", "ms": 100},
+                {"ts": "2020-01-05T11:00:00Z", "id": "a", "status": "unknown"},
+            ],
+        )
+        [row] = retention.aggregate_month(path)
+        self.assertEqual(row["checks"], 1)
+        self.assertEqual(row["avail_pct"], 100.0)
+
+    def test_only_months_older_than_the_cutoff_are_rolled_up(self):
+        self._write_month(
+            "2020-01.jsonl", [{"ts": "2020-01-05T10:00:00Z", "id": "a", "status": "ok"}]
+        )
+        now = datetime.now(UTC)
+        self._write_month(
+            f"{now:%Y-%m}.jsonl", [{"ts": now.isoformat(), "id": "a", "status": "ok"}]
+        )
+
+        results = retention.rollup(older_than_days=30, now=now)
+
+        self.assertEqual([r["month"] for r in results], ["2020-01"])
+        self.assertFalse((store.LOG_DIR / "2020-01.jsonl").exists(), "raw month should be deleted")
+        self.assertTrue((retention.DAILY_DIR / "2020-01.jsonl").exists())
+        self.assertTrue(
+            (store.LOG_DIR / f"{now:%Y-%m}.jsonl").exists(), "recent month must survive"
+        )
+
+    def test_dry_run_touches_nothing(self):
+        path = self._write_month(
+            "2020-01.jsonl", [{"ts": "2020-01-05T10:00:00Z", "id": "a", "status": "ok"}]
+        )
+        results = retention.rollup(older_than_days=30, now=datetime.now(UTC), dry_run=True)
+        self.assertEqual(len(results), 1)
+        self.assertTrue(path.exists(), "dry run must not delete the raw file")
+        self.assertFalse(retention.DAILY_DIR.exists(), "dry run must not write the daily archive")
+
+    def test_an_already_rolled_up_month_is_skipped_not_redone(self):
+        now = datetime.now(UTC)
+        self._write_month(
+            "2020-01.jsonl", [{"ts": "2020-01-05T10:00:00Z", "id": "a", "status": "ok"}]
+        )
+        first = retention.rollup(older_than_days=30, now=now)
+        self.assertEqual(len(first), 1)
+        second = retention.rollup(older_than_days=30, now=now)
+        self.assertEqual(second, [], "a month with an existing daily file must not be reprocessed")
+
+    def test_an_unparseable_month_filename_is_left_alone(self):
+        self._write_month(
+            "backup.jsonl", [{"ts": "2020-01-05T10:00:00Z", "id": "a", "status": "ok"}]
+        )
+        results = retention.rollup(older_than_days=1, now=datetime.now(UTC))
+        self.assertEqual(results, [])
+        self.assertTrue((store.LOG_DIR / "backup.jsonl").exists())
 
 
 class GroupCollapsing(unittest.TestCase):
@@ -997,6 +1213,20 @@ class DashboardData(unittest.TestCase):
         self.assertEqual(row["avail_pct"], 100.0)
         self.assertIsNotNone(row["p50_ms"])
         self.assertGreaterEqual(row["p95_ms"], row["p50_ms"])
+
+    def test_daily_is_split_into_kaia_and_postgrest_for_the_latency_chart(self):
+        self._write([dict(_record("a", "ok", 5), ms=100), dict(_record("b", "ok", 5), ms=900)])
+        data = dashboard.build([self._entry("a", "Kliima"), self._entry("b", "KAIA")])
+        self.assertEqual(data["daily_postgrest"][0]["p50_ms"], 100)
+        self.assertEqual(data["daily_kaia"][0]["p50_ms"], 900)
+
+    def test_a_record_for_an_unknown_id_is_excluded_from_both_latency_groups(self):
+        """Regression: a superseded id must not silently count as PostgREST
+        just because it fails the '== KAIA' check."""
+        self._write([dict(_record("ghost", "ok", 5), ms=100)])
+        data = dashboard.build([self._entry("a", "Kliima")])
+        self.assertEqual(data["daily_postgrest"], [])
+        self.assertEqual(data["daily_kaia"], [])
 
     def test_a_day_without_checks_is_absent_rather_than_zero(self):
         """A zero-availability row would read as a total outage that never happened."""

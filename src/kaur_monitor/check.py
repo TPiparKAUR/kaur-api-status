@@ -19,6 +19,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
+from contextlib import nullcontext
 from datetime import UTC, datetime
 from typing import Any
 
@@ -39,6 +40,12 @@ _DEFAULT_TIMEOUT_S = 30.0
 _DEFAULT_MAX_BYTES = 4 * 1024 * 1024
 _ERROR_BODY_BYTES = 1024
 _RETRY_DELAY_S = 5.0
+
+# Almost the entire inventory sits behind one host (keskkonnaandmed.envir.ee),
+# so this is really "how many requests may be in flight against that host at
+# once", independent of --workers. 4 was chosen as a cautious default, not a
+# measured one — nobody involved in this project runs that service.
+DEFAULT_MAX_PER_HOST = 4
 
 # Log schema version. Bumped when a field is added or a record's meaning
 # changes — 2 adds 'attempts' and the group fields ('members', 'ok') that
@@ -113,6 +120,37 @@ class CertCache:
             return self._values[key]
 
 
+class HostLimiter:
+    """Caps concurrent in-flight requests per host, independent of --workers.
+
+    --workers controls total parallelism across the whole run; it says
+    nothing about how much of that lands on any one host. Since almost the
+    entire inventory sits behind a single PostgREST host, --workers alone
+    decides how many simultaneous requests that one service sees — a monitor
+    is a guest on the service it watches, and unlimited concurrency there is
+    not politeness. One instance is meant to be shared across a run; a
+    semaphore is created per host on first use and reused after that.
+    """
+
+    def __init__(self, max_per_host: int = DEFAULT_MAX_PER_HOST) -> None:
+        self._max_per_host = max_per_host
+        self._semaphores: dict[str, threading.Semaphore] = {}
+        self._lock = threading.Lock()
+
+    def _semaphore(self, host: str) -> threading.Semaphore:
+        with self._lock:
+            semaphore = self._semaphores.get(host)
+            if semaphore is None:
+                semaphore = threading.Semaphore(self._max_per_host)
+                self._semaphores[host] = semaphore
+            return semaphore
+
+    def slot(self, host: str) -> threading.Semaphore:
+        """A context manager (use with ``with``) that blocks until a slot for
+        this host is free. A Semaphore is itself a context manager."""
+        return self._semaphore(host)
+
+
 def _find_service_exception(body: bytes) -> str | None:
     """Return the exception text if the payload is an OGC/OWS exception report.
 
@@ -139,6 +177,7 @@ def check_endpoint(
     *,
     retry: bool = False,
     retry_delay_s: float = _RETRY_DELAY_S,
+    host_limiter: HostLimiter | None = None,
 ) -> dict[str, Any]:
     """Run one endpoint through every configured stage, and never raise.
 
@@ -155,19 +194,27 @@ def check_endpoint(
     an Issue — that is what turns one blip into a false alarm. Off by default
     so existing callers (and tests hitting a deliberately unreachable host)
     are not made to wait; the scheduled run turns it on.
+
+    ``host_limiter``, when given, bounds how many requests may be in flight
+    against the same host at once, independent of how many worker threads the
+    caller runs — see ``HostLimiter``. Off by default for the same reason as
+    ``retry``: existing callers and tests must not silently start blocking on
+    a shared semaphore they never asked for.
     """
     cache = cert_cache if cert_cache is not None else CertCache()
-    record = _safe_check(endpoint, cache)
+    record = _safe_check(endpoint, cache, host_limiter)
     if retry and record["status"] != STATUS_OK:
         time.sleep(retry_delay_s)
-        record = _safe_check(endpoint, cache)
+        record = _safe_check(endpoint, cache, host_limiter)
         record["attempts"] = 2
     return record
 
 
-def _safe_check(endpoint: dict[str, Any], cert_cache: CertCache) -> dict[str, Any]:
+def _safe_check(
+    endpoint: dict[str, Any], cert_cache: CertCache, host_limiter: HostLimiter | None = None
+) -> dict[str, Any]:
     try:
-        return _check_endpoint(endpoint, cert_cache)
+        return _check_endpoint(endpoint, cert_cache, host_limiter)
     except Exception as exc:
         return {
             "ts": datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
@@ -186,7 +233,9 @@ def _safe_check(endpoint: dict[str, Any], cert_cache: CertCache) -> dict[str, An
         }
 
 
-def _check_endpoint(endpoint: dict[str, Any], cert_cache: CertCache) -> dict[str, Any]:
+def _check_endpoint(
+    endpoint: dict[str, Any], cert_cache: CertCache, host_limiter: HostLimiter | None = None
+) -> dict[str, Any]:
     url = endpoint["url"]
     timeout = float(endpoint.get("timeout_s", _DEFAULT_TIMEOUT_S))
     max_bytes = int(endpoint.get("max_bytes", _DEFAULT_MAX_BYTES))
@@ -233,10 +282,6 @@ def _check_endpoint(endpoint: dict[str, Any], cert_cache: CertCache) -> dict[str
     if parts.scheme == "https":
         record["cert_days"] = cert_cache.get(host, port, timeout)
 
-    # Real timing starts here: after DNS and the certificate probe, right
-    # before the request this endpoint is actually being checked for.
-    started = time.monotonic()
-
     method = str(endpoint.get("method", "GET")).upper()
     # Per-endpoint headers matter for content negotiation: a PostgREST service
     # needs Accept-Profile to select the right database schema, and without it
@@ -259,15 +304,21 @@ def _check_endpoint(endpoint: dict[str, Any], cert_cache: CertCache) -> dict[str
     body = b""
     content_type = ""
     truncated = False
+    # A wait for a free per-host slot is not the service's response time, so
+    # timing starts only once the slot (if any) is actually held — right
+    # before the request this endpoint is being checked for.
+    limiter_slot = host_limiter.slot(host) if host_limiter is not None else nullcontext()
     try:
-        with urllib.request.urlopen(request, timeout=timeout) as response:
-            record["stage"] = "http"
-            record["http"] = response.status
-            content_type = (response.headers.get("Content-Type") or "").lower()
-            body = response.read(max_bytes + 1)
-            if len(body) > max_bytes:
-                body = body[:max_bytes]
-                truncated = True
+        with limiter_slot:
+            started = time.monotonic()
+            with urllib.request.urlopen(request, timeout=timeout) as response:
+                record["stage"] = "http"
+                record["http"] = response.status
+                content_type = (response.headers.get("Content-Type") or "").lower()
+                body = response.read(max_bytes + 1)
+                if len(body) > max_bytes:
+                    body = body[:max_bytes]
+                    truncated = True
     except urllib.error.HTTPError as exc:
         record["stage"] = "http"
         record["http"] = exc.code

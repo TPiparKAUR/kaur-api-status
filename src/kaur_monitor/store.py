@@ -32,8 +32,12 @@ def append(records: list[dict[str, Any]]) -> Path:
     return path
 
 
-def _month_end(path: Path) -> datetime | None:
-    """The instant just after the last record a ``YYYY-MM.jsonl`` file can hold."""
+def month_end(path: Path) -> datetime | None:
+    """The instant just after the last record a ``YYYY-MM.jsonl`` file can hold.
+
+    Public (not just for ``read_all``'s own skip-ahead): ``retention.py`` uses
+    the same instant to decide whether a month is over and safe to roll up.
+    """
     try:
         year, month = (int(part) for part in path.stem.split("-"))
         return datetime(year + (month == 12), (month % 12) + 1, 1, tzinfo=UTC)
@@ -56,7 +60,7 @@ def read_all(since: datetime | None = None) -> Iterator[dict[str, Any]]:
         return
     for path in sorted(LOG_DIR.glob("*.jsonl")):
         if since is not None:
-            end = _month_end(path)
+            end = month_end(path)
             if end is not None and end <= since:
                 continue
         with path.open(encoding="utf-8") as handle:

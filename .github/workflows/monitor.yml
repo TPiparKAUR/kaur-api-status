@@ -3,17 +3,25 @@ name: API monitor
 # Every 30 minutes. A GitHub-hosted runner reaches the Estonian services
 # directly; the authoring environment cannot.
 #
-# BILLING, measured rather than estimated. This repository is private, where
-# GitHub bills whole minutes per job. A full run over 283 endpoints took 43
-# seconds end to end (median response 741 ms, twelve threads), so a run bills
-# as one minute: 1 440 runs x 1 = 1 440 minutes a month against the 2 000
-# minute free allowance. It fits, but the headroom is one slow day wide — a
+# BILLING, measured rather than estimated — but that measurement (43 s end to
+# end, 741 ms median, twelve threads) predates two changes that both make a
+# real run longer: the once-only retry on a failing check, and the per-host
+# concurrency cap (check.HostLimiter, default 4) that now bounds how many of
+# the twelve threads may hit keskkonnaandmed.envir.ee — which carries 279 of
+# 283 endpoints — at once. Re-measure the next real run rather than trusting
+# 43 s still holds; see CLAUDE.md's "Actions minutes" note.
+#
+# This repository is private, where GitHub bills whole minutes per job: at the
+# old 43 s figure, 1 440 runs x 1 minute = 1 440 minutes a month against the
+# 2 000 minute free allowance — fitting, with one slow day of headroom, and a
 # run crossing 60 seconds bills as two and puts the month at 2 880.
 #
-# Watch the run duration when adding endpoints. If it approaches a minute:
-# make the repository public (Actions becomes unmetered, and GitHub Pages
-# starts serving the status page, which a private free repo will not — the log
-# holds only response times and status codes for public APIs), or go hourly.
+# Watch the run duration when adding endpoints, or after the host-cap change
+# above. If it approaches a minute: make the repository public (Actions
+# becomes unmetered, and GitHub Pages starts serving the status page, which a
+# private free repo will not — the log holds only response times and status
+# codes for public APIs), raise --max-per-host if the service owner confirms
+# more concurrency is fine, or go hourly.
 on:
   schedule:
     - cron: "*/30 * * * *"

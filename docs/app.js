@@ -345,48 +345,54 @@ function drawAvailability(data) {
   );
 }
 
+/* PostgREST queries and KAIA file downloads have genuinely different natural
+ * response times, so one pooled median compares two different things. Two
+ * lines instead — not one per system (6 today), which would need a whole new
+ * validated colour palette for a management audience that mainly needs "the
+ * data service" vs "the file service". A day with no checks for a group is a
+ * gap in that group's line, not an interpolated value. */
 function drawLatency(data) {
-  const rows = (data.daily || []).filter((r) => r.p50_ms != null);
-  if (rows.length < 2) {
+  const groups = [
+    { key: "daily_postgrest", label: "PostgREST teenused", color: "--series-1" },
+    { key: "daily_kaia", label: "KAIA", color: "--series-2" },
+  ].map((g) => ({ ...g, rows: data[g.key] || [], byDate: new Map((data[g.key] || []).map((r) => [r.date, r])) }));
+
+  const dates = Array.from(new Set(groups.flatMap((g) => g.rows.map((r) => r.date)))).sort();
+  const present = groups.filter((g) => g.rows.some((r) => r.p50_ms != null));
+  if (dates.length < 2 || present.length === 0) {
     showEmpty("empty-latency", "Vastuseaja trendi näitamiseks on vaja vähemalt kahe päeva andmeid.");
     setSummary("summary-latency", "");
     return;
   }
-  const p50 = rows.map((r) => r.p50_ms);
-  const p95 = rows.map((r) => r.p95_ms).filter((v) => v != null);
+
   setSummary(
     "summary-latency",
-    `Mediaan vastuseaeg jäi ${day(rows[0].date)}–${day(rows[rows.length - 1].date)} vahemikku ` +
-      `${Math.min(...p50)}–${Math.max(...p50)} ms` +
-      (p95.length ? `; 95. protsentiil kuni ${Math.max(...p95)} ms.` : "."),
+    present
+      .map((g) => {
+        const p50 = g.rows.map((r) => r.p50_ms).filter((v) => v != null);
+        return p50.length
+          ? `${g.label}: mediaan ${Math.min(...p50)}–${Math.max(...p50)} ms`
+          : `${g.label}: andmeid ei ole veel piisavalt`;
+      })
+      .join("; ") + ".",
   );
+
   charts.push(
     new Chart($("chart-latency"), {
       type: "line",
       data: {
-        labels: rows.map((r) => day(r.date)),
-        datasets: [
-          {
-            label: "Mediaan",
-            data: rows.map((r) => r.p50_ms),
-            borderColor: css("--series-1"),
-            backgroundColor: css("--series-1"),
-            borderWidth: 2,
-            pointRadius: 4,
-            pointHoverRadius: 6,
-            tension: 0.2,
-          },
-          {
-            label: "95. protsentiil",
-            data: rows.map((r) => r.p95_ms),
-            borderColor: css("--series-2"),
-            backgroundColor: css("--series-2"),
-            borderWidth: 2,
-            pointRadius: 4,
-            pointHoverRadius: 6,
-            tension: 0.2,
-          },
-        ],
+        labels: dates.map((d) => day(d)),
+        datasets: groups.map((g) => ({
+          label: g.label,
+          data: dates.map((d) => g.byDate.get(d)?.p50_ms ?? null),
+          borderColor: css(g.color),
+          backgroundColor: css(g.color),
+          borderWidth: 2,
+          pointRadius: 4,
+          pointHoverRadius: 6,
+          tension: 0.2,
+          spanGaps: false,
+        })),
       },
       options: {
         ...baseOptions(),
@@ -409,6 +415,17 @@ function drawLatency(data) {
               pointStyle: "circle",
               boxWidth: 8,
               font: { family: css("--font"), size: 12 },
+            },
+          },
+          tooltip: {
+            ...baseOptions().plugins.tooltip,
+            callbacks: {
+              label: (ctx) => {
+                const g = groups[ctx.datasetIndex];
+                const row = g.byDate.get(dates[ctx.dataIndex]);
+                if (!row || row.p50_ms == null) return `${g.label}: andmed puuduvad`;
+                return `${g.label}: ${row.p50_ms} ms (p95 ${row.p95_ms} ms)`;
+              },
             },
           },
         },
