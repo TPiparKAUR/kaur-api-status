@@ -213,13 +213,20 @@ endpoints is about 400 000 records and 84 MB a year, down from a projected
 1 GB. Nothing prunes anything automatically; if it ever needs to, the reading
 side is already windowed to 31 days.
 
-Actions minutes: a measured run is 43 seconds, so 1 440 minutes a month against
-a 2 000 allowance. The margin is one slow day wide — crossing 60 seconds
-doubles the bill. That measurement predates the retry-once-on-failure change:
-a run where everything is healthy is unaffected, but a run during a real,
-widespread outage now costs an extra `retry_delay_s` (5 s) per failing
-endpoint, serialised per worker. Worth re-measuring against a run with real
-failures rather than assuming the 43 s figure still holds under load.
+Actions minutes: re-measured 2026-09-15 (run 62, commit 3525595) after adding
+the once-only retry and the per-host concurrency cap (`HostLimiter`, default
+4 — one host carries 279 of 283 endpoints, so that cap governs almost the
+whole run): the "Run checks" step took 42 s, job total 47 s, essentially
+unchanged from the original 43 s figure. So 1 440 minutes a month against a
+2 000 allowance still holds, with margin.
+
+That run had nothing to retry, though — every endpoint answered cleanly, so
+it does not measure either change's cost during a real, widespread outage: a
+run where many endpoints are down now costs an extra `retry_delay_s` (5 s)
+per failing endpoint (serialised per worker) on top of whatever queueing the
+concurrency cap adds for a host with more in-flight requests than its cap
+allows. Worth re-measuring against a run with real failures rather than
+assuming the healthy-run figure holds under load.
 
 - The 261 harvested endpoints are `verified = false`. Confirming them is a
   human job; until then they are watched but never alert.
@@ -255,12 +262,12 @@ assumed:
   (`cli.py`'s `--max-per-host`, default `check.DEFAULT_MAX_PER_HOST`). Timing
   starts only once a slot is actually held, for the same reason `CertCache`'s
   timing starts after the certificate probe — a queueing wait is not the
-  service's response time. Since keskkonnaandmed.envir.ee carries 279 of 283
-  endpoints, capping it to 4 concurrent (down from up to 12) will very likely
-  lengthen the run; **re-measure against a real run and update the Actions
-  billing note below** — this was not measured before merging, only reasoned
-  about, and the 43 s figure predates this change more thoroughly than it
-  predates the retry change already noted there.
+  service's response time. Expected this to noticeably lengthen the run,
+  since keskkonnaandmed.envir.ee carries 279 of 283 endpoints and the cap
+  drops available concurrency there from up to 12 to 4 — measured instead of
+  assumed (see "Actions minutes" below), and it turned out not to matter: 42 s
+  for the check step, against 43 s before. That one measurement had nothing
+  to retry, though, so it says nothing about a run during a real outage.
 - **SLO targets: not decided here.** Still an agreement to make with the
   monitored systems' owners, not a code change — genuinely out of scope for
   this file.
