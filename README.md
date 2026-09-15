@@ -207,17 +207,18 @@ Kontroll-loend. Esimesed kolm on üle vaadatud 2026-09-14 seisuga.
 - [x] **Litsents on olemas** — MIT, vt `LICENSE`.
 - [ ] **Repo kirjeldus GitHubis** on veel vana („Laeb alla KAUR-i andmed
       arhiveerimiseks") — see ei kirjelda enam projekti.
-- [ ] **Ümbernimetamine ja nähtavus** Settings-i alt.
-- [ ] Pärast ümbernimetamist kohalikus koopias:
-      `git remote set-url origin https://github.com/TPiparKAUR/kaur-api-status`
-- [ ] Pärast ümbernimetamist uuenda `docs/index.html` jaluses olev Issue'de
-      link uuele repo aadressile (GitHub suunab vana lingi küll automaatselt
-      ümber, aga otsene link on selgem).
+- [x] **Ümbernimetamine.** Repo on GitHubis juba ümber nimetatud
+      (`kaur-api-status`) — `git push` suunati siit ümber automaatselt.
+      **Nähtavus (avalik/privaatne) on selle sessiooni jaoks kontrollimatu**;
+      kinnita ise Settings → General → Danger Zone alt.
+- [x] Kohalik koopia: `git remote set-url origin
+      https://github.com/TPiparKAUR/kaur-api-status.git` on tehtud.
+- [x] `docs/index.html` jaluses olev Issue'de link on uuendatud uuele
+      aadressile.
 
-Repo ümbernimetamine ei nõua koodimuudatust peale ühe erandi: `docs/index.html`
-jaluses on link projekti Issue'desse, mis kannab praegust repo nime. Vanad
-lingid suunatakse GitHubis automaatselt ümber, nii et see ei purune, aga
-tasub siiski üle vaadata.
+Repo ümbernimetamine ei nõudnud koodimuudatust peale ühe erandi: link
+`docs/index.html` jaluses projekti Issue'desse, mis kandis vana repo nime —
+see on nüüd parandatud.
 
 ### Teenuste kirjeldused
 
