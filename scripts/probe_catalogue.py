@@ -39,7 +39,7 @@ JSON_HEAD = 4000
 # A small JSON object is printed whole rather than headed: the catalogue's
 # service records are about a kilobyte and the whole point of this probe is to
 # read the shape instead of guessing which fields matter.
-JSON_WHOLE_UNDER = 9000
+JSON_WHOLE_UNDER = 22000
 _HREF = re.compile(r'(?:href|src|content)="(https?://[^"]+)"', re.I)
 _BARE = re.compile(r'https?://[^\s"\'<>)\\]+')
 
