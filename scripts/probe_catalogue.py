@@ -35,7 +35,11 @@ USER_AGENT = "KAUR-API-monitor/1.0 (one-off catalogue probe; Keskkonnaagentuur)"
 TIMEOUT_S = 30.0
 MAX_BYTES = 512 * 1024
 DELAY_S = 0.5  # a courtesy gap; this is someone else's public portal
-JSON_HEAD = 1500
+JSON_HEAD = 4000
+# A small JSON object is printed whole rather than headed: the catalogue's
+# service records are about a kilobyte and the whole point of this probe is to
+# read the shape instead of guessing which fields matter.
+JSON_WHOLE_UNDER = 9000
 _HREF = re.compile(r'(?:href|src|content)="(https?://[^"]+)"', re.I)
 _BARE = re.compile(r'https?://[^\s"\'<>)\\]+')
 
@@ -86,26 +90,47 @@ def main(argv: list[str]) -> int:
     print(f"Probing {len(urls)} URLs\n")
 
     everything: set[str] = set()
-    for index, url in enumerate(urls, start=1):
+    queue = list(urls)
+    seen: set[str] = set()
+    index = 0
+
+    while queue:
+        url = queue.pop(0)
+        if url in seen:
+            continue
+        seen.add(url)
+        index += 1
         status, content_type, body = fetch(url)
-        print(f"[{index}/{len(urls)}] {url}")
+        print(f"[{index}] {url}")
         print(f"    status={status} type={content_type or '-'} bytes={len(body)}")
         if body:
-            lowered = content_type.lower()
-            if "json" in lowered:
-                head = body[:JSON_HEAD].decode("utf-8", errors="replace")
-                print(f"    json head: {' '.join(head.split())}")
-            else:
-                links = offsite_urls(body, url)
-                everything.update(links)
-                if links:
-                    for link in links[:25]:
-                        print(f"    -> {link}")
-                    if len(links) > 25:
-                        print(f"    -> ... and {len(links) - 25} more")
+            links = offsite_urls(body, url)
+            everything.update(links)
+            if "json" in content_type.lower():
+                text = body.decode("utf-8", errors="replace")
+                flat = " ".join(text.split())
+                if len(body) < JSON_WHOLE_UNDER:
+                    print(f"    json: {flat}")
                 else:
-                    head = body[:300].decode("utf-8", errors="replace")
-                    print(f"    (no off-site links) head: {' '.join(head.split())}")
+                    print(f"    json head: {flat[:JSON_HEAD]}")
+                # Follow the catalogue's own references one level: a service
+                # record names the datasets it belongs to, and the dataset
+                # record is where the distribution URLs live. Following what
+                # the response actually contains beats guessing a URL shape.
+                for related in re.findall(r'"relatedDatasets":\[(.*?)\]', flat):
+                    for dataset_id in re.findall(r'"id":"([0-9a-f-]{36})"', related):
+                        follow = f"{urllib.parse.urlsplit(url).scheme}://"
+                        follow += f"{urllib.parse.urlsplit(url).hostname}/api/datasets/{dataset_id}"
+                        if follow not in seen:
+                            queue.append(follow)
+            elif links:
+                for link in links[:25]:
+                    print(f"    -> {link}")
+                if len(links) > 25:
+                    print(f"    -> ... and {len(links) - 25} more")
+            else:
+                head = body[:300].decode("utf-8", errors="replace")
+                print(f"    (no off-site links) head: {' '.join(head.split())}")
         print()
         time.sleep(DELAY_S)
 
