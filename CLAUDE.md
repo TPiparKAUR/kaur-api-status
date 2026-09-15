@@ -122,6 +122,38 @@ time by that extra handshake; timing now starts only after the certificate
 check, right before the request being measured. `cli.py` shares one
 `CertCache` across the whole `ThreadPoolExecutor` run.
 
+**`REPORT.md`'s "Hetkeseis" only speaks for currently-monitored units.** It
+used to tally the latest record of every id the 31-day log window had ever
+seen, which after the EELIS grouping change meant it counted 284 — the 23
+current units plus every superseded individual `eelis-f-*` id still inside
+the window — while the header line said "jälgitavaid otspunkte: 23" a few
+words earlier. "Käideldavus" and "Katkestused" still show the full history on
+purpose (those old ids genuinely ran during the window); only the *current
+state* summary and table, and the certificate-expiry warnings, are filtered
+to ids present in the unit list passed in.
+
+**System-level availability is computed from pooled records, not averaged
+percentages.** `dashboard.py` used to average each member endpoint's already
+-rounded `avail_24h`, which weighs a member with one check the same as one
+with a thousand and a 261-endpoint group the same as a single endpoint.
+It now pools every member's raw records for the system and runs
+`analysis.uptime` over the pool, so the result is weighted by actual checks.
+
+**The availability chart's Y-axis floor is derived from the data, not fixed.**
+A fixed `suggestedMin: 90` either exaggerates an ordinary blip when the real
+range is a fraction of a percent, or hides real variation when it's wider.
+`app.js` now floors 2 points below the lowest plotted value, rounded down to
+a multiple of 5, and states the actual floor in the chart's text summary —
+never leaving a truncated axis for the reader to notice unlabelled.
+
+**GitHub Actions steps are pinned to a commit SHA, not a floating major tag.**
+`actions/checkout@v4` and `actions/setup-python@v5` both had that tag
+re-pointed at a new minor release during this project's own history — not
+maliciously, but a tag is not immutable, and a workflow with `contents: write`
+and `issues: write` running on every push is not somewhere to trust that only
+benign changes ever land there. Pinned SHAs carry the tagged version as a
+trailing comment so the intent stays readable.
+
 ## Commands
 
 ```bash
@@ -197,3 +229,27 @@ failures rather than assuming the 43 s figure still holds under load.
 - GitHub Pages does not serve a private repository on the free plan, so the
   page is built and committed but not published until the repo is public or
   the plan changes.
+
+Decisions pending explicit sign-off rather than a unilateral code change,
+because each has a real trade-off or needs a fact only a human here has:
+
+- **Retention policy.** Nothing prunes or rolls up `logs/*.jsonl`; every
+  month's file is kept in git forever. Fine for years at 84 MB/year, but the
+  policy itself — keep raw indefinitely, or roll old months up into daily
+  aggregates after N months and drop the raw — has not been decided.
+- **Load on `keskkonnaandmed.envir.ee`.** 283 endpoints behind two hosts,
+  12-way parallel, every 30 minutes, with no per-host concurrency cap,
+  `Accept-Encoding`, or conditional request. Whether this needs a lower
+  per-host cap depends on whether the service owner has been told a monitor
+  is polling it — a fact this file can't supply.
+- **SLO targets.** The page reports availability with no target to compare it
+  against. Setting one (e.g. 99.5% during business hours) is an agreement
+  with the systems' owners, not a code change.
+- **`discover.from_ckan`.** Untested against a real catalogue because none is
+  known to this file. Needs either a real CKAN endpoint to test against, or a
+  decision to remove the untested code path.
+- **Per-system latency.** The response-time chart pools KAIA (file downloads)
+  and every PostgREST system into one median/p95 line, which is comparing
+  different things. Splitting it into one line per system needs 4 more
+  chart colours validated the way the existing two are (see the `dataviz`
+  skill) — a small design task, not a one-line fix.

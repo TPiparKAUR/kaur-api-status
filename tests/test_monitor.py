@@ -1014,6 +1014,18 @@ class DashboardData(unittest.TestCase):
             systems["EELIS"]["description"], "config/systems.toml should describe EELIS"
         )
 
+    def test_system_availability_is_weighted_by_checks_not_averaged_per_endpoint(self):
+        """A member with 9 failing checks must outweigh one with a single ok
+        check — averaging their two percentages (0% and 100% -> 50%) would
+        hide the outage; pooling the raw records (1/10 -> 10%) does not."""
+        self._write(
+            [dict(_record("a", "ok", 5), ms=100)]
+            + [dict(_record("b", "down", 5 + i), ms=None) for i in range(9)]
+        )
+        data = dashboard.build([self._entry("a", "Kliima"), self._entry("b", "Kliima")])
+        systems = {s["name"]: s for s in data["systems"]}
+        self.assertAlmostEqual(systems["Kliima"]["avail_24h"], 10.0)
+
     def test_outages_are_listed_and_counted_per_endpoint(self):
         self._write(
             [
@@ -1153,6 +1165,28 @@ class ReportRendering(unittest.TestCase):
     def test_incidents_sharing_a_start_do_not_crash_the_sort(self):
         series = [_record("a", "down", 10), _record("a", "down", 10)]
         self.assertEqual(len(analysis.incidents(series)), 1)
+
+    def test_hetkeseis_only_counts_currently_monitored_units(self):
+        """A ghost from a superseded id (e.g. pre-grouping eelis-f-*) must not
+        inflate 'Hetkeseis' past the number of units actually monitored today
+        — Käideldavus/Katkestused still see it, this summary must not."""
+        original = store.LOG_DIR
+        store.LOG_DIR = Path(tempfile.mkdtemp())
+        try:
+            (store.LOG_DIR / f"{datetime.now(UTC):%Y-%m}.jsonl").write_text(
+                "\n".join(
+                    json.dumps(r)
+                    for r in [_record("current", "ok", 5), _record("retired-ghost", "ok", 5)]
+                )
+                + "\n",
+                encoding="utf-8",
+            )
+            text = report.build([{"id": "current", "name": "Current", "url": "https://e.org/c"}])
+        finally:
+            store.LOG_DIR = original
+        self.assertIn("Hetkeseis — KORRAS: **1**", text)
+        self.assertIn("`current`", text)
+        self.assertNotIn("`retired-ghost`", text.split("## Käideldavus")[0])
 
 
 if __name__ == "__main__":

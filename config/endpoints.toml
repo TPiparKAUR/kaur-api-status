@@ -1720,6 +1720,7 @@ headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
 enabled = true
 source = "openapi"
 verified = false
+note = "Sama tabel, mida kontrollib ka eelis-rahvalad (dokumenteeritud näidispäring). Teadlik kattuvus: see harvestitud ?limit=1 päring katab ainult PostgREST-i vaikepäringu, eelis-rahvalad katab filtreeritud päringu — kaks erinevat teenuse käitumist, mitte topelttöö."
 
 [[endpoint]]
 id = "f-rahvalad-dok"
@@ -1732,6 +1733,7 @@ headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
 enabled = true
 source = "openapi"
 verified = false
+note = "Sama tabel, mida kontrollib ka eelis-rahvalad-dok (dokumenteeritud näidispäring). Teadlik kattuvus, vt f-rahvalad."
 
 [[endpoint]]
 id = "f-rahvalad-ehak"

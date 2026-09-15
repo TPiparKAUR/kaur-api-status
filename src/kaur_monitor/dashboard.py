@@ -134,7 +134,13 @@ def build(entries: list[dict[str, Any]]) -> dict[str, Any]:
     systems: list[dict[str, Any]] = []
     for name in sorted({e["system"] for e in endpoints}):
         members = [e for e in endpoints if e["system"] == name]
-        rated = [e["avail_24h"] for e in members if e["avail_24h"] is not None]
+        # Pool the members' raw check records and run analysis.uptime over
+        # them, rather than averaging each member's already-rounded avail_24h:
+        # an unweighted average of percentages silently overweights a member
+        # with few checks (e.g. new, or mostly 'unknown') against one with
+        # many, and treats a 261-endpoint group unit as equal to a single one.
+        pooled = [record for e in members for record in grouped.get(e["id"], [])]
+        system_avail_24h, _ = analysis.uptime(pooled, day_ago)
         systems.append(
             {
                 "name": name,
@@ -142,7 +148,7 @@ def build(entries: list[dict[str, Any]]) -> dict[str, Any]:
                 "endpoints": len(members),
                 "ok": sum(1 for e in members if e["status"] == "ok"),
                 "problem": sum(1 for e in members if e["status"] in _PROBLEM),
-                "avail_24h": round(sum(rated) / len(rated), 2) if rated else None,
+                "avail_24h": None if system_avail_24h is None else round(system_avail_24h, 2),
             }
         )
 

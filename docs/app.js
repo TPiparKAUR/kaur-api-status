@@ -285,11 +285,21 @@ function drawAvailability(data) {
     return;
   }
   const values = rows.map((r) => r.avail_pct);
+  const lowest = Math.min(...values);
+  // A fixed floor (e.g. always 90%) can make an ordinary blip look dramatic
+  // when the real range is tiny, or hide real variation when it's wide. The
+  // floor is derived from the data instead — 2 points of headroom below the
+  // lowest value, rounded down to a multiple of 5 — and, since the axis is
+  // truncated either way whenever the lowest value is above 0, the caption
+  // states the actual floor in words rather than leaving the reader to
+  // notice the axis doesn't start at 0%.
+  const floor = Math.max(0, Math.floor((lowest - 2) / 5) * 5);
   setSummary(
     "summary-avail",
     `Kättesaadavus jäi ${day(rows[0].date)}–${day(rows[rows.length - 1].date)} vahemikku ` +
-      `${Math.min(...values).toFixed(1)}–${Math.max(...values).toFixed(1)} %; ` +
-      `viimane päev ${values[values.length - 1].toFixed(1)} %.`,
+      `${lowest.toFixed(1)}–${Math.max(...values).toFixed(1)} %; ` +
+      `viimane päev ${values[values.length - 1].toFixed(1)} %. ` +
+      (floor > 0 ? `Graafiku Y-telg algab ${floor}%-st, mitte 0%-st.` : ""),
   );
   charts.push(
     new Chart($("chart-avail"), {
@@ -315,7 +325,7 @@ function drawAvailability(data) {
           x: axisStyle(),
           y: {
             ...axisStyle(),
-            suggestedMin: 90,
+            suggestedMin: floor,
             max: 100,
             ticks: { ...axisStyle().ticks, callback: (v) => `${v} %` },
           },

@@ -79,19 +79,30 @@ def build(entries: list[dict[str, Any]]) -> str:
         ]
         return "\n".join(out)
 
+    # 'grouped' carries every id the 31-day window has ever seen, which after
+    # a schema change like the EELIS grouping includes ids nobody currently
+    # monitors (e.g. the individual eelis-f-* endpoints, superseded by the
+    # 'eelis' group on 2026-09-14). Those matter for the availability and
+    # incident history below — they really did run during the window — but a
+    # *current* state view must only speak for units that exist today, or the
+    # headline count silently drifts from "jälgitavaid otspunkte".
     latest = {eid: series[-1] for eid, series in grouped.items() if series}
+    current = {eid: record for eid, record in latest.items() if eid in by_id}
     tally: dict[str, int] = {}
-    for record in latest.values():
+    for record in current.values():
         tally[record.get("status", "unknown")] = tally.get(record.get("status", "unknown"), 0) + 1
     summary = " · ".join(f"{_LABEL.get(k, k)}: **{v}**" for k, v in sorted(tally.items()))
+    unchecked = len(by_id) - len(current)
+    if unchecked:
+        summary += f" · KONTROLLIMATA (uus): **{unchecked}**"
     out += [f"Hetkeseis — {summary}", "", "## Praegune seis", ""]
 
     out += [
         "| Otspunkt | Seisund | Vastus | Andmete vanus | Viimane kontroll | Märkus |",
         "|---|---|---|---|---|---|",
     ]
-    for eid in sorted(latest):
-        record = latest[eid]
+    for eid in sorted(current):
+        record = current[eid]
         entry = by_id.get(eid, {})
         name = entry.get("name", eid)
         http = record.get("http")
@@ -149,7 +160,7 @@ def build(entries: list[dict[str, Any]]) -> str:
 
     warnings: list[str] = []
     expiring: dict[str, int] = {}
-    for eid, record in latest.items():
+    for eid, record in current.items():
         raw_days = record.get("cert_days")
         if raw_days is None or int(raw_days) >= 30:
             continue
