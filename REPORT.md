@@ -1,8 +1,8 @@
 # Keskkonnaagentuuri API-de seisundiraport
 
-Koostatud: **2026-09-15 15:58** (EET/EEST) · jälgitavaid otspunkte: **23** · kontrollikirjeid viimase 31 päeva jooksul: **1447**
+Koostatud: **2026-09-15 16:04** (EET/EEST) · jälgitavaid otspunkte: **40** · kontrollikirjeid viimase 31 päeva jooksul: **1447**
 
-Hetkeseis — KORRAS: **23**
+Hetkeseis — KORRAS: **23** · KONTROLLIMATA (uus): **17**
 
 ## Praegune seis
 
@@ -327,6 +327,13 @@ Logitud perioodil katkestusi ei ole.
 
 ## Hoiatused
 
+- `estmodel-assessment-units`: URL on **kontrollimata** (`verified = false`) — allikas: teabevarav
+- `estmodel-countries`: URL on **kontrollimata** (`verified = false`) — allikas: teabevarav
+- `estmodel-districts`: URL on **kontrollimata** (`verified = false`) — allikas: teabevarav
+- `estmodel-rivers`: URL on **kontrollimata** (`verified = false`) — allikas: teabevarav
+- `estmodel-stations`: URL on **kontrollimata** (`verified = false`) — allikas: teabevarav
+- `estmodel-subdistricts`: URL on **kontrollimata** (`verified = false`) — allikas: teabevarav
+- `estmodel-water-outlets`: URL on **kontrollimata** (`verified = false`) — allikas: teabevarav
 - `f-hydroseire`: URL on **kontrollimata** (`verified = false`) — allikas: openapi
 - `f-keskkonnaseire`: URL on **kontrollimata** (`verified = false`) — allikas: openapi
 - `f-kliima-element`: URL on **kontrollimata** (`verified = false`) — allikas: openapi
@@ -335,6 +342,16 @@ Logitud perioodil katkestusi ei ole.
 - `f-kliima-minut`: URL on **kontrollimata** (`verified = false`) — allikas: openapi
 - `f-kliima-paev`: URL on **kontrollimata** (`verified = false`) — allikas: openapi
 - `f-kliima-tund`: URL on **kontrollimata** (`verified = false`) — allikas: openapi
+- `ilmateenistus-juur`: URL on **kontrollimata** (`verified = false`) — allikas: teabevarav
+- `ilmateenistus-vaatlusandmed-xml`: URL on **kontrollimata** (`verified = false`) — allikas: teabevarav
+- `kaia-vaated`: URL on **kontrollimata** (`verified = false`) — allikas: teadmata
+- `kese-juur`: URL on **kontrollimata** (`verified = false`) — allikas: teabevarav
+- `kotkas-aastaaruanded`: URL on **kontrollimata** (`verified = false`) — allikas: teabevarav
+- `kytus-bunkering-company`: URL on **kontrollimata** (`verified = false`) — allikas: teabevarav
+- `kytus-monitoring`: URL on **kontrollimata** (`verified = false`) — allikas: teabevarav
+- `kytus-source-of-pollution`: URL on **kontrollimata** (`verified = false`) — allikas: teabevarav
+- `pakis-opendata`: URL on **kontrollimata** (`verified = false`) — allikas: teabevarav
+- `proto-opendata`: URL on **kontrollimata** (`verified = false`) — allikas: teabevarav
 
 ---
 

@@ -63,15 +63,30 @@ def fetch(url: str) -> tuple[int | str, str, bytes]:
         return f"ERROR {type(exc).__name__}: {exc}", "", b""
 
 
-def offsite_urls(body: bytes, page_url: str) -> list[str]:
+_RELATIVE = re.compile(r'href="(?!https?:|mailto:|#|javascript:)([^"]+)"', re.I)
+
+
+def offsite_urls(body: bytes, page_url: str, same_host: bool = False) -> list[str]:
+    """Links worth looking at. Off-site by default, everything with same_host.
+
+    Same-host links are normally the site's own navigation, which is why they
+    are dropped — but a directory index, or a documentation page that names
+    the feed it documents, keeps the interesting URL on its own host, and
+    then dropping it loses the very thing being looked for.
+    """
     text = body.decode("utf-8", errors="replace")
-    host = urllib.parse.urlsplit(page_url).hostname or ""
+    split = urllib.parse.urlsplit(page_url)
+    host = split.hostname or ""
     found = set(_HREF.findall(text)) | set(_BARE.findall(text))
+    if same_host:
+        found |= {urllib.parse.urljoin(page_url, rel) for rel in _RELATIVE.findall(text)}
     keep = []
     for raw in found:
         url = raw.rstrip(".,);\"'")
         target = urllib.parse.urlsplit(url).hostname or ""
-        if not target or target == host:
+        if not target:
+            continue
+        if target == host and not same_host:
             continue
         if any(noise in target for noise in ("w3.org", "gstatic", "googleapis", "schema.org")):
             continue
@@ -131,6 +146,7 @@ def main(argv: list[str]) -> int:
         print(__doc__)
         return 2
     urls = []
+    same_host_pages: set[str] = set()
     for line in Path(argv[1]).read_text(encoding="utf-8").splitlines():
         line = line.strip()
         if not line or line.startswith("#"):
@@ -141,6 +157,11 @@ def main(argv: list[str]) -> int:
         if line.startswith("search:"):
             term = urllib.parse.quote(line.split(":", 1)[1].strip())
             urls.append(f"https://andmed.eesti.ee/api/datasets?limit=5&search={term}")
+        elif line.startswith("all:"):
+            # 'all:<url>' keeps the page's own-host links too — a directory
+            # index or a feed's documentation page points at itself.
+            urls.append(line.split(":", 1)[1].strip())
+            same_host_pages.add(line.split(":", 1)[1].strip())
         else:
             urls.append(line)
     print(f"Probing {len(urls)} URLs\n")
@@ -160,7 +181,7 @@ def main(argv: list[str]) -> int:
         print(f"[{index}] {url}")
         print(f"    status={status} type={content_type or '-'} bytes={len(body)}")
         if body:
-            links = offsite_urls(body, url)
+            links = offsite_urls(body, url, same_host=url in same_host_pages)
             everything.update(links)
             if "json" in content_type.lower():
                 text = body.decode("utf-8", errors="replace")
@@ -187,10 +208,11 @@ def main(argv: list[str]) -> int:
                         if follow not in seen:
                             queue.append(follow)
             elif links:
-                for link in links[:25]:
+                cap = len(links) if url in same_host_pages else 25
+                for link in links[:cap]:
                     print(f"    -> {link}")
-                if len(links) > 25:
-                    print(f"    -> ... and {len(links) - 25} more")
+                if len(links) > cap:
+                    print(f"    -> ... and {len(links) - cap} more")
             else:
                 head = body[:300].decode("utf-8", errors="replace")
                 print(f"    (no off-site links) head: {' '.join(head.split())}")

@@ -1,37 +1,16 @@
-# One-off input for scripts/probe_catalogue.py (round 4). Delete both
+# One-off input for scripts/probe_catalogue.py (round 5). Delete both
 # once the endpoints they reveal are in config/endpoints.toml.
 #
-# Round 3: the avaandmed pages gave real endpoints (KAIA documentList
-# views per dataset, the PostgREST queries this project already has),
-# every organisation filter on /api/datasets was rejected, and free-text
-# search was the one listing route that answered. So round 4 enumerates
-# the remaining datasets by searching for their titles and following each
-# hit to its record, which reports the holder so a same-named dataset
-# from another agency can be told apart.
+# Sources the project owner named directly. Two are new: the API_liides
+# directory of interface documentation, and the forecast XML page (the
+# observation XML page was already read in round 4, and is re-read here
+# in full because its own-host links were being dropped).
+#
+# 'all:' keeps a page's own-host links: a directory index and a feed's
+# documentation page both point at themselves, so off-site-only filtering
+# throws away exactly what is being looked for.
 
-# --- the dataset still truncated in round 3
-https://andmed.eesti.ee/api/datasets/19d203bd-d0ae-471e-a5a9-f8e0915bd959
-
-# --- the EstModel spec, now summarised to its path list
-https://api.swaggerhub.com/apis/estmodel/estmodel-api/1.0.0
-
-# --- the page that documents the XML observation feed
-https://www.ilmateenistus.ee/teenused/ilmainfo/eesti-vaatlusandmed-xml/
-
-# --- the 16 datasets no data service points at
-search:Tuleohu (FWI) andmestik
-search:Lennumeteoroloogia prognoosiinfo
-search:Veekasutuse andmestik
-search:Välisõhu saastamisega seotud tegevuste aruanded
-search:Pakendijäätmete andmestikud
-search:Kütuseseire andmestik
-search:Kliimaandmestik
-search:Ranniku üleujutusalad
-search:Probleemtoodete andmestik
-search:Metsaregistri andmestikud
-search:Eesti looduse infosüsteemi andmestikud
-search:Hüdrogeoloogia andmestik EELIS-es
-search:Ettevõtete jäätmete aastaaruandlus
-search:Satelliidipildid
-search:SMI - Statistilise metsainventeerimise andmestik
-search:Puuraugud - Hüdrogeoloogia andmestik
+all:https://keskkonnaportaal.ee/sites/default/files/andmekataloog/API_liides/
+all:https://www.ilmateenistus.ee/teenused/ilmainfo/eesti-prognoos-xml/
+all:https://www.ilmateenistus.ee/teenused/ilmainfo/eesti-vaatlusandmed-xml/
+all:https://keskkonnaportaal.ee/et/avaandmed/keskkonna-ja-ilma-valdkonna-andmeteenused
