@@ -1,6 +1,6 @@
 {
  "availability": {
-  "checks_24h": 1670,
+  "checks_24h": 1410,
   "d7": 100.0,
   "h24": 100.0
  },
@@ -16,27 +16,27 @@
   },
   {
    "avail_pct": 100.0,
-   "checks": 690,
+   "checks": 713,
    "date": "2026-09-15",
-   "ok": 690,
-   "p50_ms": 941,
-   "p95_ms": 2882
+   "ok": 713,
+   "p50_ms": 945,
+   "p95_ms": 2856
   }
  ],
  "endpoints": [
   {
    "avail_24h": 100.0,
    "avail_7d": 100.0,
-   "checks_24h": 48,
+   "checks_24h": 49,
    "detail": "",
    "http": null,
    "id": "eelis",
    "members": 261,
-   "ms": 833,
+   "ms": 893,
    "name": "EELIS andmestikud",
    "status": "ok",
    "system": "EELIS",
-   "ts": "2026-09-15T14:37:11Z",
+   "ts": "2026-09-15T15:03:55Z",
    "url": "https://keskkonnaandmed.envir.ee/"
   },
   {
@@ -47,11 +47,11 @@
    "http": 200,
    "id": "f-hydroseire",
    "members": null,
-   "ms": 874,
+   "ms": 1345,
    "name": "Hüdroloogiliste seireandmete aegread",
    "status": "ok",
    "system": "Hüdroloogia",
-   "ts": "2026-09-15T14:37:16Z",
+   "ts": "2026-09-15T15:04:00Z",
    "url": "https://keskkonnaandmed.envir.ee/f_hydroseire?limit=1"
   },
   {
@@ -62,11 +62,11 @@
    "http": 200,
    "id": "hydroseire",
    "members": null,
-   "ms": 1431,
+   "ms": 13022,
    "name": "Hüdroloogiline seire, veetase 2023-01-02",
    "status": "ok",
    "system": "Hüdroloogia",
-   "ts": "2026-09-15T14:37:32Z",
+   "ts": "2026-09-15T15:04:19Z",
    "url": "https://keskkonnaandmed.envir.ee/f_hydroseire?timeline_ts_utc=lt.2023-01-02T03:00:00&timeline_ts_utc=gt.2023-01-01T23:00:00&aegrida_nimi=eq.WL%20min&limit=5"
   },
   {
@@ -81,7 +81,7 @@
    "name": "KAIA dokumentide metaandmete päring",
    "status": "ok",
    "system": "KAIA",
-   "ts": "2026-09-15T14:37:32Z",
+   "ts": "2026-09-15T15:04:19Z",
    "url": "https://avaandmed.keskkonnaportaal.ee/api/lists/active/items/query"
   },
   {
@@ -92,11 +92,11 @@
    "http": 200,
    "id": "kaia-lists-active",
    "members": null,
-   "ms": 2219,
+   "ms": 2277,
    "name": "KAIA aktiivse valikuhierarhia metaandmed",
    "status": "ok",
    "system": "KAIA",
-   "ts": "2026-09-15T14:37:32Z",
+   "ts": "2026-09-15T15:04:19Z",
    "url": "https://avaandmed.keskkonnaportaal.ee/api/lists/active"
   },
   {
@@ -107,11 +107,11 @@
    "http": 200,
    "id": "kaia-lists-archive",
    "members": null,
-   "ms": 2220,
+   "ms": 2190,
    "name": "KAIA arhiivi valikuhierarhia metaandmed",
    "status": "ok",
    "system": "KAIA",
-   "ts": "2026-09-15T14:37:32Z",
+   "ts": "2026-09-15T15:04:19Z",
    "url": "https://avaandmed.keskkonnaportaal.ee/api/lists/archive"
   },
   {
@@ -122,11 +122,11 @@
    "http": 200,
    "id": "kaia-swagger",
    "members": null,
-   "ms": 1982,
+   "ms": 2015,
    "name": "KAIA OpenAPI teenusekirjeldus",
    "status": "ok",
    "system": "KAIA",
-   "ts": "2026-09-15T14:37:32Z",
+   "ts": "2026-09-15T15:04:19Z",
    "url": "https://avaandmed.keskkonnaportaal.ee/swagger/v1/swagger.json"
   },
   {
@@ -137,11 +137,11 @@
    "http": 200,
    "id": "keskkonnaandmed-root",
    "members": null,
-   "ms": 1243,
+   "ms": 1473,
    "name": "Juur-URL, OpenAPI teenusekirjeldus",
    "status": "ok",
    "system": "Keskkonnaandmed",
-   "ts": "2026-09-15T14:37:32Z",
+   "ts": "2026-09-15T15:04:19Z",
    "url": "https://keskkonnaandmed.envir.ee"
   },
   {
@@ -152,11 +152,11 @@
    "http": 200,
    "id": "f-keskkonnaseire",
    "members": null,
-   "ms": 863,
+   "ms": 1141,
    "name": "Keskkonnaseire avaandmete andmeteenused",
    "status": "ok",
    "system": "Keskkonnaseire",
-   "ts": "2026-09-15T14:37:18Z",
+   "ts": "2026-09-15T15:04:03Z",
    "url": "https://keskkonnaandmed.envir.ee/f_keskkonnaseire?limit=1"
   },
   {
@@ -167,11 +167,11 @@
    "http": 200,
    "id": "keskkonnaseire",
    "members": null,
-   "ms": 1136,
+   "ms": 1169,
    "name": "Keskkonnaseire, programm PR0127 aastal 2021",
    "status": "ok",
    "system": "Keskkonnaseire",
-   "ts": "2026-09-15T14:37:32Z",
+   "ts": "2026-09-15T15:04:19Z",
    "url": "https://keskkonnaandmed.envir.ee/f_keskkonnaseire?seiretoo_seotud_programmi_kood_iv=eq.PR0127&seireaeg_algus=gte.2021-01-01T00:00:00&seireaeg_algus=lt.2022-01-01T00:00:00&naitaja_nimetus=in.(Kloriid,%C3%9Cldraud,Vee%20temperatuur,Elavh%C3%B5be,PAH%20summa)&limit=5"
   },
   {
@@ -182,11 +182,11 @@
    "http": 200,
    "id": "f-kliima-element",
    "members": null,
-   "ms": 863,
+   "ms": 1129,
    "name": "f_kliima_element",
    "status": "ok",
    "system": "Kliima",
-   "ts": "2026-09-15T14:37:18Z",
+   "ts": "2026-09-15T15:04:03Z",
    "url": "https://keskkonnaandmed.envir.ee/f_kliima_element?limit=1"
   },
   {
@@ -197,11 +197,11 @@
    "http": 200,
    "id": "f-kliima-jaam-vaatlus",
    "members": null,
-   "ms": 834,
+   "ms": 1297,
    "name": "Kliima: jaamade metaandmed ja elementide mõõtmisperioodid Climate: station metadata and element measurement periods",
    "status": "ok",
    "system": "Kliima",
-   "ts": "2026-09-15T14:37:18Z",
+   "ts": "2026-09-15T15:04:03Z",
    "url": "https://keskkonnaandmed.envir.ee/f_kliima_jaam_vaatlus?limit=1"
   },
   {
@@ -212,11 +212,11 @@
    "http": 200,
    "id": "f-kliima-kuu",
    "members": null,
-   "ms": 845,
+   "ms": 1100,
    "name": "Kliima: kuuandmed Climate: monthly data",
    "status": "ok",
    "system": "Kliima",
-   "ts": "2026-09-15T14:37:18Z",
+   "ts": "2026-09-15T15:04:04Z",
    "url": "https://keskkonnaandmed.envir.ee/f_kliima_kuu?limit=1"
   },
   {
@@ -227,11 +227,11 @@
    "http": 200,
    "id": "f-kliima-minut",
    "members": null,
-   "ms": 823,
+   "ms": 913,
    "name": "Kliima: 10-minuti andmed Climate: 10-minute data",
    "status": "ok",
    "system": "Kliima",
-   "ts": "2026-09-15T14:37:18Z",
+   "ts": "2026-09-15T15:04:04Z",
    "url": "https://keskkonnaandmed.envir.ee/f_kliima_minut?limit=1"
   },
   {
@@ -242,11 +242,11 @@
    "http": 200,
    "id": "f-kliima-paev",
    "members": null,
-   "ms": 822,
+   "ms": 970,
    "name": "Kliima: ööpäevaandmed Climate: daily data",
    "status": "ok",
    "system": "Kliima",
-   "ts": "2026-09-15T14:37:18Z",
+   "ts": "2026-09-15T15:04:04Z",
    "url": "https://keskkonnaandmed.envir.ee/f_kliima_paev?limit=1"
   },
   {
@@ -257,11 +257,11 @@
    "http": 200,
    "id": "f-kliima-tund",
    "members": null,
-   "ms": 805,
+   "ms": 1322,
    "name": "Kliima: tunniandmed  Climate: hourly data",
    "status": "ok",
    "system": "Kliima",
-   "ts": "2026-09-15T14:37:18Z",
+   "ts": "2026-09-15T15:04:04Z",
    "url": "https://keskkonnaandmed.envir.ee/f_kliima_tund?limit=1"
   },
   {
@@ -272,11 +272,11 @@
    "http": 200,
    "id": "kliima-element",
    "members": null,
-   "ms": 838,
+   "ms": 883,
    "name": "Kliima elementide metaandmed",
    "status": "ok",
    "system": "Kliima",
-   "ts": "2026-09-15T14:37:32Z",
+   "ts": "2026-09-15T15:04:19Z",
    "url": "https://keskkonnaandmed.envir.ee/f_kliima_element"
   },
   {
@@ -287,11 +287,11 @@
    "http": 200,
    "id": "kliima-jaam-vaatlus",
    "members": null,
-   "ms": 849,
+   "ms": 880,
    "name": "Kliima vaatlusjaamade metaandmed",
    "status": "ok",
    "system": "Kliima",
-   "ts": "2026-09-15T14:37:32Z",
+   "ts": "2026-09-15T15:04:19Z",
    "url": "https://keskkonnaandmed.envir.ee/f_kliima_jaam_vaatlus?limit=1"
   },
   {
@@ -302,11 +302,11 @@
    "http": 200,
    "id": "kliima-kuu",
    "members": null,
-   "ms": 824,
+   "ms": 872,
    "name": "Kliima kuu andmed",
    "status": "ok",
    "system": "Kliima",
-   "ts": "2026-09-15T14:37:32Z",
+   "ts": "2026-09-15T15:04:20Z",
    "url": "https://keskkonnaandmed.envir.ee/f_kliima_kuu?limit=1"
   },
   {
@@ -317,11 +317,11 @@
    "http": 200,
    "id": "kliima-minut",
    "members": null,
-   "ms": 824,
+   "ms": 886,
    "name": "Kliima 10-minuti andmed",
    "status": "ok",
    "system": "Kliima",
-   "ts": "2026-09-15T14:37:33Z",
+   "ts": "2026-09-15T15:04:20Z",
    "url": "https://keskkonnaandmed.envir.ee/f_kliima_minut?limit=1"
   },
   {
@@ -332,11 +332,11 @@
    "http": 200,
    "id": "kliima-paev",
    "members": null,
-   "ms": 853,
+   "ms": 864,
    "name": "Kliima ööpäeva andmed, Ruhnu ja Kihnu õhuniiskus 2023",
    "status": "ok",
    "system": "Kliima",
-   "ts": "2026-09-15T14:37:33Z",
+   "ts": "2026-09-15T15:04:20Z",
    "url": "https://keskkonnaandmed.envir.ee/f_kliima_paev?aasta=eq.2023&kuu=gt.10&paev=lt.8&element_kood=eq.DRH08&jaam_kood=in.(AJRUHN01,AJKIHN01)&limit=5"
   },
   {
@@ -347,11 +347,11 @@
    "http": 200,
    "id": "kliima-paev-nimefilter",
    "members": null,
-   "ms": 821,
+   "ms": 892,
    "name": "Kliima ööpäeva andmed, Võru 2006 (like-filter ja sortimine)",
    "status": "ok",
    "system": "Kliima",
-   "ts": "2026-09-15T14:37:33Z",
+   "ts": "2026-09-15T15:04:20Z",
    "url": "https://keskkonnaandmed.envir.ee/f_kliima_paev?jaam_nimi=like.V%C3%B5ru&aasta=eq.2006&element_kood=like.DTA08&order=kuu.asc,paev.asc&limit=5"
   },
   {
@@ -362,16 +362,16 @@
    "http": 200,
    "id": "kliima-tund",
    "members": null,
-   "ms": 845,
+   "ms": 863,
    "name": "Kliima tunniandmed",
    "status": "ok",
    "system": "Kliima",
-   "ts": "2026-09-15T14:37:33Z",
+   "ts": "2026-09-15T15:04:20Z",
    "url": "https://keskkonnaandmed.envir.ee/f_kliima_tund?limit=1"
   }
  ],
  "first_record": "2026-09-14T13:40:24Z",
- "generated_at": "2026-09-15T14:37:34Z",
+ "generated_at": "2026-09-15T15:04:32Z",
  "incident_count": 0,
  "incidents": [],
  "interval_minutes": 30,
