@@ -198,9 +198,10 @@ Kontroll-loend. Esimesed kolm on üle vaadatud 2026-09-14 seisuga.
 
 - [x] **Logis ei ole tundlikku sisu.** 1 263 kirjet skannitud: ei leitud
       autoriseerimispäiseid, API-võtmeid, tokeneid, isikukoode, e-posti
-      aadresse, JWT-sid ega sisevõrgu hoste. Logikirje väljad on ainult
+      aadresse, JWT-sid ega sisevõrgu hoste. Logikirje väljad on
       `ts, id, status, stage, http, ms, bytes, sha256, cert_days, age_s,
-      detail, members, ok`.
+      detail, attempts, v` — koondkirjetel lisaks `members, ok` (vt
+      "Logi skeemi ajalugu" `REPORT.md`-s).
 - [x] **Koodis ei ole saladusi.** GitHubi teavituste token tuleb jooksu ajal
       `${{ github.token }}`-ist ega satu kunagi repos olevasse faili.
 - [x] **Litsents on olemas** — MIT, vt `LICENSE`.
@@ -209,9 +210,14 @@ Kontroll-loend. Esimesed kolm on üle vaadatud 2026-09-14 seisuga.
 - [ ] **Ümbernimetamine ja nähtavus** Settings-i alt.
 - [ ] Pärast ümbernimetamist kohalikus koopias:
       `git remote set-url origin https://github.com/TPiparKAUR/kaur-api-status`
+- [ ] Pärast ümbernimetamist uuenda `docs/index.html` jaluses olev Issue'de
+      link uuele repo aadressile (GitHub suunab vana lingi küll automaatselt
+      ümber, aga otsene link on selgem).
 
-Repo ümbernimetamine ei nõua koodimuudatust: projektis ei ole ühtegi viidet
-oma repo nimele. Vanad lingid suunatakse GitHubis automaatselt ümber.
+Repo ümbernimetamine ei nõua koodimuudatust peale ühe erandi: `docs/index.html`
+jaluses on link projekti Issue'desse, mis kannab praegust repo nime. Vanad
+lingid suunatakse GitHubis automaatselt ümber, nii et see ei purune, aga
+tasub siiski üle vaadata.
 
 ### Teenuste kirjeldused
 

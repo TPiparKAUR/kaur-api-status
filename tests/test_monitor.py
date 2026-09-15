@@ -10,6 +10,7 @@ import unittest
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import ClassVar
+from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
@@ -277,6 +278,70 @@ class NeverRaises(unittest.TestCase):
         result = check.check_endpoint({"id": "x", "url": "https://e.invalid", "max_bytes": "big"})
         for key in ("ts", "id", "status", "stage", "http", "ms", "bytes", "sha256", "age_s"):
             self.assertIn(key, result)
+
+
+class CertCacheTest(unittest.TestCase):
+    """One TLS-expiry probe per host per run, not one per endpoint."""
+
+    def test_a_host_is_only_probed_once(self):
+        cache = check.CertCache()
+        with mock.patch("kaur_monitor.check._tls_expiry_days", return_value=42) as probe:
+            first = cache.get("example.org", 443, 5.0)
+            second = cache.get("example.org", 443, 5.0)
+        self.assertEqual((first, second), (42, 42))
+        probe.assert_called_once_with("example.org", 443, 5.0)
+
+    def test_different_hosts_are_probed_separately(self):
+        cache = check.CertCache()
+        with mock.patch("kaur_monitor.check._tls_expiry_days", side_effect=[10, 20]):
+            self.assertEqual(cache.get("a.example", 443, 5.0), 10)
+            self.assertEqual(cache.get("b.example", 443, 5.0), 20)
+
+
+class RetryOnFailure(unittest.TestCase):
+    """A single blip must not become a logged outage by itself."""
+
+    def test_retry_is_off_by_default(self):
+        with mock.patch("kaur_monitor.check.time.sleep") as sleep:
+            result = check.check_endpoint({"id": "x", "url": "https://nope.invalid/a"})
+        sleep.assert_not_called()
+        self.assertEqual(result.get("attempts"), 1)
+
+    def test_a_failure_is_rechecked_once_before_being_returned(self):
+        calls = 0
+
+        def fake_safe_check(endpoint, cache):
+            nonlocal calls
+            calls += 1
+            return {"id": "x", "status": check.STATUS_DOWN, "attempts": 1}
+
+        with (
+            mock.patch("kaur_monitor.check._safe_check", side_effect=fake_safe_check),
+            mock.patch("kaur_monitor.check.time.sleep") as sleep,
+        ):
+            result = check.check_endpoint(
+                {"id": "x", "url": "https://nope.invalid/a"}, retry=True, retry_delay_s=5.0
+            )
+        self.assertEqual(calls, 2)
+        sleep.assert_called_once_with(5.0)
+        self.assertEqual(result["attempts"], 2)
+
+    def test_a_success_is_never_rechecked(self):
+        calls = 0
+
+        def fake_safe_check(endpoint, cache):
+            nonlocal calls
+            calls += 1
+            return {"id": "x", "status": check.STATUS_OK, "attempts": 1}
+
+        with (
+            mock.patch("kaur_monitor.check._safe_check", side_effect=fake_safe_check),
+            mock.patch("kaur_monitor.check.time.sleep") as sleep,
+        ):
+            result = check.check_endpoint({"id": "x", "url": "https://ok.invalid/a"}, retry=True)
+        self.assertEqual(calls, 1)
+        sleep.assert_not_called()
+        self.assertEqual(result["attempts"], 1)
 
 
 class LocalServer(unittest.TestCase):
@@ -975,6 +1040,17 @@ class DashboardData(unittest.TestCase):
     def test_percentiles_of_one_value(self):
         self.assertEqual(dashboard._percentile([7], 0.95), 7)
         self.assertIsNone(dashboard._percentile([], 0.5))
+
+    def test_unverified_endpoints_are_flagged_for_the_page(self):
+        """The page must not lend an unconfirmed URL the same authority as a
+        verified one — see REPORT.md's own 'Hoiatused' section."""
+        verified = {**self._entry("a"), "verified": True}
+        unverified = {**self._entry("b"), "verified": False}
+        data = dashboard.build([verified, unverified])
+        by_id = {e["id"]: e for e in data["endpoints"]}
+        self.assertTrue(by_id["a"]["verified"])
+        self.assertFalse(by_id["b"]["verified"])
+        self.assertEqual(data["totals"]["unverified"], 1)
 
 
 class IncidentDuration(unittest.TestCase):

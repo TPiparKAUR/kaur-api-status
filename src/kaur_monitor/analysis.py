@@ -11,6 +11,7 @@ from datetime import datetime
 from typing import Any
 
 from . import store
+from .check import LOG_SCHEMA_VERSION
 
 # Reading the whole log costs time that grows without limit; every caller wants
 # a window, and one day past the widest reported window keeps that window whole.
@@ -90,6 +91,7 @@ def collapse_groups(
                 "detail": detail[:300],
                 "members": len(members),
                 "ok": sum(1 for m in members if m.get("status") == "ok"),
+                "v": LOG_SCHEMA_VERSION,
             }
         )
     return kept

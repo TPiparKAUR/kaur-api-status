@@ -1,6 +1,6 @@
 # Keskkonnaagentuuri API-de seisundiraport
 
-Koostatud: **2026-09-14 18:31** (EET/EEST) · jälgitavaid otspunkte: **23** · kontrollikirjeid viimase 31 päeva jooksul: **1263**
+Koostatud: **2026-09-15 09:54** (EET/EEST) · jälgitavaid otspunkte: **23** · kontrollikirjeid viimase 31 päeva jooksul: **1263**
 
 Hetkeseis — KORRAS: **284**
 
@@ -603,3 +603,5 @@ Raport katab viimased 31 päeva. Vanem ajalugu jääb kaustas `logs/` alles, aga
 
 Ajad on EET/EEST vööndis. Logi hoiab UTC ISO 8601 kujul kaustas `logs/`.
 Seisund **TEADMATA** tähendab, et kontrollija ise ei saanud võrku — see ei lähe käideldavuse arvestusse.
+
+**Logi skeemi ajalugu.** Alates **2026-09-14** logitakse EELIS-e 261 tabelit ühe koondkirjena (üksus `eelis`) — varem kirjutati iga tabeli kohta oma rida. Sellest kuupäevast vanemad kirjed kannavad üksikuid otspunkti ID-sid (nt `eelis-f-...`) ja kaovad 31-päevasest aknast iseenesest. Samast kuupäevast kannab iga kirje väljad `v` (skeemi versioon) ja `attempts` (kas tulemus kinnitati teistkordse kontrolliga); vanemates kirjetes need väljad puuduvad ja seda tuleb lugeda kui `attempts = 1`.

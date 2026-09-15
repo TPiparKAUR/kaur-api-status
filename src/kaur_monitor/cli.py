@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import functools
 import sys
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
@@ -10,7 +11,7 @@ from typing import Any
 from urllib.parse import urlsplit
 
 from . import analysis, dashboard, discover, inventory, report, store
-from .check import STATUS_UNKNOWN, check_endpoint, looks_like_local_network_failure
+from .check import STATUS_UNKNOWN, CertCache, check_endpoint, looks_like_local_network_failure
 
 _MARK = {"ok": "  OK  ", "degraded": "HÄIRE ", "down": " MAAS ", "unknown": "  ??  "}
 
@@ -38,8 +39,15 @@ def cmd_check(args: argparse.Namespace) -> int:
         return 0
 
     print(f"Kontrollin {len(entries)} otspunkti ({args.workers} lõime)...\n")
+    # One TLS-expiry cache shared across the whole run: most endpoints sit
+    # behind two hosts, so without it every endpoint would open its own extra
+    # handshake just to read a certificate identical to its neighbour's.
+    # retry=True: a failing endpoint is rechecked once a few seconds later
+    # before the result is logged, so one dropped packet cannot by itself
+    # become a recorded outage.
+    run_check = functools.partial(check_endpoint, cert_cache=CertCache(), retry=True)
     with ThreadPoolExecutor(max_workers=args.workers) as pool:
-        records = list(pool.map(check_endpoint, entries))
+        records = list(pool.map(run_check, entries))
 
     hosts = {e["id"]: urlsplit(str(e["url"])).hostname for e in entries}
     if looks_like_local_network_failure(records, hosts):

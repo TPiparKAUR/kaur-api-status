@@ -94,6 +94,34 @@ because the tables are regenerated.
 **Report in Estonian local time, log in UTC.** Data and code are UTC ISO 8601;
 `REPORT.md` renders EET/EEST and labels it.
 
+**A single failed check is not an outage.** One dropped packet or a service
+mid-restart used to become a logged `down` and an Issue on its own. Two
+independent layers now guard against that: `check.py` retries a non-ok result
+once, `retry_delay_s` (default 5 s) later, before it is ever logged — a `cli.py`
+choice (`retry=True`), not the default, so existing callers and tests are
+unaffected. `notify_issues.py` adds a second, separate bar: an Issue only
+*opens* on the second consecutive failing check in the log (`unknown` records
+are skipped, not counted as a break, matching `analysis.incidents()`);
+*recovery* still closes on the first `ok`, because paging late costs nothing
+but staying down looks worse the longer it goes unacknowledged.
+
+**Log schema is versioned from 2026-09-14 (`v: 2`).** That date is also when
+EELIS started being collapsed into one `eelis` group record — the two changes
+shipped together. `v` and `attempts` (1, or 2 if the retry above fired) are
+new fields; records written before that date lack both and must be read as
+`attempts = 1`. `REPORT.md` carries a permanent note about the transition
+because old individual `eelis-f-*` records remain in the 31-day window for a
+while after this file is read — nothing enforces this at read time, so do not
+assume `v` is present.
+
+**Certificate checks are cached per host, per run.** `check.CertCache` was
+added because `_tls_expiry_days` opens a full second TLS handshake purely to
+read an expiry date — fine once, wasteful 283 times against two hosts. It also
+used to run *inside* the timed section, inflating every published response
+time by that extra handshake; timing now starts only after the certificate
+check, right before the request being measured. `cli.py` shares one
+`CertCache` across the whole `ThreadPoolExecutor` run.
+
 ## Commands
 
 ```bash
@@ -151,7 +179,11 @@ side is already windowed to 31 days.
 
 Actions minutes: a measured run is 43 seconds, so 1 440 minutes a month against
 a 2 000 allowance. The margin is one slow day wide — crossing 60 seconds
-doubles the bill.
+doubles the bill. That measurement predates the retry-once-on-failure change:
+a run where everything is healthy is unaffected, but a run during a real,
+widespread outage now costs an extra `retry_delay_s` (5 s) per failing
+endpoint, serialised per worker. Worth re-measuring against a run with real
+failures rather than assuming the 43 s figure still holds under load.
 
 - The 261 harvested endpoints are `verified = false`. Confirming them is a
   human job; until then they are watched but never alert.

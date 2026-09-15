@@ -177,6 +177,15 @@ def build(entries: list[dict[str, Any]]) -> str:
         "Seisund **TEADMATA** tähendab, et kontrollija ise ei saanud võrku — "
         "see ei lähe käideldavuse arvestusse.",
         "",
+        "**Logi skeemi ajalugu.** Alates **2026-09-14** logitakse EELIS-e 261 "
+        "tabelit ühe koondkirjena (üksus `eelis`) — varem kirjutati iga tabeli "
+        "kohta oma rida. Sellest kuupäevast vanemad kirjed kannavad üksikuid "
+        "otspunkti ID-sid (nt `eelis-f-...`) ja kaovad 31-päevasest aknast "
+        "iseenesest. Samast kuupäevast kannab iga kirje väljad `v` (skeemi "
+        "versioon) ja `attempts` (kas tulemus kinnitati teistkordse kontrolliga); "
+        "vanemates kirjetes need väljad puuduvad ja seda tuleb lugeda kui "
+        "`attempts = 1`.",
+        "",
     ]
     return "\n".join(out)
 

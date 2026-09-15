@@ -119,10 +119,15 @@ def build(entries: list[dict[str, Any]]) -> dict[str, Any]:
                 # A grouped unit stands for many endpoints; say how many rather
                 # than letting one row quietly represent 261.
                 "members": entry.get("members"),
+                # Shown on the page, not just in REPORT.md: a reader comparing
+                # an unverified endpoint's number against a verified one's
+                # should not assume the two carry the same authority.
+                "verified": bool(entry.get("verified", False)),
             }
         )
 
     totals: dict[str, int] = {"endpoints": len(endpoints)}
+    totals["unverified"] = sum(1 for e in endpoints if not e["verified"])
     for item in endpoints:
         totals[item["status"]] = totals.get(item["status"], 0) + 1
 

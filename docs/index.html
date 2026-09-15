@@ -11,6 +11,16 @@
 <body>
 <a class="skip" href="#sisu">Liigu sisu juurde</a>
 
+<noscript>
+  <p class="noscript-note">
+    See leht vajab töötamiseks JavaScripti — andmed loetakse ja joonistatakse
+    brauseris. Ilma selleta on siin kirjeldatud sama sisu masinloetaval kujul
+    saadaval failina
+    <code>docs/data/status.json</code> ja inimloetaval kujul failina
+    <code>REPORT.md</code> projekti hoidlas.
+  </p>
+</noscript>
+
 <header class="page-head">
   <div class="wrap">
     <p class="eyebrow">Keskkonnaagentuur</p>
@@ -49,8 +59,11 @@
         <h3>Kättesaadavus päevade lõikes</h3>
         <p>Osakaal kontrollidest, mis päeva jooksul õnnestusid. Kuni 30 päeva.</p>
       </figcaption>
-      <div class="canvas-box"><canvas id="chart-avail" aria-label="Kättesaadavuse ajajoon"></canvas></div>
+      <div class="canvas-box">
+        <canvas id="chart-avail" aria-label="Kättesaadavuse ajajoon" aria-describedby="summary-avail"></canvas>
+      </div>
       <p class="empty" id="empty-avail" hidden></p>
+      <p class="chart-summary" id="summary-avail"></p>
     </figure>
 
     <figure class="chart">
@@ -59,8 +72,11 @@
         <p>Kui kaua teenused vastamiseks aega võtsid. Mediaan on tüüpiline päring;
            95. protsentiil näitab aeglasemat otsa.</p>
       </figcaption>
-      <div class="canvas-box"><canvas id="chart-latency" aria-label="Vastuseaja trend"></canvas></div>
+      <div class="canvas-box">
+        <canvas id="chart-latency" aria-label="Vastuseaja trend" aria-describedby="summary-latency"></canvas>
+      </div>
       <p class="empty" id="empty-latency" hidden></p>
+      <p class="chart-summary" id="summary-latency"></p>
     </figure>
 
     <figure class="chart">
@@ -68,8 +84,11 @@
         <h3>Katkestuste arv otspunkti kohta</h3>
         <p>Kümme kõige sagedamini katkenud otspunkti logitud perioodil.</p>
       </figcaption>
-      <div class="canvas-box"><canvas id="chart-outages" aria-label="Katkestuste sagedus"></canvas></div>
+      <div class="canvas-box">
+        <canvas id="chart-outages" aria-label="Katkestuste sagedus" aria-describedby="summary-outages"></canvas>
+      </div>
       <p class="empty" id="empty-outages" hidden></p>
+      <p class="chart-summary" id="summary-outages"></p>
     </figure>
   </section>
 
@@ -137,8 +156,29 @@
 
       <dt>Kättesaadavus</dt>
       <dd>Õnnestunud kontrollide osakaal kõigist kontrollidest valitud ajavahemikus.</dd>
+
+      <dt>Märge "kinnitamata"</dt>
+      <dd>URL-i pole inimene üle vaadanud — see võib olla vale päring, mitte
+          teenuse katkestus. Sellised otspunktid on tahvlil näha, aga
+          katkestus nende juures ei ava automaatset teavitust.</dd>
     </dl>
     <p class="note" id="provenance"></p>
+  </section>
+
+  <section class="panel" aria-labelledby="h-ligipaasetavus">
+    <h2 id="h-ligipaasetavus">Ligipääsetavus</h2>
+    <p class="note">
+      Leht on üles ehitatud tavapärastest HTML-elementidest: pealkirjad on
+      järjestatud, tabelitel on veerupäised, seisundit ei näidata kunagi ainult
+      värviga (igal seisundil on ka sõna) ja graafikute juures on tekstiline
+      kokkuvõte samast andmest. Lehte saab kasutada ka klaviatuuriga ja ilma
+      JavaScriptita on toorandmed ja raport hoidlas endiselt kättesaadavad.
+    </p>
+    <p class="note">
+      See on hoidla hooldaja enda hinnang, mitte ametlik ligipääsetavuse
+      audit. Kui midagi ei toimi ekraanilugeja, klaviatuuri või suurendusega —
+      anna teada projekti hoidla Issue'de kaudu (link allpool).
+    </p>
   </section>
 </main>
 
@@ -146,6 +186,7 @@
   <div class="wrap">
     <p>Andmed pärinevad automaatsest seirest. Leht on staatiline ja uueneb iga
        kontrollitsükli järel.</p>
+    <p><a href="https://github.com/TPiparKAUR/KAUR_allalaadimine/issues">Anna probleemist teada hoidla Issue'des</a></p>
   </div>
 </footer>
 

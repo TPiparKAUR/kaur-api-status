@@ -29,7 +29,8 @@
    "status": "ok",
    "system": "EELIS",
    "ts": "2026-09-14T15:31:32Z",
-   "url": "https://keskkonnaandmed.envir.ee/"
+   "url": "https://keskkonnaandmed.envir.ee/",
+   "verified": true
   },
   {
    "avail_24h": 100.0,
@@ -44,7 +45,8 @@
    "status": "ok",
    "system": "Hüdroloogia",
    "ts": "2026-09-14T15:31:38Z",
-   "url": "https://keskkonnaandmed.envir.ee/f_hydroseire?limit=1"
+   "url": "https://keskkonnaandmed.envir.ee/f_hydroseire?limit=1",
+   "verified": false
   },
   {
    "avail_24h": 100.0,
@@ -59,7 +61,8 @@
    "status": "ok",
    "system": "Hüdroloogia",
    "ts": "2026-09-14T15:31:53Z",
-   "url": "https://keskkonnaandmed.envir.ee/f_hydroseire?timeline_ts_utc=lt.2023-01-02T03:00:00&timeline_ts_utc=gt.2023-01-01T23:00:00&aegrida_nimi=eq.WL%20min&limit=5"
+   "url": "https://keskkonnaandmed.envir.ee/f_hydroseire?timeline_ts_utc=lt.2023-01-02T03:00:00&timeline_ts_utc=gt.2023-01-01T23:00:00&aegrida_nimi=eq.WL%20min&limit=5",
+   "verified": true
   },
   {
    "avail_24h": 100.0,
@@ -74,7 +77,8 @@
    "status": "ok",
    "system": "KAIA",
    "ts": "2026-09-14T15:31:53Z",
-   "url": "https://avaandmed.keskkonnaportaal.ee/api/lists/active/items/query"
+   "url": "https://avaandmed.keskkonnaportaal.ee/api/lists/active/items/query",
+   "verified": true
   },
   {
    "avail_24h": 100.0,
@@ -89,7 +93,8 @@
    "status": "ok",
    "system": "KAIA",
    "ts": "2026-09-14T15:31:53Z",
-   "url": "https://avaandmed.keskkonnaportaal.ee/api/lists/active"
+   "url": "https://avaandmed.keskkonnaportaal.ee/api/lists/active",
+   "verified": true
   },
   {
    "avail_24h": 100.0,
@@ -104,7 +109,8 @@
    "status": "ok",
    "system": "KAIA",
    "ts": "2026-09-14T15:31:53Z",
-   "url": "https://avaandmed.keskkonnaportaal.ee/api/lists/archive"
+   "url": "https://avaandmed.keskkonnaportaal.ee/api/lists/archive",
+   "verified": true
   },
   {
    "avail_24h": 100.0,
@@ -119,7 +125,8 @@
    "status": "ok",
    "system": "KAIA",
    "ts": "2026-09-14T15:31:53Z",
-   "url": "https://avaandmed.keskkonnaportaal.ee/swagger/v1/swagger.json"
+   "url": "https://avaandmed.keskkonnaportaal.ee/swagger/v1/swagger.json",
+   "verified": true
   },
   {
    "avail_24h": 100.0,
@@ -134,7 +141,8 @@
    "status": "ok",
    "system": "Keskkonnaandmed",
    "ts": "2026-09-14T15:31:53Z",
-   "url": "https://keskkonnaandmed.envir.ee"
+   "url": "https://keskkonnaandmed.envir.ee",
+   "verified": true
   },
   {
    "avail_24h": 100.0,
@@ -149,7 +157,8 @@
    "status": "ok",
    "system": "Keskkonnaseire",
    "ts": "2026-09-14T15:31:41Z",
-   "url": "https://keskkonnaandmed.envir.ee/f_keskkonnaseire?limit=1"
+   "url": "https://keskkonnaandmed.envir.ee/f_keskkonnaseire?limit=1",
+   "verified": false
   },
   {
    "avail_24h": 100.0,
@@ -164,7 +173,8 @@
    "status": "ok",
    "system": "Keskkonnaseire",
    "ts": "2026-09-14T15:31:54Z",
-   "url": "https://keskkonnaandmed.envir.ee/f_keskkonnaseire?seiretoo_seotud_programmi_kood_iv=eq.PR0127&seireaeg_algus=gte.2021-01-01T00:00:00&seireaeg_algus=lt.2022-01-01T00:00:00&naitaja_nimetus=in.(Kloriid,%C3%9Cldraud,Vee%20temperatuur,Elavh%C3%B5be,PAH%20summa)&limit=5"
+   "url": "https://keskkonnaandmed.envir.ee/f_keskkonnaseire?seiretoo_seotud_programmi_kood_iv=eq.PR0127&seireaeg_algus=gte.2021-01-01T00:00:00&seireaeg_algus=lt.2022-01-01T00:00:00&naitaja_nimetus=in.(Kloriid,%C3%9Cldraud,Vee%20temperatuur,Elavh%C3%B5be,PAH%20summa)&limit=5",
+   "verified": true
   },
   {
    "avail_24h": 100.0,
@@ -179,7 +189,8 @@
    "status": "ok",
    "system": "Kliima",
    "ts": "2026-09-14T15:31:41Z",
-   "url": "https://keskkonnaandmed.envir.ee/f_kliima_element?limit=1"
+   "url": "https://keskkonnaandmed.envir.ee/f_kliima_element?limit=1",
+   "verified": false
   },
   {
    "avail_24h": 100.0,
@@ -194,7 +205,8 @@
    "status": "ok",
    "system": "Kliima",
    "ts": "2026-09-14T15:31:41Z",
-   "url": "https://keskkonnaandmed.envir.ee/f_kliima_jaam_vaatlus?limit=1"
+   "url": "https://keskkonnaandmed.envir.ee/f_kliima_jaam_vaatlus?limit=1",
+   "verified": false
   },
   {
    "avail_24h": 100.0,
@@ -209,7 +221,8 @@
    "status": "ok",
    "system": "Kliima",
    "ts": "2026-09-14T15:31:41Z",
-   "url": "https://keskkonnaandmed.envir.ee/f_kliima_kuu?limit=1"
+   "url": "https://keskkonnaandmed.envir.ee/f_kliima_kuu?limit=1",
+   "verified": false
   },
   {
    "avail_24h": 100.0,
@@ -224,7 +237,8 @@
    "status": "ok",
    "system": "Kliima",
    "ts": "2026-09-14T15:31:41Z",
-   "url": "https://keskkonnaandmed.envir.ee/f_kliima_minut?limit=1"
+   "url": "https://keskkonnaandmed.envir.ee/f_kliima_minut?limit=1",
+   "verified": false
   },
   {
    "avail_24h": 100.0,
@@ -239,7 +253,8 @@
    "status": "ok",
    "system": "Kliima",
    "ts": "2026-09-14T15:31:41Z",
-   "url": "https://keskkonnaandmed.envir.ee/f_kliima_paev?limit=1"
+   "url": "https://keskkonnaandmed.envir.ee/f_kliima_paev?limit=1",
+   "verified": false
   },
   {
    "avail_24h": 100.0,
@@ -254,7 +269,8 @@
    "status": "ok",
    "system": "Kliima",
    "ts": "2026-09-14T15:31:41Z",
-   "url": "https://keskkonnaandmed.envir.ee/f_kliima_tund?limit=1"
+   "url": "https://keskkonnaandmed.envir.ee/f_kliima_tund?limit=1",
+   "verified": false
   },
   {
    "avail_24h": 100.0,
@@ -269,7 +285,8 @@
    "status": "ok",
    "system": "Kliima",
    "ts": "2026-09-14T15:31:54Z",
-   "url": "https://keskkonnaandmed.envir.ee/f_kliima_element"
+   "url": "https://keskkonnaandmed.envir.ee/f_kliima_element",
+   "verified": true
   },
   {
    "avail_24h": 100.0,
@@ -284,7 +301,8 @@
    "status": "ok",
    "system": "Kliima",
    "ts": "2026-09-14T15:31:54Z",
-   "url": "https://keskkonnaandmed.envir.ee/f_kliima_jaam_vaatlus?limit=1"
+   "url": "https://keskkonnaandmed.envir.ee/f_kliima_jaam_vaatlus?limit=1",
+   "verified": true
   },
   {
    "avail_24h": 100.0,
@@ -299,7 +317,8 @@
    "status": "ok",
    "system": "Kliima",
    "ts": "2026-09-14T15:31:54Z",
-   "url": "https://keskkonnaandmed.envir.ee/f_kliima_kuu?limit=1"
+   "url": "https://keskkonnaandmed.envir.ee/f_kliima_kuu?limit=1",
+   "verified": true
   },
   {
    "avail_24h": 100.0,
@@ -314,7 +333,8 @@
    "status": "ok",
    "system": "Kliima",
    "ts": "2026-09-14T15:31:54Z",
-   "url": "https://keskkonnaandmed.envir.ee/f_kliima_minut?limit=1"
+   "url": "https://keskkonnaandmed.envir.ee/f_kliima_minut?limit=1",
+   "verified": true
   },
   {
    "avail_24h": 100.0,
@@ -329,7 +349,8 @@
    "status": "ok",
    "system": "Kliima",
    "ts": "2026-09-14T15:31:54Z",
-   "url": "https://keskkonnaandmed.envir.ee/f_kliima_paev?aasta=eq.2023&kuu=gt.10&paev=lt.8&element_kood=eq.DRH08&jaam_kood=in.(AJRUHN01,AJKIHN01)&limit=5"
+   "url": "https://keskkonnaandmed.envir.ee/f_kliima_paev?aasta=eq.2023&kuu=gt.10&paev=lt.8&element_kood=eq.DRH08&jaam_kood=in.(AJRUHN01,AJKIHN01)&limit=5",
+   "verified": true
   },
   {
    "avail_24h": 100.0,
@@ -344,7 +365,8 @@
    "status": "ok",
    "system": "Kliima",
    "ts": "2026-09-14T15:31:54Z",
-   "url": "https://keskkonnaandmed.envir.ee/f_kliima_paev?jaam_nimi=like.V%C3%B5ru&aasta=eq.2006&element_kood=like.DTA08&order=kuu.asc,paev.asc&limit=5"
+   "url": "https://keskkonnaandmed.envir.ee/f_kliima_paev?jaam_nimi=like.V%C3%B5ru&aasta=eq.2006&element_kood=like.DTA08&order=kuu.asc,paev.asc&limit=5",
+   "verified": true
   },
   {
    "avail_24h": 100.0,
@@ -359,11 +381,12 @@
    "status": "ok",
    "system": "Kliima",
    "ts": "2026-09-14T15:31:54Z",
-   "url": "https://keskkonnaandmed.envir.ee/f_kliima_tund?limit=1"
+   "url": "https://keskkonnaandmed.envir.ee/f_kliima_tund?limit=1",
+   "verified": true
   }
  ],
  "first_record": "2026-09-14T13:40:24Z",
- "generated_at": "2026-09-14T15:31:58Z",
+ "generated_at": "2026-09-15T06:54:00Z",
  "incident_count": 0,
  "incidents": [],
  "interval_minutes": 30,
@@ -420,7 +443,8 @@
  ],
  "totals": {
   "endpoints": 23,
-  "ok": 23
+  "ok": 23,
+  "unverified": 8
  },
  "window_days": 31
 }

@@ -13,6 +13,7 @@ import json
 import re
 import socket
 import ssl
+import threading
 import time
 import urllib.error
 import urllib.parse
@@ -37,6 +38,13 @@ _OWS_EXCEPTION_TAGS = frozenset({"serviceexceptionreport", "exceptionreport"})
 _DEFAULT_TIMEOUT_S = 30.0
 _DEFAULT_MAX_BYTES = 4 * 1024 * 1024
 _ERROR_BODY_BYTES = 1024
+_RETRY_DELAY_S = 5.0
+
+# Log schema version. Bumped when a field is added or a record's meaning
+# changes — 2 adds 'attempts' and the group fields ('members', 'ok') that
+# collapse_groups started writing on 2026-09-14. Records from before that
+# date simply lack these keys; nothing downstream requires them.
+LOG_SCHEMA_VERSION = 2
 
 
 def _localname(tag: str) -> str:
@@ -75,6 +83,36 @@ def _tls_expiry_days(host: str, port: int, timeout: float) -> int | None:
     return (expires.replace(tzinfo=UTC) - datetime.now(UTC)).days
 
 
+class CertCache:
+    """Per-run cache of TLS expiry lookups, keyed by (host, port).
+
+    Most of the inventory sits behind two hosts, so without this every one of
+    283 endpoints would open its own extra TLS handshake — identical to the
+    one the actual request makes a moment later — just to read a certificate
+    that is the same for every endpoint on that host. One instance is meant
+    to be shared across a whole run's ThreadPoolExecutor; the lock only ever
+    guards the dict, never the network call, so concurrent lookups for
+    different hosts do not block each other.
+    """
+
+    def __init__(self) -> None:
+        self._values: dict[tuple[str, int], int | None] = {}
+        self._lock = threading.Lock()
+
+    def get(self, host: str, port: int, timeout: float) -> int | None:
+        key = (host, port)
+        with self._lock:
+            if key in self._values:
+                return self._values[key]
+        days = _tls_expiry_days(host, port, timeout)
+        with self._lock:
+            # A second thread may have raced us to the same host; whichever
+            # answer landed first stands; a duplicate handshake is wasted
+            # work, not a correctness problem.
+            self._values.setdefault(key, days)
+            return self._values[key]
+
+
 def _find_service_exception(body: bytes) -> str | None:
     """Return the exception text if the payload is an OGC/OWS exception report.
 
@@ -95,18 +133,41 @@ def _find_service_exception(body: bytes) -> str | None:
     return message[:200] or "service exception report returned"
 
 
-def check_endpoint(endpoint: dict[str, Any]) -> dict[str, Any]:
-    """Run one endpoint through every configured stage.
+def check_endpoint(
+    endpoint: dict[str, Any],
+    cert_cache: CertCache | None = None,
+    *,
+    retry: bool = False,
+    retry_delay_s: float = _RETRY_DELAY_S,
+) -> dict[str, Any]:
+    """Run one endpoint through every configured stage, and never raise.
 
-    Returns a flat record suitable for one JSONL line, and never raises. The
-    guarantee is enforced here rather than trusted to the body below, because
-    the caller maps this over every endpoint: one escaping exception would lose
-    the whole run's log, report and notifications, not just this endpoint.
-    Malformed config reaches us as ordinary data (a bad regex, a non-numeric
-    timeout), so it must degrade to a result, not a crash.
+    Returns a flat record suitable for one JSONL line. The never-raises
+    guarantee lives in ``_safe_check`` rather than trusted to the body below,
+    because the caller maps this over every endpoint: one escaping exception
+    would lose the whole run's log, report and notifications, not just this
+    endpoint. Malformed config reaches us as ordinary data (a bad regex, a
+    non-numeric timeout), so it must degrade to a result, not a crash.
+
+    With ``retry`` set, a non-ok result is checked once more after
+    ``retry_delay_s`` seconds before being returned: a single dropped packet
+    or a service mid-restart should not by itself become a logged outage and
+    an Issue — that is what turns one blip into a false alarm. Off by default
+    so existing callers (and tests hitting a deliberately unreachable host)
+    are not made to wait; the scheduled run turns it on.
     """
+    cache = cert_cache if cert_cache is not None else CertCache()
+    record = _safe_check(endpoint, cache)
+    if retry and record["status"] != STATUS_OK:
+        time.sleep(retry_delay_s)
+        record = _safe_check(endpoint, cache)
+        record["attempts"] = 2
+    return record
+
+
+def _safe_check(endpoint: dict[str, Any], cert_cache: CertCache) -> dict[str, Any]:
     try:
-        return _check_endpoint(endpoint)
+        return _check_endpoint(endpoint, cert_cache)
     except Exception as exc:
         return {
             "ts": datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
@@ -120,10 +181,12 @@ def check_endpoint(endpoint: dict[str, Any]) -> dict[str, Any]:
             "cert_days": None,
             "age_s": None,
             "detail": f"check aborted: {type(exc).__name__}: {exc}"[:300],
+            "attempts": 1,
+            "v": LOG_SCHEMA_VERSION,
         }
 
 
-def _check_endpoint(endpoint: dict[str, Any]) -> dict[str, Any]:
+def _check_endpoint(endpoint: dict[str, Any], cert_cache: CertCache) -> dict[str, Any]:
     url = endpoint["url"]
     timeout = float(endpoint.get("timeout_s", _DEFAULT_TIMEOUT_S))
     max_bytes = int(endpoint.get("max_bytes", _DEFAULT_MAX_BYTES))
@@ -141,6 +204,8 @@ def _check_endpoint(endpoint: dict[str, Any]) -> dict[str, Any]:
         "cert_days": None,
         "age_s": None,
         "detail": "",
+        "attempts": 1,
+        "v": LOG_SCHEMA_VERSION,
     }
 
     parts = urllib.parse.urlsplit(url)
@@ -150,18 +215,27 @@ def _check_endpoint(endpoint: dict[str, Any]) -> dict[str, Any]:
         return record
     port = parts.port or (443 if parts.scheme == "https" else 80)
 
-    started = time.monotonic()
+    # This clock is only for the dns-failure path below. It deliberately does
+    # not time the certificate check that follows: that check opens its own
+    # TLS handshake purely to read an expiry date, on top of the one the
+    # actual request makes a moment later, and folding it into 'ms' would
+    # inflate every published response time by a whole extra round trip.
+    dns_started = time.monotonic()
 
     try:
         socket.getaddrinfo(host, port, proto=socket.IPPROTO_TCP)
     except socket.gaierror as exc:
         record["detail"] = f"dns lookup failed: {exc}"
-        record["ms"] = int((time.monotonic() - started) * 1000)
+        record["ms"] = int((time.monotonic() - dns_started) * 1000)
         return record
 
     record["stage"] = "connect"
     if parts.scheme == "https":
-        record["cert_days"] = _tls_expiry_days(host, port, timeout)
+        record["cert_days"] = cert_cache.get(host, port, timeout)
+
+    # Real timing starts here: after DNS and the certificate probe, right
+    # before the request this endpoint is actually being checked for.
+    started = time.monotonic()
 
     method = str(endpoint.get("method", "GET")).upper()
     # Per-endpoint headers matter for content negotiation: a PostgREST service

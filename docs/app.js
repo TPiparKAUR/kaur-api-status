@@ -144,6 +144,13 @@ function renderEndpoints(data) {
 
       const name = document.createElement("td");
       name.textContent = item.name;
+      if (!item.verified) {
+        const flag = document.createElement("span");
+        flag.className = "unverified-flag";
+        flag.textContent = "kinnitamata";
+        flag.title = "URL-i pole inimene üle vaadanud — vt jaotist “Kuidas seda mõõdetakse”.";
+        name.append(" ", flag);
+      }
       const id = document.createElement("span");
       id.className = "id";
       id.textContent = item.members ? `${item.id} · ${item.members} otspunkti` : item.id;
@@ -258,6 +265,13 @@ function showEmpty(id, message) {
   note.previousElementSibling.hidden = true;
 }
 
+/* A short sentence standing in for each chart — read by screen readers via
+ * aria-describedby, and visible to everyone else, so the data does not exist
+ * only as pixels. Cleared (not left stale) whenever a chart is redrawn empty. */
+function setSummary(id, text) {
+  $(id).textContent = text;
+}
+
 function drawAvailability(data) {
   const rows = data.daily || [];
   if (rows.length < 2) {
@@ -267,8 +281,16 @@ function drawAvailability(data) {
         ? "Andmeid on ühe päeva kohta — ajajoone joonistamiseks on vaja vähemalt kahte päeva."
         : "Andmeid ei ole veel kogutud.",
     );
+    setSummary("summary-avail", "");
     return;
   }
+  const values = rows.map((r) => r.avail_pct);
+  setSummary(
+    "summary-avail",
+    `Kättesaadavus jäi ${day(rows[0].date)}–${day(rows[rows.length - 1].date)} vahemikku ` +
+      `${Math.min(...values).toFixed(1)}–${Math.max(...values).toFixed(1)} %; ` +
+      `viimane päev ${values[values.length - 1].toFixed(1)} %.`,
+  );
   charts.push(
     new Chart($("chart-avail"), {
       type: "line",
@@ -317,8 +339,17 @@ function drawLatency(data) {
   const rows = (data.daily || []).filter((r) => r.p50_ms != null);
   if (rows.length < 2) {
     showEmpty("empty-latency", "Vastuseaja trendi näitamiseks on vaja vähemalt kahe päeva andmeid.");
+    setSummary("summary-latency", "");
     return;
   }
+  const p50 = rows.map((r) => r.p50_ms);
+  const p95 = rows.map((r) => r.p95_ms).filter((v) => v != null);
+  setSummary(
+    "summary-latency",
+    `Mediaan vastuseaeg jäi ${day(rows[0].date)}–${day(rows[rows.length - 1].date)} vahemikku ` +
+      `${Math.min(...p50)}–${Math.max(...p50)} ms` +
+      (p95.length ? `; 95. protsentiil kuni ${Math.max(...p95)} ms.` : "."),
+  );
   charts.push(
     new Chart($("chart-latency"), {
       type: "line",
@@ -380,8 +411,15 @@ function drawOutages(data) {
   const rows = data.outages_by_endpoint || [];
   if (!rows.length) {
     showEmpty("empty-outages", "Katkestusi ei ole logitud, seega graafikul pole midagi näidata.");
+    setSummary("summary-outages", "");
     return;
   }
+  const top = rows[0];
+  setSummary(
+    "summary-outages",
+    `Kõige rohkem katkestusi: ${top.name} (${top.count}, kokku ${duration(top.total_s)}). ` +
+      `Näidatud on kuni 10 kõige sagedamini katkenud otspunkti.`,
+  );
   charts.push(
     new Chart($("chart-outages"), {
       type: "bar",
@@ -431,9 +469,11 @@ function render(data) {
   snapshot = data;
   $("updated").textContent =
     `Viimati uuendatud ${moment(data.generated_at)} · kontroll iga ${data.interval_minutes} minuti järel`;
+  const unverified = data.totals?.unverified ?? 0;
   $("provenance").textContent =
     `Näidatud on viimased ${data.window_days} päeva. Ajad on Eesti aja järgi. ` +
-    `Jälgitavaid otspunkte ${data.totals?.endpoints ?? 0}.`;
+    `Jälgitavaid otspunkte ${data.totals?.endpoints ?? 0}` +
+    (unverified ? `, neist ${unverified} kinnitamata URL-iga.` : ".");
 
   renderTiles(data);
   renderSystems(data);
