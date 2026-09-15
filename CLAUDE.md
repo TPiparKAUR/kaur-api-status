@@ -170,7 +170,38 @@ python3 -m unittest discover -s tests
 
 ## What is monitored
 
-283 endpoints across two services, checked every 30 minutes.
+309 endpoints (308 enabled) across nine hosts, 42 units, every 30 minutes.
+
+**Where the newer entries came from (2026-09-15).** The Teabevärav catalogue
+(andmed.eesti.ee) lists Keskkonnaagentuur's 9 data services and 24 datasets.
+Its pages are a client-side Angular app — a server-side fetch returns the same
+75 KB shell for every one of them — but `/api/data-services/{uuid}` and
+`/api/datasets/{uuid}` serve the real records, and those carry
+`serviceEndpoints[].endpointUrl`, `serviceEndpointDescriptions[]` and
+`distributions[].accessUrls[]`. That is where every endpoint added that day
+came from, plus the pages those records point at (`keskkonnaportaal.ee`'s
+avaandmed pages and ilmateenistus.ee's two XML documentation pages). No
+organisation filter on `/api/datasets` is accepted — `organizationId`,
+`organizationIds`, `informationHolderId`, `publisherId` are all rejected by
+name and the holder sub-resource 404s — so enumeration goes through free-text
+`?search=`, and the holder is read back off each record.
+
+Worth knowing before re-running that exercise: everything the catalogue lists
+under `keskkonnaandmed.envir.ee` was already in the inventory. The crawl
+confirmed the existing entries rather than adding to them.
+
+What it did add: EstModel's seven parameter-free collections (every other path
+in its OpenAPI document needs a code this project cannot know), five
+Ilmateenistus feeds (observations, forecast, warnings XML, warnings RSS, and
+the service root the catalogue gives as `endpointUrl` for five of its
+services), seven KAIA per-dataset file views as one group, and the published
+access URLs of KESE, PAKIS, PROTO, Kütuseseire and KOTKAS.
+
+`kotkas-aastaaruanded` is `enabled = false`: its first real check answered 403
+Forbidden, so it is access-controlled rather than down, and a permanently red
+row would misrepresent that. The entry stays in the inventory with the
+measured reason, because deleting it would invite someone to rediscover the
+same URL and wonder.
 
 `keskkonnaandmed.envir.ee` is a PostgREST service. Eighteen entries were written
 by hand from Keskkonnaagentuur's documentation; the remaining 261 were harvested

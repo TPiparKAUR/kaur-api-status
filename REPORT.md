@@ -1,8 +1,8 @@
 # Keskkonnaagentuuri API-de seisundiraport
 
-Koostatud: **2026-09-15 16:05** (EET/EEST) · jälgitavaid otspunkte: **40** · kontrollikirjeid viimase 31 päeva jooksul: **1487**
+Koostatud: **2026-09-15 16:08** (EET/EEST) · jälgitavaid otspunkte: **43** · kontrollikirjeid viimase 31 päeva jooksul: **1487**
 
-Hetkeseis — MAAS: **1** · KORRAS: **39**
+Hetkeseis — MAAS: **1** · KORRAS: **39** · KONTROLLIMATA (uus): **3**
 
 ## Praegune seis
 
@@ -359,7 +359,7 @@ Hetkeseis — MAAS: **1** · KORRAS: **39**
 
 | Algus | Lõpp | Kestus | Otspunkt | Tüüp | Põhjus |
 |---|---|---|---|---|---|
-| 2026-09-15 16:05 | **kestab** | 0 s | `kotkas-aastaaruanded` | MAAS | http 403 Forbidden — <!DOCTYPE html> <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang= |
+| 2026-09-15 16:05 | **kestab** | 2 min | `kotkas-aastaaruanded` | MAAS | http 403 Forbidden — <!DOCTYPE html> <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang= |
 
 ## Hoiatused
 
@@ -378,7 +378,10 @@ Hetkeseis — MAAS: **1** · KORRAS: **39**
 - `f-kliima-minut`: URL on **kontrollimata** (`verified = false`) — allikas: openapi
 - `f-kliima-paev`: URL on **kontrollimata** (`verified = false`) — allikas: openapi
 - `f-kliima-tund`: URL on **kontrollimata** (`verified = false`) — allikas: openapi
+- `ilmateenistus-hoiatused-rss`: URL on **kontrollimata** (`verified = false`) — allikas: teabevarav
+- `ilmateenistus-hoiatused-xml`: URL on **kontrollimata** (`verified = false`) — allikas: teabevarav
 - `ilmateenistus-juur`: URL on **kontrollimata** (`verified = false`) — allikas: teabevarav
+- `ilmateenistus-prognoos-xml`: URL on **kontrollimata** (`verified = false`) — allikas: teabevarav
 - `ilmateenistus-vaatlusandmed-xml`: URL on **kontrollimata** (`verified = false`) — allikas: teabevarav
 - `kaia-vaated`: URL on **kontrollimata** (`verified = false`) — allikas: teadmata
 - `kese-juur`: URL on **kontrollimata** (`verified = false`) — allikas: teabevarav

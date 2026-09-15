@@ -221,6 +221,38 @@
    "verified": true
   },
   {
+   "avail_24h": null,
+   "avail_7d": null,
+   "checks_24h": 0,
+   "detail": "",
+   "http": null,
+   "id": "ilmateenistus-hoiatused-rss",
+   "members": null,
+   "ms": null,
+   "name": "Ilmateenistus: hoiatuste RSS",
+   "status": "unchecked",
+   "system": "Ilmateenistus",
+   "ts": null,
+   "url": "https://ilmateenistus.ee/ilma_andmed/rss/hoiatused_rss.php",
+   "verified": false
+  },
+  {
+   "avail_24h": null,
+   "avail_7d": null,
+   "checks_24h": 0,
+   "detail": "",
+   "http": null,
+   "id": "ilmateenistus-hoiatused-xml",
+   "members": null,
+   "ms": null,
+   "name": "Ilmateenistus: hoiatused XML",
+   "status": "unchecked",
+   "system": "Ilmateenistus",
+   "ts": null,
+   "url": "https://ilmateenistus.ee/ilma_andmed/xml/hoiatus.php",
+   "verified": false
+  },
+  {
    "avail_24h": 100.0,
    "avail_7d": 100.0,
    "checks_24h": 1,
@@ -234,6 +266,22 @@
    "system": "Ilmateenistus",
    "ts": "2026-09-15T13:05:34Z",
    "url": "https://www.ilmateenistus.ee/",
+   "verified": false
+  },
+  {
+   "avail_24h": null,
+   "avail_7d": null,
+   "checks_24h": 0,
+   "detail": "",
+   "http": null,
+   "id": "ilmateenistus-prognoos-xml",
+   "members": null,
+   "ms": null,
+   "name": "Ilmateenistus: Eesti prognoos XML",
+   "status": "unchecked",
+   "system": "Ilmateenistus",
+   "ts": null,
+   "url": "https://ilmateenistus.ee/ilma_andmed/xml/forecast.php",
    "verified": false
   },
   {
@@ -702,12 +750,12 @@
   }
  ],
  "first_record": "2026-09-14T13:40:24Z",
- "generated_at": "2026-09-15T13:05:43Z",
+ "generated_at": "2026-09-15T13:08:18Z",
  "incident_count": 1,
  "incidents": [
   {
    "detail": "http 403 Forbidden — <!DOCTYPE html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 8]> <",
-   "duration_s": 0,
+   "duration_s": 155,
    "end": null,
    "id": "kotkas-aastaaruanded",
    "name": "KOTKAS: aastaaruannete register",
@@ -722,7 +770,7 @@
    "count": 1,
    "id": "kotkas-aastaaruanded",
    "name": "KOTKAS: aastaaruannete register",
-   "total_s": 0
+   "total_s": 155
   }
  ],
  "systems": [
@@ -753,7 +801,7 @@
   {
    "avail_24h": 100.0,
    "description": "Riigi ilmateenistuse avalik teenus: ilmaprognoosid, hoiatused ohtliku ilma kohta, mereilmateade, mudelprognoosid ning ilmajaamade vaatlusandmed. Vaatlusandmed on masinliidesena saadaval XML-kujul.",
-   "endpoints": 2,
+   "endpoints": 5,
    "name": "Ilmateenistus",
    "ok": 2,
    "problem": 0
@@ -833,9 +881,10 @@
  ],
  "totals": {
   "down": 1,
-  "endpoints": 40,
+  "endpoints": 43,
   "ok": 39,
-  "unverified": 25
+  "unchecked": 3,
+  "unverified": 28
  },
  "window_days": 31
 }

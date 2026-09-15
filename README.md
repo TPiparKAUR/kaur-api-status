@@ -226,6 +226,44 @@ Lehel kuvatavad kirjeldused on failis `config/systems.toml`, mitte koodis.
 Süsteemi nimi seal peab kattuma inventari `system` väljaga. Kirjelduseta
 süsteem kuvatakse ilma tekstita.
 
+## Mis on teadlikult jälgimisest välja jäetud
+
+Teabevärav (andmed.eesti.ee) loetleb Keskkonnaagentuuri all 9 andmeteenust ja
+24 andmestikku. Kõik nende masinloetavad jaotused on nüüd inventaris. Allpool
+on see, mis jäi teadlikult välja — et järgmine lugeja teaks, kas need on
+unustatud või kaalutud otsus. Loend on koostatud 2026-09-15 kataloogi
+kirjete ja nende viidatud lehtede põhjal.
+
+**Inimesele mõeldud lehed, mitte masinliidesed.** Nende „200 OK" ütleb, et
+veebileht avanes, mitte et andmed on kättesaadavad — jälgimine näitaks
+rohelist ka siis, kui andmed on kadunud:
+
+| Andmestik | Avaldatud juurdepääs |
+|---|---|
+| Satelliidipildid | `ilmateenistus.ee` pildilehed (infrapuna, naturaalvärvid, 24 h mikrofüüsika) |
+| Lennumeteoroloogia prognoosiinfo | `lennuilm.ee` kaardilehed, `uus.lennuilm.ee/opmet` |
+| Mereilmateade | `ilmateenistus.ee/meri/...` vaatlus- ja prognoosilehed, jääkaart |
+| SMI – statistiline metsainventeerimine | Tableau töölaud `tableau.envir.ee` |
+| Ranniku üleujutusalad | Maa- ja Ruumiameti kaardirakendus `xgis.maaamet.ee` |
+| Metsaregistri andmestikud | Metsaportaal `register.metsad.ee` |
+| Ettevõtete jäätmete aastaaruandlus | keskkonnaportaali kirjeldusleht (andmed KOTKAS-es, vt allpool) |
+| Tuleohu (FWI) kaardirakendus | `ilmateenistus.ee/ilm/prognoosid/tuleohukaart/` (FWI **failid** on KAIA vaates ja need on jälgimises) |
+| Kliimaandmestiku ülevaatelehed | rekordid, soojussaared, kuukokkuvõtted, kliimanormid (**aegread** on PostgREST-is ja need on jälgimises) |
+
+**Ligipääs on piiratud.** `kotkas-aastaaruanded` on inventaris, aga
+`enabled = false`: esimene päris kontroll andis 403 Forbidden, seega teenus
+nõuab sisselogimist. See ei ole katkestus ja püsivalt punane rida oleks
+eksitav. Kirje jääb alles koos mõõdetud põhjusega.
+
+**Juba kaetud mujalt.** Osa andmestikke viitab kataloogis kirjelduslehele,
+aga nende päris andmed tulevad teenustest, mida juba jälgitakse: EELIS ja
+hüdrogeoloogia (`keskkonnaandmed.envir.ee`, 261 tabelit), puuraugud
+(`f_puuraugud`), keskkonnaseire (`f_keskkonnaseire`), hüdroloogiline seire
+(`f_hydroseire`), kliima aegread (`f_kliima_*`).
+
+**Teiste asutuste andmed.** ESTHub satelliidipildid kuuluvad Maa- ja
+Ruumiametile, mitte KAUR-ile, ja jäävad selle seire skoobist välja.
+
 ## Rühmad: palju otspunkte, üks rida
 
 EELIS avaldab 261 tabelit ühe teenuse taga. Juhtkonnale on oluline, kas EELIS

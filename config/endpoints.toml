@@ -127,7 +127,7 @@ max_bytes = 262144
 enabled = true
 source = "teabevarav"
 verified = false
-note = "Parameetrita kollektsioon EstModeli OpenAPI kirjeldusest (SwaggerHub estmodel/estmodel-api/1.0.0, servers: estmodel.envir.ee). Teenuse otspunkt tuleb Teabevärava kirjest data-service 705635f3."
+note = "Parameetrita kollektsioon EstModeli OpenAPI kirjeldusest (SwaggerHub estmodel/estmodel-api/1.0.0, servers: estmodel.envir.ee). Teenuse otspunkt tuleb Teabevärava kirjest data-service 705635f3. Vastus ületab 256 KB lugemislimiidi (mõõdetud 2026-09-15), seega kontrollitakse ainult vastuse algust — sisu terviklikkust see ei tõesta."
 
 [[endpoint]]
 id = "estmodel-stations"
@@ -163,7 +163,7 @@ max_bytes = 262144
 enabled = true
 source = "teabevarav"
 verified = false
-note = "Parameetrita kollektsioon EstModeli OpenAPI kirjeldusest (SwaggerHub estmodel/estmodel-api/1.0.0, servers: estmodel.envir.ee). Teenuse otspunkt tuleb Teabevärava kirjest data-service 705635f3."
+note = "Parameetrita kollektsioon EstModeli OpenAPI kirjeldusest (SwaggerHub estmodel/estmodel-api/1.0.0, servers: estmodel.envir.ee). Teenuse otspunkt tuleb Teabevärava kirjest data-service 705635f3. Vastus ületab 256 KB lugemislimiidi (mõõdetud 2026-09-15), seega kontrollitakse ainult vastuse algust — sisu terviklikkust see ei tõesta."
 
 [[endpoint]]
 id = "f-alad"
@@ -3351,6 +3351,30 @@ verified = true
 note = "Dokumentatsiooni näidispäring; lisatud limit=5"
 
 [[endpoint]]
+id = "ilmateenistus-hoiatused-rss"
+name = "Ilmateenistus: hoiatuste RSS"
+system = "Ilmateenistus"
+url = "https://ilmateenistus.ee/ilma_andmed/rss/hoiatused_rss.php"
+expect = "xml"
+max_bytes = 262144
+enabled = true
+source = "teabevarav"
+verified = false
+note = "Ilmateenistuse dokumentatsioonilehelt www.ilmateenistus.ee/teenused/ilmainfo/eesti-prognoos-xml/, mille projekti omanik eraldi välja tõi."
+
+[[endpoint]]
+id = "ilmateenistus-hoiatused-xml"
+name = "Ilmateenistus: hoiatused XML"
+system = "Ilmateenistus"
+url = "https://ilmateenistus.ee/ilma_andmed/xml/hoiatus.php"
+expect = "xml"
+max_bytes = 262144
+enabled = true
+source = "teabevarav"
+verified = false
+note = "Ilmateenistuse dokumentatsioonilehelt www.ilmateenistus.ee/teenused/ilmainfo/eesti-prognoos-xml/, mille projekti omanik eraldi välja tõi."
+
+[[endpoint]]
 id = "ilmateenistus-juur"
 name = "Ilmateenistus: teenuse juur"
 system = "Ilmateenistus"
@@ -3361,6 +3385,18 @@ enabled = true
 source = "teabevarav"
 verified = false
 note = "Teabevärav annab selle viie Ilmateenistuse andmeteenuse serviceEndpoints.endpointUrl väärtuseks. See on veebileht, mitte masinliides — ütleb, kas teenus üldse vastab."
+
+[[endpoint]]
+id = "ilmateenistus-prognoos-xml"
+name = "Ilmateenistus: Eesti prognoos XML"
+system = "Ilmateenistus"
+url = "https://ilmateenistus.ee/ilma_andmed/xml/forecast.php"
+expect = "xml"
+max_bytes = 262144
+enabled = true
+source = "teabevarav"
+verified = false
+note = "Ilmateenistuse dokumentatsioonilehelt www.ilmateenistus.ee/teenused/ilmainfo/eesti-prognoos-xml/, mille projekti omanik eraldi välja tõi."
 
 [[endpoint]]
 id = "ilmateenistus-vaatlusandmed-xml"
@@ -3631,10 +3667,10 @@ system = "KOTKAS"
 url = "https://kotkas.envir.ee/annual_reports_registry"
 expect = "any"
 max_bytes = 262144
-enabled = true
+enabled = false
 source = "teabevarav"
 verified = false
-note = "Teabevärava andmestike 'Veekasutuse andmestik' ja 'Välisõhu saastamisega seotud tegevuste aruanded' avaldatud juurdepääsu-URL."
+note = "Teabevärava andmestike 'Veekasutuse andmestik' ja 'Välisõhu saastamisega seotud tegevuste aruanded' avaldatud juurdepääsu-URL. VÄLJA LÜLITATUD: esimene päris kontroll 2026-09-15 andis 403 Forbidden — teenus nõuab sisselogimist, see ei ole katkestus. Püsivalt punane rida tahvlil oleks eksitav. Lülita sisse, kui KAUR avab anonüümse juurdepääsu või kui leitakse avalik otspunkt."
 
 [[endpoint]]
 id = "kytus-bunkering-company"
