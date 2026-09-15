@@ -88,7 +88,7 @@ def cmd_check(args: argparse.Namespace) -> int:
 
     if not args.dry_run:
         log_path = store.append(logged)
-        known = inventory.units(inventory.load_or_empty(config), inventory.load_groups(config))
+        known = _monitored_units(config)
         report_path = report.write(known)
         data_path = dashboard.write(known)
         print(f"\nLogitud:   {log_path}\nRaport:    {report_path}\nDashboard: {data_path}")
@@ -100,10 +100,27 @@ def cmd_check(args: argparse.Namespace) -> int:
     return 1 if (failed and args.fail_on_down) else 0
 
 
+def _monitored_units(config: Path) -> list[dict[str, Any]]:
+    """The units the report and the page may speak for: enabled ones only.
+
+    A disabled entry stays in the inventory on purpose — it records a URL
+    somebody already investigated, and deleting it invites the next person to
+    rediscover it — but nothing checks it any more, so rendering its last
+    known status would leave a permanently red row whose "last checked" only
+    recedes. kotkas-aastaaruanded is the case in point: one real check said
+    403 Forbidden (access-controlled, not down), it was disabled, and without
+    this filter the board would have shown it down forever.
+    """
+    return inventory.units(
+        inventory.enabled_only(inventory.load_or_empty(config)),
+        inventory.load_groups(config),
+    )
+
+
 def cmd_report(args: argparse.Namespace) -> int:
     """Rebuild both rendered views of the log: the Markdown report and the page data."""
     config = Path(args.config)
-    known = inventory.units(inventory.load_or_empty(config), inventory.load_groups(config))
+    known = _monitored_units(config)
     print(f"Raport kirjutatud:    {report.write(known)}")
     print(f"Dashboard kirjutatud: {dashboard.write(known)}")
     return 0

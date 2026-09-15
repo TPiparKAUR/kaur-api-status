@@ -1220,6 +1220,23 @@ class DashboardData(unittest.TestCase):
         self.assertEqual(data["daily_postgrest"][0]["p50_ms"], 100)
         self.assertEqual(data["daily_kaia"][0]["p50_ms"], 900)
 
+    def test_a_disabled_endpoint_is_not_rendered_on_the_board(self):
+        """Disabling stops the checking; it must also stop the display.
+
+        Otherwise the unit keeps its last known status forever, with a
+        'last checked' that only recedes — the exact misrepresentation
+        disabling was meant to avoid.
+        """
+        self._write([dict(_record("gone", "down", 5), ms=None)])
+        live = dict(self._entry("live"), verified=True)
+        disabled = dict(self._entry("gone"), enabled=False, verified=True)
+        from kaur_monitor import inventory
+
+        shown = inventory.enabled_only([live, disabled])
+        data = dashboard.build(shown)
+        self.assertEqual([e["id"] for e in data["endpoints"]], ["live"])
+        self.assertEqual(data["totals"].get("down", 0), 0)
+
     def test_a_record_for_an_unknown_id_is_excluded_from_both_latency_groups(self):
         """Regression: a superseded id must not silently count as PostgREST
         just because it fails the '== KAIA' check."""
@@ -1395,6 +1412,25 @@ class ReportRendering(unittest.TestCase):
     def test_incidents_sharing_a_start_do_not_crash_the_sort(self):
         series = [_record("a", "down", 10), _record("a", "down", 10)]
         self.assertEqual(len(analysis.incidents(series)), 1)
+
+    def test_an_open_incident_on_a_retired_id_is_closed_not_left_running(self):
+        """Nobody checks a disabled endpoint, so its last failure is the end.
+
+        kotkas-aastaaruanded is the real case: one check said 403 Forbidden
+        (access-controlled, not down), the entry was disabled, and without
+        this the report would show 'kestab' with a duration growing forever.
+        """
+        original = store.LOG_DIR
+        store.LOG_DIR = Path(tempfile.mkdtemp())
+        try:
+            (store.LOG_DIR / f"{datetime.now(UTC):%Y-%m}.jsonl").write_text(
+                json.dumps(_record("retired", "down", 120)) + "\n", encoding="utf-8"
+            )
+            text = report.build([{"id": "live", "name": "Live", "url": "https://e.org/l"}])
+        finally:
+            store.LOG_DIR = original
+        self.assertIn("`retired`", text, "the incident itself still belongs in the history")
+        self.assertNotIn("**kestab**", text, "a retired id's incident must not read as ongoing")
 
     def test_hetkeseis_only_counts_currently_monitored_units(self):
         """A ghost from a superseded id (e.g. pre-grouping eelis-f-*) must not

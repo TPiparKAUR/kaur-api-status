@@ -165,6 +165,12 @@ def build(entries: list[dict[str, Any]]) -> dict[str, Any]:
     incidents: list[dict[str, Any]] = []
     for eid, series in grouped.items():
         for incident in analysis.incidents(series):
+            # An open incident on an id nobody checks any more (disabled, or
+            # superseded by a grouping change) is not still running — we
+            # stopped looking. Close it at the last failure observed instead
+            # of showing a duration that grows forever.
+            if incident["end"] is None and eid not in by_name:
+                incident = {**incident, "end": incident.get("last_ts")}
             seconds = analysis.duration_seconds(incident, now)
             incidents.append(
                 {

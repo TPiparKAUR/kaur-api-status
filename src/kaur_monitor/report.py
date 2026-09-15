@@ -131,6 +131,12 @@ def build(entries: list[dict[str, Any]]) -> str:
     rows: list[tuple[str, str, dict[str, Any]]] = []
     for eid, series in grouped.items():
         for incident in analysis.incidents(series):
+            # An open incident on an id nobody checks any more (disabled, or
+            # superseded by a grouping change) is not still running — we
+            # simply stopped looking. Close it at the last failure observed,
+            # rather than let "kestab" and its duration grow forever.
+            if incident["end"] is None and eid not in by_id:
+                incident = {**incident, "end": incident.get("last_ts")}
             rows.append((incident["start"] or "", eid, incident))
     # Sort on the key alone: two incidents can share a start, and falling
     # through to compare the dicts would raise.

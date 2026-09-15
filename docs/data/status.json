@@ -51,8 +51,8 @@
    "p95_ms": 2459
   },
   {
-   "avail_pct": 99.55,
-   "checks": 224,
+   "avail_pct": 100.0,
+   "checks": 223,
    "date": "2026-09-15",
    "ok": 223,
    "p50_ms": 502,
@@ -378,22 +378,6 @@
    "system": "KAIA",
    "ts": "2026-09-15T13:09:03Z",
    "url": "https://avaandmed.keskkonnaportaal.ee/dhs/Active/documentList.aspx",
-   "verified": false
-  },
-  {
-   "avail_24h": 0.0,
-   "avail_7d": 0.0,
-   "checks_24h": 1,
-   "detail": "http 403 Forbidden — <!DOCTYPE html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 8]> <html class=\"no-js ie8 oldie\" lang=\"en-US\"> <![endif]--> <!--[if gt IE 8]><!--> <html class=\"no-js\" lang=\"en-US\"> <!--<![e",
-   "http": 403,
-   "id": "kotkas-aastaaruanded",
-   "members": null,
-   "ms": 522,
-   "name": "KOTKAS: aastaaruannete register",
-   "status": "down",
-   "system": "KOTKAS",
-   "ts": "2026-09-15T13:05:43Z",
-   "url": "https://kotkas.envir.ee/annual_reports_registry",
    "verified": false
   },
   {
@@ -750,17 +734,17 @@
   }
  ],
  "first_record": "2026-09-14T13:40:24Z",
- "generated_at": "2026-09-15T13:09:08Z",
+ "generated_at": "2026-09-15T13:16:30Z",
  "incident_count": 1,
  "incidents": [
   {
    "detail": "http 403 Forbidden — <!DOCTYPE html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 8]> <",
-   "duration_s": 205,
-   "end": null,
+   "duration_s": 0,
+   "end": "2026-09-15T13:05:43Z",
    "id": "kotkas-aastaaruanded",
-   "name": "KOTKAS: aastaaruannete register",
+   "name": "kotkas-aastaaruanded",
    "start": "2026-09-15T13:05:43Z",
-   "system": "KOTKAS",
+   "system": "Muu",
    "worst": "down"
   }
  ],
@@ -769,8 +753,8 @@
   {
    "count": 1,
    "id": "kotkas-aastaaruanded",
-   "name": "KOTKAS: aastaaruannete register",
-   "total_s": 205
+   "name": "kotkas-aastaaruanded",
+   "total_s": 0
   }
  ],
  "systems": [
@@ -813,14 +797,6 @@
    "name": "KAIA",
    "ok": 5,
    "problem": 0
-  },
-  {
-   "avail_24h": 0.0,
-   "description": "Keskkonnalubade ja aastaaruannete keskkond, mille kaudu avaldatakse veekasutuse aastaaruanded ning välisõhu saastamisega seotud tegevuste aruanded (heiteallikad, saasteainete kogused, kasutatud kütused).",
-   "endpoints": 1,
-   "name": "KOTKAS",
-   "ok": 0,
-   "problem": 1
   },
   {
    "avail_24h": 100.0,
@@ -880,10 +856,9 @@
   }
  ],
  "totals": {
-  "down": 1,
-  "endpoints": 43,
+  "endpoints": 42,
   "ok": 42,
-  "unverified": 28
+  "unverified": 27
  },
  "window_days": 31
 }

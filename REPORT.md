@@ -1,8 +1,8 @@
 # Keskkonnaagentuuri API-de seisundiraport
 
-Koostatud: **2026-09-15 16:09** (EET/EEST) · jälgitavaid otspunkte: **43** · kontrollikirjeid viimase 31 päeva jooksul: **1529**
+Koostatud: **2026-09-15 16:16** (EET/EEST) · jälgitavaid otspunkte: **42** · kontrollikirjeid viimase 31 päeva jooksul: **1529**
 
-Hetkeseis — MAAS: **1** · KORRAS: **42**
+Hetkeseis — KORRAS: **42**
 
 ## Praegune seis
 
@@ -45,7 +45,6 @@ Hetkeseis — MAAS: **1** · KORRAS: **42**
 | `kliima-paev`<br><sub>Kliima ööpäeva andmed, Ruhnu ja Kihnu õhuniiskus 2023</sub> | **KORRAS** | 200 · 398 ms | - | 2026-09-15 16:09 |  |
 | `kliima-paev-nimefilter`<br><sub>Kliima ööpäeva andmed, Võru 2006 (like-filter ja sortimine)</sub> | **KORRAS** | 200 · 371 ms | - | 2026-09-15 16:09 |  |
 | `kliima-tund`<br><sub>Kliima tunniandmed</sub> | **KORRAS** | 200 · 403 ms | - | 2026-09-15 16:09 |  |
-| `kotkas-aastaaruanded`<br><sub>KOTKAS: aastaaruannete register</sub> | **MAAS** | 403 · 522 ms | - | 2026-09-15 16:05 | http 403 Forbidden — <!DOCTYPE html> <!--[if lt IE 7]> <html class="no-js ie6 ol |
 | `kytus-bunkering-company`<br><sub>Kütuseseire: ettevõtted</sub> | **KORRAS** | 200 · 493 ms | - | 2026-09-15 16:09 |  |
 | `kytus-monitoring`<br><sub>Kütuseseire: seireandmed</sub> | **KORRAS** | 200 · 548 ms | - | 2026-09-15 16:09 |  |
 | `kytus-source-of-pollution`<br><sub>Kütuseseire: heiteallikad</sub> | **KORRAS** | 200 · 512 ms | - | 2026-09-15 16:09 |  |
@@ -365,7 +364,7 @@ Hetkeseis — MAAS: **1** · KORRAS: **42**
 
 | Algus | Lõpp | Kestus | Otspunkt | Tüüp | Põhjus |
 |---|---|---|---|---|---|
-| 2026-09-15 16:05 | **kestab** | 3 min | `kotkas-aastaaruanded` | MAAS | http 403 Forbidden — <!DOCTYPE html> <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang= |
+| 2026-09-15 16:05 | 2026-09-15 16:05 | 0 s | `kotkas-aastaaruanded` | MAAS | http 403 Forbidden — <!DOCTYPE html> <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang= |
 
 ## Hoiatused
 
@@ -391,7 +390,6 @@ Hetkeseis — MAAS: **1** · KORRAS: **42**
 - `ilmateenistus-vaatlusandmed-xml`: URL on **kontrollimata** (`verified = false`) — allikas: teabevarav
 - `kaia-vaated`: URL on **kontrollimata** (`verified = false`) — allikas: teadmata
 - `kese-juur`: URL on **kontrollimata** (`verified = false`) — allikas: teabevarav
-- `kotkas-aastaaruanded`: URL on **kontrollimata** (`verified = false`) — allikas: teabevarav
 - `kytus-bunkering-company`: URL on **kontrollimata** (`verified = false`) — allikas: teabevarav
 - `kytus-monitoring`: URL on **kontrollimata** (`verified = false`) — allikas: teabevarav
 - `kytus-source-of-pollution`: URL on **kontrollimata** (`verified = false`) — allikas: teabevarav
