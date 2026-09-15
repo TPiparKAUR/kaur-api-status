@@ -23,6 +23,7 @@ Usage:  python scripts/probe_catalogue.py scripts/catalogue-pages.txt
 
 from __future__ import annotations
 
+import json
 import re
 import sys
 import time
@@ -78,15 +79,70 @@ def offsite_urls(body: bytes, page_url: str) -> list[str]:
     return sorted(set(keep))
 
 
+def summarise_json(payload: str) -> str | None:
+    """Condense the two shapes this crawl keeps meeting, or None for the rest.
+
+    A dataset record is 5-20 kB of which four fields matter, and an OpenAPI
+    document is far larger than the list of paths anyone needs from it.
+    Printing the whole body for those drowns the log.
+    """
+    try:
+        obj = json.loads(payload)
+    except ValueError:
+        return None
+    if not isinstance(obj, dict):
+        return None
+
+    if "distributions" in obj:
+        holder = (obj.get("organization") or {}).get("name") if obj.get("organization") else None
+        out = [f"DATASET {obj.get('title')} | slug={obj.get('slug')} | holder={holder}"]
+        out.append(f"    landingPage: {obj.get('landingPage')}")
+        for dist in obj.get("distributions") or []:
+            urls = ", ".join(dist.get("accessUrls") or []) or "-"
+            out.append(f"    [{dist.get('format') or '?':<6}] {dist.get('titleEt')}: {urls}")
+        for entry in obj.get("datasetFiles") or []:
+            out.append(f"    file: {json.dumps(entry, ensure_ascii=False)[:200]}")
+        return "\n".join(out)
+
+    if obj.get("openapi") or obj.get("swagger"):
+        servers = obj.get("servers") or obj.get("host") or obj.get("basePath")
+        out = [f"OPENAPI {json.dumps(obj.get('info', {}).get('title'), ensure_ascii=False)}"]
+        out.append(f"    servers: {json.dumps(servers, ensure_ascii=False)}")
+        for path, spec in sorted((obj.get("paths") or {}).items()):
+            if not isinstance(spec, dict):
+                continue
+            get_spec = spec.get("get")
+            if not isinstance(get_spec, dict):
+                continue
+            required = [
+                p.get("name")
+                for p in get_spec.get("parameters") or []
+                if p.get("required") or p.get("in") == "path"
+            ]
+            mark = "NEEDS " + ",".join(required) if required else "free"
+            out.append(f"    GET {path}   [{mark}]")
+        return "\n".join(out)
+
+    return None
+
+
 def main(argv: list[str]) -> int:
     if len(argv) != 2:
         print(__doc__)
         return 2
-    urls = [
-        line.strip()
-        for line in Path(argv[1]).read_text(encoding="utf-8").splitlines()
-        if line.strip() and not line.lstrip().startswith("#")
-    ]
+    urls = []
+    for line in Path(argv[1]).read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line or line.startswith("#"):
+            continue
+        # 'search:<term>' is shorthand for the one listing route the portal
+        # accepts: /api/datasets rejects every organisation filter tried, but
+        # takes a free-text search, and the probe follows each hit's record.
+        if line.startswith("search:"):
+            term = urllib.parse.quote(line.split(":", 1)[1].strip())
+            urls.append(f"https://andmed.eesti.ee/api/datasets?limit=5&search={term}")
+        else:
+            urls.append(line)
     print(f"Probing {len(urls)} URLs\n")
 
     everything: set[str] = set()
@@ -109,18 +165,25 @@ def main(argv: list[str]) -> int:
             if "json" in content_type.lower():
                 text = body.decode("utf-8", errors="replace")
                 flat = " ".join(text.split())
-                if len(body) < JSON_WHOLE_UNDER:
+                summary = summarise_json(text)
+                if summary:
+                    print("    " + summary.replace("\n", "\n    ").strip())
+                elif len(body) < JSON_WHOLE_UNDER:
                     print(f"    json: {flat}")
                 else:
                     print(f"    json head: {flat[:JSON_HEAD]}")
                 # Follow the catalogue's own references one level: a service
-                # record names the datasets it belongs to, and the dataset
-                # record is where the distribution URLs live. Following what
-                # the response actually contains beats guessing a URL shape.
-                for related in re.findall(r'"relatedDatasets":\[(.*?)\]', flat):
-                    for dataset_id in re.findall(r'"id":"([0-9a-f-]{36})"', related):
-                        follow = f"{urllib.parse.urlsplit(url).scheme}://"
-                        follow += f"{urllib.parse.urlsplit(url).hostname}/api/datasets/{dataset_id}"
+                # record names the datasets it belongs to, a search result
+                # names the datasets that matched, and the dataset record is
+                # where the distribution URLs live. Following what a response
+                # actually contains beats guessing a URL shape.
+                followable = re.findall(r'"relatedDatasets":\[(.*?)\]', flat)
+                if '"data":[' in flat:
+                    followable.append(flat)
+                for chunk in followable:
+                    for dataset_id in re.findall(r'"id":"([0-9a-f-]{36})"', chunk):
+                        split = urllib.parse.urlsplit(url)
+                        follow = f"{split.scheme}://{split.hostname}/api/datasets/{dataset_id}"
                         if follow not in seen:
                             queue.append(follow)
             elif links:

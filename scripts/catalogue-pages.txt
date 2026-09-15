@@ -1,37 +1,37 @@
-# One-off input for scripts/probe_catalogue.py (round 3). Delete both
+# One-off input for scripts/probe_catalogue.py (round 4). Delete both
 # once the endpoints they reveal are in config/endpoints.toml.
 #
-# Round 2 found the service and dataset records. Their distribution URLs
-# turned out to be mostly human pages: the machine endpoints for the
-# weather, radar and monitoring data sit behind keskkonnaportaal.ee's
-# avaandmed pages, which is where 'the documentation under the service
-# description' actually lives. Round 3 reads those, the EstModel spec,
-# and hunts for the query parameter that lists one holder's datasets.
+# Round 3: the avaandmed pages gave real endpoints (KAIA documentList
+# views per dataset, the PostgREST queries this project already has),
+# every organisation filter on /api/datasets was rejected, and free-text
+# search was the one listing route that answered. So round 4 enumerates
+# the remaining datasets by searching for their titles and following each
+# hit to its record, which reports the holder so a same-named dataset
+# from another agency can be told apart.
 
-# --- how to enumerate Keskkonnaagentuur's 33 datasets. /api/datasets
-# works but reports organization: null and rejects unknown parameters
-# by name, which makes elimination cheap. KAUR's holder id came from
-# /api/information-holders/keskkonnaagentuur in round 2.
-https://andmed.eesti.ee/api/information-holders/keskkonnaagentuur/datasets
-https://andmed.eesti.ee/api/information-holders/5998e2ff-ce8e-4963-9328-7f289750ec64/datasets
-https://andmed.eesti.ee/api/datasets?organizationId=5998e2ff-ce8e-4963-9328-7f289750ec64
-https://andmed.eesti.ee/api/datasets?organizationIds=5998e2ff-ce8e-4963-9328-7f289750ec64
-https://andmed.eesti.ee/api/datasets?informationHolderId=5998e2ff-ce8e-4963-9328-7f289750ec64
-https://andmed.eesti.ee/api/datasets?publisherId=5998e2ff-ce8e-4963-9328-7f289750ec64
-https://andmed.eesti.ee/api/datasets?limit=3
-https://andmed.eesti.ee/api/datasets?limit=3&search=kliimaandmestik
-
-# --- the three dataset records round 2 had to truncate
-https://andmed.eesti.ee/api/datasets/d66fc76a-396c-40c4-8339-1f790d5af9ee
+# --- the dataset still truncated in round 3
 https://andmed.eesti.ee/api/datasets/19d203bd-d0ae-471e-a5a9-f8e0915bd959
-https://andmed.eesti.ee/api/datasets/c3bb117a-e7c4-481f-936a-2d32d2e876e6
 
-# --- the pages the catalogue points at as the actual data descriptions
-https://keskkonnaportaal.ee/et/avaandmed/ilmaprognoosid
-https://keskkonnaportaal.ee/et/avaandmed/keskkonnaseire-infosusteemi-andmestikud
-https://keskkonnaportaal.ee/et/avaandmed/meteoroloogiliste-radarite-andmestik
-https://keskkonnaportaal.ee/et/avaandmed/keskkonna-ja-ilma-valdkonna-andmeteenused
-https://keskkonnaportaal.ee/et/avaandmed
-
-# --- the one service that documents itself in a machine-readable way
+# --- the EstModel spec, now summarised to its path list
 https://api.swaggerhub.com/apis/estmodel/estmodel-api/1.0.0
+
+# --- the page that documents the XML observation feed
+https://www.ilmateenistus.ee/teenused/ilmainfo/eesti-vaatlusandmed-xml/
+
+# --- the 16 datasets no data service points at
+search:Tuleohu (FWI) andmestik
+search:Lennumeteoroloogia prognoosiinfo
+search:Veekasutuse andmestik
+search:Välisõhu saastamisega seotud tegevuste aruanded
+search:Pakendijäätmete andmestikud
+search:Kütuseseire andmestik
+search:Kliimaandmestik
+search:Ranniku üleujutusalad
+search:Probleemtoodete andmestik
+search:Metsaregistri andmestikud
+search:Eesti looduse infosüsteemi andmestikud
+search:Hüdrogeoloogia andmestik EELIS-es
+search:Ettevõtete jäätmete aastaaruandlus
+search:Satelliidipildid
+search:SMI - Statistilise metsainventeerimise andmestik
+search:Puuraugud - Hüdrogeoloogia andmestik
