@@ -1,0 +1,55 @@
+# One-off input for scripts/probe_catalogue.py. Delete both once the
+# endpoints they reveal are in config/endpoints.toml.
+#
+# Source: the Keskkonnaagentuur page of the Teabevarav catalogue, saved
+# from a browser by the project owner on 2026-09-15. These are catalogue
+# PAGES to read, not endpoints to monitor - nothing here reaches the
+# inventory without a human confirming what the page actually points at.
+
+# --- does the portal expose a machine-readable API at all? The page is an
+# Angular app, so a server-side fetch may return an empty shell; these
+# candidates are probed to find the route that serves real data.
+https://andmed.eesti.ee/api/rss/feed
+https://andmed.eesti.ee/api/data-service/705635f3-6f2f-4fd9-94b4-9ff76c5fd1af
+https://andmed.eesti.ee/api/data-services/705635f3-6f2f-4fd9-94b4-9ff76c5fd1af
+https://andmed.eesti.ee/api/datasets/koormuste-ja-vooluhulkade-hinnangud-%28estmodel%29
+https://andmed.eesti.ee/api/dataset/koormuste-ja-vooluhulkade-hinnangud-%28estmodel%29
+https://andmed.eesti.ee/v3/api-docs
+https://andmed.eesti.ee/api/openapi.json
+
+# --- the nine data services (these carry the API documentation links)
+https://andmed.eesti.ee/data-service/705635f3-6f2f-4fd9-94b4-9ff76c5fd1af
+https://andmed.eesti.ee/data-service/e3d67cf5-b8e5-4100-80fb-c18db94c3784
+https://andmed.eesti.ee/data-service/87847057-5ccd-4056-a2c5-de0bf23307ca
+https://andmed.eesti.ee/data-service/4b84317d-2ad7-4814-8ddf-fda7cf7c41c4
+https://andmed.eesti.ee/data-service/a6af30bd-4f40-4195-bfe2-48d855f3a03b
+https://andmed.eesti.ee/data-service/4cc57902-4577-4645-aa85-8a67b135f992
+https://andmed.eesti.ee/data-service/9f3065b8-8f6d-4fa4-88af-97e5a88e3468
+https://andmed.eesti.ee/data-service/a33f17bd-62f0-45d9-ae80-0780b5ceb3e7
+https://andmed.eesti.ee/data-service/4b144436-0794-4265-9000-fc70247564a9
+
+# --- the 24 dataset pages (these carry distribution / access URLs)
+https://andmed.eesti.ee/datasets/koormuste-ja-vooluhulkade-hinnangud-%28estmodel%29
+https://andmed.eesti.ee/datasets/ilmaprognoosid
+https://andmed.eesti.ee/datasets/keskkonnaseire-andmekogu
+https://andmed.eesti.ee/datasets/hudroloogilise-seire-andmestik
+https://andmed.eesti.ee/datasets/ilma-mudelprognoosid
+https://andmed.eesti.ee/datasets/mereilmateade
+https://andmed.eesti.ee/datasets/meteoroloogilise-seire-andmestik
+https://andmed.eesti.ee/datasets/meteoroloogiliste-radarite-andmestik
+https://andmed.eesti.ee/datasets/tuleohu-%28fwi%29-andmestik
+https://andmed.eesti.ee/datasets/lennumeteoroloogia-prognoosiinfo
+https://andmed.eesti.ee/datasets/veekasutuse-andmestik
+https://andmed.eesti.ee/datasets/valisohu-saastamisega-seotud-tegevuste-aruanded
+https://andmed.eesti.ee/datasets/pakendijaatmete-andmestikud
+https://andmed.eesti.ee/datasets/kutuseseire-andmestik
+https://andmed.eesti.ee/datasets/kliimaandmestik
+https://andmed.eesti.ee/datasets/ranniku-uleujutusalad
+https://andmed.eesti.ee/datasets/probleemtoodete-andmestik
+https://andmed.eesti.ee/datasets/metsaregistri-andmestikud
+https://andmed.eesti.ee/datasets/eesti-looduse-infosusteemi-andmestikud
+https://andmed.eesti.ee/datasets/hudrogeoloogia-andmestik-eelis-es
+https://andmed.eesti.ee/datasets/ettevotete-jaatmete-aastaaruandlus
+https://andmed.eesti.ee/datasets/satelliidipildid
+https://andmed.eesti.ee/datasets/smi-statistilise-metsainventeerimise-andmestik
+https://andmed.eesti.ee/datasets/puuraugud-hudrogeoloogia-andmestik
