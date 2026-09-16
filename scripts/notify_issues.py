@@ -69,16 +69,42 @@ def _all_open_issues(repo: str, token: str, max_pages: int = 20) -> list[dict]:
     return issues
 
 
-def _latest_by_endpoint() -> dict[str, dict]:
-    latest: dict[str, dict] = {}
-    for record in store.read_all(since=store.window_start(2)):
+def _series_by_endpoint(days: float = 2.0) -> dict[str, list[dict]]:
+    """Every logged record per unit, oldest first, for the last few days.
+
+    A short window rather than the latest record alone: opening an Issue
+    needs to know whether this is the first failure or the second in a row,
+    which means looking at more than just the most recent line.
+    """
+    series: dict[str, list[dict]] = {}
+    for record in store.read_all(since=store.window_start(days)):
         endpoint_id = record.get("id")
         if not endpoint_id:
             continue
-        previous = latest.get(endpoint_id)
-        if previous is None or (record.get("ts") or "") >= (previous.get("ts") or ""):
-            latest[endpoint_id] = record
-    return latest
+        series.setdefault(endpoint_id, []).append(record)
+    for records in series.values():
+        records.sort(key=lambda r: r.get("ts") or "")
+    return series
+
+
+def _consecutive_failures(series: list[dict]) -> int:
+    """How many checks in a row, most recent first, came back down/degraded.
+
+    'unknown' means our own network had no connection, which says nothing
+    about the service; it is skipped rather than breaking the streak, the
+    same treatment analysis.incidents() gives it. A single bad check must not
+    open an Issue on its own — this is what lets the caller require two.
+    """
+    streak = 0
+    for record in reversed(series):
+        status = record.get("status")
+        if status == "unknown":
+            continue
+        if status in ("down", "degraded"):
+            streak += 1
+            continue
+        break
+    return streak
 
 
 def main() -> int:
@@ -89,12 +115,17 @@ def main() -> int:
         return 0
 
     try:
-        entries = {e["id"]: e for e in inventory.load()}
+        # units(), not load(): the log records one line per monitored unit,
+        # and a group (EELIS's 261 tables checked as one) only exists as an
+        # id here — looking it up in the raw endpoint list would miss it
+        # entirely and silently skip every group from notification.
+        entries = {e["id"]: e for e in inventory.units(inventory.load(), inventory.load_groups())}
     except inventory.InventoryError as exc:
         print(f"Inventari ei saa lugeda: {exc}")
         return 0
 
-    latest = _latest_by_endpoint()
+    series_by_id = _series_by_endpoint()
+    latest = {eid: records[-1] for eid, records in series_by_id.items() if records}
     if not latest:
         print("Logis pole värskeid kirjeid.")
         return 0
@@ -133,6 +164,14 @@ def main() -> int:
 
         try:
             if status in ("down", "degraded") and existing is None:
+                streak = _consecutive_failures(series_by_id.get(endpoint_id, []))
+                if streak < 2:
+                    # One bad check is as likely to be a dropped packet as an
+                    # outage. check.py already retries once inside a run;
+                    # this is the second, independent layer: an Issue opens
+                    # only once two separate scheduled runs both failed.
+                    print(f"{endpoint_id}: 1. ebaõnnestumine, Issue avatakse alles teise järel.")
+                    continue
                 title = f"[{endpoint_id}] {'ei vasta' if status == 'down' else 'häiritud'}"
                 body = (
                     f"{MARKER.format(id=endpoint_id)}\n\n"

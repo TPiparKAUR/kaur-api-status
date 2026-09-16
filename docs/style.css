@@ -10,7 +10,11 @@
   --surface: #fcfcfb;
   --ink: #0b0b0b;
   --ink-2: #52514e;
-  --muted: #898781;
+  /* #898781 measured ~3.2:1 against --surface, below the 4.5:1 AA floor for
+     the normal-size text it is used on (tile subtitles, table notes). This
+     shade holds ~5.7:1 in light mode; dark mode keeps the original value
+     below, which already clears AA against the near-black dark surface. */
+  --muted: #625f59;
   --grid: #e1e0d9;
   --rule: #c3c2b7;
   --border: rgba(11, 11, 11, 0.10);
@@ -46,6 +50,7 @@
   --surface: #1a1a19;
   --ink: #ffffff;
   --ink-2: #c3c2b7;
+  --muted: #898781;
   --grid: #2c2c2a;
   --rule: #383835;
   --border: rgba(255, 255, 255, 0.10);
@@ -80,6 +85,17 @@ body {
   background: var(--surface);
   padding: 8px 12px;
   border-radius: var(--radius);
+}
+
+.noscript-note {
+  margin: 0;
+  padding: 0.85rem 20px;
+  background: var(--warning);
+  color: #1a1a19;
+  font-size: 0.9375rem;
+}
+.noscript-note code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 /* ---- head ---- */
@@ -244,6 +260,14 @@ h3 {
   font-size: 0.9375rem;
   text-align: center;
 }
+/* A textual equivalent of the chart alongside it, for screen readers and for
+   anyone who would rather read three numbers than parse a line. */
+.chart-summary {
+  margin: 0.6rem 0 0;
+  color: var(--ink-2);
+  font-size: 0.8125rem;
+}
+.chart-summary:empty { display: none; }
 
 /* ---- tables ---- */
 
@@ -294,6 +318,17 @@ td .id {
   color: var(--muted);
   font-size: 0.75rem;
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+.unverified-flag {
+  display: inline-block;
+  padding: 0.05rem 0.4rem;
+  border: 1px solid var(--warning);
+  border-radius: 999px;
+  color: var(--ink-2);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  white-space: nowrap;
+  vertical-align: middle;
 }
 td.reason {
   white-space: normal;

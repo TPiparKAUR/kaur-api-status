@@ -12,11 +12,25 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
         with:
           python-version: "3.12"
+
+      # The monitor itself has no runtime dependencies; these are dev-only
+      # lint/type tooling, pinned so a new release cannot fail CI on its own.
+      - name: Install lint/type tooling
+        run: pip install ruff==0.15.8 mypy==1.19.1
+
+      - name: Lint (ruff check)
+        run: ruff check .
+
+      - name: Format check (ruff format)
+        run: ruff format --check .
+
+      - name: Type check (mypy)
+        run: mypy src/kaur_monitor scripts/notify_issues.py monitor.py
 
       # Standard library only, so there is nothing to install.
       - name: Unit tests

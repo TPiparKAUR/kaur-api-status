@@ -11,6 +11,7 @@ from datetime import datetime
 from typing import Any
 
 from . import store
+from .check import LOG_SCHEMA_VERSION
 
 # Reading the whole log costs time that grows without limit; every caller wants
 # a window, and one day past the widest reported window keeps that window whole.
@@ -90,6 +91,7 @@ def collapse_groups(
                 "detail": detail[:300],
                 "members": len(members),
                 "ok": sum(1 for m in members if m.get("status") == "ok"),
+                "v": LOG_SCHEMA_VERSION,
             }
         )
     return kept
@@ -131,12 +133,18 @@ def incidents(series: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 "worst": status,
                 "detail": record.get("detail") or "",
                 "checks": 0,
+                "last_ts": record.get("ts"),
             }
         if status == "down":
             current["worst"] = "down"
             if record.get("detail"):
                 current["detail"] = record["detail"]
         current["checks"] += 1
+        # When an incident never closes, 'end' stays None and a reader is told
+        # it is still running. That is only true while something is still
+        # checking: for an id that has left the inventory, the honest end is
+        # the last failure actually observed, so keep it.
+        current["last_ts"] = record.get("ts")
 
     if current is not None:
         found.append(current)

@@ -25,6 +25,14 @@ url = "https://keskkonnaandmed.envir.ee/"
 verified = true
 note = "261 tabelit ühe kirjena: kõiki kontrollitakse igal jooksul, aga logisse läheb üks rida. Kui kasvõi üks tabel ei vasta, on rühm maas ja kirje nimetab, millised."
 
+[[group]]
+id = "kaia-vaated"
+name = "KAIA avaandmete failivaated"
+system = "KAIA"
+url = "https://avaandmed.keskkonnaportaal.ee/dhs/Active/documentList.aspx"
+verified = false
+note = "Seitse Teabevärava andmestiku failivaadet ühe kirjena: neid kontrollitakse igal jooksul eraldi, aga logisse läheb üks rida. KAIA API otspunktid (swagger, nimekirjad, otsing) jäävad eraldi, sest 'API on maas' ja 'ühe andmestiku vaade on katki' on lugejale kaks eri asja."
+
 [[endpoint]]
 id = "eelis-rahvalad"
 name = "EELIS rahvusvahelised alad, Kurese loodusala"
@@ -72,6 +80,90 @@ headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
 source = "manual"
 verified = true
 note = "Dokumentatsiooni näidispäring; katab PostgREST-i seoste sisestamise"
+
+[[endpoint]]
+id = "estmodel-assessment-units"
+name = "EstModel: Hindamisüksused"
+system = "EstModel"
+url = "https://estmodel.envir.ee/assessment-units"
+expect = "json"
+max_bytes = 262144
+enabled = true
+source = "teabevarav"
+verified = false
+note = "Parameetrita kollektsioon EstModeli OpenAPI kirjeldusest (SwaggerHub estmodel/estmodel-api/1.0.0, servers: estmodel.envir.ee). Teenuse otspunkt tuleb Teabevärava kirjest data-service 705635f3."
+
+[[endpoint]]
+id = "estmodel-countries"
+name = "EstModel: Riigid"
+system = "EstModel"
+url = "https://estmodel.envir.ee/countries"
+expect = "json"
+max_bytes = 262144
+enabled = true
+source = "teabevarav"
+verified = false
+note = "Parameetrita kollektsioon EstModeli OpenAPI kirjeldusest (SwaggerHub estmodel/estmodel-api/1.0.0, servers: estmodel.envir.ee). Teenuse otspunkt tuleb Teabevärava kirjest data-service 705635f3."
+
+[[endpoint]]
+id = "estmodel-districts"
+name = "EstModel: Vesikonnad"
+system = "EstModel"
+url = "https://estmodel.envir.ee/districts"
+expect = "json"
+max_bytes = 262144
+enabled = true
+source = "teabevarav"
+verified = false
+note = "Parameetrita kollektsioon EstModeli OpenAPI kirjeldusest (SwaggerHub estmodel/estmodel-api/1.0.0, servers: estmodel.envir.ee). Teenuse otspunkt tuleb Teabevärava kirjest data-service 705635f3."
+
+[[endpoint]]
+id = "estmodel-rivers"
+name = "EstModel: Vooluveekogud"
+system = "EstModel"
+url = "https://estmodel.envir.ee/rivers"
+expect = "json"
+max_bytes = 262144
+enabled = true
+source = "teabevarav"
+verified = false
+note = "Parameetrita kollektsioon EstModeli OpenAPI kirjeldusest (SwaggerHub estmodel/estmodel-api/1.0.0, servers: estmodel.envir.ee). Teenuse otspunkt tuleb Teabevärava kirjest data-service 705635f3. Vastus ületab 256 KB lugemislimiidi (mõõdetud 2026-09-15), seega kontrollitakse ainult vastuse algust — sisu terviklikkust see ei tõesta."
+
+[[endpoint]]
+id = "estmodel-stations"
+name = "EstModel: Seirejaamad"
+system = "EstModel"
+url = "https://estmodel.envir.ee/stations"
+expect = "json"
+max_bytes = 262144
+enabled = true
+source = "teabevarav"
+verified = false
+note = "Parameetrita kollektsioon EstModeli OpenAPI kirjeldusest (SwaggerHub estmodel/estmodel-api/1.0.0, servers: estmodel.envir.ee). Teenuse otspunkt tuleb Teabevärava kirjest data-service 705635f3."
+
+[[endpoint]]
+id = "estmodel-subdistricts"
+name = "EstModel: Alamvesikonnad"
+system = "EstModel"
+url = "https://estmodel.envir.ee/subdistricts"
+expect = "json"
+max_bytes = 262144
+enabled = true
+source = "teabevarav"
+verified = false
+note = "Parameetrita kollektsioon EstModeli OpenAPI kirjeldusest (SwaggerHub estmodel/estmodel-api/1.0.0, servers: estmodel.envir.ee). Teenuse otspunkt tuleb Teabevärava kirjest data-service 705635f3."
+
+[[endpoint]]
+id = "estmodel-water-outlets"
+name = "EstModel: Väljalasud"
+system = "EstModel"
+url = "https://estmodel.envir.ee/water-outlets"
+expect = "json"
+max_bytes = 262144
+enabled = true
+source = "teabevarav"
+verified = false
+note = "Parameetrita kollektsioon EstModeli OpenAPI kirjeldusest (SwaggerHub estmodel/estmodel-api/1.0.0, servers: estmodel.envir.ee). Teenuse otspunkt tuleb Teabevärava kirjest data-service 705635f3. Vastus ületab 256 KB lugemislimiidi (mõõdetud 2026-09-15), seega kontrollitakse ainult vastuse algust — sisu terviklikkust see ei tõesta."
 
 [[endpoint]]
 id = "f-alad"
@@ -1720,6 +1812,7 @@ headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
 enabled = true
 source = "openapi"
 verified = false
+note = "Sama tabel, mida kontrollib ka eelis-rahvalad (dokumenteeritud näidispäring). Teadlik kattuvus: see harvestitud ?limit=1 päring katab ainult PostgREST-i vaikepäringu, eelis-rahvalad katab filtreeritud päringu — kaks erinevat teenuse käitumist, mitte topelttöö."
 
 [[endpoint]]
 id = "f-rahvalad-dok"
@@ -1732,6 +1825,7 @@ headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
 enabled = true
 source = "openapi"
 verified = false
+note = "Sama tabel, mida kontrollib ka eelis-rahvalad-dok (dokumenteeritud näidispäring). Teadlik kattuvus, vt f-rahvalad."
 
 [[endpoint]]
 id = "f-rahvalad-ehak"
@@ -3257,6 +3351,66 @@ verified = true
 note = "Dokumentatsiooni näidispäring; lisatud limit=5"
 
 [[endpoint]]
+id = "ilmateenistus-hoiatused-rss"
+name = "Ilmateenistus: hoiatuste RSS"
+system = "Ilmateenistus"
+url = "https://ilmateenistus.ee/ilma_andmed/rss/hoiatused_rss.php"
+expect = "xml"
+max_bytes = 262144
+enabled = true
+source = "teabevarav"
+verified = false
+note = "Ilmateenistuse dokumentatsioonilehelt www.ilmateenistus.ee/teenused/ilmainfo/eesti-prognoos-xml/, mille projekti omanik eraldi välja tõi."
+
+[[endpoint]]
+id = "ilmateenistus-hoiatused-xml"
+name = "Ilmateenistus: hoiatused XML"
+system = "Ilmateenistus"
+url = "https://ilmateenistus.ee/ilma_andmed/xml/hoiatus.php"
+expect = "xml"
+max_bytes = 262144
+enabled = true
+source = "teabevarav"
+verified = false
+note = "Ilmateenistuse dokumentatsioonilehelt www.ilmateenistus.ee/teenused/ilmainfo/eesti-prognoos-xml/, mille projekti omanik eraldi välja tõi."
+
+[[endpoint]]
+id = "ilmateenistus-juur"
+name = "Ilmateenistus: teenuse juur"
+system = "Ilmateenistus"
+url = "https://www.ilmateenistus.ee/"
+expect = "any"
+max_bytes = 262144
+enabled = true
+source = "teabevarav"
+verified = false
+note = "Teabevärav annab selle viie Ilmateenistuse andmeteenuse serviceEndpoints.endpointUrl väärtuseks. See on veebileht, mitte masinliides — ütleb, kas teenus üldse vastab."
+
+[[endpoint]]
+id = "ilmateenistus-prognoos-xml"
+name = "Ilmateenistus: Eesti prognoos XML"
+system = "Ilmateenistus"
+url = "https://ilmateenistus.ee/ilma_andmed/xml/forecast.php"
+expect = "xml"
+max_bytes = 262144
+enabled = true
+source = "teabevarav"
+verified = false
+note = "Ilmateenistuse dokumentatsioonilehelt www.ilmateenistus.ee/teenused/ilmainfo/eesti-prognoos-xml/, mille projekti omanik eraldi välja tõi."
+
+[[endpoint]]
+id = "ilmateenistus-vaatlusandmed-xml"
+name = "Ilmateenistus: Eesti vaatlusandmed XML"
+system = "Ilmateenistus"
+url = "https://ilmateenistus.ee/ilma_andmed/xml/observations.php"
+expect = "xml"
+max_bytes = 262144
+enabled = true
+source = "teabevarav"
+verified = false
+note = "Ilmateenistuse dokumentatsioonilehelt www.ilmateenistus.ee/teenused/ilmainfo/eesti-vaatlusandmed-xml/, millele viitab Teabevärava andmestik 'Meteoroloogilise seire andmestik'."
+
+[[endpoint]]
 id = "kaia-items-query"
 name = "KAIA dokumentide metaandmete päring"
 system = "KAIA"
@@ -3302,6 +3456,109 @@ max_bytes = 262144
 source = "manual"
 verified = true
 note = "Dokumentatsioonis viidatud aadress; ühtlasi kõige odavam elushoiu kontroll"
+
+[[endpoint]]
+id = "kaia-vaade-07c1e468"
+name = "KAIA: Meteoroloogiajaamade seireandmed"
+system = "KAIA"
+group = "kaia-vaated"
+url = "https://avaandmed.keskkonnaportaal.ee/dhs/Active/documentList.aspx?ViewId=07c1e468-9f8a-4094-b3ba-e3bdf28e581e"
+expect = "any"
+max_bytes = 262144
+enabled = true
+source = "teabevarav"
+verified = false
+note = "Teabevärava andmestiku 'meteoroloogilise-seire-andmestik' avaldatud juurdepääsu-URL."
+
+[[endpoint]]
+id = "kaia-vaade-319c5400"
+name = "KAIA: SWAN lainemudeli andmed"
+system = "KAIA"
+group = "kaia-vaated"
+url = "https://avaandmed.keskkonnaportaal.ee/dhs/Active/documentList.aspx?ViewId=319c5400-af7c-43cc-ba6e-94428d1dbc2a"
+expect = "any"
+max_bytes = 262144
+enabled = true
+source = "teabevarav"
+verified = false
+note = "Teabevärava andmestiku 'ilma-mudelprognoosid' avaldatud juurdepääsu-URL."
+
+[[endpoint]]
+id = "kaia-vaade-40a63be9"
+name = "KAIA: NEMO meremudeli andmed"
+system = "KAIA"
+group = "kaia-vaated"
+url = "https://avaandmed.keskkonnaportaal.ee/dhs/Active/documentList.aspx?ViewId=40a63be9-52d3-4833-b9f6-1d6617a8fff5"
+expect = "any"
+max_bytes = 262144
+enabled = true
+source = "teabevarav"
+verified = false
+note = "Teabevärava andmestiku 'ilma-mudelprognoosid' avaldatud juurdepääsu-URL."
+
+[[endpoint]]
+id = "kaia-vaade-46df5d4a"
+name = "KAIA: Ilmaprognooside failid"
+system = "KAIA"
+group = "kaia-vaated"
+url = "https://avaandmed.keskkonnaportaal.ee/dhs/Active/documentList.aspx?ViewId=46df5d4a-8d5c-4509-b962-45f63ba7b636"
+expect = "any"
+max_bytes = 262144
+enabled = true
+source = "teabevarav"
+verified = false
+note = "Teabevärava andmestiku 'ilmaprognoosid' avaldatud juurdepääsu-URL."
+
+[[endpoint]]
+id = "kaia-vaade-b92201f4"
+name = "KAIA: Radariandmete failid"
+system = "KAIA"
+group = "kaia-vaated"
+url = "https://avaandmed.keskkonnaportaal.ee/dhs/Active/documentList.aspx?ViewId=b92201f4-8b48-4d3a-b410-30c8ce4016d5"
+expect = "any"
+max_bytes = 262144
+enabled = true
+source = "teabevarav"
+verified = false
+note = "Teabevärava andmestiku 'meteoroloogiliste-radarite-andmestik' avaldatud juurdepääsu-URL."
+
+[[endpoint]]
+id = "kaia-vaade-c2ea43b7"
+name = "KAIA: Radariandmete failid (teine vaade)"
+system = "KAIA"
+group = "kaia-vaated"
+url = "https://avaandmed.keskkonnaportaal.ee/dhs/Active/documentList.aspx?ViewId=c2ea43b7-09c4-4afb-b955-aa5862e46c0f"
+expect = "any"
+max_bytes = 262144
+enabled = true
+source = "teabevarav"
+verified = false
+note = "Teabevärava andmestiku 'meteoroloogiliste-radarite-andmestik' avaldatud juurdepääsu-URL."
+
+[[endpoint]]
+id = "kaia-vaade-f1214f22"
+name = "KAIA: Kanada FWI tuleohu andmestik"
+system = "KAIA"
+group = "kaia-vaated"
+url = "https://avaandmed.keskkonnaportaal.ee/dhs/Active/documentList.aspx?ViewId=f1214f22-766c-43ce-bb32-778a076abe6a"
+expect = "any"
+max_bytes = 262144
+enabled = true
+source = "teabevarav"
+verified = false
+note = "Teabevärava andmestiku 'tuleohu-(fwi)-andmestik' avaldatud juurdepääsu-URL."
+
+[[endpoint]]
+id = "kese-juur"
+name = "KESE: teenuse juur"
+system = "Keskkonnaseire infosüsteem"
+url = "https://kese.envir.ee"
+expect = "any"
+max_bytes = 262144
+enabled = true
+source = "teabevarav"
+verified = false
+note = "Teabevärava kirje data-service 87847057 serviceEndpoints.endpointUrl. KESE avaandmed ise tulevad keskkonnaandmed.envir.ee/f_keskkonnaseire kaudu, mida see inventar juba jälgib."
 
 [[endpoint]]
 id = "keskkonnaandmed-root"
@@ -3402,3 +3659,75 @@ headers = { "Accept-Profile" = "apijahiala", "Accept" = "application/json" }
 source = "manual"
 verified = true
 note = "Teenus dokumenteeritud; ?limit=1 koostatud siin ja kinnitatud päris teenuse vastu 2026-09-14 (HTTP 200)"
+
+[[endpoint]]
+id = "kotkas-aastaaruanded"
+name = "KOTKAS: aastaaruannete register"
+system = "KOTKAS"
+url = "https://kotkas.envir.ee/annual_reports_registry"
+expect = "any"
+max_bytes = 262144
+enabled = false
+source = "teabevarav"
+verified = false
+note = "Teabevärava andmestike 'Veekasutuse andmestik' ja 'Välisõhu saastamisega seotud tegevuste aruanded' avaldatud juurdepääsu-URL. VÄLJA LÜLITATUD: esimene päris kontroll 2026-09-15 andis 403 Forbidden — teenus nõuab sisselogimist, see ei ole katkestus. Püsivalt punane rida tahvlil oleks eksitav. Lülita sisse, kui KAUR avab anonüümse juurdepääsu või kui leitakse avalik otspunkt."
+
+[[endpoint]]
+id = "kytus-bunkering-company"
+name = "Kütuseseire: ettevõtted"
+system = "Kütuseseire"
+url = "https://kytus.envir.ee/bunkering-company/itemlist"
+expect = "any"
+max_bytes = 262144
+enabled = true
+source = "teabevarav"
+verified = false
+note = "Teabevärava andmestiku 'Kütuseseire andmestik' jaotus."
+
+[[endpoint]]
+id = "kytus-monitoring"
+name = "Kütuseseire: seireandmed"
+system = "Kütuseseire"
+url = "https://kytus.envir.ee/monitoring/itemlist"
+expect = "any"
+max_bytes = 262144
+enabled = true
+source = "teabevarav"
+verified = false
+note = "Teabevärava andmestiku 'Kütuseseire andmestik' jaotus."
+
+[[endpoint]]
+id = "kytus-source-of-pollution"
+name = "Kütuseseire: heiteallikad"
+system = "Kütuseseire"
+url = "https://kytus.envir.ee/source-of-pollution/itemlist"
+expect = "any"
+max_bytes = 262144
+enabled = true
+source = "teabevarav"
+verified = false
+note = "Teabevärava andmestiku 'Kütuseseire andmestik' jaotus."
+
+[[endpoint]]
+id = "pakis-opendata"
+name = "PAKIS: pakendijäätmete avaandmed"
+system = "Pakendiregister"
+url = "https://pakis.envir.ee/pakis/main/opendata"
+expect = "any"
+max_bytes = 262144
+enabled = true
+source = "teabevarav"
+verified = false
+note = "Teabevärava andmestiku 'Pakendijäätmete andmestikud' CSV-jaotus."
+
+[[endpoint]]
+id = "proto-opendata"
+name = "PROTO: probleemtoodete avaandmed"
+system = "Probleemtooteregister"
+url = "https://proto.envir.ee/proto/main/opendata"
+expect = "any"
+max_bytes = 262144
+enabled = true
+source = "teabevarav"
+verified = false
+note = "Teabevärava andmestiku 'Probleemtoodete andmestik' avaldatud jaotus."

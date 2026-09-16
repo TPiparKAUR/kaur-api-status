@@ -27,6 +27,15 @@ _CHART_DAYS = 30
 
 _PROBLEM = ("down", "degraded")
 
+# The latency chart pools every system into one line by default, which
+# compares KAIA (file downloads) against PostgREST queries — different
+# things with different natural response times. Split two ways rather than
+# one line per system (6 systems today; a 6-colour categorical palette is a
+# design task in its own right — see the dataviz skill — for a management
+# audience that mainly needs "the file service" vs "the data service").
+# Revisit this constant if a third genuinely different service type joins.
+_KAIA_SYSTEM = "KAIA"
+
 
 def load_system_descriptions(path: Path = SYSTEMS_PATH) -> dict[str, str]:
     """Plain-language text per system. Missing file just means no descriptions."""
@@ -119,17 +128,28 @@ def build(entries: list[dict[str, Any]]) -> dict[str, Any]:
                 # A grouped unit stands for many endpoints; say how many rather
                 # than letting one row quietly represent 261.
                 "members": entry.get("members"),
+                # Shown on the page, not just in REPORT.md: a reader comparing
+                # an unverified endpoint's number against a verified one's
+                # should not assume the two carry the same authority.
+                "verified": bool(entry.get("verified", False)),
             }
         )
 
     totals: dict[str, int] = {"endpoints": len(endpoints)}
+    totals["unverified"] = sum(1 for e in endpoints if not e["verified"])
     for item in endpoints:
         totals[item["status"]] = totals.get(item["status"], 0) + 1
 
     systems: list[dict[str, Any]] = []
     for name in sorted({e["system"] for e in endpoints}):
         members = [e for e in endpoints if e["system"] == name]
-        rated = [e["avail_24h"] for e in members if e["avail_24h"] is not None]
+        # Pool the members' raw check records and run analysis.uptime over
+        # them, rather than averaging each member's already-rounded avail_24h:
+        # an unweighted average of percentages silently overweights a member
+        # with few checks (e.g. new, or mostly 'unknown') against one with
+        # many, and treats a 261-endpoint group unit as equal to a single one.
+        pooled = [record for e in members for record in grouped.get(e["id"], [])]
+        system_avail_24h, _ = analysis.uptime(pooled, day_ago)
         systems.append(
             {
                 "name": name,
@@ -137,7 +157,7 @@ def build(entries: list[dict[str, Any]]) -> dict[str, Any]:
                 "endpoints": len(members),
                 "ok": sum(1 for e in members if e["status"] == "ok"),
                 "problem": sum(1 for e in members if e["status"] in _PROBLEM),
-                "avail_24h": round(sum(rated) / len(rated), 2) if rated else None,
+                "avail_24h": None if system_avail_24h is None else round(system_avail_24h, 2),
             }
         )
 
@@ -145,6 +165,12 @@ def build(entries: list[dict[str, Any]]) -> dict[str, Any]:
     incidents: list[dict[str, Any]] = []
     for eid, series in grouped.items():
         for incident in analysis.incidents(series):
+            # An open incident on an id nobody checks any more (disabled, or
+            # superseded by a grouping change) is not still running — we
+            # stopped looking. Close it at the last failure observed instead
+            # of showing a duration that grows forever.
+            if incident["end"] is None and eid not in by_name:
+                incident = {**incident, "end": incident.get("last_ts")}
             seconds = analysis.duration_seconds(incident, now)
             incidents.append(
                 {
@@ -174,6 +200,18 @@ def build(entries: list[dict[str, Any]]) -> dict[str, Any]:
     overall_7d, _ = analysis.uptime(records, week_ago)
     stamps = [s for s in (store.parse_ts(r.get("ts")) for r in records) if s is not None]
 
+    # Same pooled-records approach as the per-system availability fix above:
+    # partition the raw records by which group their unit belongs to, then
+    # reuse _daily's own pooling rather than averaging two sets of daily rows.
+    # A record whose id names no currently-known unit (e.g. one superseded by
+    # a later grouping change, still inside the window) goes to neither side
+    # rather than being guessed into one — the same reasoning as Hetkeseis.
+    system_of = {e["id"]: e["system"] for e in endpoints}
+    kaia_records = [r for r in records if system_of.get(r.get("id")) == _KAIA_SYSTEM]
+    postgrest_records = [
+        r for r in records if r.get("id") in system_of and system_of[r["id"]] != _KAIA_SYSTEM
+    ]
+
     return {
         "generated_at": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
         "interval_minutes": 30,
@@ -189,6 +227,12 @@ def build(entries: list[dict[str, Any]]) -> dict[str, Any]:
         "systems": systems,
         "endpoints": endpoints,
         "daily": _daily(records, now),
+        # For the latency chart's two lines. Everything else (the overall
+        # availability chart, the tiles) intentionally keeps reading "daily",
+        # not these — only response time differs enough by service type to
+        # be worth splitting.
+        "daily_postgrest": _daily(postgrest_records, now),
+        "daily_kaia": _daily(kaia_records, now),
         "incidents": incidents[:200],
         "incident_count": len(incidents),
         "outages_by_endpoint": outages_by_endpoint[:10],

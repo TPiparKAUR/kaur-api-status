@@ -42,3 +42,47 @@ description = """
 Looduskeskkonna avaandmete failide allalaadimise teenus. Võimaldab \
 masinliidese kaudu otsida ja alla laadida meteoroloogia ja hüdroloogia \
 andmefaile."""
+
+["EstModel"]
+description = """
+Reostuskoormuste ja vooluhulkade hinnangud seirejaamades, vooluveekogude \
+lävendites ja hindamisüksustes. Hinnangud tulevad Keskkonnaagentuuri \
+seirepõhisest ja allikapõhisest EstModeli mudelist; rakendus näitab ka \
+hinnangute aluseks olevaid seireandmeid."""
+
+["Ilmateenistus"]
+description = """
+Riigi ilmateenistuse avalik teenus: ilmaprognoosid, hoiatused ohtliku ilma \
+kohta, mereilmateade, mudelprognoosid ning ilmajaamade vaatlusandmed. \
+Vaatlusandmed on masinliidesena saadaval XML-kujul."""
+
+["Keskkonnaseire infosüsteem"]
+description = """
+KESE on andmekogu, kuhu kogutakse keskkonnaseire seaduse alusel riikliku \
+seireprogrammi, kalanduse andmekogumise ning muude uuringute seireandmed. \
+Avaandmetena jõuavad need andmeteenuste kaudu välja."""
+
+["Pakendiregister"]
+description = """
+Turule lastud kauba pakendite, Eestis tekkinud pakendijäätmete, korduskasutuse \
+ja taaskasutuse sihtarvude arvestus. Andmeid kasutatakse pakendiseadusest \
+tulenevate kohustuste täitmiseks ja Euroopa Komisjonile aruandmiseks."""
+
+["Probleemtooteregister"]
+description = """
+Arvestus Eestis turule lastud probleemtoodete ja neist tekkinud jäätmete \
+taaskasutamise ning kõrvaldamise kohta, sealhulgas taaskasutuse sihtarvude \
+täitmise ja Euroopa Komisjonile esitatava jäätmealase teabe jaoks."""
+
+["Kütuseseire"]
+description = """
+Eesti turul müüdavate ja tarbitavate vedelkütuste keskkonnaparameetrite \
+kvaliteedi ja koguste seire. Osa riiklikust kütusekvaliteedi \
+juhtimissüsteemist, mille kaudu täidetakse Euroopa Liidu kütusedirektiivide \
+nõudeid."""
+
+["KOTKAS"]
+description = """
+Keskkonnalubade ja aastaaruannete keskkond, mille kaudu avaldatakse \
+veekasutuse aastaaruanded ning välisõhu saastamisega seotud tegevuste \
+aruanded (heiteallikad, saasteainete kogused, kasutatud kütused)."""

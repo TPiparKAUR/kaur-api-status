@@ -1,0 +1,60 @@
+name: Roll up old logs
+
+# Monthly, well off the hour the monitor and discovery jobs use, so this never
+# competes with them for the push race commit_and_push.sh already handles.
+# Raw months older than --older-than-days collapse into logs/daily/YYYY-MM.jsonl
+# (one row per unit per day) and the raw file is deleted — see retention.py for
+# why this is safe to run repeatedly and why nothing downstream needs the raw
+# data this removes.
+on:
+  schedule:
+    - cron: "0 4 1 * *"
+  workflow_dispatch:
+    inputs:
+      older_than_days:
+        description: "Roll up raw months older than this many days"
+        required: false
+        default: "365"
+      dry_run:
+        description: "Show what would be rolled up without changing anything"
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: api-rollup
+
+jobs:
+  rollup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with:
+          python-version: "3.12"
+
+      - name: Roll up
+        run: |
+          set -euo pipefail
+          args=(--older-than-days "${{ inputs.older_than_days || '365' }}")
+          [ "${{ inputs.dry_run || 'false' }}" = "true" ] && args+=(--dry-run)
+          python monitor.py rollup "${args[@]}" | tee rollup.txt
+
+      - name: Job summary
+        if: always()
+        run: |
+          {
+            echo "## Koondamise tulemus"
+            echo
+            echo '```'
+            cat rollup.txt 2>/dev/null || echo "väljundit ei ole"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Commit results
+        if: ${{ inputs.dry_run != true }}
+        run: scripts/commit_and_push.sh "Roll up logs older than ${{ inputs.older_than_days || '365' }} days" logs

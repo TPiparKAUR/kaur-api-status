@@ -3,10 +3,18 @@
 Two paths, because the first one may not work:
 
 ``from_ckan``   queries a CKAN-style open data catalogue. Most national open
-                data portals expose this, but the exact shape of
-                avaandmed.eesti.ee has NOT been verified by the author of this
-                module. If the response does not match, the function says so
-                loudly instead of inventing entries.
+                data portals expose this shape, but this function has NEVER
+                been run against a real catalogue — no CKAN endpoint was
+                available to this project to verify it against, and none is
+                assumed here. It is exercised only by tests against a shape
+                this file invented from CKAN's public API documentation.
+                Treat any output as a first draft: run with --dry-run first
+                (cli.py enforces printing a warning either way) and read every
+                entry before merging it into the inventory. If the response
+                does not match the expected shape at all, the function raises
+                DiscoveryError rather than inventing entries — but a response
+                that matches the shape and still means something else would
+                not be caught.
 
 ``from_urls``   reads a plain text file, one URL per line. Always works, needs
                 no catalogue API, and is the fastest way to get a first
@@ -78,7 +86,11 @@ def _fetch_json(url: str, timeout: float, extra_headers: dict[str, str] | None =
 def from_ckan(
     base_url: str, query: str = "", rows: int = 1000, timeout: float = 60.0
 ) -> list[dict[str, Any]]:
-    """Harvest distribution URLs from a CKAN-style catalogue."""
+    """Harvest distribution URLs from a CKAN-style catalogue.
+
+    UNTESTED against a real catalogue — see the module docstring. Always
+    review what this returns before merging it into the inventory.
+    """
     params = urllib.parse.urlencode({"q": query, "rows": rows})
     url = f"{base_url.rstrip('/')}{CKAN_SEARCH_PATH}?{params}"
     payload = _fetch_json(url, timeout)

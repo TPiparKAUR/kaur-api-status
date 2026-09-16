@@ -144,6 +144,13 @@ function renderEndpoints(data) {
 
       const name = document.createElement("td");
       name.textContent = item.name;
+      if (!item.verified) {
+        const flag = document.createElement("span");
+        flag.className = "unverified-flag";
+        flag.textContent = "kinnitamata";
+        flag.title = "URL-i pole inimene üle vaadanud — vt jaotist “Kuidas seda mõõdetakse”.";
+        name.append(" ", flag);
+      }
       const id = document.createElement("span");
       id.className = "id";
       id.textContent = item.members ? `${item.id} · ${item.members} otspunkti` : item.id;
@@ -258,6 +265,13 @@ function showEmpty(id, message) {
   note.previousElementSibling.hidden = true;
 }
 
+/* A short sentence standing in for each chart — read by screen readers via
+ * aria-describedby, and visible to everyone else, so the data does not exist
+ * only as pixels. Cleared (not left stale) whenever a chart is redrawn empty. */
+function setSummary(id, text) {
+  $(id).textContent = text;
+}
+
 function drawAvailability(data) {
   const rows = data.daily || [];
   if (rows.length < 2) {
@@ -267,8 +281,26 @@ function drawAvailability(data) {
         ? "Andmeid on ühe päeva kohta — ajajoone joonistamiseks on vaja vähemalt kahte päeva."
         : "Andmeid ei ole veel kogutud.",
     );
+    setSummary("summary-avail", "");
     return;
   }
+  const values = rows.map((r) => r.avail_pct);
+  const lowest = Math.min(...values);
+  // A fixed floor (e.g. always 90%) can make an ordinary blip look dramatic
+  // when the real range is tiny, or hide real variation when it's wide. The
+  // floor is derived from the data instead — 2 points of headroom below the
+  // lowest value, rounded down to a multiple of 5 — and, since the axis is
+  // truncated either way whenever the lowest value is above 0, the caption
+  // states the actual floor in words rather than leaving the reader to
+  // notice the axis doesn't start at 0%.
+  const floor = Math.max(0, Math.floor((lowest - 2) / 5) * 5);
+  setSummary(
+    "summary-avail",
+    `Kättesaadavus jäi ${day(rows[0].date)}–${day(rows[rows.length - 1].date)} vahemikku ` +
+      `${lowest.toFixed(1)}–${Math.max(...values).toFixed(1)} %; ` +
+      `viimane päev ${values[values.length - 1].toFixed(1)} %. ` +
+      (floor > 0 ? `Graafiku Y-telg algab ${floor}%-st, mitte 0%-st.` : ""),
+  );
   charts.push(
     new Chart($("chart-avail"), {
       type: "line",
@@ -293,7 +325,7 @@ function drawAvailability(data) {
           x: axisStyle(),
           y: {
             ...axisStyle(),
-            suggestedMin: 90,
+            suggestedMin: floor,
             max: 100,
             ticks: { ...axisStyle().ticks, callback: (v) => `${v} %` },
           },
@@ -313,39 +345,54 @@ function drawAvailability(data) {
   );
 }
 
+/* PostgREST queries and KAIA file downloads have genuinely different natural
+ * response times, so one pooled median compares two different things. Two
+ * lines instead — not one per system (6 today), which would need a whole new
+ * validated colour palette for a management audience that mainly needs "the
+ * data service" vs "the file service". A day with no checks for a group is a
+ * gap in that group's line, not an interpolated value. */
 function drawLatency(data) {
-  const rows = (data.daily || []).filter((r) => r.p50_ms != null);
-  if (rows.length < 2) {
+  const groups = [
+    { key: "daily_postgrest", label: "PostgREST teenused", color: "--series-1" },
+    { key: "daily_kaia", label: "KAIA", color: "--series-2" },
+  ].map((g) => ({ ...g, rows: data[g.key] || [], byDate: new Map((data[g.key] || []).map((r) => [r.date, r])) }));
+
+  const dates = Array.from(new Set(groups.flatMap((g) => g.rows.map((r) => r.date)))).sort();
+  const present = groups.filter((g) => g.rows.some((r) => r.p50_ms != null));
+  if (dates.length < 2 || present.length === 0) {
     showEmpty("empty-latency", "Vastuseaja trendi näitamiseks on vaja vähemalt kahe päeva andmeid.");
+    setSummary("summary-latency", "");
     return;
   }
+
+  setSummary(
+    "summary-latency",
+    present
+      .map((g) => {
+        const p50 = g.rows.map((r) => r.p50_ms).filter((v) => v != null);
+        return p50.length
+          ? `${g.label}: mediaan ${Math.min(...p50)}–${Math.max(...p50)} ms`
+          : `${g.label}: andmeid ei ole veel piisavalt`;
+      })
+      .join("; ") + ".",
+  );
+
   charts.push(
     new Chart($("chart-latency"), {
       type: "line",
       data: {
-        labels: rows.map((r) => day(r.date)),
-        datasets: [
-          {
-            label: "Mediaan",
-            data: rows.map((r) => r.p50_ms),
-            borderColor: css("--series-1"),
-            backgroundColor: css("--series-1"),
-            borderWidth: 2,
-            pointRadius: 4,
-            pointHoverRadius: 6,
-            tension: 0.2,
-          },
-          {
-            label: "95. protsentiil",
-            data: rows.map((r) => r.p95_ms),
-            borderColor: css("--series-2"),
-            backgroundColor: css("--series-2"),
-            borderWidth: 2,
-            pointRadius: 4,
-            pointHoverRadius: 6,
-            tension: 0.2,
-          },
-        ],
+        labels: dates.map((d) => day(d)),
+        datasets: groups.map((g) => ({
+          label: g.label,
+          data: dates.map((d) => g.byDate.get(d)?.p50_ms ?? null),
+          borderColor: css(g.color),
+          backgroundColor: css(g.color),
+          borderWidth: 2,
+          pointRadius: 4,
+          pointHoverRadius: 6,
+          tension: 0.2,
+          spanGaps: false,
+        })),
       },
       options: {
         ...baseOptions(),
@@ -370,6 +417,17 @@ function drawLatency(data) {
               font: { family: css("--font"), size: 12 },
             },
           },
+          tooltip: {
+            ...baseOptions().plugins.tooltip,
+            callbacks: {
+              label: (ctx) => {
+                const g = groups[ctx.datasetIndex];
+                const row = g.byDate.get(dates[ctx.dataIndex]);
+                if (!row || row.p50_ms == null) return `${g.label}: andmed puuduvad`;
+                return `${g.label}: ${row.p50_ms} ms (p95 ${row.p95_ms} ms)`;
+              },
+            },
+          },
         },
       },
     }),
@@ -380,8 +438,15 @@ function drawOutages(data) {
   const rows = data.outages_by_endpoint || [];
   if (!rows.length) {
     showEmpty("empty-outages", "Katkestusi ei ole logitud, seega graafikul pole midagi näidata.");
+    setSummary("summary-outages", "");
     return;
   }
+  const top = rows[0];
+  setSummary(
+    "summary-outages",
+    `Kõige rohkem katkestusi: ${top.name} (${top.count}, kokku ${duration(top.total_s)}). ` +
+      `Näidatud on kuni 10 kõige sagedamini katkenud otspunkti.`,
+  );
   charts.push(
     new Chart($("chart-outages"), {
       type: "bar",
@@ -431,9 +496,11 @@ function render(data) {
   snapshot = data;
   $("updated").textContent =
     `Viimati uuendatud ${moment(data.generated_at)} · kontroll iga ${data.interval_minutes} minuti järel`;
+  const unverified = data.totals?.unverified ?? 0;
   $("provenance").textContent =
     `Näidatud on viimased ${data.window_days} päeva. Ajad on Eesti aja järgi. ` +
-    `Jälgitavaid otspunkte ${data.totals?.endpoints ?? 0}.`;
+    `Jälgitavaid otspunkte ${data.totals?.endpoints ?? 0}` +
+    (unverified ? `, neist ${unverified} kinnitamata URL-iga.` : ".");
 
   renderTiles(data);
   renderSystems(data);

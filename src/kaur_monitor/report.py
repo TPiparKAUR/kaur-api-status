@@ -79,19 +79,30 @@ def build(entries: list[dict[str, Any]]) -> str:
         ]
         return "\n".join(out)
 
+    # 'grouped' carries every id the 31-day window has ever seen, which after
+    # a schema change like the EELIS grouping includes ids nobody currently
+    # monitors (e.g. the individual eelis-f-* endpoints, superseded by the
+    # 'eelis' group on 2026-09-14). Those matter for the availability and
+    # incident history below — they really did run during the window — but a
+    # *current* state view must only speak for units that exist today, or the
+    # headline count silently drifts from "jälgitavaid otspunkte".
     latest = {eid: series[-1] for eid, series in grouped.items() if series}
+    current = {eid: record for eid, record in latest.items() if eid in by_id}
     tally: dict[str, int] = {}
-    for record in latest.values():
+    for record in current.values():
         tally[record.get("status", "unknown")] = tally.get(record.get("status", "unknown"), 0) + 1
     summary = " · ".join(f"{_LABEL.get(k, k)}: **{v}**" for k, v in sorted(tally.items()))
+    unchecked = len(by_id) - len(current)
+    if unchecked:
+        summary += f" · KONTROLLIMATA (uus): **{unchecked}**"
     out += [f"Hetkeseis — {summary}", "", "## Praegune seis", ""]
 
     out += [
         "| Otspunkt | Seisund | Vastus | Andmete vanus | Viimane kontroll | Märkus |",
         "|---|---|---|---|---|---|",
     ]
-    for eid in sorted(latest):
-        record = latest[eid]
+    for eid in sorted(current):
+        record = current[eid]
         entry = by_id.get(eid, {})
         name = entry.get("name", eid)
         http = record.get("http")
@@ -120,6 +131,12 @@ def build(entries: list[dict[str, Any]]) -> str:
     rows: list[tuple[str, str, dict[str, Any]]] = []
     for eid, series in grouped.items():
         for incident in analysis.incidents(series):
+            # An open incident on an id nobody checks any more (disabled, or
+            # superseded by a grouping change) is not still running — we
+            # simply stopped looking. Close it at the last failure observed,
+            # rather than let "kestab" and its duration grow forever.
+            if incident["end"] is None and eid not in by_id:
+                incident = {**incident, "end": incident.get("last_ts")}
             rows.append((incident["start"] or "", eid, incident))
     # Sort on the key alone: two incidents can share a start, and falling
     # through to compare the dicts would raise.
@@ -149,7 +166,7 @@ def build(entries: list[dict[str, Any]]) -> str:
 
     warnings: list[str] = []
     expiring: dict[str, int] = {}
-    for eid, record in latest.items():
+    for eid, record in current.items():
         raw_days = record.get("cert_days")
         if raw_days is None or int(raw_days) >= 30:
             continue
@@ -176,6 +193,15 @@ def build(entries: list[dict[str, Any]]) -> str:
         f"Ajad on {_TZ_LABEL} vööndis. Logi hoiab UTC ISO 8601 kujul kaustas `logs/`.",
         "Seisund **TEADMATA** tähendab, et kontrollija ise ei saanud võrku — "
         "see ei lähe käideldavuse arvestusse.",
+        "",
+        "**Logi skeemi ajalugu.** Alates **2026-09-14** logitakse EELIS-e 261 "
+        "tabelit ühe koondkirjena (üksus `eelis`) — varem kirjutati iga tabeli "
+        "kohta oma rida. Sellest kuupäevast vanemad kirjed kannavad üksikuid "
+        "otspunkti ID-sid (nt `eelis-f-...`) ja kaovad 31-päevasest aknast "
+        "iseenesest. Samast kuupäevast kannab iga kirje väljad `v` (skeemi "
+        "versioon) ja `attempts` (kas tulemus kinnitati teistkordse kontrolliga); "
+        "vanemates kirjetes need väljad puuduvad ja seda tuleb lugeda kui "
+        "`attempts = 1`.",
         "",
     ]
     return "\n".join(out)

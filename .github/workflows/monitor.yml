@@ -3,17 +3,26 @@ name: API monitor
 # Every 30 minutes. A GitHub-hosted runner reaches the Estonian services
 # directly; the authoring environment cannot.
 #
-# BILLING, measured rather than estimated. This repository is private, where
-# GitHub bills whole minutes per job. A full run over 283 endpoints took 43
-# seconds end to end (median response 741 ms, twelve threads), so a run bills
-# as one minute: 1 440 runs x 1 = 1 440 minutes a month against the 2 000
-# minute free allowance. It fits, but the headroom is one slow day wide — a
-# run crossing 60 seconds bills as two and puts the month at 2 880.
+# BILLING, measured rather than estimated. Re-measured 2026-09-15 (run 62,
+# commit 3525595) after adding the once-only retry and the per-host
+# concurrency cap (check.HostLimiter, default 4 — keskkonnaandmed.envir.ee
+# carries 279 of 283 endpoints, so that cap governs almost the whole run):
+# the "Run checks" step took 42 s, job total (checkout, setup, notify, commit)
+# 47 s. Essentially unchanged from the pre-change figure of 43 s — this run
+# had nothing to retry, though, so it does not measure the cap's cost during
+# a real, widespread outage; see CLAUDE.md's "Actions minutes" note.
 #
-# Watch the run duration when adding endpoints. If it approaches a minute:
-# make the repository public (Actions becomes unmetered, and GitHub Pages
-# starts serving the status page, which a private free repo will not — the log
-# holds only response times and status codes for public APIs), or go hourly.
+# This repository is private, where GitHub bills whole minutes per job:
+# 1 440 runs x 1 minute = 1 440 minutes a month against the 2 000 minute free
+# allowance — fitting, with margin, but a run crossing 60 seconds bills as
+# two and puts the month at 2 880.
+#
+# Watch the run duration when adding endpoints, or after any concurrency
+# change. If it approaches a minute: make the repository public (Actions
+# becomes unmetered, and GitHub Pages starts serving the status page, which a
+# private free repo will not — the log holds only response times and status
+# codes for public APIs), raise --max-per-host if the service owner confirms
+# more concurrency is fine, or go hourly.
 on:
   schedule:
     - cron: "*/30 * * * *"
@@ -49,9 +58,9 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
         with:
           python-version: "3.12"
 
