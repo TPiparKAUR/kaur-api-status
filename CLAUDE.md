@@ -186,6 +186,38 @@ organisation filter on `/api/datasets` is accepted — `organizationId`,
 name and the holder sub-resource 404s — so enumeration goes through free-text
 `?search=`, and the holder is read back off each record.
 
+**That last sentence was too broad, and the correction is worth more than the
+original finding (measured 2026-09-16).** The crawl never tried `/oai`.
+andmed.eesti.ee does serve OAI-PMH there — `repositoryName` "Estonian
+OpenData", protocol 2.0, `adminEmail opendatasupport@ria.ee`, gzip — and
+`?verb=ListRecords&metadataPrefix=dcat_ap` returns the whole catalogue as
+DCAT-AP in one unpaginated response. `ListIdentifiers` counted 8 053 records.
+`/oai/hvd` and `/oai/dga` exist as separate base URLs and accept only
+`ListRecords`. So a machine-readable export does exist; free-text search is
+not the only way in.
+
+Two defects in that interface, both measured, both making it undiscoverable
+rather than absent: `ListMetadataFormats` answers `badArgument: No identifier
+provided` when called bare, though OAI-PMH requires it to list every format,
+so `dcat_ap` cannot be discovered through the protocol (`oai_dcat` and
+`dcatap` are both rejected with `cannotDisseminateFormat`); and `ListSets`
+answers `noSetHierarchy`, so the hvd and dga subsets are not reachable as
+sets either. A client has to be told both out of band.
+
+What the export says about this agency, filtered to publisher
+"Keskkonnaagentuur": 36 dataset records — against the 24 the catalogue's own
+web page lists — 23 `dcat:DataService` nodes and 96 distinct distribution
+URLs. Fifteen of the 23 services carry a `dcat:endpointDescription`, and all
+fifteen are INSPIRE or Maa-amet WMS/WFS `GetCapabilities` nodes attached to
+spatial datasets. The eight *named* agency services — six identical
+"Ilmateenistus" records, KESE, and "Keskkonna ja ilma valdkonna
+andmeteenused" — carry none, and two of the six put a Creative Commons
+licence URL in `foaf:page`/documentation. **EstModel appears nowhere in the
+export**: scanning all 8 053 records for the string, whatever the publisher,
+returned zero, although both its service and its dataset are on the
+catalogue's web pages under this agency's name. The one service with a real
+OpenAPI description is the one missing from the machine-readable channel.
+
 Worth knowing before re-running that exercise: everything the catalogue lists
 under `keskkonnaandmed.envir.ee` was already in the inventory. The crawl
 confirmed the existing entries rather than adding to them.
