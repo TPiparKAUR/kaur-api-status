@@ -1,8 +1,8 @@
 {
  "availability": {
-  "checks_24h": 1441,
-  "d7": 99.91,
-  "h24": 99.79
+  "checks_24h": 1679,
+  "d7": 99.92,
+  "h24": 99.82
  },
  "chart_days": 30,
  "daily": [
@@ -15,20 +15,20 @@
    "p95_ms": 2189
   },
   {
-   "avail_pct": 99.78,
-   "checks": 1370,
+   "avail_pct": 99.79,
+   "checks": 1412,
    "date": "2026-09-15",
-   "ok": 1367,
-   "p50_ms": 904,
-   "p95_ms": 2742
+   "ok": 1409,
+   "p50_ms": 897,
+   "p95_ms": 2730
   },
   {
    "avail_pct": 100.0,
-   "checks": 471,
+   "checks": 681,
    "date": "2026-09-16",
-   "ok": 471,
-   "p50_ms": 864,
-   "p95_ms": 2444
+   "ok": 681,
+   "p50_ms": 787,
+   "p95_ms": 2283
   }
  ],
  "daily_kaia": [
@@ -42,19 +42,19 @@
   },
   {
    "avail_pct": 100.0,
-   "checks": 234,
+   "checks": 239,
    "date": "2026-09-15",
-   "ok": 234,
-   "p50_ms": 1776,
+   "ok": 239,
+   "p50_ms": 1768,
    "p95_ms": 2618
   },
   {
    "avail_pct": 100.0,
-   "checks": 75,
+   "checks": 100,
    "date": "2026-09-16",
-   "ok": 75,
-   "p50_ms": 1649,
-   "p95_ms": 2209
+   "ok": 100,
+   "p50_ms": 1491,
+   "p95_ms": 2189
   }
  ],
  "daily_postgrest": [
@@ -67,27 +67,27 @@
    "p95_ms": 2459
   },
   {
-   "avail_pct": 99.82,
-   "checks": 1135,
+   "avail_pct": 99.83,
+   "checks": 1172,
    "date": "2026-09-15",
-   "ok": 1133,
-   "p50_ms": 875,
+   "ok": 1170,
+   "p50_ms": 871,
    "p95_ms": 2757
   },
   {
    "avail_pct": 100.0,
-   "checks": 396,
+   "checks": 581,
    "date": "2026-09-16",
-   "ok": 396,
-   "p50_ms": 815,
-   "p95_ms": 2561
+   "ok": 581,
+   "p50_ms": 727,
+   "p95_ms": 2444
   }
  ],
  "endpoints": [
   {
    "avail_24h": 100.0,
    "avail_7d": 100.0,
-   "checks_24h": 58,
+   "checks_24h": 64,
    "detail": "",
    "http": null,
    "id": "eelis",
@@ -103,7 +103,7 @@
   {
    "avail_24h": 100.0,
    "avail_7d": 100.0,
-   "checks_24h": 5,
+   "checks_24h": 11,
    "detail": "",
    "http": 200,
    "id": "estmodel-assessment-units",
@@ -119,7 +119,7 @@
   {
    "avail_24h": 100.0,
    "avail_7d": 100.0,
-   "checks_24h": 5,
+   "checks_24h": 11,
    "detail": "",
    "http": 200,
    "id": "estmodel-countries",
@@ -135,7 +135,7 @@
   {
    "avail_24h": 100.0,
    "avail_7d": 100.0,
-   "checks_24h": 5,
+   "checks_24h": 11,
    "detail": "",
    "http": 200,
    "id": "estmodel-districts",
@@ -151,7 +151,7 @@
   {
    "avail_24h": 100.0,
    "avail_7d": 100.0,
-   "checks_24h": 5,
+   "checks_24h": 11,
    "detail": "body truncated at 262144 bytes, parse skipped",
    "http": 200,
    "id": "estmodel-rivers",
@@ -167,7 +167,7 @@
   {
    "avail_24h": 100.0,
    "avail_7d": 100.0,
-   "checks_24h": 5,
+   "checks_24h": 11,
    "detail": "",
    "http": 200,
    "id": "estmodel-stations",
@@ -183,7 +183,7 @@
   {
    "avail_24h": 100.0,
    "avail_7d": 100.0,
-   "checks_24h": 5,
+   "checks_24h": 11,
    "detail": "",
    "http": 200,
    "id": "estmodel-subdistricts",
@@ -199,7 +199,7 @@
   {
    "avail_24h": 100.0,
    "avail_7d": 100.0,
-   "checks_24h": 5,
+   "checks_24h": 11,
    "detail": "body truncated at 262144 bytes, parse skipped",
    "http": 200,
    "id": "estmodel-water-outlets",
@@ -215,7 +215,7 @@
   {
    "avail_24h": 100.0,
    "avail_7d": 100.0,
-   "checks_24h": 58,
+   "checks_24h": 64,
    "detail": "",
    "http": 200,
    "id": "f-hydroseire",
@@ -231,7 +231,7 @@
   {
    "avail_24h": 100.0,
    "avail_7d": 100.0,
-   "checks_24h": 59,
+   "checks_24h": 64,
    "detail": "",
    "http": 200,
    "id": "hydroseire",
@@ -247,7 +247,7 @@
   {
    "avail_24h": 100.0,
    "avail_7d": 100.0,
-   "checks_24h": 4,
+   "checks_24h": 10,
    "detail": "",
    "http": 200,
    "id": "ilmateenistus-hoiatused-rss",
@@ -263,7 +263,7 @@
   {
    "avail_24h": 100.0,
    "avail_7d": 100.0,
-   "checks_24h": 4,
+   "checks_24h": 10,
    "detail": "",
    "http": 200,
    "id": "ilmateenistus-hoiatused-xml",
@@ -279,7 +279,7 @@
   {
    "avail_24h": 100.0,
    "avail_7d": 100.0,
-   "checks_24h": 5,
+   "checks_24h": 11,
    "detail": "",
    "http": 200,
    "id": "ilmateenistus-juur",
@@ -295,7 +295,7 @@
   {
    "avail_24h": 100.0,
    "avail_7d": 100.0,
-   "checks_24h": 4,
+   "checks_24h": 10,
    "detail": "",
    "http": 200,
    "id": "ilmateenistus-prognoos-xml",
@@ -311,7 +311,7 @@
   {
    "avail_24h": 100.0,
    "avail_7d": 100.0,
-   "checks_24h": 5,
+   "checks_24h": 11,
    "detail": "",
    "http": 200,
    "id": "ilmateenistus-vaatlusandmed-xml",
@@ -327,7 +327,7 @@
   {
    "avail_24h": 100.0,
    "avail_7d": 100.0,
-   "checks_24h": 59,
+   "checks_24h": 64,
    "detail": "",
    "http": 200,
    "id": "kaia-items-query",
@@ -343,7 +343,7 @@
   {
    "avail_24h": 100.0,
    "avail_7d": 100.0,
-   "checks_24h": 59,
+   "checks_24h": 64,
    "detail": "",
    "http": 200,
    "id": "kaia-lists-active",
@@ -359,7 +359,7 @@
   {
    "avail_24h": 100.0,
    "avail_7d": 100.0,
-   "checks_24h": 59,
+   "checks_24h": 64,
    "detail": "",
    "http": 200,
    "id": "kaia-lists-archive",
@@ -375,7 +375,7 @@
   {
    "avail_24h": 100.0,
    "avail_7d": 100.0,
-   "checks_24h": 59,
+   "checks_24h": 64,
    "detail": "",
    "http": 200,
    "id": "kaia-swagger",
@@ -391,7 +391,7 @@
   {
    "avail_24h": 100.0,
    "avail_7d": 100.0,
-   "checks_24h": 5,
+   "checks_24h": 11,
    "detail": "",
    "http": null,
    "id": "kaia-vaated",
@@ -407,7 +407,7 @@
   {
    "avail_24h": 100.0,
    "avail_7d": 100.0,
-   "checks_24h": 59,
+   "checks_24h": 64,
    "detail": "body truncated at 65536 bytes, parse skipped",
    "http": 200,
    "id": "keskkonnaandmed-root",
@@ -421,9 +421,9 @@
    "verified": true
   },
   {
-   "avail_24h": 98.28,
-   "avail_7d": 98.98,
-   "checks_24h": 58,
+   "avail_24h": 98.44,
+   "avail_7d": 99.04,
+   "checks_24h": 64,
    "detail": "",
    "http": 200,
    "id": "f-keskkonnaseire",
@@ -437,9 +437,9 @@
    "verified": false
   },
   {
-   "avail_24h": 98.31,
-   "avail_7d": 99.04,
-   "checks_24h": 59,
+   "avail_24h": 98.44,
+   "avail_7d": 99.09,
+   "checks_24h": 64,
    "detail": "",
    "http": 200,
    "id": "keskkonnaseire",
@@ -455,7 +455,7 @@
   {
    "avail_24h": 100.0,
    "avail_7d": 100.0,
-   "checks_24h": 5,
+   "checks_24h": 11,
    "detail": "",
    "http": 200,
    "id": "kese-juur",
@@ -471,7 +471,7 @@
   {
    "avail_24h": 100.0,
    "avail_7d": 100.0,
-   "checks_24h": 58,
+   "checks_24h": 64,
    "detail": "",
    "http": 200,
    "id": "f-kliima-element",
@@ -487,7 +487,7 @@
   {
    "avail_24h": 100.0,
    "avail_7d": 100.0,
-   "checks_24h": 58,
+   "checks_24h": 64,
    "detail": "",
    "http": 200,
    "id": "f-kliima-jaam-vaatlus",
@@ -503,7 +503,7 @@
   {
    "avail_24h": 100.0,
    "avail_7d": 100.0,
-   "checks_24h": 58,
+   "checks_24h": 64,
    "detail": "",
    "http": 200,
    "id": "f-kliima-kuu",
@@ -519,7 +519,7 @@
   {
    "avail_24h": 100.0,
    "avail_7d": 100.0,
-   "checks_24h": 58,
+   "checks_24h": 64,
    "detail": "",
    "http": 200,
    "id": "f-kliima-minut",
@@ -535,7 +535,7 @@
   {
    "avail_24h": 100.0,
    "avail_7d": 100.0,
-   "checks_24h": 58,
+   "checks_24h": 64,
    "detail": "",
    "http": 200,
    "id": "f-kliima-paev",
@@ -551,7 +551,7 @@
   {
    "avail_24h": 100.0,
    "avail_7d": 100.0,
-   "checks_24h": 58,
+   "checks_24h": 64,
    "detail": "",
    "http": 200,
    "id": "f-kliima-tund",
@@ -567,7 +567,7 @@
   {
    "avail_24h": 100.0,
    "avail_7d": 100.0,
-   "checks_24h": 59,
+   "checks_24h": 64,
    "detail": "",
    "http": 200,
    "id": "kliima-element",
@@ -583,7 +583,7 @@
   {
    "avail_24h": 100.0,
    "avail_7d": 100.0,
-   "checks_24h": 59,
+   "checks_24h": 64,
    "detail": "",
    "http": 200,
    "id": "kliima-jaam-vaatlus",
@@ -599,7 +599,7 @@
   {
    "avail_24h": 100.0,
    "avail_7d": 100.0,
-   "checks_24h": 59,
+   "checks_24h": 64,
    "detail": "",
    "http": 200,
    "id": "kliima-kuu",
@@ -615,7 +615,7 @@
   {
    "avail_24h": 100.0,
    "avail_7d": 100.0,
-   "checks_24h": 59,
+   "checks_24h": 64,
    "detail": "",
    "http": 200,
    "id": "kliima-minut",
@@ -631,7 +631,7 @@
   {
    "avail_24h": 100.0,
    "avail_7d": 100.0,
-   "checks_24h": 59,
+   "checks_24h": 64,
    "detail": "",
    "http": 200,
    "id": "kliima-paev",
@@ -647,7 +647,7 @@
   {
    "avail_24h": 100.0,
    "avail_7d": 100.0,
-   "checks_24h": 59,
+   "checks_24h": 64,
    "detail": "",
    "http": 200,
    "id": "kliima-paev-nimefilter",
@@ -663,7 +663,7 @@
   {
    "avail_24h": 100.0,
    "avail_7d": 100.0,
-   "checks_24h": 59,
+   "checks_24h": 64,
    "detail": "",
    "http": 200,
    "id": "kliima-tund",
@@ -679,7 +679,7 @@
   {
    "avail_24h": 100.0,
    "avail_7d": 100.0,
-   "checks_24h": 5,
+   "checks_24h": 11,
    "detail": "",
    "http": 200,
    "id": "kytus-bunkering-company",
@@ -695,7 +695,7 @@
   {
    "avail_24h": 100.0,
    "avail_7d": 100.0,
-   "checks_24h": 5,
+   "checks_24h": 11,
    "detail": "",
    "http": 200,
    "id": "kytus-monitoring",
@@ -711,7 +711,7 @@
   {
    "avail_24h": 100.0,
    "avail_7d": 100.0,
-   "checks_24h": 5,
+   "checks_24h": 11,
    "detail": "",
    "http": 200,
    "id": "kytus-source-of-pollution",
@@ -727,7 +727,7 @@
   {
    "avail_24h": 100.0,
    "avail_7d": 100.0,
-   "checks_24h": 5,
+   "checks_24h": 11,
    "detail": "",
    "http": 200,
    "id": "pakis-opendata",
@@ -743,7 +743,7 @@
   {
    "avail_24h": 100.0,
    "avail_7d": 100.0,
-   "checks_24h": 5,
+   "checks_24h": 11,
    "detail": "",
    "http": 200,
    "id": "proto-opendata",
@@ -758,7 +758,7 @@
   }
  ],
  "first_record": "2026-09-14T13:40:24Z",
- "generated_at": "2026-09-16T08:04:14Z",
+ "generated_at": "2026-09-16T08:05:26Z",
  "incident_count": 3,
  "incidents": [
   {
@@ -863,7 +863,7 @@
    "problem": 0
   },
   {
-   "avail_24h": 98.29,
+   "avail_24h": 98.44,
    "description": "Riikliku keskkonnaseire mõõtmistulemused seireprogrammide ja näitajate kaupa. Kasutatakse keskkonnaseisundi hindamisel ja aruandluses.",
    "endpoints": 2,
    "name": "Keskkonnaseire",

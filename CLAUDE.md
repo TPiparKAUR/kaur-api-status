@@ -8,6 +8,17 @@ git is the wrong store for bulk environmental data (radar volumes alone run to
 roughly 1 TB per radar per year, against a 1 GB free LFS quota), and most of it
 is already archived upstream. See the git history for the reasoning.
 
+## Working practice
+
+**Work on `main`.** Changes go straight to the default branch: this is a
+single-maintainer operational repository, the automated monitoring job commits
+to `main` every half hour anyway, and the public status page is served from
+`main/docs`, so anything sitting on a side branch is invisible where it
+matters. Do not open feature branches unless the project owner asks for one.
+Conflicts in the two generated files (`REPORT.md`, `docs/data/status.json`)
+are resolved by regenerating them with `python3 monitor.py report`, never by
+hand-merging.
+
 ## Hard rules
 
 **Never write an endpoint URL into source code.** Endpoints live in
@@ -185,6 +196,49 @@ organisation filter on `/api/datasets` is accepted — `organizationId`,
 `organizationIds`, `informationHolderId`, `publisherId` are all rejected by
 name and the holder sub-resource 404s — so enumeration goes through free-text
 `?search=`, and the holder is read back off each record.
+
+**That last sentence was too broad, and the correction is worth more than the
+original finding (measured 2026-09-16).** The crawl never tried `/oai`.
+andmed.eesti.ee does serve OAI-PMH there — `repositoryName` "Estonian
+OpenData", protocol 2.0, `adminEmail opendatasupport@ria.ee`, gzip — and
+`?verb=ListRecords&metadataPrefix=dcat_ap` returns the whole catalogue as
+DCAT-AP in one unpaginated response. `ListIdentifiers` counted 8 053 records.
+`/oai/hvd` and `/oai/dga` exist as separate base URLs and accept only
+`ListRecords`. So a machine-readable export does exist; free-text search is
+not the only way in.
+
+Two defects in that interface, both measured, both making it undiscoverable
+rather than absent: `ListMetadataFormats` answers `badArgument: No identifier
+provided` when called bare, though OAI-PMH requires it to list every format,
+so `dcat_ap` cannot be discovered through the protocol (`oai_dcat` and
+`dcatap` are both rejected with `cannotDisseminateFormat`); and `ListSets`
+answers `noSetHierarchy`, so the hvd and dga subsets are not reachable as
+sets either. A client has to be told both out of band.
+
+What the export says about this agency, filtered to publisher
+"Keskkonnaagentuur": 36 dataset records — against the 24 the catalogue's own
+web page lists — 23 `dcat:DataService` nodes and 96 distinct distribution
+URLs. Fifteen of the 23 services carry a `dcat:endpointDescription`, and all
+fifteen are INSPIRE or Maa-amet WMS/WFS `GetCapabilities` nodes attached to
+spatial datasets. The eight *named* agency services — six identical
+"Ilmateenistus" records, KESE, and "Keskkonna ja ilma valdkonna
+andmeteenused" — carry none, and two of the six put a Creative Commons
+licence URL in `foaf:page`/documentation. **EstModel appears nowhere in the
+export**: scanning all 8 053 records for the string, whatever the publisher,
+returned zero, although both its service and its dataset are on the
+catalogue's web pages under this agency's name. The one service with a real
+OpenAPI description is the one missing from the machine-readable channel.
+
+That last point is worth stating precisely, because the web record is not
+half-filled — it is the only *complete* one we have. `andmed.eesti.ee`'s page
+for "EstModeli veebiteenus" names Keskkonnaagentuur as teabevaldaja, gives
+"Viide otspunktile" as `https://estmodel.envir.ee`, gives "Otspunkti
+kirjeldus" as the SwaggerHub OpenAPI document, links the related dataset,
+states CC BY 4.0, and carries a named contact point with an address and a
+phone number. Every field an agent would want is there, filled in correctly,
+on the one record that the DCAT-AP export does not carry. So the failure is
+not that nobody filled the form in; it is that filling it in did not reach
+the machine-readable channel.
 
 Worth knowing before re-running that exercise: everything the catalogue lists
 under `keskkonnaandmed.envir.ee` was already in the inventory. The crawl
