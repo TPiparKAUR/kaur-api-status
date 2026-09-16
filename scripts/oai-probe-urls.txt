@@ -1,30 +1,30 @@
 # THROWAWAY input for scripts/probe_oai.py. Delete with it.
 #
-# Round 1 (2026-09-16, run 35070090443) established that andmed.eesti.ee does
-# serve OAI-PMH at /oai — repositoryName "Estonian OpenData", protocol 2.0,
-# adminEmail opendatasupport@ria.ee — that metadataPrefix=dcat_ap is accepted
-# and oai_dcat / dcatap are not, and that /oai/hvd and /oai/dga exist but
-# answer only the ListRecords verb. Two defects came out of the same round:
-# ListMetadataFormats answers badArgument without an identifier, which the
-# protocol does not allow, and ListSets answers noSetHierarchy, so neither the
-# format nor the subsets are discoverable through the protocol itself.
+# Round 1 (run 35070090443) settled the claim: andmed.eesti.ee serves OAI-PMH
+# at /oai as "Estonian OpenData", metadataPrefix=dcat_ap is the accepted value
+# (oai_dcat and dcatap are rejected), /oai/hvd and /oai/dga exist as separate
+# base URLs accepting only ListRecords, and the status page is live. Two
+# protocol defects: ListMetadataFormats answers badArgument when called bare,
+# which OAI-PMH does not allow, and ListSets answers noSetHierarchy, so
+# neither the format nor the subsets are discoverable through the protocol.
 #
-# Round 2 reads the records. ListRecords returned more than the 8 MiB the
-# probe was reading, so nothing could be parsed; the cap is now 256 MiB with
-# gzip requested.
+# Round 2 (run 35070340447) read the records: 8 053 identifiers in a single
+# unpaginated response, and seven of our records in the HVD subset, none of
+# them carrying an endpointDescription.
+#
+# Round 3 prints per DCAT node rather than per record. Round 2 flattened each
+# record whole, which lost which endpointURL belonged to which service and
+# which accessURL to which distribution — and that distinction is the whole
+# question. 8 800 lines of output was also more than anyone needs.
 
-# The whole catalogue, harvested and filtered down to our own records. This is
-# what re-verifies the letter's numbers: every DataService record's
-# dcat:endpointURL and dcat:endpointDescription, and every Dataset's
-# distributions, read from the publisher's own metadata rather than from crawl
-# notes.
+# The full catalogue, filtered to our own records, one block per Dataset,
+# DataService and Distribution. This is what re-verifies the letter: how many
+# of our catalogue entries carry a real endpointURL, how many carry an
+# endpointDescription, and whether the Ilmateenistus XML feeds appear as
+# distributions anywhere.
 harvest:https://andmed.eesti.ee/oai?verb=ListRecords&metadataPrefix=dcat_ap
 
-# The High-Value Datasets subset, which the catalogue's web pages show our
-# meteorological and monitoring datasets tagged into. Its own base URL, since
-# ListSets says this repository has no set hierarchy.
-harvest:https://andmed.eesti.ee/oai/hvd?verb=ListRecords&metadataPrefix=dcat_ap
-
-# ListIdentifiers is the cheap way to get a total; worth having next to the
-# harvest count as a cross-check.
-https://andmed.eesti.ee/oai?verb=ListIdentifiers&metadataPrefix=dcat_ap
+# The two subsets, counted only: their records are the same ones above, so
+# what is wanted here is how many of ours the EU-reporting lists contain.
+count:https://andmed.eesti.ee/oai/hvd?verb=ListRecords&metadataPrefix=dcat_ap
+count:https://andmed.eesti.ee/oai/dga?verb=ListRecords&metadataPrefix=dcat_ap

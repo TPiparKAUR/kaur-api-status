@@ -210,8 +210,13 @@ def record_kinds(element: ET.Element) -> list[str]:
     )
 
 
-def harvest(url: str) -> None:
-    """Follow ListRecords through every resumptionToken; keep our own records."""
+def harvest(url: str, detail: bool = True) -> None:
+    """Follow ListRecords through every resumptionToken; keep our own records.
+
+    With `detail` off only the counts and the compact summary are printed,
+    which is what a subset endpoint needs — its records are the same ones the
+    full harvest already listed.
+    """
     base = url.split("?")[0]
     seen = 0
     kept: list[tuple[str, ET.Element]] = []
@@ -257,15 +262,59 @@ def harvest(url: str) -> None:
     if next_url:
         print(f"    STOPPED EARLY at page {page}: a resumptionToken is still pending")
     print(f"\n    harvested {seen} records over {page} page(s); {len(kept)} match {KEEP}\n")
-    for index, (identifier, record) in enumerate(kept, start=1):
-        kinds = ",".join(record_kinds(record)) or "?"
-        print(f"    --- [{index}] {identifier}  ({kinds})")
-        for name, value in flatten(record):
-            if name in ("responseDate", "request"):
-                continue
-            print(f"        {name:<24} {value[:300]}")
-        print()
+    if detail:
+        for index, (identifier, record) in enumerate(kept, start=1):
+            print(f"    --- [{index}] {identifier}")
+            outline(record)
+            print()
     summarise(kept)
+
+
+# Properties worth printing per DCAT node. Everything else — the ADMS concept
+# schemes, the licence boilerplate, the EU vocabulary URIs — is the same on
+# every record and says nothing about findability.
+INTERESTING = (
+    "title",
+    "description",
+    "endpointURL",
+    "endpointDescription",
+    "servesDataset",
+    "accessURL",
+    "downloadURL",
+    "format",
+    "mediaType",
+    "landingPage",
+    "documentation",
+    "conformsTo",
+    "accessService",
+    "fn",
+    "identifier",
+)
+
+
+def outline(record: ET.Element) -> None:
+    """Print each DCAT node in a record with its own direct properties.
+
+    Flattening a whole record loses which endpointURL belongs to which service
+    and which accessURL to which distribution, and that distinction is the
+    entire question here.
+    """
+    for node in record.iter():
+        kind = local(node.tag)
+        if kind not in ("Dataset", "DataService", "Distribution", "CatalogRecord"):
+            continue
+        print(f"      {kind} {node.get(RDF_ABOUT, '')}")
+        for child in node:
+            name = local(child.tag)
+            if name not in INTERESTING:
+                continue
+            text = (child.text or "").strip()
+            value = text or child.get(RDF_RESOURCE) or child.get(RDF_ABOUT) or ""
+            if not value:
+                # A wrapper element such as dcat:distribution; its own child
+                # carries the value and is reached on a later iteration.
+                continue
+            print(f"        {name:<22} {value[:220]}")
 
 
 def summarise(kept: list[tuple[str, ET.Element]]) -> None:
@@ -347,8 +396,9 @@ def main(argv: list[str]) -> int:
 
     prefixes: list[str] = []
     for index, line in enumerate(lines, start=1):
-        is_harvest = line.startswith("harvest:")
-        url = line[len("harvest:") :] if is_harvest else line
+        is_harvest = line.startswith(("harvest:", "count:"))
+        detail = line.startswith("harvest:")
+        url = line.split(":", 1)[1] if is_harvest else line
 
         if "metadataPrefix=AUTO" in url:
             if not prefixes:
@@ -360,7 +410,7 @@ def main(argv: list[str]) -> int:
 
         print(f"[{index}/{len(lines)}] {'HARVEST ' if is_harvest else ''}{url}")
         if is_harvest:
-            harvest(url)
+            harvest(url, detail=detail)
             continue
 
         status, content_type, body = fetch(url)
