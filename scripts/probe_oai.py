@@ -57,6 +57,13 @@ MAX_RECORDS = 20000
 # records that merely link to ours and made every count wrong.
 KEEP = ("keskkonnaagentuur",)
 
+# Scanned across every harvested record, ours or not, and reported separately.
+# The catalogue's web pages list an EstModel service and an EstModel dataset
+# under Keskkonnaagentuur; if neither turns up here, the one service with a
+# real OpenAPI description is missing from the machine-readable export, and
+# that is worth knowing before anyone writes it down as a good example.
+WATCH = ("estmodel",)
+
 # rdf:resource is where DCAT puts a URL that is a reference rather than a
 # literal, which is exactly where endpointURL and accessURL live.
 RDF_RESOURCE = "{http://www.w3.org/1999/02/22-rdf-syntax-ns#}resource"
@@ -223,6 +230,7 @@ def harvest(url: str, detail: bool = True) -> None:
     base = url.split("?")[0]
     seen = 0
     kept: list[tuple[str, ET.Element]] = []
+    watched: dict[str, list[ET.Element]] = {}
     page = 0
     next_url: str | None = url
 
@@ -251,6 +259,9 @@ def harvest(url: str, detail: bool = True) -> None:
                     blob = ET.tostring(child, encoding="unicode").lower()
                     if any(needle in blob for needle in KEEP):
                         kept.append((identifier_of(child), child))
+                    for needle in WATCH:
+                        if needle in blob:
+                            watched.setdefault(needle, []).append(child)
                 elif name == "resumptionToken":
                     token_value = (child.text or "").strip()
                     if page == 1:
@@ -271,6 +282,21 @@ def harvest(url: str, detail: bool = True) -> None:
             outline(record)
             print()
     summarise(kept)
+    report_watched(watched)
+
+
+def report_watched(watched: dict[str, list[ET.Element]]) -> None:
+    """Whether a term appears anywhere in the harvest, regardless of publisher."""
+    for needle in WATCH:
+        hits = watched.get(needle, [])
+        print(f"    --- records mentioning {needle!r} anywhere: {len(hits)} ---")
+        for record in hits:
+            titles = _uniq([v for name, v in flatten(record) if name == "title"])
+            publishers = _uniq([v for name, v in flatten(record) if name == "fn"])
+            print(f"      {identifier_of(record)}")
+            print(f"        titles     {' / '.join(titles[:4]) or '-'}")
+            print(f"        publisher  {' / '.join(publishers) or '-'}")
+    print()
 
 
 # Properties worth printing per DCAT node. Everything else — the ADMS concept

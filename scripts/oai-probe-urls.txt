@@ -24,7 +24,14 @@
 # distributions anywhere.
 harvest:https://andmed.eesti.ee/oai?verb=ListRecords&metadataPrefix=dcat_ap
 
-# The two subsets, counted only: their records are the same ones above, so
-# what is wanted here is how many of ours the EU-reporting lists contain.
-count:https://andmed.eesti.ee/oai/hvd?verb=ListRecords&metadataPrefix=dcat_ap
-count:https://andmed.eesti.ee/oai/dga?verb=ListRecords&metadataPrefix=dcat_ap
+# Round 4 answered the subsets: 7 of our records are in hvd, none in dga
+# (which holds one record in total), and not one of the eight named service
+# records carries an endpointDescription. Both are dropped from round 5 —
+# re-downloading them would tell us nothing new.
+#
+# What round 4 left open: the full harvest returned 36 Keskkonnaagentuur
+# datasets against the 24 the web page lists, and EstModel — the one service
+# with a real OpenAPI description — was in neither the dataset list nor the
+# service list. WATCH in the script now scans every one of the 8 053 records
+# for it, whoever the publisher is, which settles whether it is absent from
+# the export or merely attributed to someone else.
