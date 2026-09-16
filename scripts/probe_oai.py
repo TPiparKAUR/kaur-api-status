@@ -28,6 +28,7 @@ Usage:  python scripts/probe_oai.py scripts/oai-probe-urls.txt
 
 from __future__ import annotations
 
+import gzip
 import json
 import re
 import sys
@@ -40,8 +41,11 @@ from pathlib import Path
 from typing import Any
 
 USER_AGENT = "KAUR-API-monitor/1.0 (one-off OAI-PMH probe; Keskkonnaagentuur)"
-TIMEOUT_S = 60.0
-MAX_BYTES = 8 * 1024 * 1024
+TIMEOUT_S = 180.0
+# The portal answers ListRecords with the whole catalogue in one response: the
+# first probe read 8 MiB and was still truncated. Identify advertises gzip, so
+# the transfer is compressed; this cap is on the decompressed body.
+MAX_BYTES = 256 * 1024 * 1024
 DELAY_S = 0.5  # a courtesy gap; this is someone else's public portal
 MAX_PAGES = 60
 MAX_RECORDS = 20000
@@ -62,16 +66,35 @@ def local(tag: str) -> str:
     return tag.rpartition("}")[2]
 
 
+def _decode(body: bytes, encoding: str) -> bytes:
+    if "gzip" not in encoding.lower():
+        return body
+    try:
+        return gzip.decompress(body)
+    except OSError:
+        return body
+
+
 def fetch(url: str) -> tuple[int | str, str, bytes]:
     request = urllib.request.Request(
-        url, headers={"User-Agent": USER_AGENT, "Accept": "application/xml, */*"}
+        url,
+        headers={
+            "User-Agent": USER_AGENT,
+            "Accept": "application/xml, */*",
+            # Identify advertises gzip and the uncompressed catalogue runs to
+            # tens of megabytes; asking for it is politeness as much as speed.
+            "Accept-Encoding": "gzip",
+        },
     )
     try:
         with urllib.request.urlopen(request, timeout=TIMEOUT_S) as response:
+            raw = response.read(MAX_BYTES)
+            if len(raw) == MAX_BYTES:
+                print(f"    WARNING truncated at {MAX_BYTES} bytes")
             return (
                 response.status,
                 response.headers.get("Content-Type", ""),
-                response.read(MAX_BYTES),
+                _decode(raw, response.headers.get("Content-Encoding", "")),
             )
     except urllib.error.HTTPError as exc:
         body = b""
@@ -242,6 +265,42 @@ def harvest(url: str) -> None:
                 continue
             print(f"        {name:<24} {value[:300]}")
         print()
+    summarise(kept)
+
+
+def summarise(kept: list[tuple[str, ET.Element]]) -> None:
+    """One line per kept record: what a reader of the letter actually needs.
+
+    The question behind this is how many of our catalogue entries point at a
+    machine interface rather than at a web page, so endpointURL and
+    endpointDescription are pulled out by name and everything else collapses
+    to a count.
+    """
+    print("    === compact summary ===")
+    services = 0
+    with_endpoint_description = 0
+    for _identifier, record in kept:
+        fields: dict[str, list[str]] = {}
+        for name, value in flatten(record):
+            fields.setdefault(name, []).append(value)
+        kinds = record_kinds(record)
+        title = (fields.get("title") or ["-"])[0]
+        endpoints = fields.get("endpointURL", [])
+        descriptions = fields.get("endpointDescription", [])
+        access = fields.get("accessURL", []) + fields.get("downloadURL", [])
+        if "DataService" in kinds:
+            services += 1
+            if descriptions:
+                with_endpoint_description += 1
+        print(
+            f"      {'/'.join(kinds) or '?':<12} {title[:46]:<46}"
+            f" endpointURL={endpoints or '-'} endpointDescription={descriptions or '-'}"
+            f" access/downloadURLs={len(access)}"
+        )
+    print(
+        f"    DataService records kept: {services};"
+        f" of those with an endpointDescription: {with_endpoint_description}"
+    )
 
 
 def identifier_of(record: ET.Element) -> str:

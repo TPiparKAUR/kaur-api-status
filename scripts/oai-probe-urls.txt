@@ -1,33 +1,30 @@
 # THROWAWAY input for scripts/probe_oai.py. Delete with it.
 #
-# Question 1: does andmed.eesti.ee serve DCAT-AP over OAI-PMH? A third party
-# claims a base URL at /oai with metadataPrefix=dcat_ap and two subsets, hvd
-# and dga. The 2026-09-15 crawl never tried /oai, so the claim is untested
-# rather than contradicted. Identify and ListMetadataFormats settle it in two
-# requests and say what the prefix really is.
-https://andmed.eesti.ee/oai?verb=Identify
-https://andmed.eesti.ee/oai?verb=ListMetadataFormats
-https://andmed.eesti.ee/oai?verb=ListSets
+# Round 1 (2026-09-16, run 35070090443) established that andmed.eesti.ee does
+# serve OAI-PMH at /oai — repositoryName "Estonian OpenData", protocol 2.0,
+# adminEmail opendatasupport@ria.ee — that metadataPrefix=dcat_ap is accepted
+# and oai_dcat / dcatap are not, and that /oai/hvd and /oai/dga exist but
+# answer only the ListRecords verb. Two defects came out of the same round:
+# ListMetadataFormats answers badArgument without an identifier, which the
+# protocol does not allow, and ListSets answers noSetHierarchy, so neither the
+# format nor the subsets are discoverable through the protocol itself.
+#
+# Round 2 reads the records. ListRecords returned more than the 8 MiB the
+# probe was reading, so nothing could be parsed; the cap is now 256 MiB with
+# gzip requested.
 
-# The claimed subsets, as separate base URLs rather than set= parameters.
-https://andmed.eesti.ee/oai/hvd?verb=Identify
-https://andmed.eesti.ee/oai/dga?verb=Identify
+# The whole catalogue, harvested and filtered down to our own records. This is
+# what re-verifies the letter's numbers: every DataService record's
+# dcat:endpointURL and dcat:endpointDescription, and every Dataset's
+# distributions, read from the publisher's own metadata rather than from crawl
+# notes.
+harvest:https://andmed.eesti.ee/oai?verb=ListRecords&metadataPrefix=dcat_ap
 
-# The claimed prefix spelling, and the two other spellings in common use, so a
-# wrong guess in the claim does not read as "no OAI-PMH here".
-https://andmed.eesti.ee/oai?verb=ListRecords&metadataPrefix=dcat_ap
-https://andmed.eesti.ee/oai?verb=ListRecords&metadataPrefix=oai_dcat
-https://andmed.eesti.ee/oai?verb=ListRecords&metadataPrefix=dcatap
+# The High-Value Datasets subset, which the catalogue's web pages show our
+# meteorological and monitoring datasets tagged into. Its own base URL, since
+# ListSets says this repository has no set hierarchy.
+harvest:https://andmed.eesti.ee/oai/hvd?verb=ListRecords&metadataPrefix=dcat_ap
 
-# Question 2: re-verify the letter's numbers from the source rather than from
-# notes. Harvesting with whichever prefix ListMetadataFormats reported gives
-# every DataService record's dcat:endpointURL and dcat:endpointDescription,
-# and every Dataset's distributions — which is what "one of nine points at a
-# real machine interface" and "the Ilmateenistus XML feeds are not in the
-# catalogue" actually rest on.
-harvest:https://andmed.eesti.ee/oai?verb=ListRecords&metadataPrefix=AUTO
-
-# Question 3: is the status page the letter links to actually being served?
-# GitHub Pages is not reachable from an authoring session either.
-https://tpiparkaur.github.io/kaur-api-status/
-https://tpiparkaur.github.io/kaur-api-status/data/status.json
+# ListIdentifiers is the cheap way to get a total; worth having next to the
+# harvest count as a cross-check.
+https://andmed.eesti.ee/oai?verb=ListIdentifiers&metadataPrefix=dcat_ap
