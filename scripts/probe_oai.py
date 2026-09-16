@@ -50,9 +50,12 @@ DELAY_S = 0.5  # a courtesy gap; this is someone else's public portal
 MAX_PAGES = 60
 MAX_RECORDS = 20000
 
-# A harvested record is kept when its XML mentions any of these. The portal
-# carries every Estonian publisher; only ours is being checked here.
-KEEP = ("keskkonnaagentuur", "envir.ee", "ilmateenistus", "keskkonnaportaal")
+# A harvested record is kept when its XML mentions this. The portal carries
+# every Estonian publisher and 8 053 records; the publisher's own name is the
+# only filter narrow enough to be about us. An earlier round also matched
+# envir.ee, ilmateenistus and keskkonnaportaal, which pulled in other agencies'
+# records that merely link to ours and made every count wrong.
+KEEP = ("keskkonnaagentuur",)
 
 # rdf:resource is where DCAT puts a URL that is a reference rather than a
 # literal, which is exactly where endpointURL and accessURL live.
@@ -317,39 +320,108 @@ def outline(record: ET.Element) -> None:
             print(f"        {name:<22} {value[:220]}")
 
 
-def summarise(kept: list[tuple[str, ET.Element]]) -> None:
-    """One line per kept record: what a reader of the letter actually needs.
+def _props(node: ET.Element) -> dict[str, list[str]]:
+    """Direct child properties of one DCAT node, name -> values."""
+    out: dict[str, list[str]] = {}
+    for child in node:
+        name = local(child.tag)
+        text = (child.text or "").strip()
+        value = text or child.get(RDF_RESOURCE) or child.get(RDF_ABOUT) or ""
+        if value:
+            out.setdefault(name, []).append(value)
+    return out
 
-    The question behind this is how many of our catalogue entries point at a
-    machine interface rather than at a web page, so endpointURL and
-    endpointDescription are pulled out by name and everything else collapses
-    to a count.
+
+def _uniq(values: list[str]) -> list[str]:
+    return list(dict.fromkeys(values))
+
+
+def summarise(kept: list[tuple[str, ET.Element]]) -> None:
+    """The analysis, rather than a dump: what points where, and how many.
+
+    Three questions decide whether a catalogue is usable without a browser:
+    does a service record name a machine endpoint, does it name a
+    machine-readable description of that endpoint, and do a dataset's
+    distributions resolve to data or to another web page. Everything printed
+    here answers one of those.
     """
-    print("    === compact summary ===")
-    services = 0
-    with_endpoint_description = 0
+    services: dict[str, dict[str, list[str]]] = {}
+    datasets: list[tuple[str, dict[str, list[str]]]] = []
+    distributions: list[dict[str, list[str]]] = []
+
     for _identifier, record in kept:
-        fields: dict[str, list[str]] = {}
-        for name, value in flatten(record):
-            fields.setdefault(name, []).append(value)
-        kinds = record_kinds(record)
-        title = (fields.get("title") or ["-"])[0]
-        endpoints = fields.get("endpointURL", [])
-        descriptions = fields.get("endpointDescription", [])
-        access = fields.get("accessURL", []) + fields.get("downloadURL", [])
-        if "DataService" in kinds:
-            services += 1
-            if descriptions:
-                with_endpoint_description += 1
-        print(
-            f"      {'/'.join(kinds) or '?':<12} {title[:46]:<46}"
-            f" endpointURL={endpoints or '-'} endpointDescription={descriptions or '-'}"
-            f" access/downloadURLs={len(access)}"
-        )
+        for node in record.iter():
+            kind = local(node.tag)
+            props = _props(node)
+            if kind == "DataService":
+                services.setdefault(node.get(RDF_ABOUT, "?"), props)
+            elif kind == "Dataset":
+                datasets.append((node.get(RDF_ABOUT, "?"), props))
+            elif kind == "Distribution":
+                distributions.append(props)
+
     print(
-        f"    DataService records kept: {services};"
-        f" of those with an endpointDescription: {with_endpoint_description}"
+        f"    === {len(kept)} records; {len(services)} distinct DataService,"
+        f" {len(datasets)} Dataset, {len(distributions)} Distribution ===\n"
     )
+
+    print("    --- DataService records ---")
+    with_description = 0
+    for index, (about, props) in enumerate(sorted(services.items()), start=1):
+        endpoints = _uniq(props.get("endpointURL", []))
+        descriptions = _uniq(props.get("endpointDescription", []))
+        if descriptions:
+            with_description += 1
+        titles = " / ".join(_uniq(props.get("title", ["-"])))
+        documentation = " | ".join(_uniq(props.get("documentation", []))) or "-"
+        print(f"    {index:>2}. {about.rsplit('/', 1)[-1]}  {titles}")
+        print(f"        endpointURL         {' | '.join(endpoints) or '-'}")
+        print(f"        endpointDescription {' | '.join(descriptions) or '-'}")
+        print(f"        documentation       {documentation}")
+    print(f"    -> {with_description} of {len(services)} carry an endpointDescription\n")
+
+    print("    --- Dataset records and their distribution count ---")
+    for index, (_about, props) in enumerate(
+        sorted(datasets, key=lambda d: d[1].get("title", [""])[0]), start=1
+    ):
+        titles = _uniq(props.get("title", ["-"]))
+        print(f"    {index:>2}. {' / '.join(titles)}")
+    print()
+
+    print("    --- every distribution URL, by host ---")
+    hosts: dict[str, int] = {}
+    urls: list[tuple[str, str]] = []
+    for props in distributions:
+        title = (props.get("title") or ["-"])[0]
+        for url in props.get("accessURL", []) + props.get("downloadURL", []):
+            host = urllib.parse.urlsplit(url).hostname or "?"
+            hosts[host] = hosts.get(host, 0) + 1
+            urls.append((url, title))
+    for host, count in sorted(hosts.items(), key=lambda kv: -kv[1]):
+        print(f"      {count:>4}  {host}")
+    print()
+
+    # A distribution that answers with data rather than with a page is the
+    # thing an agent can actually use; this is a heuristic, not a measurement.
+    print("    --- distributions that look like a machine response ---")
+    machine = [
+        (url, title)
+        for url, title in _uniq_pairs(urls)
+        if any(
+            hint in url.lower()
+            for hint in (".json", ".xml", ".csv", "/api", ".php", "limit=", "wfs", "format=")
+        )
+    ]
+    for url, title in machine:
+        print(f"      {title[:40]:<40} {url[:180]}")
+    print(f"    -> {len(machine)} of {len(_uniq_pairs(urls))} distinct distribution URLs\n")
+
+
+def _uniq_pairs(pairs: list[tuple[str, str]]) -> list[tuple[str, str]]:
+    seen: dict[str, tuple[str, str]] = {}
+    for url, title in pairs:
+        seen.setdefault(url, (url, title))
+    return list(seen.values())
 
 
 def identifier_of(record: ET.Element) -> str:
