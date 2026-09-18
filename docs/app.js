@@ -13,9 +13,34 @@ const STATUS_WORD = {
   unchecked: "Kontrollimata",
 };
 
+/* Sorting the status column by name would put "Häire" before "Maas" and bury
+ * the thing an operator opened the page for. Ascending is worst-first. */
+const SEVERITY = { down: 0, degraded: 1, unknown: 2, unchecked: 3, ok: 4 };
+
+/* Day-cell colour bands for the history strip. These are a presentation
+ * choice, not a service level: no SLA has been agreed with the service
+ * owners, so the page says so in "Kuidas seda mõõdetakse" rather than
+ * implying 95 % is a permitted floor. */
+const BAND_OK = 100;
+const BAND_WARN = 95;
+
+const SVG_NS = "http://www.w3.org/2000/svg";
+// 30 days at this pitch is 149 px, which is what lets both the strip and the
+// sparkline sit in the table without pushing it into horizontal scrolling on
+// an ordinary laptop. A cell this thin is a poor mouse target, so each one is
+// overlaid with a transparent full-pitch rect that carries the tooltip.
+const CELL_W = 4;
+const CELL_GAP = 1;
+const CELL_H = 22;
+
 const TZ = "Europe/Tallinn";
 const charts = [];
 let snapshot = null;
+let rows = [];
+const sortState = {
+  endpoints: { key: null, dir: 1 },
+  incidents: { key: null, dir: 1 },
+};
 
 const $ = (id) => document.getElementById(id);
 const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
@@ -59,7 +84,145 @@ function chip(status) {
   return span;
 }
 
+const sum = (values) => values.reduce((total, value) => total + (value || 0), 0);
+const share = (ok, checks) => (checks ? (100 * ok) / checks : null);
+
+function band(avail) {
+  if (avail == null) return "none";
+  if (avail >= BAND_OK) return "ok";
+  if (avail >= BAND_WARN) return "warn";
+  return "bad";
+}
+
+function svgEl(name, attrs) {
+  const node = document.createElementNS(SVG_NS, name);
+  for (const [key, value] of Object.entries(attrs)) node.setAttribute(key, value);
+  return node;
+}
+
+function titled(node, text) {
+  const title = document.createElementNS(SVG_NS, "title");
+  title.textContent = text;
+  node.append(title);
+  return node;
+}
+
+/* ---------- per-unit history, drawn in the row itself ---------- */
+
+/* One cell per day, aligned column-for-column down the table so a bad day
+ * reads as a vertical stripe across every unit it touched — the pattern
+ * Atlassian Statuspage and Grafana's status-history panel both use. Colour is
+ * never the only carrier: every cell has its exact numbers on hover, the
+ * strip as a whole has an aria-label, and the same figures are in the
+ * adjacent 24 h / 7 päeva columns as text. */
+function uptimeStrip(dates, checks, ok) {
+  const width = Math.max(1, dates.length * (CELL_W + CELL_GAP) - CELL_GAP);
+  const svg = svgEl("svg", {
+    class: "strip",
+    width,
+    height: CELL_H,
+    viewBox: `0 0 ${width} ${CELL_H}`,
+    role: "img",
+  });
+  const windowAvail = share(sum(ok), sum(checks));
+  const measured = dates.filter((_, i) => (checks[i] || 0) > 0).length;
+  svg.setAttribute(
+    "aria-label",
+    windowAvail == null
+      ? "Selle otspunkti kohta ei ole perioodil kontrolle."
+      : `Kättesaadavus ${measured} mõõdetud päeval kokku ${windowAvail.toFixed(1)} %.`,
+  );
+  dates.forEach((date, index) => {
+    const dayChecks = checks[index] || 0;
+    const dayOk = ok[index] || 0;
+    const avail = share(dayOk, dayChecks);
+    const left = index * (CELL_W + CELL_GAP);
+    svg.append(
+      svgEl("rect", {
+        x: left,
+        y: 0,
+        width: CELL_W,
+        height: CELL_H,
+        rx: 1.5,
+        class: `cell ${band(avail)}`,
+      }),
+    );
+    svg.append(
+      titled(
+        svgEl("rect", {
+          x: left,
+          y: 0,
+          width: CELL_W + CELL_GAP,
+          height: CELL_H,
+          class: "hit",
+        }),
+        avail == null
+          ? `${day(date)}: ei kontrollitud`
+          : `${day(date)}: ${avail.toFixed(1)} % (${dayOk}/${dayChecks} kontrolli)`,
+      ),
+    );
+  });
+  return svg;
+}
+
+/* A response-time sparkline per row. The pooled chart above answers "is the
+ * platform slow today"; it cannot answer "is this endpoint slower than it
+ * was", which is the question an owner of one endpoint actually has, and
+ * answering it used to require hovering. Deliberately unlike the big charts:
+ * no axes, no markers on every point, and the current value printed beside
+ * the line — at 22 px tall a legible number carries the reading, not the
+ * pixels. */
+function latencySparkline(dates, p50) {
+  const width = Math.max(1, dates.length * (CELL_W + CELL_GAP) - CELL_GAP);
+  const points = p50.map((value, index) => ({ value, index })).filter((p) => p.value != null);
+  if (points.length < 2) return null;
+
+  const values = points.map((p) => p.value);
+  const low = Math.min(...values);
+  const high = Math.max(...values);
+  const span = high - low || 1;
+  const x = (index) => (dates.length < 2 ? 0 : (index / (dates.length - 1)) * width);
+  const y = (value) => CELL_H - 3 - ((value - low) / span) * (CELL_H - 6);
+
+  const svg = svgEl("svg", {
+    class: "spark",
+    width,
+    height: CELL_H,
+    viewBox: `0 0 ${width} ${CELL_H}`,
+    role: "img",
+    "aria-label": `Ööpäeva mediaanvastuseaeg ${low}–${high} ms, viimati ${values[values.length - 1]} ms.`,
+  });
+  svg.append(
+    svgEl("polyline", {
+      class: "spark-line",
+      points: points.map((p) => `${x(p.index).toFixed(1)},${y(p.value).toFixed(1)}`).join(" "),
+    }),
+  );
+  const last = points[points.length - 1];
+  svg.append(
+    svgEl("circle", { class: "spark-dot", cx: x(last.index).toFixed(1), cy: y(last.value).toFixed(1), r: 3 }),
+  );
+  return svg;
+}
+
 /* ---------- summary tiles ---------- */
+
+/* Which service is currently costing the most trust. A management reader
+ * scanning four averages cannot tell whether 97 % overall is "everything is
+ * fine" or "one service is on the floor and the rest carry the mean" — and in
+ * this log that difference is real. Named, not colour-coded. */
+function worstSystemTile(data) {
+  const measured = (data.systems || []).filter((s) => s.avail_24h != null);
+  if (!measured.length) {
+    return { label: "Nõrgim teenus 24 h", value: "–", sub: "Viimase ööpäeva kohta ei ole mõõtmisi." };
+  }
+  const worst = measured.reduce((a, b) => (b.avail_24h < a.avail_24h ? b : a));
+  return {
+    label: "Nõrgim teenus 24 h",
+    value: pct(worst.avail_24h),
+    sub: `${worst.name} · ${worst.problem} / ${worst.endpoints} üksust probleemiga`,
+  };
+}
 
 function renderTiles(data) {
   const t = data.totals || {};
@@ -76,10 +239,20 @@ function renderTiles(data) {
       sub: `${data.availability?.checks_24h || 0} kontrolli`,
     },
     { label: "Kättesaadavus 7 päeva", value: pct(data.availability?.d7), sub: "Õnnestunud kontrollide osakaal" },
+    worstSystemTile(data),
     {
       label: "Katkestusi logis",
       value: String(data.incident_count ?? 0),
-      sub: `Jälgimine algas ${data.first_record ? moment(data.first_record) : "–"}`,
+      // The count alone does not say whether this was a bad month: 194 blips
+      // of a minute and 194 outages of an hour are the same number. The hours
+      // are what a budget conversation runs on — but they are summed across
+      // endpoints, so two endpoints down for an hour is two hours here and
+      // not one. Saying so in four words beats a tile that reads as "the
+      // platform was down for ten days".
+      sub:
+        data.outage_total_s
+          ? `Otspunkte maas kokku ${duration(data.outage_total_s)} (liidetud)`
+          : `Jälgimine algas ${data.first_record ? moment(data.first_record) : "–"}`,
     },
   ];
 
@@ -118,23 +291,160 @@ function renderSystems(data) {
         `kättesaadavus 24 h ${pct(system.avail_24h)}`;
 
       card.append(title, text, meta);
+
+      // Pooled the same way dashboard.py pools a system's availability: sum
+      // the members' raw ok and checks per day, never average their
+      // percentages, or a member with three checks would weigh as much as one
+      // with three hundred.
+      const dates = data.chart_dates || [];
+      const members = rows.filter((r) => r.system === system.name);
+      if (dates.length && members.length) {
+        const checks = dates.map((_, i) => sum(members.map((m) => m._checks[i])));
+        const ok = dates.map((_, i) => sum(members.map((m) => m._ok[i])));
+        const strip = document.createElement("p");
+        strip.className = "card-strip";
+        strip.append(uptimeStrip(dates, checks, ok));
+        const range = document.createElement("span");
+        range.className = "strip-range";
+        range.textContent = `${day(dates[0])} → ${day(dates[dates.length - 1])}`;
+        strip.append(range);
+        card.append(strip);
+      }
       return card;
     }),
   );
 }
 
+/* ---------- sorting ---------- */
+
+/* Turning each header into a real <button> rather than a click handler on the
+ * <th>: it lands in the tab order, fires on Enter and Space for free, and
+ * aria-sort tells a screen reader which column is active and which way. */
+function attachSorting(tableId, stateKey, rerender) {
+  document.querySelectorAll(`#${tableId} th[data-sort]`).forEach((th) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "sort";
+    button.textContent = th.textContent.trim();
+    button.append(svgArrow());
+    th.textContent = "";
+    th.setAttribute("aria-sort", "none");
+    th.append(button);
+    button.addEventListener("click", () => {
+      const state = sortState[stateKey];
+      if (state.key === th.dataset.sort) state.dir = -state.dir;
+      else {
+        state.key = th.dataset.sort;
+        state.dir = 1;
+      }
+      rerender();
+    });
+  });
+}
+
+function svgArrow() {
+  const span = document.createElement("span");
+  span.className = "arrow";
+  span.setAttribute("aria-hidden", "true");
+  return span;
+}
+
+function applySort(items, tableId, stateKey) {
+  const state = sortState[stateKey];
+  const heads = [...document.querySelectorAll(`#${tableId} th[data-sort]`)];
+  heads.forEach((th) => {
+    const active = th.dataset.sort === state.key;
+    th.setAttribute("aria-sort", active ? (state.dir === 1 ? "ascending" : "descending") : "none");
+    th.querySelector(".arrow").textContent = active ? (state.dir === 1 ? "▲" : "▼") : "";
+  });
+  if (!state.key) return items;
+
+  const type = heads.find((th) => th.dataset.sort === state.key)?.dataset.type || "text";
+  const missing = (value) => value == null || value === "";
+  return [...items].sort((a, b) => {
+    const left = a[state.key];
+    const right = b[state.key];
+    // Rows with no value sink to the bottom whichever way the column is
+    // sorted — otherwise "sort by response time" fills the top of the table
+    // with endpoints that have never answered at all.
+    if (missing(left) && missing(right)) return 0;
+    if (missing(left)) return 1;
+    if (missing(right)) return -1;
+    const order =
+      type === "number" ? left - right : String(left).localeCompare(String(right), "et");
+    return order * state.dir;
+  });
+}
+
 /* ---------- tables ---------- */
+
+/* Everything the table needs that status.json does not carry directly: a
+ * sortable severity rank, the whole-window availability behind the strip, and
+ * the latest daily median behind the sparkline. Computed once per load rather
+ * than per render, and kept beside the raw arrays the two SVGs read. */
+function decorate(data) {
+  const dates = data.chart_dates || [];
+  return (data.endpoints || []).map((endpoint) => {
+    const days = endpoint.days || {};
+    const checks = days.checks || dates.map(() => 0);
+    const ok = days.ok || dates.map(() => 0);
+    const p50 = days.p50_ms || dates.map(() => null);
+    const recent = [...p50].reverse().find((value) => value != null);
+    return {
+      ...endpoint,
+      severity: SEVERITY[endpoint.status] ?? 9,
+      avail_window: share(sum(ok), sum(checks)),
+      p50_last: recent == null ? null : recent,
+      _checks: checks,
+      _ok: ok,
+      _p50: p50,
+    };
+  });
+}
+
+function filtered(data) {
+  const showAll = $("show-all").checked;
+  const needle = $("filter-text").value.trim().toLowerCase();
+  const system = $("filter-system").value;
+  return rows.filter((item) => {
+    if (!showAll && item.status === "ok") return false;
+    if (system && item.system !== system) return false;
+    if (needle && !`${item.name} ${item.id}`.toLowerCase().includes(needle)) return false;
+    return true;
+  });
+}
 
 function renderEndpoints(data) {
   const showAll = $("show-all").checked;
-  const all = data.endpoints || [];
-  const shown = showAll ? all : all.filter((e) => e.status !== "ok");
+  const all = rows;
+  const narrowed = filtered(data);
+  const shown = applySort(narrowed, "endpoints", "endpoints");
+  const narrowing = $("filter-text").value.trim() !== "" || $("filter-system").value !== "";
+  $("filter-reset").hidden = !narrowing;
 
-  $("table-note").textContent = showAll
-    ? `Kõik ${all.length} otspunkti.`
-    : shown.length
-      ? `Näidatakse ${shown.length} otspunkti, mis ei ole korras.`
-      : `Kõik ${all.length} otspunkti on korras — probleeme ei ole.`;
+  $("table-note").textContent = narrowing
+    ? `Näidatakse ${shown.length} otspunkti ${all.length}-st.`
+    : showAll
+      ? `Kõik ${all.length} otspunkti.`
+      : shown.length
+        ? `Näidatakse ${shown.length} otspunkti, mis ei ole korras.`
+        : `Kõik ${all.length} otspunkti on korras — probleeme ei ole.`;
+
+  const dates = data.chart_dates || [];
+  $("strip-legend").replaceChildren(
+    ...(dates.length
+      ? [
+          legendKey("ok", "kõik kontrollid õnnestusid"),
+          legendKey("warn", `vähemalt ${BAND_WARN} %`),
+          legendKey("bad", `alla ${BAND_WARN} %`),
+          legendKey("none", "ei kontrollitud"),
+          Object.assign(document.createElement("span"), {
+            className: "legend-range",
+            textContent: `Ajalugu: ${day(dates[0])} → ${day(dates[dates.length - 1])}, üks ruut on üks ööpäev.`,
+          }),
+        ]
+      : []),
+  );
 
   document.querySelector("#endpoints").hidden = shown.length === 0;
   const body = document.querySelector("#endpoints tbody");
@@ -174,30 +484,55 @@ function renderEndpoints(data) {
       d7.className = "num";
       d7.textContent = pct(item.avail_7d);
 
+      const history = document.createElement("td");
+      history.className = "viz";
+      history.append(uptimeStrip(dates, item._checks, item._ok));
+
+      const latency = document.createElement("td");
+      latency.className = "viz";
+      const spark = latencySparkline(dates, item._p50);
+      if (spark) latency.append(spark);
+      const sparkValue = document.createElement("span");
+      sparkValue.className = "spark-value";
+      // The number, not the line, is what makes this cell readable at 22 px —
+      // and it is what a screen reader and a printout get.
+      sparkValue.textContent = item.p50_last == null ? "–" : `${item.p50_last} ms`;
+      latency.append(sparkValue);
+
       const last = document.createElement("td");
       last.className = "num";
       last.textContent = moment(item.ts);
 
-      row.append(name, system, status, response, d1, d7, last);
+      row.append(name, system, status, response, d1, d7, history, latency, last);
       return row;
     }),
   );
 }
 
+function legendKey(kind, text) {
+  const key = document.createElement("span");
+  key.className = "legend-key";
+  const swatch = document.createElement("span");
+  swatch.className = `swatch ${kind}`;
+  swatch.setAttribute("aria-hidden", "true");
+  key.append(swatch, document.createTextNode(text));
+  return key;
+}
+
 function renderIncidents(data) {
-  const rows = data.incidents || [];
+  const all = data.incidents || [];
   const body = document.querySelector("#incidents tbody");
   const empty = $("empty-incidents");
 
-  empty.hidden = rows.length > 0;
-  if (!rows.length) {
+  empty.hidden = all.length > 0;
+  if (!all.length) {
     empty.textContent = "Logitud perioodil katkestusi ei ole.";
     body.replaceChildren();
     return;
   }
 
   body.replaceChildren(
-    ...rows.map((item) => {
+    ...applySort(all, "incidents", "incidents").map((item) => {
       const row = document.createElement("tr");
       const cells = [
         moment(item.start),
@@ -494,6 +829,14 @@ function drawOutages(data) {
 
 function render(data) {
   snapshot = data;
+  rows = decorate(data);
+  const systems = [...new Set(rows.map((r) => r.system))].sort((a, b) => a.localeCompare(b, "et"));
+  $("filter-system").replaceChildren(
+    Object.assign(document.createElement("option"), { value: "", textContent: "kõik" }),
+    ...systems.map((name) =>
+      Object.assign(document.createElement("option"), { value: name, textContent: name }),
+    ),
+  );
   $("updated").textContent =
     `Viimati uuendatud ${moment(data.generated_at)} · kontroll iga ${data.interval_minutes} minuti järel`;
   const unverified = data.totals?.unverified ?? 0;
@@ -524,7 +867,23 @@ function redrawCharts() {
   }
 }
 
-$("show-all").addEventListener("change", () => snapshot && renderEndpoints(snapshot));
+const refreshEndpoints = () => snapshot && renderEndpoints(snapshot);
+const refreshIncidents = () => snapshot && renderIncidents(snapshot);
+
+$("show-all").addEventListener("change", refreshEndpoints);
+$("filter-text").addEventListener("input", refreshEndpoints);
+$("filter-system").addEventListener("change", refreshEndpoints);
+$("filter-reset").addEventListener("click", () => {
+  $("filter-text").value = "";
+  $("filter-system").value = "";
+  refreshEndpoints();
+});
+attachSorting("endpoints", "endpoints", refreshEndpoints);
+attachSorting("incidents", "incidents", refreshIncidents);
+
+/* Only the Chart.js canvases need redrawing on a theme change; the strips and
+ * sparklines take their colours from CSS custom properties and follow on
+ * their own. */
 window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", redrawCharts);
 
 fetch(`data/status.json?t=${Date.now()}`)

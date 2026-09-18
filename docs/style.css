@@ -286,6 +286,159 @@ h3 {
   font-size: 0.9375rem;
   cursor: pointer;
 }
+.field {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.9375rem;
+  color: var(--ink-2);
+}
+.field input,
+.field select {
+  font: inherit;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 0.3rem 0.5rem;
+  min-width: 11ch;
+}
+.linkish {
+  font: inherit;
+  font-size: 0.9375rem;
+  background: none;
+  border: 0;
+  padding: 0;
+  color: var(--ink-2);
+  text-decoration: underline;
+  cursor: pointer;
+}
+:is(.field input, .field select, .linkish, .sort):focus-visible {
+  outline: 2px solid var(--series-1);
+  outline-offset: 2px;
+}
+
+/* ---- sortable headers ---- */
+
+/* A real button, so the column is reachable by Tab and operable by Enter and
+   Space without any key handling of our own. */
+.sort {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font: inherit;
+  font-weight: 600;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.sort:hover { color: var(--ink); }
+.sort .arrow {
+  font-size: 0.625rem;
+  line-height: 1;
+  color: var(--series-1);
+}
+th[aria-sort]:not([aria-sort="none"]) { color: var(--ink); }
+
+/* ---- per-row history strip and sparkline ---- */
+
+td.viz {
+  white-space: nowrap;
+  vertical-align: middle;
+}
+.strip,
+.spark {
+  display: block;
+  overflow: visible;
+}
+.strip .cell.ok { fill: var(--good); }
+.strip .cell.warn { fill: var(--warning); }
+.strip .cell.bad { fill: var(--critical); }
+/* A day nobody checked is not a good day and not a bad one. Hollow, so it
+   never reads as a filled result. */
+.strip .cell.none {
+  fill: none;
+  stroke: var(--rule);
+  stroke-width: 1;
+}
+/* The tooltip target, one whole cell pitch wide. `transparent` rather than
+   `none`, because a rect with no fill does not receive pointer events. */
+.strip .hit { fill: transparent; }
+.spark-line {
+  fill: none;
+  stroke: var(--series-1);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+.spark-dot { fill: var(--series-1); }
+.spark-value {
+  display: block;
+  margin-top: 0.15rem;
+  color: var(--ink-2);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.card-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.15rem 0 0 !important;
+}
+.strip-range,
+.legend-range {
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 1rem;
+  margin: 0 0 0.75rem;
+  color: var(--muted);
+  font-size: 0.8125rem;
+}
+.legend:empty { display: none; }
+.legend-key {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.legend .swatch {
+  width: 10px;
+  height: 14px;
+  border-radius: 2px;
+  flex: none;
+}
+.legend .swatch.ok { background: var(--good); }
+.legend .swatch.warn { background: var(--warning); }
+.legend .swatch.bad { background: var(--critical); }
+.legend .swatch.none {
+  background: none;
+  border: 1px solid var(--rule);
+}
+
+/* The two data tables outgrow the 1060px reading measure once each row
+   carries its own 30-day history: a measure that is right for prose is not
+   right for a nine-column table, and the alternative is hiding the new
+   columns behind a horizontal scrollbar, which is the click this change
+   exists to remove. Wide screens only; below that the table scrolls as it
+   always did. */
+@media (min-width: 1140px) {
+  .panel-wide {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(1320px, calc(100vw - 40px));
+  }
+}
 
 .table-scroll {
   overflow-x: auto;
@@ -313,6 +466,25 @@ th {
 }
 tbody tr:last-child td { border-bottom: 0; }
 td.num { font-variant-numeric: tabular-nums; }
+/* Endpoint names run long. Left unwrapped they took a thousand pixels on
+   their own and pushed every other column off the screen. */
+#endpoints tbody td:first-child {
+  white-space: normal;
+  min-width: 22ch;
+  max-width: 34ch;
+}
+/* Same reason, smaller offender: "Keskkonnaseire infosüsteem" on one line
+   costs 90px that the history strip needs. Measured against a 30-day window,
+   which is the widest the table ever gets. */
+#endpoints tbody td:nth-child(2) {
+  white-space: normal;
+  max-width: 16ch;
+  /* "Probleemtooteregister" has no space to break at and otherwise runs over
+     the status column. `break-word` rather than `anywhere`: the latter also
+     lets the column shrink below its longest word, which chopped
+     "Ilmateenistus" across two lines in every row that has it. */
+  overflow-wrap: break-word;
+}
 td .id {
   display: block;
   color: var(--muted);

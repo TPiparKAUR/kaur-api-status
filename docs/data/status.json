@@ -1,9 +1,16 @@
 {
  "availability": {
-  "checks_24h": 2000,
+  "checks_24h": 1974,
   "d7": 94.59,
-  "h24": 83.2
+  "h24": 83.23
  },
+ "chart_dates": [
+  "2026-09-14",
+  "2026-09-15",
+  "2026-09-16",
+  "2026-09-17",
+  "2026-09-18"
+ ],
  "chart_days": 30,
  "daily": [
   {
@@ -136,6 +143,29 @@
    "avail_24h": 97.87,
    "avail_7d": 99.1,
    "checks_24h": 47,
+   "days": {
+    "checks": [
+     18,
+     59,
+     55,
+     48,
+     41
+    ],
+    "ok": [
+     18,
+     59,
+     54,
+     48,
+     40
+    ],
+    "p50_ms": [
+     762,
+     764,
+     447,
+     411,
+     416
+    ]
+   },
    "detail": "",
    "http": null,
    "id": "eelis",
@@ -152,6 +182,29 @@
    "avail_24h": 97.87,
    "avail_7d": 99.24,
    "checks_24h": 47,
+   "days": {
+    "checks": [
+     0,
+     3,
+     40,
+     48,
+     41
+    ],
+    "ok": [
+     0,
+     3,
+     40,
+     48,
+     40
+    ],
+    "p50_ms": [
+     null,
+     1280,
+     958,
+     904,
+     916
+    ]
+   },
    "detail": "",
    "http": 200,
    "id": "estmodel-assessment-units",
@@ -168,6 +221,29 @@
    "avail_24h": 97.87,
    "avail_7d": 99.24,
    "checks_24h": 47,
+   "days": {
+    "checks": [
+     0,
+     3,
+     40,
+     48,
+     41
+    ],
+    "ok": [
+     0,
+     3,
+     40,
+     48,
+     40
+    ],
+    "p50_ms": [
+     null,
+     813,
+     594,
+     529,
+     623
+    ]
+   },
    "detail": "",
    "http": 200,
    "id": "estmodel-countries",
@@ -184,6 +260,29 @@
    "avail_24h": 97.87,
    "avail_7d": 99.24,
    "checks_24h": 47,
+   "days": {
+    "checks": [
+     0,
+     3,
+     40,
+     48,
+     41
+    ],
+    "ok": [
+     0,
+     3,
+     40,
+     48,
+     40
+    ],
+    "p50_ms": [
+     null,
+     659,
+     554,
+     617,
+     666
+    ]
+   },
    "detail": "",
    "http": 200,
    "id": "estmodel-districts",
@@ -200,6 +299,29 @@
    "avail_24h": 97.87,
    "avail_7d": 99.24,
    "checks_24h": 47,
+   "days": {
+    "checks": [
+     0,
+     3,
+     40,
+     48,
+     41
+    ],
+    "ok": [
+     0,
+     3,
+     40,
+     48,
+     40
+    ],
+    "p50_ms": [
+     null,
+     1454,
+     1286,
+     1162,
+     1180
+    ]
+   },
    "detail": "body truncated at 262144 bytes, parse skipped",
    "http": 200,
    "id": "estmodel-rivers",
@@ -216,6 +338,29 @@
    "avail_24h": 97.87,
    "avail_7d": 99.24,
    "checks_24h": 47,
+   "days": {
+    "checks": [
+     0,
+     3,
+     40,
+     48,
+     41
+    ],
+    "ok": [
+     0,
+     3,
+     40,
+     48,
+     40
+    ],
+    "p50_ms": [
+     null,
+     980,
+     760,
+     724,
+     774
+    ]
+   },
    "detail": "",
    "http": 200,
    "id": "estmodel-stations",
@@ -232,6 +377,29 @@
    "avail_24h": 97.87,
    "avail_7d": 99.24,
    "checks_24h": 47,
+   "days": {
+    "checks": [
+     0,
+     3,
+     40,
+     48,
+     41
+    ],
+    "ok": [
+     0,
+     3,
+     40,
+     48,
+     40
+    ],
+    "p50_ms": [
+     null,
+     824,
+     568,
+     583,
+     651
+    ]
+   },
    "detail": "",
    "http": 200,
    "id": "estmodel-subdistricts",
@@ -248,6 +416,29 @@
    "avail_24h": 97.87,
    "avail_7d": 99.24,
    "checks_24h": 47,
+   "days": {
+    "checks": [
+     0,
+     3,
+     40,
+     48,
+     41
+    ],
+    "ok": [
+     0,
+     3,
+     40,
+     48,
+     40
+    ],
+    "p50_ms": [
+     null,
+     1566,
+     1203,
+     1147,
+     1195
+    ]
+   },
    "detail": "body truncated at 262144 bytes, parse skipped",
    "http": 200,
    "id": "estmodel-water-outlets",
@@ -264,6 +455,29 @@
    "avail_24h": 97.87,
    "avail_7d": 99.56,
    "checks_24h": 47,
+   "days": {
+    "checks": [
+     22,
+     59,
+     55,
+     48,
+     41
+    ],
+    "ok": [
+     22,
+     59,
+     55,
+     48,
+     40
+    ],
+    "p50_ms": [
+     1124,
+     1148,
+     514,
+     478,
+     492
+    ]
+   },
    "detail": "",
    "http": 200,
    "id": "f-hydroseire",
@@ -277,9 +491,32 @@
    "verified": false
   },
   {
-   "avail_24h": 97.92,
+   "avail_24h": 97.87,
    "avail_7d": 99.57,
-   "checks_24h": 48,
+   "checks_24h": 47,
+   "days": {
+    "checks": [
+     28,
+     59,
+     55,
+     48,
+     41
+    ],
+    "ok": [
+     28,
+     59,
+     55,
+     48,
+     40
+    ],
+    "p50_ms": [
+     3616,
+     3074,
+     1537,
+     1941,
+     3250
+    ]
+   },
    "detail": "",
    "http": 200,
    "id": "hydroseire",
@@ -293,9 +530,32 @@
    "verified": true
   },
   {
-   "avail_24h": 41.67,
+   "avail_24h": 42.55,
    "avail_7d": 67.94,
-   "checks_24h": 48,
+   "checks_24h": 47,
+   "days": {
+    "checks": [
+     0,
+     2,
+     40,
+     48,
+     41
+    ],
+    "ok": [
+     0,
+     2,
+     40,
+     30,
+     17
+    ],
+    "p50_ms": [
+     null,
+     1047,
+     1183,
+     1164,
+     1281
+    ]
+   },
    "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 8]> <html class=\"no-js ie8 oldie\" lang=\"en-US\"> <![endif]--> <!--[if gt IE 8]><!--> <html class=\"no-js\" lang=\"en-US\"> <!--<![e",
    "http": 429,
    "id": "ilmateenistus-hoiatused-rss",
@@ -309,9 +569,32 @@
    "verified": false
   },
   {
-   "avail_24h": 37.5,
+   "avail_24h": 38.3,
    "avail_7d": 67.18,
-   "checks_24h": 48,
+   "checks_24h": 47,
+   "days": {
+    "checks": [
+     0,
+     2,
+     40,
+     48,
+     41
+    ],
+    "ok": [
+     0,
+     2,
+     40,
+     30,
+     16
+    ],
+    "p50_ms": [
+     null,
+     1640,
+     1226,
+     1172,
+     1400
+    ]
+   },
    "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 8]> <html class=\"no-js ie8 oldie\" lang=\"en-US\"> <![endif]--> <!--[if gt IE 8]><!--> <html class=\"no-js\" lang=\"en-US\"> <!--<![e",
    "http": 429,
    "id": "ilmateenistus-hoiatused-xml",
@@ -325,9 +608,32 @@
    "verified": false
   },
   {
-   "avail_24h": 81.25,
+   "avail_24h": 80.85,
    "avail_7d": 87.12,
-   "checks_24h": 48,
+   "checks_24h": 47,
+   "days": {
+    "checks": [
+     0,
+     3,
+     40,
+     48,
+     41
+    ],
+    "ok": [
+     0,
+     3,
+     40,
+     37,
+     35
+    ],
+    "p50_ms": [
+     null,
+     2661,
+     2152,
+     2084,
+     2223
+    ]
+   },
    "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 8]> <html class=\"no-js ie8 oldie\" lang=\"en-US\"> <![endif]--> <!--[if gt IE 8]><!--> <html class=\"no-js\" lang=\"en-US\"> <!--<![e",
    "http": 429,
    "id": "ilmateenistus-juur",
@@ -341,9 +647,32 @@
    "verified": false
   },
   {
-   "avail_24h": 43.75,
+   "avail_24h": 44.68,
    "avail_7d": 67.94,
-   "checks_24h": 48,
+   "checks_24h": 47,
+   "days": {
+    "checks": [
+     0,
+     2,
+     40,
+     48,
+     41
+    ],
+    "ok": [
+     0,
+     2,
+     40,
+     28,
+     19
+    ],
+    "p50_ms": [
+     null,
+     888,
+     982,
+     975,
+     1107
+    ]
+   },
    "detail": "",
    "http": 200,
    "id": "ilmateenistus-prognoos-xml",
@@ -357,9 +686,32 @@
    "verified": false
   },
   {
-   "avail_24h": 37.5,
+   "avail_24h": 38.3,
    "avail_7d": 63.64,
-   "checks_24h": 48,
+   "checks_24h": 47,
+   "days": {
+    "checks": [
+     0,
+     3,
+     40,
+     48,
+     41
+    ],
+    "ok": [
+     0,
+     3,
+     40,
+     26,
+     15
+    ],
+    "p50_ms": [
+     null,
+     1392,
+     1149,
+     1026,
+     1234
+    ]
+   },
    "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 8]> <html class=\"no-js ie8 oldie\" lang=\"en-US\"> <![endif]--> <!--[if gt IE 8]><!--> <html class=\"no-js\" lang=\"en-US\"> <!--<![e",
    "http": 429,
    "id": "ilmateenistus-vaatlusandmed-xml",
@@ -373,9 +725,32 @@
    "verified": false
   },
   {
-   "avail_24h": 97.92,
+   "avail_24h": 97.87,
    "avail_7d": 99.57,
-   "checks_24h": 48,
+   "checks_24h": 47,
+   "days": {
+    "checks": [
+     28,
+     59,
+     55,
+     48,
+     41
+    ],
+    "ok": [
+     28,
+     59,
+     55,
+     48,
+     40
+    ],
+    "p50_ms": [
+     1652,
+     1693,
+     733,
+     593,
+     615
+    ]
+   },
    "detail": "",
    "http": 200,
    "id": "kaia-items-query",
@@ -389,9 +764,32 @@
    "verified": true
   },
   {
-   "avail_24h": 97.92,
+   "avail_24h": 97.87,
    "avail_7d": 99.57,
-   "checks_24h": 48,
+   "checks_24h": 47,
+   "days": {
+    "checks": [
+     28,
+     59,
+     55,
+     48,
+     41
+    ],
+    "ok": [
+     28,
+     59,
+     55,
+     48,
+     40
+    ],
+    "p50_ms": [
+     1868,
+     1900,
+     913,
+     766,
+     779
+    ]
+   },
    "detail": "",
    "http": 200,
    "id": "kaia-lists-active",
@@ -405,9 +803,32 @@
    "verified": true
   },
   {
-   "avail_24h": 97.92,
+   "avail_24h": 97.87,
    "avail_7d": 99.57,
-   "checks_24h": 48,
+   "checks_24h": 47,
+   "days": {
+    "checks": [
+     28,
+     59,
+     55,
+     48,
+     41
+    ],
+    "ok": [
+     28,
+     59,
+     55,
+     48,
+     40
+    ],
+    "p50_ms": [
+     1712,
+     1794,
+     904,
+     778,
+     776
+    ]
+   },
    "detail": "",
    "http": 200,
    "id": "kaia-lists-archive",
@@ -421,9 +842,32 @@
    "verified": true
   },
   {
-   "avail_24h": 97.92,
+   "avail_24h": 97.87,
    "avail_7d": 99.57,
-   "checks_24h": 48,
+   "checks_24h": 47,
+   "days": {
+    "checks": [
+     28,
+     59,
+     55,
+     48,
+     41
+    ],
+    "ok": [
+     28,
+     59,
+     55,
+     48,
+     40
+    ],
+    "p50_ms": [
+     1736,
+     1654,
+     796,
+     682,
+     682
+    ]
+   },
    "detail": "",
    "http": 200,
    "id": "kaia-swagger",
@@ -437,9 +881,32 @@
    "verified": true
   },
   {
-   "avail_24h": 97.92,
+   "avail_24h": 97.87,
    "avail_7d": 99.24,
-   "checks_24h": 48,
+   "checks_24h": 47,
+   "days": {
+    "checks": [
+     0,
+     3,
+     40,
+     48,
+     41
+    ],
+    "ok": [
+     0,
+     3,
+     40,
+     48,
+     40
+    ],
+    "p50_ms": [
+     null,
+     722,
+     674,
+     654,
+     664
+    ]
+   },
    "detail": "",
    "http": null,
    "id": "kaia-vaated",
@@ -453,9 +920,32 @@
    "verified": false
   },
   {
-   "avail_24h": 97.92,
+   "avail_24h": 97.87,
    "avail_7d": 99.57,
-   "checks_24h": 48,
+   "checks_24h": 47,
+   "days": {
+    "checks": [
+     28,
+     59,
+     55,
+     48,
+     41
+    ],
+    "ok": [
+     28,
+     59,
+     55,
+     48,
+     40
+    ],
+    "p50_ms": [
+     1397,
+     1198,
+     930,
+     839,
+     839
+    ]
+   },
    "detail": "body truncated at 65536 bytes, parse skipped",
    "http": 200,
    "id": "keskkonnaandmed-root",
@@ -472,6 +962,29 @@
    "avail_24h": 97.87,
    "avail_7d": 99.11,
    "checks_24h": 47,
+   "days": {
+    "checks": [
+     22,
+     59,
+     55,
+     48,
+     41
+    ],
+    "ok": [
+     22,
+     58,
+     55,
+     48,
+     40
+    ],
+    "p50_ms": [
+     942,
+     908,
+     519,
+     464,
+     484
+    ]
+   },
    "detail": "",
    "http": 200,
    "id": "f-keskkonnaseire",
@@ -485,9 +998,32 @@
    "verified": false
   },
   {
-   "avail_24h": 97.92,
+   "avail_24h": 97.87,
    "avail_7d": 99.13,
-   "checks_24h": 48,
+   "checks_24h": 47,
+   "days": {
+    "checks": [
+     28,
+     59,
+     55,
+     48,
+     41
+    ],
+    "ok": [
+     28,
+     58,
+     55,
+     48,
+     40
+    ],
+    "p50_ms": [
+     1284,
+     1362,
+     2343,
+     2460,
+     2251
+    ]
+   },
    "detail": "",
    "http": 200,
    "id": "keskkonnaseire",
@@ -501,9 +1037,32 @@
    "verified": true
   },
   {
-   "avail_24h": 97.92,
+   "avail_24h": 97.87,
    "avail_7d": 99.24,
-   "checks_24h": 48,
+   "checks_24h": 47,
+   "days": {
+    "checks": [
+     0,
+     3,
+     40,
+     48,
+     41
+    ],
+    "ok": [
+     0,
+     3,
+     40,
+     48,
+     40
+    ],
+    "p50_ms": [
+     null,
+     780,
+     685,
+     648,
+     657
+    ]
+   },
    "detail": "",
    "http": 200,
    "id": "kese-juur",
@@ -520,6 +1079,29 @@
    "avail_24h": 97.87,
    "avail_7d": 99.56,
    "checks_24h": 47,
+   "days": {
+    "checks": [
+     22,
+     59,
+     55,
+     48,
+     41
+    ],
+    "ok": [
+     22,
+     59,
+     55,
+     48,
+     40
+    ],
+    "p50_ms": [
+     983,
+     936,
+     510,
+     451,
+     451
+    ]
+   },
    "detail": "",
    "http": 200,
    "id": "f-kliima-element",
@@ -536,6 +1118,29 @@
    "avail_24h": 97.87,
    "avail_7d": 99.56,
    "checks_24h": 47,
+   "days": {
+    "checks": [
+     22,
+     59,
+     55,
+     48,
+     41
+    ],
+    "ok": [
+     22,
+     59,
+     55,
+     48,
+     40
+    ],
+    "p50_ms": [
+     967,
+     920,
+     506,
+     446,
+     459
+    ]
+   },
    "detail": "",
    "http": 200,
    "id": "f-kliima-jaam-vaatlus",
@@ -552,6 +1157,29 @@
    "avail_24h": 97.87,
    "avail_7d": 99.56,
    "checks_24h": 47,
+   "days": {
+    "checks": [
+     22,
+     59,
+     55,
+     48,
+     41
+    ],
+    "ok": [
+     22,
+     59,
+     55,
+     48,
+     40
+    ],
+    "p50_ms": [
+     966,
+     922,
+     485,
+     459,
+     456
+    ]
+   },
    "detail": "",
    "http": 200,
    "id": "f-kliima-kuu",
@@ -568,6 +1196,29 @@
    "avail_24h": 97.87,
    "avail_7d": 99.56,
    "checks_24h": 47,
+   "days": {
+    "checks": [
+     22,
+     59,
+     55,
+     48,
+     41
+    ],
+    "ok": [
+     22,
+     59,
+     55,
+     48,
+     40
+    ],
+    "p50_ms": [
+     889,
+     905,
+     519,
+     448,
+     444
+    ]
+   },
    "detail": "",
    "http": 200,
    "id": "f-kliima-minut",
@@ -584,6 +1235,29 @@
    "avail_24h": 97.87,
    "avail_7d": 99.56,
    "checks_24h": 47,
+   "days": {
+    "checks": [
+     22,
+     59,
+     55,
+     48,
+     41
+    ],
+    "ok": [
+     22,
+     59,
+     55,
+     48,
+     40
+    ],
+    "p50_ms": [
+     883,
+     881,
+     509,
+     456,
+     457
+    ]
+   },
    "detail": "",
    "http": 200,
    "id": "f-kliima-paev",
@@ -600,6 +1274,29 @@
    "avail_24h": 97.87,
    "avail_7d": 99.56,
    "checks_24h": 47,
+   "days": {
+    "checks": [
+     22,
+     59,
+     55,
+     48,
+     41
+    ],
+    "ok": [
+     22,
+     59,
+     55,
+     48,
+     40
+    ],
+    "p50_ms": [
+     879,
+     887,
+     509,
+     450,
+     439
+    ]
+   },
    "detail": "",
    "http": 200,
    "id": "f-kliima-tund",
@@ -613,9 +1310,32 @@
    "verified": false
   },
   {
-   "avail_24h": 97.92,
+   "avail_24h": 97.87,
    "avail_7d": 99.57,
-   "checks_24h": 48,
+   "checks_24h": 47,
+   "days": {
+    "checks": [
+     28,
+     59,
+     55,
+     48,
+     41
+    ],
+    "ok": [
+     28,
+     59,
+     55,
+     48,
+     40
+    ],
+    "p50_ms": [
+     858,
+     712,
+     450,
+     409,
+     410
+    ]
+   },
    "detail": "",
    "http": 200,
    "id": "kliima-element",
@@ -629,9 +1349,32 @@
    "verified": true
   },
   {
-   "avail_24h": 97.92,
+   "avail_24h": 97.87,
    "avail_7d": 99.57,
-   "checks_24h": 48,
+   "checks_24h": 47,
+   "days": {
+    "checks": [
+     28,
+     59,
+     55,
+     48,
+     41
+    ],
+    "ok": [
+     28,
+     59,
+     55,
+     48,
+     40
+    ],
+    "p50_ms": [
+     858,
+     726,
+     448,
+     412,
+     413
+    ]
+   },
    "detail": "",
    "http": 200,
    "id": "kliima-jaam-vaatlus",
@@ -645,9 +1388,32 @@
    "verified": true
   },
   {
-   "avail_24h": 97.92,
+   "avail_24h": 97.87,
    "avail_7d": 99.57,
-   "checks_24h": 48,
+   "checks_24h": 47,
+   "days": {
+    "checks": [
+     28,
+     59,
+     55,
+     48,
+     41
+    ],
+    "ok": [
+     28,
+     59,
+     55,
+     48,
+     40
+    ],
+    "p50_ms": [
+     841,
+     719,
+     456,
+     414,
+     407
+    ]
+   },
    "detail": "",
    "http": 200,
    "id": "kliima-kuu",
@@ -661,9 +1427,32 @@
    "verified": true
   },
   {
-   "avail_24h": 97.92,
+   "avail_24h": 97.87,
    "avail_7d": 99.57,
-   "checks_24h": 48,
+   "checks_24h": 47,
+   "days": {
+    "checks": [
+     28,
+     59,
+     55,
+     48,
+     41
+    ],
+    "ok": [
+     28,
+     59,
+     55,
+     48,
+     40
+    ],
+    "p50_ms": [
+     850,
+     718,
+     448,
+     402,
+     415
+    ]
+   },
    "detail": "",
    "http": 200,
    "id": "kliima-minut",
@@ -677,9 +1466,32 @@
    "verified": true
   },
   {
-   "avail_24h": 97.92,
+   "avail_24h": 97.87,
    "avail_7d": 99.57,
-   "checks_24h": 48,
+   "checks_24h": 47,
+   "days": {
+    "checks": [
+     28,
+     59,
+     55,
+     48,
+     41
+    ],
+    "ok": [
+     28,
+     59,
+     55,
+     48,
+     40
+    ],
+    "p50_ms": [
+     859,
+     736,
+     460,
+     406,
+     416
+    ]
+   },
    "detail": "",
    "http": 200,
    "id": "kliima-paev",
@@ -693,9 +1505,32 @@
    "verified": true
   },
   {
-   "avail_24h": 97.92,
+   "avail_24h": 97.87,
    "avail_7d": 99.57,
-   "checks_24h": 48,
+   "checks_24h": 47,
+   "days": {
+    "checks": [
+     28,
+     59,
+     55,
+     48,
+     41
+    ],
+    "ok": [
+     28,
+     59,
+     55,
+     48,
+     40
+    ],
+    "p50_ms": [
+     844,
+     736,
+     471,
+     428,
+     427
+    ]
+   },
    "detail": "",
    "http": 200,
    "id": "kliima-paev-nimefilter",
@@ -709,9 +1544,32 @@
    "verified": true
   },
   {
-   "avail_24h": 97.92,
+   "avail_24h": 97.87,
    "avail_7d": 99.57,
-   "checks_24h": 48,
+   "checks_24h": 47,
+   "days": {
+    "checks": [
+     28,
+     59,
+     55,
+     48,
+     41
+    ],
+    "ok": [
+     28,
+     59,
+     55,
+     48,
+     40
+    ],
+    "p50_ms": [
+     842,
+     700,
+     453,
+     403,
+     407
+    ]
+   },
    "detail": "",
    "http": 200,
    "id": "kliima-tund",
@@ -725,9 +1583,32 @@
    "verified": true
   },
   {
-   "avail_24h": 25.0,
+   "avail_24h": 23.4,
    "avail_7d": 62.88,
-   "checks_24h": 48,
+   "checks_24h": 47,
+   "days": {
+    "checks": [
+     0,
+     3,
+     40,
+     48,
+     41
+    ],
+    "ok": [
+     0,
+     3,
+     40,
+     30,
+     10
+    ],
+    "p50_ms": [
+     null,
+     725,
+     564,
+     556,
+     701
+    ]
+   },
    "detail": "",
    "http": 200,
    "id": "kytus-bunkering-company",
@@ -741,9 +1622,32 @@
    "verified": false
   },
   {
-   "avail_24h": 29.17,
+   "avail_24h": 27.66,
    "avail_7d": 65.15,
-   "checks_24h": 48,
+   "checks_24h": 47,
+   "days": {
+    "checks": [
+     0,
+     3,
+     40,
+     48,
+     41
+    ],
+    "ok": [
+     0,
+     3,
+     40,
+     31,
+     12
+    ],
+    "p50_ms": [
+     null,
+     684,
+     603,
+     586,
+     603
+    ]
+   },
    "detail": "",
    "http": 200,
    "id": "kytus-monitoring",
@@ -757,9 +1661,32 @@
    "verified": false
   },
   {
-   "avail_24h": 27.08,
+   "avail_24h": 25.53,
    "avail_7d": 63.64,
-   "checks_24h": 48,
+   "checks_24h": 47,
+   "days": {
+    "checks": [
+     0,
+     3,
+     40,
+     48,
+     41
+    ],
+    "ok": [
+     0,
+     3,
+     40,
+     30,
+     11
+    ],
+    "p50_ms": [
+     null,
+     686,
+     574,
+     548,
+     662
+    ]
+   },
    "detail": "",
    "http": 200,
    "id": "kytus-source-of-pollution",
@@ -773,9 +1700,32 @@
    "verified": false
   },
   {
-   "avail_24h": 27.08,
+   "avail_24h": 25.53,
    "avail_7d": 60.61,
-   "checks_24h": 48,
+   "checks_24h": 47,
+   "days": {
+    "checks": [
+     0,
+     3,
+     40,
+     48,
+     41
+    ],
+    "ok": [
+     0,
+     3,
+     40,
+     26,
+     11
+    ],
+    "p50_ms": [
+     null,
+     665,
+     538,
+     547,
+     627
+    ]
+   },
    "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 8]> <html class=\"no-js ie8 oldie\" lang=\"en-US\"> <![endif]--> <!--[if gt IE 8]><!--> <html class=\"no-js\" lang=\"en-US\"> <!--<![e",
    "http": 429,
    "id": "pakis-opendata",
@@ -789,9 +1739,32 @@
    "verified": false
   },
   {
-   "avail_24h": 16.67,
+   "avail_24h": 17.02,
    "avail_7d": 58.33,
-   "checks_24h": 48,
+   "checks_24h": 47,
+   "days": {
+    "checks": [
+     0,
+     3,
+     40,
+     48,
+     41
+    ],
+    "ok": [
+     0,
+     3,
+     40,
+     26,
+     8
+    ],
+    "p50_ms": [
+     null,
+     645,
+     548,
+     525,
+     678
+    ]
+   },
    "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 8]> <html class=\"no-js ie8 oldie\" lang=\"en-US\"> <![endif]--> <!--[if gt IE 8]><!--> <html class=\"no-js\" lang=\"en-US\"> <!--<![e",
    "http": 429,
    "id": "proto-opendata",
@@ -806,12 +1779,12 @@
   }
  ],
  "first_record": "2026-09-14T13:40:24Z",
- "generated_at": "2026-09-18T20:35:42Z",
+ "generated_at": "2026-09-18T20:56:57Z",
  "incident_count": 194,
  "incidents": [
   {
    "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
-   "duration_s": 1,
+   "duration_s": 1276,
    "end": null,
    "id": "proto-opendata",
    "name": "PROTO: probleemtoodete avaandmed",
@@ -821,7 +1794,7 @@
   },
   {
    "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
-   "duration_s": 4,
+   "duration_s": 1279,
    "end": null,
    "id": "ilmateenistus-hoiatused-xml",
    "name": "Ilmateenistus: hoiatused XML",
@@ -831,7 +1804,7 @@
   },
   {
    "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
-   "duration_s": 5,
+   "duration_s": 1280,
    "end": null,
    "id": "ilmateenistus-juur",
    "name": "Ilmateenistus: teenuse juur",
@@ -851,7 +1824,7 @@
   },
   {
    "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
-   "duration_s": 1733,
+   "duration_s": 3008,
    "end": null,
    "id": "ilmateenistus-vaatlusandmed-xml",
    "name": "Ilmateenistus: Eesti vaatlusandmed XML",
@@ -881,7 +1854,7 @@
   },
   {
    "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
-   "duration_s": 1905,
+   "duration_s": 3180,
    "end": null,
    "id": "pakis-opendata",
    "name": "PAKIS: pakendijäätmete avaandmed",
@@ -911,7 +1884,7 @@
   },
   {
    "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
-   "duration_s": 1910,
+   "duration_s": 3185,
    "end": null,
    "id": "ilmateenistus-hoiatused-rss",
    "name": "Ilmateenistus: hoiatuste RSS",
@@ -2751,6 +3724,7 @@
   }
  ],
  "interval_minutes": 30,
+ "outage_total_s": 908023,
  "outages_by_endpoint": [
   {
    "count": 18,
@@ -2762,13 +3736,13 @@
    "count": 18,
    "id": "ilmateenistus-hoiatused-rss",
    "name": "Ilmateenistus: hoiatuste RSS",
-   "total_s": 76387
+   "total_s": 77662
   },
   {
    "count": 17,
    "id": "ilmateenistus-vaatlusandmed-xml",
    "name": "Ilmateenistus: Eesti vaatlusandmed XML",
-   "total_s": 88794
+   "total_s": 90069
   },
   {
    "count": 16,
@@ -2786,13 +3760,13 @@
    "count": 16,
    "id": "ilmateenistus-hoiatused-xml",
    "name": "Ilmateenistus: hoiatused XML",
-   "total_s": 77702
+   "total_s": 78977
   },
   {
    "count": 15,
    "id": "proto-opendata",
    "name": "PROTO: probleemtoodete avaandmed",
-   "total_s": 98523
+   "total_s": 99798
   },
   {
    "count": 15,
@@ -2804,13 +3778,13 @@
    "count": 15,
    "id": "pakis-opendata",
    "name": "PAKIS: pakendijäätmete avaandmed",
-   "total_s": 88660
+   "total_s": 89935
   },
   {
    "count": 12,
    "id": "ilmateenistus-juur",
    "name": "Ilmateenistus: teenuse juur",
-   "total_s": 27814
+   "total_s": 29089
   }
  ],
  "systems": [
@@ -2831,7 +3805,7 @@
    "problem": 0
   },
   {
-   "avail_24h": 97.89,
+   "avail_24h": 97.87,
    "description": "Hüdroloogilise seire tunniandmed: veetasemed ja muud veekogude näitajad jõgedel ja rannikumeres, koos mõõtejaamade asukohtadega. Kasutatakse veeolukorra jälgimiseks ja veemajanduses.",
    "endpoints": 2,
    "name": "Hüdroloogia",
@@ -2839,7 +3813,7 @@
    "problem": 0
   },
   {
-   "avail_24h": 48.33,
+   "avail_24h": 48.94,
    "description": "Riigi ilmateenistuse avalik teenus: ilmaprognoosid, hoiatused ohtliku ilma kohta, mereilmateade, mudelprognoosid ning ilmajaamade vaatlusandmed. Vaatlusandmed on masinliidesena saadaval XML-kujul.",
    "endpoints": 5,
    "name": "Ilmateenistus",
@@ -2847,7 +3821,7 @@
    "problem": 4
   },
   {
-   "avail_24h": 97.92,
+   "avail_24h": 97.87,
    "description": "Looduskeskkonna avaandmete failide allalaadimise teenus. Võimaldab masinliidese kaudu otsida ja alla laadida meteoroloogia ja hüdroloogia andmefaile.",
    "endpoints": 5,
    "name": "KAIA",
@@ -2855,7 +3829,7 @@
    "problem": 0
   },
   {
-   "avail_24h": 97.92,
+   "avail_24h": 97.87,
    "description": "Keskkonna- ja ilmavaldkonna andmeteenuste keskkonna juurteenus. See loetleb kõik saadaolevad andmestikud ja nende kuju, mistõttu on see esimene koht, kust arendaja alustab. Kui see teenus ei vasta, ei ole ka ülejäänud andmeteenused leitavad.",
    "endpoints": 1,
    "name": "Keskkonnaandmed",
@@ -2863,7 +3837,7 @@
    "problem": 0
   },
   {
-   "avail_24h": 97.89,
+   "avail_24h": 97.87,
    "description": "Riikliku keskkonnaseire mõõtmistulemused seireprogrammide ja näitajate kaupa. Kasutatakse keskkonnaseisundi hindamisel ja aruandluses.",
    "endpoints": 2,
    "name": "Keskkonnaseire",
@@ -2871,7 +3845,7 @@
    "problem": 0
   },
   {
-   "avail_24h": 97.92,
+   "avail_24h": 97.87,
    "description": "KESE on andmekogu, kuhu kogutakse keskkonnaseire seaduse alusel riikliku seireprogrammi, kalanduse andmekogumise ning muude uuringute seireandmed. Avaandmetena jõuavad need andmeteenuste kaudu välja.",
    "endpoints": 1,
    "name": "Keskkonnaseire infosüsteem",
@@ -2879,7 +3853,7 @@
    "problem": 0
   },
   {
-   "avail_24h": 97.9,
+   "avail_24h": 97.87,
    "description": "Ilmajaamade mõõtmisandmed kuu, ööpäeva, tunni ja 10 minuti täpsusega, koos jaamade ja mõõdetavate suuruste kirjeldustega. Neid andmeid kasutatakse kliimastatistikas, aruandluses ja uuringutes.",
    "endpoints": 13,
    "name": "Kliima",
@@ -2887,7 +3861,7 @@
    "problem": 0
   },
   {
-   "avail_24h": 27.08,
+   "avail_24h": 25.53,
    "description": "Eesti turul müüdavate ja tarbitavate vedelkütuste keskkonnaparameetrite kvaliteedi ja koguste seire. Osa riiklikust kütusekvaliteedi juhtimissüsteemist, mille kaudu täidetakse Euroopa Liidu kütusedirektiivide nõudeid.",
    "endpoints": 3,
    "name": "Kütuseseire",
@@ -2895,7 +3869,7 @@
    "problem": 0
   },
   {
-   "avail_24h": 27.08,
+   "avail_24h": 25.53,
    "description": "Turule lastud kauba pakendite, Eestis tekkinud pakendijäätmete, korduskasutuse ja taaskasutuse sihtarvude arvestus. Andmeid kasutatakse pakendiseadusest tulenevate kohustuste täitmiseks ja Euroopa Komisjonile aruandmiseks.",
    "endpoints": 1,
    "name": "Pakendiregister",
@@ -2903,7 +3877,7 @@
    "problem": 1
   },
   {
-   "avail_24h": 16.67,
+   "avail_24h": 17.02,
    "description": "Arvestus Eestis turule lastud probleemtoodete ja neist tekkinud jäätmete taaskasutamise ning kõrvaldamise kohta, sealhulgas taaskasutuse sihtarvude täitmise ja Euroopa Komisjonile esitatava jäätmealase teabe jaoks.",
    "endpoints": 1,
    "name": "Probleemtooteregister",

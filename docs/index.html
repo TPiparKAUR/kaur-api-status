@@ -72,7 +72,8 @@
         <p>Kui kaua teenused vastamiseks aega võtsid, mediaan päeva kohta.
            Eraldi jooned PostgREST-andmeteenustele ja KAIA failiteenusele,
            sest need kaks ei ole omavahel võrreldavad. Täpne 95. protsentiil
-           on näha kursorit graafiku kohale viies.</p>
+           on näha kursorit graafiku kohale viies. Üksiku otspunkti oma joon on
+           otspunktide tahvlil real endal, ilma kursorita.</p>
       </figcaption>
       <div class="canvas-box">
         <canvas id="chart-latency" aria-label="Vastuseaja trend" aria-describedby="summary-latency"></canvas>
@@ -94,26 +95,44 @@
     </figure>
   </section>
 
-  <section class="panel" aria-labelledby="h-tahvel">
+  <section class="panel panel-wide" aria-labelledby="h-tahvel">
     <h2 id="h-tahvel">Otspunktide tahvel</h2>
+    <p class="note">
+      Iga rida kannab oma ajalugu kaasas: <strong>Ajalugu</strong> on üks ruut päeva
+      kohta ja <strong>Vastuseaeg</strong> on sama perioodi mediaanide joon. Nii ei
+      pea üheainsa otspunkti käitumise nägemiseks kursorit koondgraafiku kohal
+      liigutama. Veerupäisele klõpsates saab tabelit sorteerida.
+    </p>
     <div class="toolbar">
+      <label class="field">
+        <span>Otsi</span>
+        <input type="search" id="filter-text" placeholder="otspunkti nimi või id" autocomplete="off">
+      </label>
+      <label class="field">
+        <span>Teenus</span>
+        <select id="filter-system"><option value="">kõik</option></select>
+      </label>
       <label class="toggle">
         <input type="checkbox" id="show-all">
         <span>Näita kõiki otspunkte</span>
       </label>
+      <button type="button" class="linkish" id="filter-reset" hidden>Tühista filtrid</button>
       <span class="note" id="table-note"></span>
     </div>
+    <p class="legend" id="strip-legend"></p>
     <div class="table-scroll">
       <table id="endpoints">
         <thead>
           <tr>
-            <th scope="col">Otspunkt</th>
-            <th scope="col">Teenus</th>
-            <th scope="col">Seisund</th>
-            <th scope="col">Vastus</th>
-            <th scope="col">24 h</th>
-            <th scope="col">7 päeva</th>
-            <th scope="col">Viimane kontroll</th>
+            <th scope="col" data-sort="name" data-type="text">Otspunkt</th>
+            <th scope="col" data-sort="system" data-type="text">Teenus</th>
+            <th scope="col" data-sort="severity" data-type="number">Seisund</th>
+            <th scope="col" data-sort="ms" data-type="number">Vastus</th>
+            <th scope="col" data-sort="avail_24h" data-type="number">24 h</th>
+            <th scope="col" data-sort="avail_7d" data-type="number">7 päeva</th>
+            <th scope="col" data-sort="avail_window" data-type="number">Ajalugu</th>
+            <th scope="col" data-sort="p50_last" data-type="number">Vastuseaeg</th>
+            <th scope="col" data-sort="ts" data-type="text">Viimane kontroll</th>
           </tr>
         </thead>
         <tbody></tbody>
@@ -121,18 +140,19 @@
     </div>
   </section>
 
-  <section class="panel" aria-labelledby="h-katkestused">
+  <section class="panel panel-wide" aria-labelledby="h-katkestused">
     <h2 id="h-katkestused">Katkestuste logi</h2>
-    <p class="note">Millal, milline otspunkt ja kui kaua. Uuemad eespool.</p>
+    <p class="note">Millal, milline otspunkt ja kui kaua. Uuemad eespool;
+       veerupäisele klõpsates saab ümber järjestada, näiteks kestuse järgi.</p>
     <div class="table-scroll">
       <table id="incidents">
         <thead>
           <tr>
-            <th scope="col">Algus</th>
-            <th scope="col">Lõpp</th>
-            <th scope="col">Kestus</th>
-            <th scope="col">Otspunkt</th>
-            <th scope="col">Põhjus</th>
+            <th scope="col" data-sort="start" data-type="text">Algus</th>
+            <th scope="col" data-sort="end" data-type="text">Lõpp</th>
+            <th scope="col" data-sort="duration_s" data-type="number">Kestus</th>
+            <th scope="col" data-sort="name" data-type="text">Otspunkt</th>
+            <th scope="col" data-sort="detail" data-type="text">Põhjus</th>
           </tr>
         </thead>
         <tbody></tbody>
@@ -158,6 +178,22 @@
 
       <dt>Kättesaadavus</dt>
       <dd>Õnnestunud kontrollide osakaal kõigist kontrollidest valitud ajavahemikus.</dd>
+
+      <dt>"Otspunkte maas kokku"</dt>
+      <dd>Kõigi katkestuste kestuste summa, liidetud üle otspunktide. Kui kaks
+          otspunkti on tund aega korraga maas, on see siin kaks tundi, mitte üks —
+          see ei ole kalendriaeg, mille jooksul platvorm oli maas, vaid kogunenud
+          teenusekatkestuse maht. Summa katab kõik logitud katkestused, ka need,
+          mida allolevas tabelis (kuni 200 uuemat) ei näidata.</dd>
+
+      <dt>Ajaloo ruudustiku värvid</dt>
+      <dd>Üks ruut on üks ööpäev. Roheline tähendab, et kõik selle päeva kontrollid
+          õnnestusid, kollane vähemalt 95 %, punane alla selle, hall aga seda, et
+          sel päeval seda otspunkti ei kontrollitudki. <strong>Need piirid on
+          esitusvalik, mitte kokkulepitud teenustase</strong> — SLA-d ei ole
+          Keskkonnaagentuuri ja teenuste omanike vahel kokku lepitud, seega leht ei
+          väida, et 95 % oleks lubatu piir. Täpne protsent ja kontrollide arv on iga
+          ruudu kohal kursoriga näha, ja samad arvud on kõrvalveergudes sõnadega.</dd>
 
       <dt>Märge "kinnitamata"</dt>
       <dd>URL-i pole inimene üle vaadanud — see võib olla vale päring, mitte

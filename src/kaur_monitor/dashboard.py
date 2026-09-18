@@ -95,6 +95,44 @@ def _daily(records: list[dict[str, Any]], now: datetime) -> list[dict[str, Any]]
     return rows
 
 
+def _unit_days(
+    series: list[dict[str, Any]], dates: list[str]
+) -> dict[str, list[int | float | None]]:
+    """One unit's daily checks/ok/median, aligned position-for-position to `dates`.
+
+    Three parallel arrays rather than a list of objects: the page needs a
+    30-value sparkline and a 30-cell uptime strip per unit, and at 42 units the
+    object form costs several times the bytes for the same numbers in a file
+    that is regenerated and committed every half hour.
+
+    A day on which this unit was never checked is `checks = 0` and
+    `p50_ms = None`, never `avail = 0` — "we did not look" and "it was down"
+    must not render as the same cell.
+    """
+    wanted = {date: index for index, date in enumerate(dates)}
+    ok = [0] * len(dates)
+    checks = [0] * len(dates)
+    latencies: list[list[int]] = [[] for _ in dates]
+    for record in series:
+        stamp = store.parse_ts(record.get("ts"))
+        status = record.get("status")
+        if stamp is None or status == "unknown":
+            continue
+        index = wanted.get(f"{stamp:%Y-%m-%d}")
+        if index is None:
+            continue
+        checks[index] += 1
+        if status == "ok":
+            ok[index] += 1
+            if isinstance(record.get("ms"), int):
+                latencies[index].append(record["ms"])
+    return {
+        "checks": checks,
+        "ok": ok,
+        "p50_ms": [_percentile(values, 0.5) for values in latencies],
+    }
+
+
 def build(entries: list[dict[str, Any]]) -> dict[str, Any]:
     now = datetime.now(UTC)
     records = list(store.read_all(since=store.window_start(analysis.WINDOW_DAYS)))
@@ -103,6 +141,11 @@ def build(entries: list[dict[str, Any]]) -> dict[str, Any]:
 
     day_ago = store.window_start(1.0)
     week_ago = store.window_start(7.0)
+
+    overall_daily = _daily(records, now)
+    # The shared date axis for every per-unit array below. Only days that
+    # actually carry checks appear, so a gap in the log stays a gap.
+    chart_dates = [row["date"] for row in overall_daily]
 
     endpoints: list[dict[str, Any]] = []
     for entry in sorted(entries, key=lambda e: (str(e.get("system") or ""), e["id"])):
@@ -132,6 +175,11 @@ def build(entries: list[dict[str, Any]]) -> dict[str, Any]:
                 # an unverified endpoint's number against a verified one's
                 # should not assume the two carry the same authority.
                 "verified": bool(entry.get("verified", False)),
+                # Per-day history, aligned to the top-level chart_dates. This
+                # is what lets the table show a unit's 30-day uptime strip and
+                # response-time sparkline in the row itself, instead of making
+                # the reader hover a pooled chart to learn anything per unit.
+                "days": _unit_days(series, chart_dates),
             }
         )
 
@@ -217,6 +265,7 @@ def build(entries: list[dict[str, Any]]) -> dict[str, Any]:
         "interval_minutes": 30,
         "window_days": int(analysis.WINDOW_DAYS),
         "chart_days": _CHART_DAYS,
+        "chart_dates": chart_dates,
         "first_record": min(stamps).strftime("%Y-%m-%dT%H:%M:%SZ") if stamps else None,
         "totals": totals,
         "availability": {
@@ -226,7 +275,7 @@ def build(entries: list[dict[str, Any]]) -> dict[str, Any]:
         },
         "systems": systems,
         "endpoints": endpoints,
-        "daily": _daily(records, now),
+        "daily": overall_daily,
         # For the latency chart's two lines. Everything else (the overall
         # availability chart, the tiles) intentionally keeps reading "daily",
         # not these — only response time differs enough by service type to
@@ -235,6 +284,11 @@ def build(entries: list[dict[str, Any]]) -> dict[str, Any]:
         "daily_kaia": _daily(kaia_records, now),
         "incidents": incidents[:200],
         "incident_count": len(incidents),
+        # Summed over every incident, not just the 200 sent to the page: a
+        # management tile reading "how much downtime" must not quietly become
+        # "how much downtime among the 200 most recent" once the list is
+        # truncated.
+        "outage_total_s": sum(i["duration_s"] or 0 for i in incidents),
         "outages_by_endpoint": outages_by_endpoint[:10],
     }
 

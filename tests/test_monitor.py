@@ -1189,6 +1189,48 @@ class DashboardData(unittest.TestCase):
         self.assertIsNone(data["first_record"])
         self.assertIsNone(data["availability"]["h24"])
 
+    def test_per_unit_days_align_to_the_shared_date_axis(self):
+        """The page reads these three arrays positionally against chart_dates.
+
+        If they ever drift out of step, every history cell and sparkline point
+        on the page silently moves to the wrong day, and nothing would show it
+        — hence the explicit length check rather than a spot check.
+        """
+        self._write([dict(_record("a", "ok", 5), ms=200), dict(_record("a", "down", 6), ms=None)])
+        data = dashboard.build([self._entry("a")])
+        dates = data["chart_dates"]
+        days = data["endpoints"][0]["days"]
+        self.assertTrue(dates)
+        for key in ("checks", "ok", "p50_ms"):
+            self.assertEqual(len(days[key]), len(dates), key)
+        self.assertEqual(sum(days["checks"]), 2)
+        self.assertEqual(sum(days["ok"]), 1)
+
+    def test_a_day_without_checks_is_zero_checks_not_zero_availability(self):
+        """ "Nobody looked" and "it was down" must not render as the same cell."""
+        self._write([dict(_record("a", "ok", 5), ms=200), dict(_record("b", "down", 5), ms=None)])
+        data = dashboard.build([self._entry("a"), self._entry("c")])
+        never = next(e for e in data["endpoints"] if e["id"] == "c")
+        self.assertEqual(set(never["days"]["checks"]), {0})
+        self.assertEqual(set(never["days"]["ok"]), {0})
+        self.assertEqual(set(never["days"]["p50_ms"]), {None})
+
+    def test_per_unit_days_exclude_unknown_like_every_other_reader(self):
+        self._write([dict(_record("a", "ok", 5), ms=200), _record("a", "unknown", 6)])
+        days = dashboard.build([self._entry("a")])["endpoints"][0]["days"]
+        self.assertEqual(sum(days["checks"]), 1)
+
+    def test_total_downtime_covers_every_incident_not_just_the_listed_ones(self):
+        self._write(
+            [dict(_record("a", "down", 30 - i), ms=None) for i in range(4)]
+            + [dict(_record("a", "ok", 1), ms=100)]
+        )
+        data = dashboard.build([self._entry("a")])
+        self.assertEqual(
+            data["outage_total_s"], sum(i["duration_s"] or 0 for i in data["incidents"])
+        )
+        self.assertGreater(data["outage_total_s"], 0)
+
     def test_availability_counts_only_real_outcomes(self):
         self._write(
             [
