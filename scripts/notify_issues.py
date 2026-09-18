@@ -27,6 +27,13 @@ LABEL = "api-incident"
 MARKER = "<!-- kaur-monitor:{id} -->"
 MARKER_PATTERN = re.compile(r"<!-- kaur-monitor:([^\s>]+) -->")
 
+# One aggregate issue for "most of it is down at once", kept apart from the
+# per-unit issues by its own marker id so the same open/close machinery works
+# for both. See _broad_outage() for why it exists.
+BROAD_ID = "broad-outage"
+BROAD_SHARE = 1 / 3
+BROAD_MIN_UNITS = 6
+
 
 def _request(method: str, path: str, token: str, payload: dict | None = None) -> object:
     data = json.dumps(payload).encode() if payload is not None else None
@@ -107,6 +114,92 @@ def _consecutive_failures(series: list[dict]) -> int:
     return streak
 
 
+def _broad_outage(latest: dict[str, dict]) -> tuple[bool, list[str], int]:
+    """Is a large share of all monitored units failing in this one check?
+
+    The two-strike rule above counts *checks*, and that quietly assumes a check
+    is cheap and the next one is along in half an hour. Measured 2026-09-18
+    (run 231): keskkonnaandmed.envir.ee stopped answering, 303 of 308 endpoints
+    timed out at 30 s each, and because HostLimiter admits 4 at a time the run
+    itself took 72 minutes. The next run found everything healthy again, so a
+    second consecutive failure never arrived and a 72-minute outage of nearly
+    every monitored service produced no notification at all.
+
+    A simultaneous failure across many independent units is not a dropped
+    packet, so it does not need a second opinion. Unverified units count here,
+    unlike in the per-unit rule: a wrong query explains one unit failing, not
+    forty at once. 'unknown' units are excluded from both sides of the ratio —
+    those are the checker's own network, and if everything is unknown there is
+    nothing to say about the services.
+    """
+    checked = [
+        endpoint_id for endpoint_id, record in latest.items() if record.get("status") != "unknown"
+    ]
+    failing = sorted(
+        endpoint_id
+        for endpoint_id in checked
+        if latest[endpoint_id].get("status") in ("down", "degraded")
+    )
+    if len(checked) < BROAD_MIN_UNITS:
+        # Too few units for a share to mean anything; the per-unit rule is the
+        # only sensible reading of one or two failures.
+        return False, failing, len(checked)
+    return len(failing) / len(checked) >= BROAD_SHARE, failing, len(checked)
+
+
+def _sync_broad_issue(
+    repo: str,
+    token: str,
+    *,
+    is_broad: bool,
+    failing: list[str],
+    total: int,
+    existing: int | None,
+    timestamp: str,
+) -> tuple[int, int]:
+    """Open the aggregate issue while the outage is broad, close it after."""
+    if is_broad and existing is None:
+        listed = ", ".join(f"`{unit}`" for unit in failing[:20])
+        if len(failing) > 20:
+            listed += f" (+{len(failing) - 20} veel)"
+        body = (
+            f"{MARKER.format(id=BROAD_ID)}\n\n"
+            f"**{len(failing)} jälgitavat ühikut {total}-st ei vasta korraga.**\n\n"
+            f"Nii lai üheaegne rike ei ole üksik pakikadu, seega ei oodata teist "
+            f"järjestikust ebaõnnestumist nagu üksiku teenuse puhul.\n\n"
+            f"**Ühikud:** {listed}\n"
+            f"**Avastatud:** {timestamp} (UTC)\n\n"
+            f"Issue sulgub automaatselt, kui langenud ühikute osakaal langeb "
+            f"alla {BROAD_SHARE:.0%}."
+        )
+        _request(
+            "POST",
+            f"/repos/{repo}/issues",
+            token,
+            {
+                "title": f"[üldrike] {len(failing)}/{total} ühikut korraga maas",
+                "body": body,
+                "labels": [LABEL],
+            },
+        )
+        return 1, 0
+    if not is_broad and existing is not None:
+        _request(
+            "POST",
+            f"/repos/{repo}/issues/{existing}/comments",
+            token,
+            {"body": f"Üldrike lõppes {timestamp} (UTC). Maas {len(failing)}/{total} ühikut."},
+        )
+        _request(
+            "PATCH",
+            f"/repos/{repo}/issues/{existing}",
+            token,
+            {"state": "closed", "state_reason": "completed"},
+        )
+        return 0, 1
+    return 0, 0
+
+
 def main() -> int:
     token = os.environ.get("GH_TOKEN")
     repo = os.environ.get("GH_REPO")
@@ -146,6 +239,29 @@ def main() -> int:
             by_endpoint[found.group(1)] = issue["number"]
 
     opened = closed = 0
+
+    # Deliberately one aggregate issue rather than paging on every unit at
+    # once: run 231 would have opened fifteen. The per-unit rule below is
+    # unchanged, so a single service still has to fail twice.
+    is_broad, failing, checked = _broad_outage(latest)
+    newest = max((r.get("ts") or "" for r in latest.values()), default="")
+    try:
+        broad_opened, broad_closed = _sync_broad_issue(
+            repo,
+            token,
+            is_broad=is_broad,
+            failing=failing,
+            total=checked,
+            existing=by_endpoint.get(BROAD_ID),
+            timestamp=newest,
+        )
+        opened += broad_opened
+        closed += broad_closed
+        if is_broad and broad_opened:
+            print(f"Üldrike: {len(failing)}/{checked} ühikut maas, Issue avatud kohe.")
+    except Exception as exc:
+        print(f"Üldrike Issue'd ei saanud uuendada: {exc}")
+
     for endpoint_id, record in sorted(latest.items()):
         status = record.get("status")
         # 'unknown' means our own checker had no network. Never page on that.
@@ -169,7 +285,10 @@ def main() -> int:
                     # One bad check is as likely to be a dropped packet as an
                     # outage. check.py already retries once inside a run;
                     # this is the second, independent layer: an Issue opens
-                    # only once two separate scheduled runs both failed.
+                    # only once two separate scheduled runs both failed. The
+                    # case this bar used to miss — everything failing at once
+                    # in a single very long run — is caught by _broad_outage()
+                    # above instead, which pages without waiting.
                     print(f"{endpoint_id}: 1. ebaõnnestumine, Issue avatakse alles teise järel.")
                     continue
                 title = f"[{endpoint_id}] {'ei vasta' if status == 'down' else 'häiritud'}"

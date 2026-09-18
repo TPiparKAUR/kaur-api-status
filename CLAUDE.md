@@ -120,6 +120,39 @@ are skipped, not counted as a break, matching `analysis.incidents()`);
 *recovery* still closes on the first `ok`, because paging late costs nothing
 but staying down looks worse the longer it goes unacknowledged.
 
+**...but "two checks in a row" is not "two of anything in particular".** That
+bar counts checks and quietly assumes a check is cheap and the next one is
+along in half an hour. Measured 2026-09-18 (run 231): keskkonnaandmed.envir.ee
+stopped answering, 303 of 308 endpoints timed out at 30 s each, and because
+`HostLimiter` admits four at a time the run *itself* took 72 minutes. The next
+run found everything healthy, so a second consecutive failure never arrived and
+a 72-minute outage of nearly every monitored service notified nobody —
+`Teavitused: 0 avatud, 0 suletud`. `notify_issues._broad_outage()` is the second
+way in: if at least a third of the non-`unknown` units are failing in one check
+(`BROAD_SHARE`, `BROAD_MIN_UNITS`), it opens **one aggregate issue** immediately,
+without waiting. One, not forty — run 231 would have opened fifteen per-unit
+issues, which is the same noise the group mechanism exists to avoid. The
+per-unit rule is untouched, so a single service still has to fail twice.
+Unverified units count towards the share, unlike in the per-unit rule: a wrong
+query explains one unit failing, not forty at once. `unknown` units are
+excluded from both sides of the ratio, so an all-`unknown` run — the checker's
+own network — cannot trip it.
+
+**`commit_and_push.sh` must never leave a half-finished rebase behind.**
+Measured 2026-09-18 (run 233): the run was queued 12.5 minutes behind run 231,
+so `actions/checkout` took the SHA the run was *created* with and the push lost
+the race. The retry's `git pull --rebase` then hit a content conflict in
+`REPORT.md` and `docs/data/status.json`, `|| true` swallowed it, and attempts
+2–5 all failed on the wreckage instead — `fatal: You are not currently on a
+branch`, `fatal: ... already a rebase-merge directory` — so the cycle's 308
+checks were computed, logged locally and thrown away. Three things keep the
+retries independent now: `git rebase --abort` before each one, `-X theirs` so a
+generated-file conflict resolves instead of stopping (safe because `REGEN_CMD`
+overwrites both files immediately after, and the `merge=union` driver in
+`.gitattributes` outranks a strategy option, so the log still combines), and
+`git push origin HEAD:$ref` so a detached HEAD cannot break the push. Verified
+by replaying the same race against both the old and the new script.
+
 **Log schema is versioned from 2026-09-14 (`v: 2`).** That date is also when
 EELIS started being collapsed into one `eelis` group record — the two changes
 shipped together. `v` and `attempts` (1, or 2 if the retry above fired) are
@@ -322,9 +355,70 @@ assuming the healthy-run figure holds under load.
   against a 30 s timeout. Worth watching as the log grows.
 - `discover.from_ckan` assumes a CKAN-shaped API and has never been exercised
   against a real catalogue.
-- GitHub Pages does not serve a private repository on the free plan, so the
-  page is built and committed but not published until the repo is public or
-  the plan changes.
+
+**From the workflow-run analysis of 2026-09-18 (runs 219–238).** Two findings
+from that analysis are fixed and written up under "Design decisions" above; the
+rest are tracked here rather than done, because each is a judgement call or a
+change to what the published numbers mean. All figures below are measured.
+
+- **A single-host outage costs 72 minutes of runtime, not 42 seconds.** 279 of
+  308 enabled endpoints sit on `keskkonnaandmed.envir.ee`; `_DEFAULT_TIMEOUT_S`
+  30 s plus `_RETRY_DELAY_S` 5 s plus the retry is 65 s per failing endpoint,
+  and `DEFAULT_MAX_PER_HOST` 4 serialises them: 279/4 × 65 s ≈ 4 550 s against
+  the 4 313 s actually measured, agreement within 5 %. This is exactly the cost
+  the "Actions minutes" note above said had not been measured during a real,
+  widespread outage. It has now. The proposed fix is a per-host circuit
+  breaker — after N consecutive *connection-level* failures on a host (timeout
+  or refused, never an HTTP status) mark the rest of that host's endpoints
+  without dialling, which also stops hammering a service that is already
+  struggling. Not done: N is a guess until the pattern recurs, and the
+  alternative (a whole-run `--deadline-s`, writing partial results and
+  `unknown` for the rest) needs `analysis.py` to not read a short run as good
+  news.
+- **A run longer than ~30 minutes silently loses a cycle.** Run 232 was
+  cancelled at 16:35:10, one second after run 233 was created, while run 231
+  held the `api-monitor` lock until 16:47:35. A concurrency group holds one
+  running plus one pending job; a third arrival cancels the pending one, and
+  `cancel-in-progress: false` governs only the running one. `list_workflow_jobs`
+  on 232 returns zero jobs, so nothing was logged and the page just has a hole
+  with no marker. Fixing the item above removes the cause; a `timeout-minutes`
+  backstop on the job is the cheap half-measure, but killing the job writes
+  nothing at all.
+- **429 is recorded as `down`, which is wrong on the public page.** Nine
+  endpoints answered `429 Too Many Requests` with a Cloudflare HTML body in
+  both runs whose logs were read (231 and 233): all five on `ilmateenistus.ee`
+  /`www.ilmateenistus.ee`, two of three on `kytus.envir.ee`, plus
+  `pakis.envir.ee` and `proto.envir.ee`. `kytus-source-of-pollution` on that
+  same host answered normally, so the limit is per-path or per-rule, not
+  per-host. A 429 means the service is up and refusing this client, so the
+  status page currently reports a working service as down. Two changes, kept
+  together: a distinct state for 429, and logging `Retry-After`, `Server` and
+  `cf-ray` on 4xx/5xx — three strings per failing record, no measurable log
+  growth. Why it is not yet done: taking 429 out of `down` *raises* the
+  published availability figures and breaks comparability with the existing
+  history, so it needs the same kind of transition note in `REPORT.md` as the
+  `v: 2` schema change.
+- **Whether that 429 is IP-, User-Agent- or volume-based is unknown and
+  currently unknowable.** Five requests per half hour against
+  `ilmateenistus.ee` is an absurd volume to be limited for, which points at the
+  runner's shared IP or a bot rule — but the monitor logs no response headers,
+  so this cannot be settled from the log. The header logging above is the
+  cheapest way to find out; until then, do not assert a cause.
+- **`monitor.yml`'s billing header and the Pages note below it are stale.**
+  Lines 15–25 of the workflow say "This repository is private" and compute
+  1 440 min against a 2 000-minute allowance. The repository is public now,
+  Actions is unmetered and Pages serves the status page from `main/docs`. Worth
+  keeping in the rewrite: five of the eighteen normal runs in that window
+  crossed 60 s (48–83 s, median 54 s), so if the repository ever goes private
+  again the real bill is 2 880 minutes, not 1 440.
+- **Both pinned actions target Node 20**, which every run now warns is
+  deprecated and force-runs on Node 24. Harmless today. When the SHAs are
+  raised, verify the new SHA rather than deriving it from a tag.
+- **Do not "fix" the cron.** `*/30` delivered 23.7–35.2 minute intervals
+  (median 29.1) across those twenty runs. That is GitHub queueing scheduled
+  workflows, not a defect, and no cron spelling changes it. It does mean the
+  log's cadence is nominal: anything interval-weighted must use the records'
+  own timestamps, which `analysis.py` already does.
 
 Decided (2026-09-15) — each had a real trade-off or needed a fact only a
 human here could supply, so each was put to the project owner rather than
