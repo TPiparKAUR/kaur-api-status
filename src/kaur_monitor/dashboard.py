@@ -13,13 +13,28 @@ from __future__ import annotations
 import json
 import tomllib
 from datetime import UTC, datetime, timedelta
+from email.utils import format_datetime
 from pathlib import Path
 from typing import Any
+from xml.sax.saxutils import escape
 
 from . import analysis, store
 
 DATA_PATH = Path("docs/data/status.json")
+FEED_PATH = Path("docs/data/incidents.xml")
 SYSTEMS_PATH = Path("config/systems.toml")
+
+# Same GitHub Pages URL already hardcoded in docs/index.html's footer link to
+# this repository's Issues. RSS's <link> and <guid> both want an absolute
+# URI, and this is the page's own published address, not a monitored
+# endpoint — the "never write an endpoint URL into source" rule is about
+# invented targets for the checker to call, not this project's own identity.
+PAGE_URL = "https://tpiparkaur.github.io/kaur-api-status/"
+
+# How many of the most recent incidents the feed carries. A subscriber wants
+# to know what changed recently, not the full 194-and-growing history —
+# that's what the page's own table is for.
+_FEED_ITEMS = 50
 
 # Daily aggregates are what the 30-day charts plot. One more day than that is
 # read so the oldest plotted day is whole.
@@ -95,9 +110,7 @@ def _daily(records: list[dict[str, Any]], now: datetime) -> list[dict[str, Any]]
     return rows
 
 
-def _unit_days(
-    series: list[dict[str, Any]], dates: list[str]
-) -> dict[str, list[int | float | None]]:
+def _unit_days(series: list[dict[str, Any]], dates: list[str]) -> dict[str, list[Any]]:
     """One unit's daily checks/ok/median, aligned position-for-position to `dates`.
 
     Three parallel arrays rather than a list of objects: the page needs a
@@ -244,6 +257,19 @@ def build(entries: list[dict[str, Any]]) -> dict[str, Any]:
         row["total_s"] += incident["duration_s"] or 0
     outages_by_endpoint = sorted(tally.values(), key=lambda r: (-r["count"], -r["total_s"]))
 
+    # The same tally, one level up: a reader thinking in business terms (a
+    # manager, a product owner) asks "which service", not "which of its 261
+    # tables" — EELIS's members would otherwise never surface here at all,
+    # since none of them individually cracks the top 10 by endpoint.
+    system_tally: dict[str, dict[str, Any]] = {}
+    for incident in incidents:
+        row = system_tally.setdefault(
+            incident["system"], {"name": incident["system"], "count": 0, "total_s": 0}
+        )
+        row["count"] += 1
+        row["total_s"] += incident["duration_s"] or 0
+    outages_by_system = sorted(system_tally.values(), key=lambda r: (-r["total_s"], -r["count"]))
+
     overall_24h, overall_checks = analysis.uptime(records, day_ago)
     overall_7d, _ = analysis.uptime(records, week_ago)
     stamps = [s for s in (store.parse_ts(r.get("ts")) for r in records) if s is not None]
@@ -290,13 +316,101 @@ def build(entries: list[dict[str, Any]]) -> dict[str, Any]:
         # truncated.
         "outage_total_s": sum(i["duration_s"] or 0 for i in incidents),
         "outages_by_endpoint": outages_by_endpoint[:10],
+        "outages_by_system": outages_by_system,
     }
+
+
+def _feed_item(incident: dict[str, Any], now: datetime) -> str:
+    """One RSS <item> for one incident, open or closed.
+
+    guid is the incident's own id and start time: stable across regenerations
+    of this file (the same incident always gets the same guid), and distinct
+    from every other incident on the same endpoint, so a reader's feed client
+    treats a still-open incident as the same item (title updates in place)
+    rather than a new one each half hour.
+    """
+    ongoing = incident["end"] is None
+    title = f"{incident['name']}: {'ei vasta' if incident['worst'] == 'down' else 'häiritud'}"
+    if ongoing:
+        title += " (kestab)"
+    started = store.parse_ts(incident["start"])
+    pub_date = format_datetime(started) if started else format_datetime(now)
+    duration = "kestab endiselt" if ongoing else duration_words(incident["duration_s"])
+    # CDATA, not escape(): a 429 response's error body is itself HTML
+    # (Cloudflare's block page), truncated into `detail` verbatim — an
+    # escaped string would still be readable, but CDATA is what an RSS
+    # description field is for and avoids double-escaping if a reader's
+    # client renders it as HTML.
+    body = (
+        f"Teenus: {incident['system']}\n"
+        f"Algus: {incident['start']} (UTC)\n"
+        f"Kestus: {duration}\n"
+        f"Põhjus: {incident['detail'] or '-'}"
+    )
+    # `detail` is a truncated snippet of whatever the failing service sent
+    # back — for a 429 that is Cloudflare's own HTML block page. A CDATA
+    # section is not allowed to contain the literal "]]>" anywhere inside it;
+    # the standard escape is to close the section, emit an escaped ">", and
+    # reopen a new one, which is invisible to any reader but keeps the XML
+    # well-formed no matter what a service's error body happens to contain.
+    body = body.replace("]]>", "]]]]><![CDATA[>")
+    guid = f"{incident['id']}-{incident['start']}"
+    return (
+        "<item>"
+        f"<title>{escape(title)}</title>"
+        f"<link>{escape(PAGE_URL)}#row-{escape(incident['id'])}</link>"
+        f'<guid isPermaLink="false">{escape(guid)}</guid>'
+        f"<pubDate>{pub_date}</pubDate>"
+        f"<category>{escape(incident['system'])}</category>"
+        f"<description><![CDATA[{body}]]></description>"
+        "</item>"
+    )
+
+
+def duration_words(seconds: int | None) -> str:
+    """'2 h 5 min' etc. — the same wording the page's own duration() uses in
+    JS, kept here only for the feed, which has no JS runtime to format in."""
+    if seconds is None:
+        return "-"
+    minutes, sec = divmod(int(seconds), 60)
+    hours, minutes = divmod(minutes, 60)
+    days, hours = divmod(hours, 24)
+    if days:
+        return f"{days} p {hours} h"
+    if hours:
+        return f"{hours} h {minutes} min"
+    if minutes:
+        return f"{minutes} min"
+    return f"{sec} s"
+
+
+def render_incidents_feed(data: dict[str, Any]) -> str:
+    """RSS 2.0 for the most recent incidents — the machine-readable channel
+    for "notify me when something changes" rather than "show me a page"."""
+    now = datetime.now(UTC)
+    items = "".join(_feed_item(i, now) for i in data["incidents"][:_FEED_ITEMS])
+    return (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<rss version="2.0">\n<channel>'
+        "<title>Keskkonnaagentuuri API-de katkestused</title>"
+        f"<link>{escape(PAGE_URL)}</link>"
+        "<description>Keskkonnaagentuuri avalike andmeteenuste katkestused, "
+        "uuemad eespool. Genereeritud automaatsest seirest iga kontrollitsükli "
+        "järel.</description>"
+        "<language>et</language>"
+        f"<lastBuildDate>{format_datetime(now)}</lastBuildDate>"
+        f"{items}"
+        "</channel></rss>\n"
+    )
 
 
 def write(entries: list[dict[str, Any]], path: Path = DATA_PATH) -> Path:
     path.parent.mkdir(parents=True, exist_ok=True)
+    data = build(entries)
     path.write_text(
-        json.dumps(build(entries), ensure_ascii=False, indent=1, sort_keys=True) + "\n",
+        json.dumps(data, ensure_ascii=False, indent=1, sort_keys=True) + "\n",
         encoding="utf-8",
     )
+    FEED_PATH.parent.mkdir(parents=True, exist_ok=True)
+    FEED_PATH.write_text(render_incidents_feed(data), encoding="utf-8")
     return path

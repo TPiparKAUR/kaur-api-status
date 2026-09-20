@@ -6,6 +6,7 @@
 <title>Keskkonnaagentuuri avalike API-de seisund</title>
 <meta name="description" content="Keskkonnaagentuuri avalike andmeteenuste kättesaadavuse ülevaade.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='6' fill='%230ca30c'/%3E%3C/svg%3E">
+<link rel="alternate" type="application/rss+xml" title="Keskkonnaagentuuri API-de katkestused" href="data/incidents.xml">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -53,11 +54,23 @@
 
   <section class="panel" aria-labelledby="h-graafikud">
     <h2 id="h-graafikud">Ajatrendid</h2>
+    <p class="note">
+      Ajavahemik mõjutab kõiki kolme graafikut all ja otspunktide tahvli
+      ajaloo- ning vastuseaja veergu korraga. Logi katab praegu vähem kui 30
+      päeva, seega annavad laiemad nupud sama pildi kui "Kõik", kuni ajalugu
+      on kogunenud.
+    </p>
+    <div class="range-control" id="range-control" role="group" aria-label="Ajavahemik">
+      <button type="button" data-days="7" aria-pressed="false">7 päeva</button>
+      <button type="button" data-days="14" aria-pressed="false">14 päeva</button>
+      <button type="button" data-days="30" aria-pressed="false">30 päeva</button>
+      <button type="button" data-days="all" aria-pressed="true">Kõik</button>
+    </div>
 
     <figure class="chart">
       <figcaption>
         <h3>Kättesaadavus päevade lõikes</h3>
-        <p>Osakaal kontrollidest, mis päeva jooksul õnnestusid. Kuni 30 päeva.</p>
+        <p>Osakaal kontrollidest, mis päeva jooksul õnnestusid.</p>
       </figcaption>
       <div class="canvas-box">
         <canvas id="chart-avail" aria-label="Kättesaadavuse ajajoon" aria-describedby="summary-avail"></canvas>
@@ -93,6 +106,28 @@
       <p class="empty" id="empty-outages" hidden></p>
       <p class="chart-summary" id="summary-outages"></p>
     </figure>
+
+    <section id="system-outages-section" hidden>
+      <h3>Katkestused teenuse kaupa</h3>
+      <p class="note">
+        Sama katkestuste logi, kokku loetud teenuse, mitte otspunkti kaupa.
+        Näiteks EELIS-e 261 tabelit ei jõua kunagi otspunktide graafiku
+        kümne hulka üksikult, aga teenusena on tema katkestused siin näha.
+      </p>
+      <div class="table-scroll">
+        <table id="system-outages">
+          <thead>
+            <tr>
+              <th scope="col" data-sort="name" data-type="text">Teenus</th>
+              <th scope="col" data-sort="count" data-type="number">Katkestusi</th>
+              <th scope="col" data-sort="total_s" data-type="number">Kokku kestus</th>
+              <th scope="col">Osakaal</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
   </section>
 
   <section class="panel panel-wide" aria-labelledby="h-tahvel">
@@ -143,7 +178,11 @@
   <section class="panel panel-wide" aria-labelledby="h-katkestused">
     <h2 id="h-katkestused">Katkestuste logi</h2>
     <p class="note">Millal, milline otspunkt ja kui kaua. Uuemad eespool;
-       veerupäisele klõpsates saab ümber järjestada, näiteks kestuse järgi.</p>
+       veerupäisele klõpsates saab ümber järjestada, näiteks kestuse järgi.
+       Reale viitamiseks kasuta otspunktide tahvlil nime enda peal olevat linki
+       — see viib otse siia lehele, õigele reale kerituna. Sama logi on
+       tellitav ka <a href="data/incidents.xml">RSS-ina</a>, kuni 50 uuemat
+       katkestust.</p>
     <div class="table-scroll">
       <table id="incidents">
         <thead>
@@ -178,6 +217,14 @@
 
       <dt>Kättesaadavus</dt>
       <dd>Õnnestunud kontrollide osakaal kõigist kontrollidest valitud ajavahemikus.</dd>
+
+      <dt>Seisund "Piiratud (429)"</dt>
+      <dd>Teenus vastas HTTP koodiga 429 ("liiga palju päringuid") — see
+          tähendab, et teenus töötab ja keeldub sellest konkreetsest
+          päringust, mitte et teenus on kättesaamatu. Loetakse endiselt
+          ebaõnnestunud kontrolliks ja läheb kättesaadavuse arvestusse täpselt
+          nagu varem — muutus on ainult sõnas, mida seisundi veerus loed, mitte
+          numbrites.</dd>
 
       <dt>"Otspunkte maas kokku"</dt>
       <dd>Kõigi katkestuste kestuste summa, liidetud üle otspunktide. Kui kaks

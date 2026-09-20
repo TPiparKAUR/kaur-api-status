@@ -8,6 +8,7 @@ import tempfile
 import threading
 import time
 import unittest
+import xml.etree.ElementTree as ET
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import ClassVar
@@ -1220,6 +1221,23 @@ class DashboardData(unittest.TestCase):
         days = dashboard.build([self._entry("a")])["endpoints"][0]["days"]
         self.assertEqual(sum(days["checks"]), 1)
 
+    def test_outages_by_system_pools_endpoints_a_single_one_would_never_top(self):
+        """EELIS is one 261-table group; no single member ever tops the
+        by-endpoint chart, but the group's own downtime is real and a reader
+        thinking in services ('which service costs us the most') needs it."""
+        self._write(
+            [dict(_record("a", "down", 30 - i), ms=None) for i in range(3)]
+            + [dict(_record("b", "down", 30 - i), ms=None) for i in range(3)]
+            + [dict(_record("a", "ok", 1), ms=100), dict(_record("b", "ok", 1), ms=100)]
+        )
+        data = dashboard.build([self._entry("a", "Kliima"), self._entry("b", "Kliima")])
+        rows = data["outages_by_system"]
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["name"], "Kliima")
+        self.assertEqual(rows[0]["count"], 2)
+        by_endpoint_total = sum(r["total_s"] for r in data["outages_by_endpoint"])
+        self.assertEqual(rows[0]["total_s"], by_endpoint_total)
+
     def test_total_downtime_covers_every_incident_not_just_the_listed_ones(self):
         self._write(
             [dict(_record("a", "down", 30 - i), ms=None) for i in range(4)]
@@ -1352,6 +1370,67 @@ class DashboardData(unittest.TestCase):
         self.assertTrue(by_id["a"]["verified"])
         self.assertFalse(by_id["b"]["verified"])
         self.assertEqual(data["totals"]["unverified"], 1)
+
+
+class IncidentsFeed(unittest.TestCase):
+    """RSS output for the 'notify me' use case — a subscriber's feed reader,
+    not a browser, is the reader that has to accept this file."""
+
+    @staticmethod
+    def _incident(**overrides):
+        base = {
+            "id": "a",
+            "name": "A",
+            "system": "Kliima",
+            "worst": "down",
+            "start": "2026-09-20T00:00:00Z",
+            "end": None,
+            "duration_s": 90,
+            "detail": "connection failed: timed out",
+        }
+        return {**base, **overrides}
+
+    def test_produces_well_formed_xml(self):
+        xml_text = dashboard.render_incidents_feed({"incidents": [self._incident()]})
+        parsed = ET.fromstring(xml_text)  # raises on malformed XML
+        self.assertEqual(len(parsed.findall(".//item")), 1)
+
+    def test_a_literal_cdata_terminator_in_the_body_does_not_break_the_feed(self):
+        """Measured 2026-09-18: a 429's error body is Cloudflare's own HTML
+        page, truncated verbatim into `detail`. Nothing guarantees that text
+        never contains ']]>', which would otherwise end the CDATA section
+        early and leave the rest of the description as sibling XML content —
+        or, if it happened to land badly, invalid XML outright."""
+        xml_text = dashboard.render_incidents_feed(
+            {"incidents": [self._incident(detail="odd body containing ]]> here")]}
+        )
+        parsed = ET.fromstring(xml_text)
+        description = parsed.findtext(".//item/description")
+        self.assertIn("odd body containing ]]> here", description)
+
+    def test_an_open_incident_says_so_in_the_title(self):
+        xml_text = dashboard.render_incidents_feed({"incidents": [self._incident(end=None)]})
+        title = ET.fromstring(xml_text).findtext(".//item/title")
+        self.assertIn("kestab", title)
+
+    def test_item_count_is_capped_rather_than_growing_with_history(self):
+        many = [
+            self._incident(id=f"a{i}", start=f"2026-09-{(i % 28) + 1:02d}T00:00:00Z")
+            for i in range(80)
+        ]
+        xml_text = dashboard.render_incidents_feed({"incidents": many})
+        self.assertEqual(len(ET.fromstring(xml_text).findall(".//item")), dashboard._FEED_ITEMS)
+
+    def test_write_produces_both_files_from_one_build(self):
+        target = Path(tempfile.mkdtemp()) / "status.json"
+        original_feed_path = dashboard.FEED_PATH
+        dashboard.FEED_PATH = target.parent / "incidents.xml"
+        try:
+            dashboard.write([{"id": "a", "name": "A", "url": "https://e.org/a"}], target)
+            self.assertTrue(dashboard.FEED_PATH.exists())
+            ET.parse(dashboard.FEED_PATH)  # raises on malformed XML
+        finally:
+            dashboard.FEED_PATH = original_feed_path
 
 
 class IncidentDuration(unittest.TestCase):

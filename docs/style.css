@@ -231,6 +231,10 @@ h3 {
 .chip.ok::before { background: var(--good); }
 .chip.degraded::before { background: var(--warning); }
 .chip.down::before { background: var(--critical); }
+/* Same dot as "down" — a 429 still fails every request a client makes, so it
+   is not a lesser severity. Only the word changes, from "Maas" to "Piiratud
+   (429)", because the service is answering and refusing, not unreachable. */
+.chip.limited::before { background: var(--critical); }
 .chip.unknown::before,
 .chip.unchecked::before { background: var(--muted); }
 
@@ -342,6 +346,75 @@ h3 {
   color: var(--series-1);
 }
 th[aria-sort]:not([aria-sort="none"]) { color: var(--ink); }
+
+/* ---- range control ---- */
+
+.range-control {
+  display: inline-flex;
+  gap: 0.25rem;
+  margin: 0 0 1rem;
+}
+.range-control button {
+  font: inherit;
+  font-size: 0.875rem;
+  color: var(--ink-2);
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  padding: 0.3rem 0.9rem;
+  cursor: pointer;
+}
+.range-control button[aria-pressed="true"] {
+  color: var(--surface);
+  background: var(--ink);
+  border-color: var(--ink);
+  font-weight: 600;
+}
+.range-control button:focus-visible {
+  outline: 2px solid var(--series-1);
+  outline-offset: 2px;
+}
+
+/* ---- row permalinks ---- */
+
+.row-link {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px dotted var(--rule);
+}
+.row-link:hover,
+.row-link:focus-visible {
+  border-bottom-color: var(--series-1);
+}
+/* Briefly marks the row a permalink or the RSS feed pointed at, so a reader
+   who just followed a link can see which of 42 rows it was, not just that
+   the page scrolled somewhere. Fades on its own; nothing about the row's
+   actual data depends on this class. */
+tr.row-linked {
+  animation: row-linked-fade 3s ease-out;
+}
+@keyframes row-linked-fade {
+  from { background: color-mix(in srgb, var(--series-1) 18%, transparent); }
+  to { background: transparent; }
+}
+
+/* Same visual language as .unverified-flag (a caveat pill), for a different
+   caveat: the row isn't really "down", the service is refusing this client. */
+.rate-limited-flag {
+  display: inline-block;
+  padding: 0.05rem 0.4rem;
+  border: 1px solid var(--warning);
+  border-radius: 999px;
+  color: var(--ink-2);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+/* ---- per-system outage table ---- */
+
+#system-outages-section { margin-top: 1.5rem; }
 
 /* ---- per-row history strip and sparkline ---- */
 

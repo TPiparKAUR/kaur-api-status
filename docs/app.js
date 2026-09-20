@@ -9,13 +9,30 @@ const STATUS_WORD = {
   ok: "Korras",
   degraded: "Häire",
   down: "Maas",
+  limited: "Piiratud (429)",
   unknown: "Teadmata",
   unchecked: "Kontrollimata",
 };
 
 /* Sorting the status column by name would put "Häire" before "Maas" and bury
- * the thing an operator opened the page for. Ascending is worst-first. */
-const SEVERITY = { down: 0, degraded: 1, unknown: 2, unchecked: 3, ok: 4 };
+ * the thing an operator opened the page for. Ascending is worst-first.
+ * "limited" sits with "down" (same tier, not a lesser problem — it still
+ * fails every request a client makes) rather than getting its own rank. */
+const SEVERITY = { down: 0, limited: 0, degraded: 1, unknown: 2, unchecked: 3, ok: 4 };
+
+/* A record logged as "down" with HTTP 429 is not the service being unreachable
+ * — it is the service answering and refusing this client, which nine
+ * endpoints do routinely (measured 2026-09-18/19/20: 773 of 11 181 records,
+ * 6.9 %, spread across ilmateenistus.ee, kytus.envir.ee, pakis.envir.ee and
+ * proto.envir.ee). "Maas" on those rows told a reader a working service was
+ * dead. This is a display relabelling only: the underlying status, and every
+ * availability number computed from it, is unchanged — a 429 still counts as
+ * a failed check, same as before. Only the word a human reads is corrected.
+ * See CLAUDE.md's "Open work" for why the arithmetic itself is a separate,
+ * versioned decision and not this one. */
+function displayStatus(status, http) {
+  return status === "down" && http === 429 ? "limited" : status;
+}
 
 /* Day-cell colour bands for the history strip. These are a presentation
  * choice, not a service level: no SLA has been agreed with the service
@@ -40,7 +57,16 @@ let rows = [];
 const sortState = {
   endpoints: { key: null, dir: 1 },
   incidents: { key: null, dir: 1 },
+  systemOutages: { key: null, dir: 1 },
 };
+
+/* The trend charts and every per-row strip/sparkline share one selected
+ * window, in days; null means "everything the log has". Kept as page state
+ * rather than per-chart so the range control affects the whole "Ajatrendid"
+ * section and the table's history cells consistently — a reader comparing
+ * the pooled chart against one row's strip should be looking at the same
+ * days in both. */
+let rangeDays = null;
 
 const $ = (id) => document.getElementById(id);
 const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
@@ -86,6 +112,19 @@ function chip(status) {
 
 const sum = (values) => values.reduce((total, value) => total + (value || 0), 0);
 const share = (ok, checks) => (checks ? (100 * ok) / checks : null);
+
+/* Where a date array should start for the current `rangeDays` window. Cutting
+ * by count of trailing entries, not by calendar days back from today: the
+ * arrays already contain only days that had checks (a day with none is
+ * simply absent), so "last 7 entries" is "last 7 days that actually have
+ * data" — consistent with the rest of the page never drawing a confident
+ * line over a gap. Asking for a wider window than exists is not an error;
+ * it just returns everything, the same way "30 päeva" and "Kõik" render
+ * identically until the log is actually that old. */
+function rangeStart(length) {
+  if (rangeDays == null) return 0;
+  return Math.max(0, length - rangeDays);
+}
 
 function band(avail) {
   if (avail == null) return "none";
@@ -296,11 +335,13 @@ function renderSystems(data) {
       // the members' raw ok and checks per day, never average their
       // percentages, or a member with three checks would weigh as much as one
       // with three hundred.
-      const dates = data.chart_dates || [];
+      const allDates = data.chart_dates || [];
+      const start = rangeStart(allDates.length);
+      const dates = allDates.slice(start);
       const members = rows.filter((r) => r.system === system.name);
       if (dates.length && members.length) {
-        const checks = dates.map((_, i) => sum(members.map((m) => m._checks[i])));
-        const ok = dates.map((_, i) => sum(members.map((m) => m._ok[i])));
+        const checks = dates.map((_, i) => sum(members.map((m) => m._checks[start + i])));
+        const ok = dates.map((_, i) => sum(members.map((m) => m._ok[start + i])));
         const strip = document.createElement("p");
         strip.className = "card-strip";
         strip.append(uptimeStrip(dates, checks, ok));
@@ -430,7 +471,9 @@ function renderEndpoints(data) {
         ? `Näidatakse ${shown.length} otspunkti, mis ei ole korras.`
         : `Kõik ${all.length} otspunkti on korras — probleeme ei ole.`;
 
-  const dates = data.chart_dates || [];
+  const allDates = data.chart_dates || [];
+  const start = rangeStart(allDates.length);
+  const dates = allDates.slice(start);
   $("strip-legend").replaceChildren(
     ...(dates.length
       ? [
@@ -451,9 +494,19 @@ function renderEndpoints(data) {
   body.replaceChildren(
     ...shown.map((item) => {
       const row = document.createElement("tr");
+      // The anchor a permalink and the RSS feed's <link> both point at
+      // (dashboard.py's render_incidents_feed uses the same "row-<id>"
+      // shape), so a link from either source lands on this exact row.
+      row.id = `row-${item.id}`;
 
       const name = document.createElement("td");
-      name.textContent = item.name;
+      const link = document.createElement("a");
+      link.className = "row-link";
+      link.href = `#row-${item.id}`;
+      link.title = "Püsilink sellele reale";
+      link.setAttribute("aria-label", `Püsilink: ${item.name}`);
+      link.textContent = item.name;
+      name.append(link);
       if (!item.verified) {
         const flag = document.createElement("span");
         flag.className = "unverified-flag";
@@ -470,7 +523,7 @@ function renderEndpoints(data) {
       system.textContent = item.system;
 
       const status = document.createElement("td");
-      status.append(chip(item.status));
+      status.append(chip(displayStatus(item.status, item.http)));
 
       const response = document.createElement("td");
       response.className = "num";
@@ -486,11 +539,13 @@ function renderEndpoints(data) {
 
       const history = document.createElement("td");
       history.className = "viz";
-      history.append(uptimeStrip(dates, item._checks, item._ok));
+      history.append(
+        uptimeStrip(dates, item._checks.slice(start), item._ok.slice(start)),
+      );
 
       const latency = document.createElement("td");
       latency.className = "viz";
-      const spark = latencySparkline(dates, item._p50);
+      const spark = latencySparkline(dates, item._p50.slice(start));
       if (spark) latency.append(spark);
       const sparkValue = document.createElement("span");
       sparkValue.className = "spark-value";
@@ -548,11 +603,95 @@ function renderIncidents(data) {
       });
       const reason = document.createElement("td");
       reason.className = "reason";
-      reason.textContent = item.detail || STATUS_WORD[item.worst] || "";
+      if ((item.detail || "").toLowerCase().startsWith("http 429")) {
+        const tag = document.createElement("span");
+        tag.className = "rate-limited-flag";
+        tag.textContent = "429";
+        tag.title = "Teenus vastas, aga keeldus — vt “Kuidas seda mõõdetakse”.";
+        reason.append(tag, " ");
+      }
+      reason.append(item.detail || STATUS_WORD[item.worst] || "");
       row.append(reason);
       return row;
     }),
   );
+}
+
+/* A cut by service rather than by endpoint. The endpoint chart above never
+ * surfaces EELIS or keskkonnaandmed-root, because no single one of their many
+ * members individually cracks a top-10-by-endpoint ranking — the group's own
+ * downtime is real but stays invisible sliced that way. A manager or product
+ * owner thinks in services, not in which of 261 EELIS tables happened to
+ * fail this week, so this is the same incidents, summed the other way. */
+function renderSystemOutages(data) {
+  const rows = applySort(data.outages_by_system || [], "system-outages", "systemOutages");
+  const section = $("system-outages-section");
+  const body = document.querySelector("#system-outages tbody");
+  if (!rows.length) {
+    section.hidden = true;
+    return;
+  }
+  section.hidden = false;
+  const total = sum(rows.map((r) => r.total_s));
+  body.replaceChildren(
+    ...rows.map((r) => {
+      const row = document.createElement("tr");
+      const name = document.createElement("td");
+      name.textContent = r.name;
+      const count = document.createElement("td");
+      count.className = "num";
+      count.textContent = String(r.count);
+      const total_ = document.createElement("td");
+      total_.className = "num";
+      total_.textContent = duration(r.total_s);
+      const share_ = document.createElement("td");
+      share_.className = "num";
+      share_.textContent = total ? `${((100 * r.total_s) / total).toFixed(0)} %` : "–";
+      row.append(name, count, total_, share_);
+      return row;
+    }),
+  );
+}
+
+/* ---------- deep links ---------- */
+
+/* A row's permalink (#row-<id>) is only useful if the row is actually in the
+ * DOM when the page opens with that hash in the URL — sharing a link to a
+ * currently-healthy endpoint, or one filtered out by a service filter,
+ * would otherwise land on a page that looks like the row does not exist.
+ * Widening the view to guarantee the target is visible is the point; doing
+ * it silently, without saying so, would be its own kind of confusing, so a
+ * short note explains why filters just changed. */
+function openDeepLink() {
+  const hash = location.hash;
+  if (!hash.startsWith("#row-")) return;
+  const id = hash.slice(5);
+  const exists = rows.some((r) => r.id === id);
+  if (!exists) return;
+
+  let widened = false;
+  if (!$("show-all").checked) {
+    $("show-all").checked = true;
+    widened = true;
+  }
+  if ($("filter-system").value) {
+    $("filter-system").value = "";
+    widened = true;
+  }
+  if ($("filter-text").value) {
+    $("filter-text").value = "";
+    widened = true;
+  }
+  if (widened) renderEndpoints(snapshot);
+
+  const target = document.getElementById(`row-${id}`);
+  if (!target) return;
+  target.scrollIntoView({ behavior: "smooth", block: "center" });
+  target.classList.add("row-linked");
+  if (widened) {
+    $("table-note").textContent += " (filtrid tühistati, et püsilingiga rida oleks näha.)";
+  }
+  setTimeout(() => target.classList.remove("row-linked"), 3000);
 }
 
 /* ---------- charts ---------- */
@@ -608,7 +747,8 @@ function setSummary(id, text) {
 }
 
 function drawAvailability(data) {
-  const rows = data.daily || [];
+  const all = data.daily || [];
+  const rows = all.slice(rangeStart(all.length));
   if (rows.length < 2) {
     showEmpty(
       "empty-avail",
@@ -690,7 +830,15 @@ function drawLatency(data) {
   const groups = [
     { key: "daily_postgrest", label: "PostgREST teenused", color: "--series-1" },
     { key: "daily_kaia", label: "KAIA", color: "--series-2" },
-  ].map((g) => ({ ...g, rows: data[g.key] || [], byDate: new Map((data[g.key] || []).map((r) => [r.date, r])) }));
+  ].map((g) => {
+    // daily_postgrest/daily_kaia are independently built in dashboard.py and
+    // can have fewer rows than chart_dates (a day with no KAIA checks simply
+    // has no KAIA row), so the window is applied per group by its own length
+    // rather than by borrowing chart_dates' offset.
+    const all = data[g.key] || [];
+    const windowed = all.slice(rangeStart(all.length));
+    return { ...g, rows: windowed, byDate: new Map(windowed.map((r) => [r.date, r])) };
+  });
 
   const dates = Array.from(new Set(groups.flatMap((g) => g.rows.map((r) => r.date)))).sort();
   const present = groups.filter((g) => g.rows.some((r) => r.p50_ms != null));
@@ -849,9 +997,27 @@ function render(data) {
   renderSystems(data);
   renderEndpoints(data);
   renderIncidents(data);
+  renderSystemOutages(data);
   drawAvailability(data);
   drawLatency(data);
   drawOutages(data);
+}
+
+/* Applies to the pooled charts and every per-row/per-card history cell at
+ * once — see the `rangeDays` declaration for why one control governs all of
+ * them. Chart.js instances are destroyed and rebuilt (redrawCharts already
+ * does this for a theme change); the SVG cells are cheap enough to just
+ * re-render from scratch. */
+function setRange(days) {
+  rangeDays = days;
+  document.querySelectorAll("#range-control button").forEach((btn) => {
+    const active = String(btn.dataset.days) === String(days);
+    btn.setAttribute("aria-pressed", String(active));
+  });
+  if (!snapshot) return;
+  renderSystems(snapshot);
+  renderEndpoints(snapshot);
+  redrawCharts();
 }
 
 function redrawCharts() {
@@ -880,18 +1046,28 @@ $("filter-reset").addEventListener("click", () => {
 });
 attachSorting("endpoints", "endpoints", refreshEndpoints);
 attachSorting("incidents", "incidents", refreshIncidents);
+attachSorting("system-outages", "systemOutages", () => snapshot && renderSystemOutages(snapshot));
+
+document.querySelectorAll("#range-control button").forEach((btn) => {
+  btn.addEventListener("click", () => setRange(btn.dataset.days === "all" ? null : Number(btn.dataset.days)));
+});
 
 /* Only the Chart.js canvases need redrawing on a theme change; the strips and
  * sparklines take their colours from CSS custom properties and follow on
  * their own. */
 window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", redrawCharts);
 
+window.addEventListener("hashchange", openDeepLink);
+
 fetch(`data/status.json?t=${Date.now()}`)
   .then((response) => {
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     return response.json();
   })
-  .then(render)
+  .then((data) => {
+    render(data);
+    openDeepLink();
+  })
   .catch((error) => {
     $("updated").textContent = `Andmete laadimine ebaõnnestus: ${error.message}`;
   });
