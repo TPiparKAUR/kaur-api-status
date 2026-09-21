@@ -404,12 +404,33 @@ change to what the published numbers mean. All figures below are measured.
   the same kind of transition note in `REPORT.md` as the `v: 2` schema change
   — and stays undone. Logging `Retry-After`, `Server` and `cf-ray` on 4xx/5xx
   also stays undone; see below.
-- **Whether that 429 is IP-, User-Agent- or volume-based is unknown and
-  currently unknowable.** Five requests per half hour against
-  `ilmateenistus.ee` is an absurd volume to be limited for, which points at the
-  runner's shared IP or a bot rule — but the monitor logs no response headers,
-  so this cannot be settled from the log. The header logging above is the
-  cheapest way to find out; until then, do not assert a cause.
+- **Measured 2026-09-21: it is very unlikely to be our own request volume,
+  and the exact mechanism is still unknown.** Three things rule out "we
+  triggered a volume threshold": our observed cadence to the affected hosts
+  is one check per ~33 minutes per endpoint (at most 3 concurrent, on
+  `kytus.envir.ee`) — far below any ordinary rate limit; the host that gets
+  by far our heaviest traffic, `keskkonnaandmed.envir.ee` (279 endpoints,
+  7 266 checks in this log), has **never** returned a 429, while the five
+  affected hosts (`proto.envir.ee` 57.7 %, `pakis.envir.ee` 56.9 %,
+  `kytus.envir.ee` 55.1 %, `ilmateenistus.ee` 43.1 %,
+  `www.ilmateenistus.ee` 13.7 % of checks) all carry a handful of endpoints
+  each; and each endpoint logs 24–44 separate 429 *episodes* a week, flipping
+  on and off every check or two rather than one sustained block — inconsistent
+  with a fixed-window counter reacting to our own unchanging traffic.
+  Cross-host correlation points at something shared behind those five
+  properties rather than each one reacting independently: `kytus-monitoring`
+  and `kytus-bunkering-company` (same host) both ran 429 2026-09-21T00:05–
+  02:37; `proto-opendata` (a *different* host) ran 429 21:35–02:37 the same
+  night, ending within a second of the other two. Best-supported hypothesis,
+  not confirmed: Cloudflare bot-detection on these five ordinary-website
+  properties reacting to the client fingerprint (User-Agent, no JS challenge,
+  TLS fingerprint), not to request count — consistent with
+  `keskkonnaandmed.envir.ee` being a PostgREST API with no such layer at all.
+  Still unconfirmed and unconfirmable from this log: whether the actual
+  trigger is the User-Agent, the TLS/JA3 fingerprint, or the GitHub Actions
+  runner's shared IP reputation. Logging `Retry-After`, `Server` and `cf-ray`
+  on 4xx/5xx remains the cheapest way to narrow it further; until that is
+  done, do not assert which of the three it is.
 - **`monitor.yml`'s billing header and the Pages note below it are stale.**
   Lines 15–25 of the workflow say "This repository is private" and compute
   1 440 min against a 2 000-minute allowance. The repository is public now,
