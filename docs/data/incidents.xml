@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
-<channel><title>Keskkonnaagentuuri API-de katkestused</title><link>https://tpiparkaur.github.io/kaur-api-status/</link><description>Keskkonnaagentuuri avalike andmeteenuste katkestused, uuemad eespool. Genereeritud automaatsest seirest iga kontrollitsükli järel.</description><language>et</language><lastBuildDate>Wed, 23 Sep 2026 16:38:35 +0000</lastBuildDate><item><title>PROTO: probleemtoodete avaandmed: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-proto-opendata</link><guid isPermaLink="false">proto-opendata-2026-09-23T15:44:58Z</guid><pubDate>Wed, 23 Sep 2026 15:44:58 +0000</pubDate><category>Probleemtooteregister</category><description><![CDATA[Teenus: Probleemtooteregister
+<channel><title>Keskkonnaagentuuri API-de katkestused</title><link>https://tpiparkaur.github.io/kaur-api-status/</link><description>Keskkonnaagentuuri avalike andmeteenuste katkestused, uuemad eespool. Genereeritud automaatsest seirest iga kontrollitsükli järel.</description><language>et</language><lastBuildDate>Wed, 23 Sep 2026 17:03:42 +0000</lastBuildDate><item><title>PAKIS: pakendijäätmete avaandmed: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-pakis-opendata</link><guid isPermaLink="false">pakis-opendata-2026-09-23T17:03:41Z</guid><pubDate>Wed, 23 Sep 2026 17:03:41 +0000</pubDate><category>Pakendiregister</category><description><![CDATA[Teenus: Pakendiregister
+Algus: 2026-09-23T17:03:41Z (UTC)
+Kestus: kestab endiselt
+Põhjus: http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en-US"> <![endif]--> <!--[if IE 7]> <html class="no-js ie7 oldie" lang="en-US"> <![endif]--> <!--[if ]]></description></item><item><title>Kütuseseire: ettevõtted: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kytus-bunkering-company</link><guid isPermaLink="false">kytus-bunkering-company-2026-09-23T17:03:41Z</guid><pubDate>Wed, 23 Sep 2026 17:03:41 +0000</pubDate><category>Kütuseseire</category><description><![CDATA[Teenus: Kütuseseire
+Algus: 2026-09-23T17:03:41Z (UTC)
+Kestus: kestab endiselt
+Põhjus: http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en-US"> <![endif]--> <!--[if IE 7]> <html class="no-js ie7 oldie" lang="en-US"> <![endif]--> <!--[if ]]></description></item><item><title>PROTO: probleemtoodete avaandmed: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-proto-opendata</link><guid isPermaLink="false">proto-opendata-2026-09-23T15:44:58Z</guid><pubDate>Wed, 23 Sep 2026 15:44:58 +0000</pubDate><category>Probleemtooteregister</category><description><![CDATA[Teenus: Probleemtooteregister
 Algus: 2026-09-23T15:44:58Z (UTC)
 Kestus: 53 min
 Põhjus: http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en-US"> <![endif]--> <!--[if IE 7]> <html class="no-js ie7 oldie" lang="en-US"> <![endif]--> <!--[if ]]></description></item><item><title>PAKIS: pakendijäätmete avaandmed: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-pakis-opendata</link><guid isPermaLink="false">pakis-opendata-2026-09-23T15:44:58Z</guid><pubDate>Wed, 23 Sep 2026 15:44:58 +0000</pubDate><category>Pakendiregister</category><description><![CDATA[Teenus: Pakendiregister
@@ -143,11 +149,5 @@ Algus: 2026-09-22T17:35:10Z (UTC)
 Kestus: 29 min
 Põhjus: http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en-US"> <![endif]--> <!--[if IE 7]> <html class="no-js ie7 oldie" lang="en-US"> <![endif]--> <!--[if ]]></description></item><item><title>Kliima tunniandmed: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kliima-tund</link><guid isPermaLink="false">kliima-tund-2026-09-22T15:49:05Z</guid><pubDate>Tue, 22 Sep 2026 15:49:05 +0000</pubDate><category>Kliima</category><description><![CDATA[Teenus: Kliima
 Algus: 2026-09-22T15:49:05Z (UTC)
-Kestus: 1 min
-Põhjus: connection failed: timed out]]></description></item><item><title>Kliima ööpäeva andmed, Võru 2006 (like-filter ja sortimine): ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kliima-paev-nimefilter</link><guid isPermaLink="false">kliima-paev-nimefilter-2026-09-22T15:48:56Z</guid><pubDate>Tue, 22 Sep 2026 15:48:56 +0000</pubDate><category>Kliima</category><description><![CDATA[Teenus: Kliima
-Algus: 2026-09-22T15:48:56Z (UTC)
-Kestus: 1 min
-Põhjus: connection failed: timed out]]></description></item><item><title>Kliima ööpäeva andmed, Ruhnu ja Kihnu õhuniiskus 2023: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kliima-paev</link><guid isPermaLink="false">kliima-paev-2026-09-22T15:48:35Z</guid><pubDate>Tue, 22 Sep 2026 15:48:35 +0000</pubDate><category>Kliima</category><description><![CDATA[Teenus: Kliima
-Algus: 2026-09-22T15:48:35Z (UTC)
 Kestus: 1 min
 Põhjus: connection failed: timed out]]></description></item></channel></rss>
