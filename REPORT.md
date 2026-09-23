@@ -1,72 +1,72 @@
 # Keskkonnaagentuuri API-de seisundiraport
 
-Koostatud: **2026-09-23 18:43** (EET/EEST) · jälgitavaid otspunkte: **42** · kontrollikirjeid viimase 31 päeva jooksul: **18489**
+Koostatud: **2026-09-23 18:45** (EET/EEST) · jälgitavaid otspunkte: **42** · kontrollikirjeid viimase 31 päeva jooksul: **18531**
 
-Hetkeseis — MAAS: **18** · KORRAS: **24**
+Hetkeseis — MAAS: **2** · KORRAS: **40**
 
 ## Praegune seis
 
 | Otspunkt | Seisund | Vastus | Andmete vanus | Viimane kontroll | Märkus |
 |---|---|---|---|---|---|
-| `eelis`<br><sub>EELIS andmestikud</sub> | **MAAS** | 30015 ms | - | 2026-09-23 18:04 | 147/261 ei vasta: eelis-rahvalad (connection failed: timed out), eelis-rahvalad- |
-| `estmodel-assessment-units`<br><sub>EstModel: Hindamisüksused</sub> | **MAAS** | 30032 ms | - | 2026-09-23 18:04 | connection failed: timed out |
-| `estmodel-countries`<br><sub>EstModel: Riigid</sub> | **MAAS** | 30027 ms | - | 2026-09-23 18:04 | connection failed: timed out |
-| `estmodel-districts`<br><sub>EstModel: Vesikonnad</sub> | **MAAS** | 30323 ms | - | 2026-09-23 18:04 | connection failed: timed out |
-| `estmodel-rivers`<br><sub>EstModel: Vooluveekogud</sub> | **MAAS** | 30301 ms | - | 2026-09-23 18:04 | connection failed: timed out |
-| `estmodel-stations`<br><sub>EstModel: Seirejaamad</sub> | **MAAS** | 30172 ms | - | 2026-09-23 18:04 | connection failed: timed out |
-| `estmodel-subdistricts`<br><sub>EstModel: Alamvesikonnad</sub> | **MAAS** | 30323 ms | - | 2026-09-23 18:04 | connection failed: timed out |
-| `estmodel-water-outlets`<br><sub>EstModel: Väljalasud</sub> | **MAAS** | 30155 ms | - | 2026-09-23 18:04 | connection failed: timed out |
-| `f-hydroseire`<br><sub>Hüdroloogiliste seireandmete aegread</sub> | **MAAS** | 30168 ms | - | 2026-09-23 18:12 | connection failed: timed out |
-| `f-keskkonnaseire`<br><sub>Keskkonnaseire avaandmete andmeteenused</sub> | **MAAS** | 30033 ms | - | 2026-09-23 18:20 | connection failed: timed out |
-| `f-kliima-element`<br><sub>f_kliima_element</sub> | **MAAS** | 30186 ms | - | 2026-09-23 18:20 | connection failed: timed out |
-| `f-kliima-jaam-vaatlus`<br><sub>Kliima: jaamade metaandmed ja elementide mõõtmisperioodid Climate: station metadata and element measurement periods</sub> | **MAAS** | 30146 ms | - | 2026-09-23 18:20 | connection failed: timed out |
-| `f-kliima-kuu`<br><sub>Kliima: kuuandmed Climate: monthly data</sub> | **MAAS** | 30242 ms | - | 2026-09-23 18:21 | connection failed: timed out |
-| `f-kliima-minut`<br><sub>Kliima: 10-minuti andmed Climate: 10-minute data</sub> | **MAAS** | 30022 ms | - | 2026-09-23 18:21 | connection failed: timed out |
-| `f-kliima-paev`<br><sub>Kliima: ööpäevaandmed Climate: daily data</sub> | **MAAS** | 30027 ms | - | 2026-09-23 18:21 | connection failed: timed out |
-| `f-kliima-tund`<br><sub>Kliima: tunniandmed  Climate: hourly data</sub> | **MAAS** | 30175 ms | - | 2026-09-23 18:21 | connection failed: timed out |
-| `hydroseire`<br><sub>Hüdroloogiline seire, veetase 2023-01-02</sub> | **KORRAS** | 200 · 4048 ms | - | 2026-09-23 18:43 |  |
-| `ilmateenistus-hoiatused-rss`<br><sub>Ilmateenistus: hoiatuste RSS</sub> | **KORRAS** | 200 · 1009 ms | - | 2026-09-23 18:43 |  |
-| `ilmateenistus-hoiatused-xml`<br><sub>Ilmateenistus: hoiatused XML</sub> | **KORRAS** | 200 · 1142 ms | - | 2026-09-23 18:43 |  |
-| `ilmateenistus-juur`<br><sub>Ilmateenistus: teenuse juur</sub> | **KORRAS** | 200 · 1864 ms | - | 2026-09-23 18:43 |  |
-| `ilmateenistus-prognoos-xml`<br><sub>Ilmateenistus: Eesti prognoos XML</sub> | **KORRAS** | 200 · 993 ms | - | 2026-09-23 18:43 |  |
-| `ilmateenistus-vaatlusandmed-xml`<br><sub>Ilmateenistus: Eesti vaatlusandmed XML</sub> | **KORRAS** | 200 · 1087 ms | - | 2026-09-23 18:43 |  |
-| `kaia-items-query`<br><sub>KAIA dokumentide metaandmete päring</sub> | **KORRAS** | 200 · 483 ms | - | 2026-09-23 18:43 |  |
-| `kaia-lists-active`<br><sub>KAIA aktiivse valikuhierarhia metaandmed</sub> | **KORRAS** | 200 · 593 ms | - | 2026-09-23 18:43 |  |
-| `kaia-lists-archive`<br><sub>KAIA arhiivi valikuhierarhia metaandmed</sub> | **KORRAS** | 200 · 650 ms | - | 2026-09-23 18:43 |  |
-| `kaia-swagger`<br><sub>KAIA OpenAPI teenusekirjeldus</sub> | **KORRAS** | 200 · 547 ms | - | 2026-09-23 18:43 |  |
-| `kaia-vaated`<br><sub>KAIA avaandmete failivaated</sub> | **KORRAS** | 564 ms | - | 2026-09-23 18:43 |  |
-| `kese-juur`<br><sub>KESE: teenuse juur</sub> | **KORRAS** | 200 · 661 ms | - | 2026-09-23 18:43 |  |
-| `keskkonnaandmed-root`<br><sub>Juur-URL, OpenAPI teenusekirjeldus</sub> | **KORRAS** | 200 · 747 ms | - | 2026-09-23 18:43 | body truncated at 65536 bytes, parse skipped |
-| `keskkonnaseire`<br><sub>Keskkonnaseire, programm PR0127 aastal 2021</sub> | **KORRAS** | 200 · 1937 ms | - | 2026-09-23 18:43 |  |
-| `kliima-element`<br><sub>Kliima elementide metaandmed</sub> | **KORRAS** | 200 · 377 ms | - | 2026-09-23 18:43 |  |
-| `kliima-jaam-vaatlus`<br><sub>Kliima vaatlusjaamade metaandmed</sub> | **KORRAS** | 200 · 415 ms | - | 2026-09-23 18:43 |  |
-| `kliima-kuu`<br><sub>Kliima kuu andmed</sub> | **KORRAS** | 200 · 406 ms | - | 2026-09-23 18:43 |  |
-| `kliima-minut`<br><sub>Kliima 10-minuti andmed</sub> | **KORRAS** | 200 · 414 ms | - | 2026-09-23 18:43 |  |
-| `kliima-paev`<br><sub>Kliima ööpäeva andmed, Ruhnu ja Kihnu õhuniiskus 2023</sub> | **KORRAS** | 200 · 424 ms | - | 2026-09-23 18:43 |  |
-| `kliima-paev-nimefilter`<br><sub>Kliima ööpäeva andmed, Võru 2006 (like-filter ja sortimine)</sub> | **KORRAS** | 200 · 410 ms | - | 2026-09-23 18:43 |  |
-| `kliima-tund`<br><sub>Kliima tunniandmed</sub> | **KORRAS** | 200 · 411 ms | - | 2026-09-23 18:43 |  |
-| `kytus-bunkering-company`<br><sub>Kütuseseire: ettevõtted</sub> | **MAAS** | 429 · 403 ms | - | 2026-09-23 18:43 | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-j |
-| `kytus-monitoring`<br><sub>Kütuseseire: seireandmed</sub> | **KORRAS** | 200 · 548 ms | - | 2026-09-23 18:43 |  |
-| `kytus-source-of-pollution`<br><sub>Kütuseseire: heiteallikad</sub> | **MAAS** | 429 · 537 ms | - | 2026-09-23 18:43 | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-j |
-| `pakis-opendata`<br><sub>PAKIS: pakendijäätmete avaandmed</sub> | **KORRAS** | 200 · 513 ms | - | 2026-09-23 18:43 |  |
-| `proto-opendata`<br><sub>PROTO: probleemtoodete avaandmed</sub> | **KORRAS** | 200 · 496 ms | - | 2026-09-23 18:43 |  |
+| `eelis`<br><sub>EELIS andmestikud</sub> | **KORRAS** | 440 ms | - | 2026-09-23 18:44 |  |
+| `estmodel-assessment-units`<br><sub>EstModel: Hindamisüksused</sub> | **KORRAS** | 200 · 1158 ms | - | 2026-09-23 18:44 |  |
+| `estmodel-countries`<br><sub>EstModel: Riigid</sub> | **KORRAS** | 200 · 651 ms | - | 2026-09-23 18:44 |  |
+| `estmodel-districts`<br><sub>EstModel: Vesikonnad</sub> | **KORRAS** | 200 · 734 ms | - | 2026-09-23 18:44 |  |
+| `estmodel-rivers`<br><sub>EstModel: Vooluveekogud</sub> | **KORRAS** | 200 · 1376 ms | - | 2026-09-23 18:44 | body truncated at 262144 bytes, parse skipped |
+| `estmodel-stations`<br><sub>EstModel: Seirejaamad</sub> | **KORRAS** | 200 · 674 ms | - | 2026-09-23 18:44 |  |
+| `estmodel-subdistricts`<br><sub>EstModel: Alamvesikonnad</sub> | **KORRAS** | 200 · 765 ms | - | 2026-09-23 18:44 |  |
+| `estmodel-water-outlets`<br><sub>EstModel: Väljalasud</sub> | **KORRAS** | 200 · 1209 ms | - | 2026-09-23 18:44 | body truncated at 262144 bytes, parse skipped |
+| `f-hydroseire`<br><sub>Hüdroloogiliste seireandmete aegread</sub> | **KORRAS** | 200 · 390 ms | - | 2026-09-23 18:44 |  |
+| `f-keskkonnaseire`<br><sub>Keskkonnaseire avaandmete andmeteenused</sub> | **KORRAS** | 200 · 1381 ms | - | 2026-09-23 18:44 |  |
+| `f-kliima-element`<br><sub>f_kliima_element</sub> | **KORRAS** | 200 · 445 ms | - | 2026-09-23 18:44 |  |
+| `f-kliima-jaam-vaatlus`<br><sub>Kliima: jaamade metaandmed ja elementide mõõtmisperioodid Climate: station metadata and element measurement periods</sub> | **KORRAS** | 200 · 433 ms | - | 2026-09-23 18:44 |  |
+| `f-kliima-kuu`<br><sub>Kliima: kuuandmed Climate: monthly data</sub> | **KORRAS** | 200 · 427 ms | - | 2026-09-23 18:44 |  |
+| `f-kliima-minut`<br><sub>Kliima: 10-minuti andmed Climate: 10-minute data</sub> | **KORRAS** | 200 · 430 ms | - | 2026-09-23 18:44 |  |
+| `f-kliima-paev`<br><sub>Kliima: ööpäevaandmed Climate: daily data</sub> | **KORRAS** | 200 · 406 ms | - | 2026-09-23 18:44 |  |
+| `f-kliima-tund`<br><sub>Kliima: tunniandmed  Climate: hourly data</sub> | **KORRAS** | 200 · 397 ms | - | 2026-09-23 18:44 |  |
+| `hydroseire`<br><sub>Hüdroloogiline seire, veetase 2023-01-02</sub> | **KORRAS** | 200 · 12420 ms | - | 2026-09-23 18:44 |  |
+| `ilmateenistus-hoiatused-rss`<br><sub>Ilmateenistus: hoiatuste RSS</sub> | **KORRAS** | 200 · 1161 ms | - | 2026-09-23 18:44 |  |
+| `ilmateenistus-hoiatused-xml`<br><sub>Ilmateenistus: hoiatused XML</sub> | **KORRAS** | 200 · 1205 ms | - | 2026-09-23 18:44 |  |
+| `ilmateenistus-juur`<br><sub>Ilmateenistus: teenuse juur</sub> | **KORRAS** | 200 · 2049 ms | - | 2026-09-23 18:44 |  |
+| `ilmateenistus-prognoos-xml`<br><sub>Ilmateenistus: Eesti prognoos XML</sub> | **KORRAS** | 200 · 1072 ms | - | 2026-09-23 18:44 |  |
+| `ilmateenistus-vaatlusandmed-xml`<br><sub>Ilmateenistus: Eesti vaatlusandmed XML</sub> | **KORRAS** | 200 · 1114 ms | - | 2026-09-23 18:44 |  |
+| `kaia-items-query`<br><sub>KAIA dokumentide metaandmete päring</sub> | **KORRAS** | 200 · 669 ms | - | 2026-09-23 18:44 |  |
+| `kaia-lists-active`<br><sub>KAIA aktiivse valikuhierarhia metaandmed</sub> | **KORRAS** | 200 · 827 ms | - | 2026-09-23 18:44 |  |
+| `kaia-lists-archive`<br><sub>KAIA arhiivi valikuhierarhia metaandmed</sub> | **KORRAS** | 200 · 822 ms | - | 2026-09-23 18:44 |  |
+| `kaia-swagger`<br><sub>KAIA OpenAPI teenusekirjeldus</sub> | **KORRAS** | 200 · 656 ms | - | 2026-09-23 18:44 |  |
+| `kaia-vaated`<br><sub>KAIA avaandmete failivaated</sub> | **KORRAS** | 698 ms | - | 2026-09-23 18:44 |  |
+| `kese-juur`<br><sub>KESE: teenuse juur</sub> | **KORRAS** | 200 · 730 ms | - | 2026-09-23 18:44 |  |
+| `keskkonnaandmed-root`<br><sub>Juur-URL, OpenAPI teenusekirjeldus</sub> | **KORRAS** | 200 · 1309 ms | - | 2026-09-23 18:44 | body truncated at 65536 bytes, parse skipped |
+| `keskkonnaseire`<br><sub>Keskkonnaseire, programm PR0127 aastal 2021</sub> | **KORRAS** | 200 · 1245 ms | - | 2026-09-23 18:44 |  |
+| `kliima-element`<br><sub>Kliima elementide metaandmed</sub> | **KORRAS** | 200 · 439 ms | - | 2026-09-23 18:44 |  |
+| `kliima-jaam-vaatlus`<br><sub>Kliima vaatlusjaamade metaandmed</sub> | **KORRAS** | 200 · 556 ms | - | 2026-09-23 18:44 |  |
+| `kliima-kuu`<br><sub>Kliima kuu andmed</sub> | **KORRAS** | 200 · 444 ms | - | 2026-09-23 18:44 |  |
+| `kliima-minut`<br><sub>Kliima 10-minuti andmed</sub> | **KORRAS** | 200 · 399 ms | - | 2026-09-23 18:44 |  |
+| `kliima-paev`<br><sub>Kliima ööpäeva andmed, Ruhnu ja Kihnu õhuniiskus 2023</sub> | **KORRAS** | 200 · 627 ms | - | 2026-09-23 18:44 |  |
+| `kliima-paev-nimefilter`<br><sub>Kliima ööpäeva andmed, Võru 2006 (like-filter ja sortimine)</sub> | **KORRAS** | 200 · 448 ms | - | 2026-09-23 18:44 |  |
+| `kliima-tund`<br><sub>Kliima tunniandmed</sub> | **KORRAS** | 200 · 392 ms | - | 2026-09-23 18:44 |  |
+| `kytus-bunkering-company`<br><sub>Kütuseseire: ettevõtted</sub> | **KORRAS** | 200 · 595 ms | - | 2026-09-23 18:44 |  |
+| `kytus-monitoring`<br><sub>Kütuseseire: seireandmed</sub> | **KORRAS** | 200 · 556 ms | - | 2026-09-23 18:44 |  |
+| `kytus-source-of-pollution`<br><sub>Kütuseseire: heiteallikad</sub> | **KORRAS** | 200 · 555 ms | - | 2026-09-23 18:44 |  |
+| `pakis-opendata`<br><sub>PAKIS: pakendijäätmete avaandmed</sub> | **MAAS** | 429 · 382 ms | - | 2026-09-23 18:44 | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-j |
+| `proto-opendata`<br><sub>PROTO: probleemtoodete avaandmed</sub> | **MAAS** | 429 · 368 ms | - | 2026-09-23 18:44 | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-j |
 
 ## Käideldavus
 
 | Otspunkt | 24 h | 7 päeva | 30 päeva |
 |---|---|---|---|
-| `eelis` | 97.9 % <sub>(n=48)</sub> | 99.1 % <sub>(n=335)</sub> | 99.1 % <sub>(n=451)</sub> |
+| `eelis` | 98.0 % <sub>(n=49)</sub> | 99.1 % <sub>(n=336)</sub> | 99.1 % <sub>(n=452)</sub> |
 | `eelis-rahvalad` | - | - | 100.0 % <sub>(n=10)</sub> |
 | `eelis-rahvalad-dok` | - | - | 100.0 % <sub>(n=10)</sub> |
 | `eelis-rahvalad-linnuala` | - | - | 100.0 % <sub>(n=10)</sub> |
 | `eelis-rahvalad-seosed` | - | - | 100.0 % <sub>(n=10)</sub> |
-| `estmodel-assessment-units` | 97.9 % <sub>(n=48)</sub> | 99.1 % <sub>(n=335)</sub> | 99.2 % <sub>(n=362)</sub> |
-| `estmodel-countries` | 97.9 % <sub>(n=48)</sub> | 99.1 % <sub>(n=335)</sub> | 99.2 % <sub>(n=362)</sub> |
-| `estmodel-districts` | 97.9 % <sub>(n=48)</sub> | 99.1 % <sub>(n=335)</sub> | 99.2 % <sub>(n=362)</sub> |
-| `estmodel-rivers` | 97.9 % <sub>(n=48)</sub> | 99.1 % <sub>(n=335)</sub> | 99.2 % <sub>(n=362)</sub> |
-| `estmodel-stations` | 97.9 % <sub>(n=48)</sub> | 99.1 % <sub>(n=335)</sub> | 99.2 % <sub>(n=362)</sub> |
-| `estmodel-subdistricts` | 97.9 % <sub>(n=48)</sub> | 99.1 % <sub>(n=335)</sub> | 99.2 % <sub>(n=362)</sub> |
-| `estmodel-water-outlets` | 97.9 % <sub>(n=48)</sub> | 99.1 % <sub>(n=335)</sub> | 99.2 % <sub>(n=362)</sub> |
+| `estmodel-assessment-units` | 98.0 % <sub>(n=49)</sub> | 99.1 % <sub>(n=336)</sub> | 99.2 % <sub>(n=363)</sub> |
+| `estmodel-countries` | 98.0 % <sub>(n=49)</sub> | 99.1 % <sub>(n=336)</sub> | 99.2 % <sub>(n=363)</sub> |
+| `estmodel-districts` | 98.0 % <sub>(n=49)</sub> | 99.1 % <sub>(n=336)</sub> | 99.2 % <sub>(n=363)</sub> |
+| `estmodel-rivers` | 98.0 % <sub>(n=49)</sub> | 99.1 % <sub>(n=336)</sub> | 99.2 % <sub>(n=363)</sub> |
+| `estmodel-stations` | 98.0 % <sub>(n=49)</sub> | 99.1 % <sub>(n=336)</sub> | 99.2 % <sub>(n=363)</sub> |
+| `estmodel-subdistricts` | 98.0 % <sub>(n=49)</sub> | 99.1 % <sub>(n=336)</sub> | 99.2 % <sub>(n=363)</sub> |
+| `estmodel-water-outlets` | 98.0 % <sub>(n=49)</sub> | 99.1 % <sub>(n=336)</sub> | 99.2 % <sub>(n=363)</sub> |
 | `f-alad` | - | - | 100.0 % <sub>(n=4)</sub> |
 | `f-alad-dok` | - | - | 100.0 % <sub>(n=4)</sub> |
 | `f-alad-ehak` | - | - | 100.0 % <sub>(n=4)</sub> |
@@ -102,7 +102,7 @@ Hetkeseis — MAAS: **18** · KORRAS: **24**
 | `f-hks-sihid-sr-programm` | - | - | 100.0 % <sub>(n=4)</sub> |
 | `f-hks-sihid-vmmeede` | - | - | 100.0 % <sub>(n=4)</sub> |
 | `f-hks-siht-seisud` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-hydroseire` | 97.9 % <sub>(n=48)</sub> | 99.1 % <sub>(n=335)</sub> | 99.3 % <sub>(n=455)</sub> |
+| `f-hydroseire` | 98.0 % <sub>(n=49)</sub> | 99.1 % <sub>(n=336)</sub> | 99.3 % <sub>(n=456)</sub> |
 | `f-invelupaigad` | - | - | 100.0 % <sub>(n=4)</sub> |
 | `f-invelupaigad-ala` | - | - | 100.0 % <sub>(n=4)</sub> |
 | `f-invelupaigad-ehak` | - | - | 100.0 % <sub>(n=4)</sub> |
@@ -131,13 +131,13 @@ Hetkeseis — MAAS: **18** · KORRAS: **24**
 | `f-jahiala-kandealus` | - | - | 100.0 % <sub>(n=4)</sub> |
 | `f-jahiala-seirejaam` | - | - | 100.0 % <sub>(n=4)</sub> |
 | `f-jkkregister-curr` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-keskkonnaseire` | 97.9 % <sub>(n=48)</sub> | 99.1 % <sub>(n=335)</sub> | 99.1 % <sub>(n=455)</sub> |
-| `f-kliima-element` | 97.9 % <sub>(n=48)</sub> | 99.1 % <sub>(n=335)</sub> | 99.3 % <sub>(n=455)</sub> |
-| `f-kliima-jaam-vaatlus` | 97.9 % <sub>(n=48)</sub> | 99.1 % <sub>(n=335)</sub> | 99.3 % <sub>(n=455)</sub> |
-| `f-kliima-kuu` | 97.9 % <sub>(n=48)</sub> | 99.1 % <sub>(n=335)</sub> | 99.3 % <sub>(n=455)</sub> |
-| `f-kliima-minut` | 97.9 % <sub>(n=48)</sub> | 99.1 % <sub>(n=335)</sub> | 99.3 % <sub>(n=455)</sub> |
-| `f-kliima-paev` | 97.9 % <sub>(n=48)</sub> | 99.1 % <sub>(n=335)</sub> | 99.3 % <sub>(n=455)</sub> |
-| `f-kliima-tund` | 97.9 % <sub>(n=48)</sub> | 99.1 % <sub>(n=335)</sub> | 99.3 % <sub>(n=455)</sub> |
+| `f-keskkonnaseire` | 98.0 % <sub>(n=49)</sub> | 99.1 % <sub>(n=336)</sub> | 99.1 % <sub>(n=456)</sub> |
+| `f-kliima-element` | 98.0 % <sub>(n=49)</sub> | 99.1 % <sub>(n=336)</sub> | 99.3 % <sub>(n=456)</sub> |
+| `f-kliima-jaam-vaatlus` | 98.0 % <sub>(n=49)</sub> | 99.1 % <sub>(n=336)</sub> | 99.3 % <sub>(n=456)</sub> |
+| `f-kliima-kuu` | 98.0 % <sub>(n=49)</sub> | 99.1 % <sub>(n=336)</sub> | 99.3 % <sub>(n=456)</sub> |
+| `f-kliima-minut` | 98.0 % <sub>(n=49)</sub> | 99.1 % <sub>(n=336)</sub> | 99.3 % <sub>(n=456)</sub> |
+| `f-kliima-paev` | 98.0 % <sub>(n=49)</sub> | 99.1 % <sub>(n=336)</sub> | 99.3 % <sub>(n=456)</sub> |
+| `f-kliima-tund` | 98.0 % <sub>(n=49)</sub> | 99.1 % <sub>(n=336)</sub> | 99.3 % <sub>(n=456)</sub> |
 | `f-kohustus-yld-curr` | - | - | 100.0 % <sub>(n=4)</sub> |
 | `f-lcp-poletusseadmed-allikas-curr` | - | - | 100.0 % <sub>(n=4)</sub> |
 | `f-lkohad` | - | - | 100.0 % <sub>(n=4)</sub> |
@@ -332,56 +332,58 @@ Hetkeseis — MAAS: **18** · KORRAS: **24**
 | `f-yrgid-ehak` | - | - | 100.0 % <sub>(n=4)</sub> |
 | `f-yrgid-kandealus` | - | - | 100.0 % <sub>(n=4)</sub> |
 | `f-yrgid-veekogu` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `hydroseire` | 98.0 % <sub>(n=49)</sub> | 99.4 % <sub>(n=335)</sub> | 99.6 % <sub>(n=461)</sub> |
-| `ilmateenistus-hoiatused-rss` | 100.0 % <sub>(n=49)</sub> | 65.4 % <sub>(n=335)</sub> | 67.9 % <sub>(n=361)</sub> |
-| `ilmateenistus-hoiatused-xml` | 100.0 % <sub>(n=49)</sub> | 63.0 % <sub>(n=335)</sub> | 65.7 % <sub>(n=361)</sub> |
-| `ilmateenistus-juur` | 100.0 % <sub>(n=49)</sub> | 87.2 % <sub>(n=335)</sub> | 88.1 % <sub>(n=362)</sub> |
-| `ilmateenistus-prognoos-xml` | 100.0 % <sub>(n=49)</sub> | 60.6 % <sub>(n=335)</sub> | 63.4 % <sub>(n=361)</sub> |
-| `ilmateenistus-vaatlusandmed-xml` | 100.0 % <sub>(n=49)</sub> | 58.5 % <sub>(n=335)</sub> | 61.6 % <sub>(n=362)</sub> |
-| `kaia-items-query` | 98.0 % <sub>(n=49)</sub> | 99.4 % <sub>(n=335)</sub> | 99.6 % <sub>(n=461)</sub> |
-| `kaia-lists-active` | 98.0 % <sub>(n=49)</sub> | 99.4 % <sub>(n=335)</sub> | 99.6 % <sub>(n=461)</sub> |
-| `kaia-lists-archive` | 98.0 % <sub>(n=49)</sub> | 99.4 % <sub>(n=335)</sub> | 99.6 % <sub>(n=461)</sub> |
-| `kaia-swagger` | 98.0 % <sub>(n=49)</sub> | 99.4 % <sub>(n=335)</sub> | 99.6 % <sub>(n=461)</sub> |
-| `kaia-vaated` | 98.0 % <sub>(n=49)</sub> | 99.4 % <sub>(n=335)</sub> | 99.4 % <sub>(n=362)</sub> |
-| `kese-juur` | 98.0 % <sub>(n=49)</sub> | 99.4 % <sub>(n=335)</sub> | 99.4 % <sub>(n=362)</sub> |
-| `keskkonnaandmed-root` | 98.0 % <sub>(n=49)</sub> | 99.4 % <sub>(n=335)</sub> | 99.6 % <sub>(n=461)</sub> |
-| `keskkonnaseire` | 98.0 % <sub>(n=49)</sub> | 99.1 % <sub>(n=335)</sub> | 99.1 % <sub>(n=461)</sub> |
-| `kliima-element` | 98.0 % <sub>(n=49)</sub> | 99.4 % <sub>(n=335)</sub> | 99.6 % <sub>(n=461)</sub> |
-| `kliima-jaam-vaatlus` | 98.0 % <sub>(n=49)</sub> | 99.4 % <sub>(n=335)</sub> | 99.6 % <sub>(n=461)</sub> |
-| `kliima-kuu` | 98.0 % <sub>(n=49)</sub> | 99.4 % <sub>(n=335)</sub> | 99.6 % <sub>(n=461)</sub> |
-| `kliima-minut` | 98.0 % <sub>(n=49)</sub> | 99.4 % <sub>(n=335)</sub> | 99.6 % <sub>(n=461)</sub> |
-| `kliima-paev` | 98.0 % <sub>(n=49)</sub> | 99.4 % <sub>(n=335)</sub> | 99.6 % <sub>(n=461)</sub> |
-| `kliima-paev-nimefilter` | 98.0 % <sub>(n=49)</sub> | 99.4 % <sub>(n=335)</sub> | 99.6 % <sub>(n=461)</sub> |
-| `kliima-tund` | 98.0 % <sub>(n=49)</sub> | 99.4 % <sub>(n=335)</sub> | 99.6 % <sub>(n=461)</sub> |
+| `hydroseire` | 98.0 % <sub>(n=50)</sub> | 99.4 % <sub>(n=336)</sub> | 99.6 % <sub>(n=462)</sub> |
+| `ilmateenistus-hoiatused-rss` | 100.0 % <sub>(n=49)</sub> | 65.5 % <sub>(n=336)</sub> | 68.0 % <sub>(n=362)</sub> |
+| `ilmateenistus-hoiatused-xml` | 100.0 % <sub>(n=49)</sub> | 63.1 % <sub>(n=336)</sub> | 65.7 % <sub>(n=362)</sub> |
+| `ilmateenistus-juur` | 100.0 % <sub>(n=49)</sub> | 87.2 % <sub>(n=336)</sub> | 88.2 % <sub>(n=363)</sub> |
+| `ilmateenistus-prognoos-xml` | 100.0 % <sub>(n=49)</sub> | 60.7 % <sub>(n=336)</sub> | 63.5 % <sub>(n=362)</sub> |
+| `ilmateenistus-vaatlusandmed-xml` | 100.0 % <sub>(n=49)</sub> | 58.6 % <sub>(n=336)</sub> | 61.7 % <sub>(n=363)</sub> |
+| `kaia-items-query` | 98.0 % <sub>(n=50)</sub> | 99.4 % <sub>(n=336)</sub> | 99.6 % <sub>(n=462)</sub> |
+| `kaia-lists-active` | 98.0 % <sub>(n=50)</sub> | 99.4 % <sub>(n=336)</sub> | 99.6 % <sub>(n=462)</sub> |
+| `kaia-lists-archive` | 98.0 % <sub>(n=50)</sub> | 99.4 % <sub>(n=336)</sub> | 99.6 % <sub>(n=462)</sub> |
+| `kaia-swagger` | 98.0 % <sub>(n=50)</sub> | 99.4 % <sub>(n=336)</sub> | 99.6 % <sub>(n=462)</sub> |
+| `kaia-vaated` | 98.0 % <sub>(n=50)</sub> | 99.4 % <sub>(n=336)</sub> | 99.4 % <sub>(n=363)</sub> |
+| `kese-juur` | 98.0 % <sub>(n=50)</sub> | 99.4 % <sub>(n=336)</sub> | 99.4 % <sub>(n=363)</sub> |
+| `keskkonnaandmed-root` | 98.0 % <sub>(n=50)</sub> | 99.4 % <sub>(n=336)</sub> | 99.6 % <sub>(n=462)</sub> |
+| `keskkonnaseire` | 98.0 % <sub>(n=50)</sub> | 99.1 % <sub>(n=336)</sub> | 99.1 % <sub>(n=462)</sub> |
+| `kliima-element` | 98.0 % <sub>(n=50)</sub> | 99.4 % <sub>(n=336)</sub> | 99.6 % <sub>(n=462)</sub> |
+| `kliima-jaam-vaatlus` | 98.0 % <sub>(n=50)</sub> | 99.4 % <sub>(n=336)</sub> | 99.6 % <sub>(n=462)</sub> |
+| `kliima-kuu` | 98.0 % <sub>(n=50)</sub> | 99.4 % <sub>(n=336)</sub> | 99.6 % <sub>(n=462)</sub> |
+| `kliima-minut` | 98.0 % <sub>(n=50)</sub> | 99.4 % <sub>(n=336)</sub> | 99.6 % <sub>(n=462)</sub> |
+| `kliima-paev` | 98.0 % <sub>(n=50)</sub> | 99.4 % <sub>(n=336)</sub> | 99.6 % <sub>(n=462)</sub> |
+| `kliima-paev-nimefilter` | 98.0 % <sub>(n=50)</sub> | 99.4 % <sub>(n=336)</sub> | 99.6 % <sub>(n=462)</sub> |
+| `kliima-tund` | 98.0 % <sub>(n=50)</sub> | 99.4 % <sub>(n=336)</sub> | 99.6 % <sub>(n=462)</sub> |
 | `kotkas-aastaaruanded` | - | - | 0.0 % <sub>(n=1)</sub> |
-| `kytus-bunkering-company` | 85.7 % <sub>(n=49)</sub> | 46.0 % <sub>(n=335)</sub> | 50.0 % <sub>(n=362)</sub> |
-| `kytus-monitoring` | 87.8 % <sub>(n=49)</sub> | 45.4 % <sub>(n=335)</sub> | 49.4 % <sub>(n=362)</sub> |
-| `kytus-source-of-pollution` | 87.8 % <sub>(n=49)</sub> | 47.2 % <sub>(n=335)</sub> | 51.1 % <sub>(n=362)</sub> |
-| `pakis-opendata` | 71.4 % <sub>(n=49)</sub> | 40.0 % <sub>(n=335)</sub> | 44.5 % <sub>(n=362)</sub> |
-| `proto-opendata` | 69.4 % <sub>(n=49)</sub> | 43.0 % <sub>(n=335)</sub> | 47.2 % <sub>(n=362)</sub> |
+| `kytus-bunkering-company` | 86.0 % <sub>(n=50)</sub> | 46.1 % <sub>(n=336)</sub> | 50.1 % <sub>(n=363)</sub> |
+| `kytus-monitoring` | 88.0 % <sub>(n=50)</sub> | 45.5 % <sub>(n=336)</sub> | 49.6 % <sub>(n=363)</sub> |
+| `kytus-source-of-pollution` | 88.0 % <sub>(n=50)</sub> | 47.3 % <sub>(n=336)</sub> | 51.2 % <sub>(n=363)</sub> |
+| `pakis-opendata` | 70.0 % <sub>(n=50)</sub> | 39.9 % <sub>(n=336)</sub> | 44.4 % <sub>(n=363)</sub> |
+| `proto-opendata` | 68.0 % <sub>(n=50)</sub> | 42.9 % <sub>(n=336)</sub> | 47.1 % <sub>(n=363)</sub> |
 
 ## Katkestused
 
 | Algus | Lõpp | Kestus | Otspunkt | Tüüp | Põhjus |
 |---|---|---|---|---|---|
-| 2026-09-23 18:43 | **kestab** | 0 s | `kytus-source-of-pollution` | MAAS | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldi |
-| 2026-09-23 18:43 | **kestab** | 0 s | `kytus-bunkering-company` | MAAS | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldi |
-| 2026-09-23 18:21 | **kestab** | 22 min | `f-kliima-tund` | MAAS | connection failed: timed out |
-| 2026-09-23 18:21 | **kestab** | 22 min | `f-kliima-paev` | MAAS | connection failed: timed out |
-| 2026-09-23 18:21 | **kestab** | 22 min | `f-kliima-minut` | MAAS | connection failed: timed out |
-| 2026-09-23 18:21 | **kestab** | 22 min | `f-kliima-kuu` | MAAS | connection failed: timed out |
-| 2026-09-23 18:20 | **kestab** | 23 min | `f-kliima-jaam-vaatlus` | MAAS | connection failed: timed out |
-| 2026-09-23 18:20 | **kestab** | 23 min | `f-kliima-element` | MAAS | connection failed: timed out |
-| 2026-09-23 18:20 | **kestab** | 23 min | `f-keskkonnaseire` | MAAS | connection failed: timed out |
-| 2026-09-23 18:12 | **kestab** | 31 min | `f-hydroseire` | MAAS | connection failed: timed out |
-| 2026-09-23 18:04 | **kestab** | 39 min | `estmodel-water-outlets` | MAAS | connection failed: timed out |
-| 2026-09-23 18:04 | **kestab** | 39 min | `estmodel-stations` | MAAS | connection failed: timed out |
-| 2026-09-23 18:04 | **kestab** | 39 min | `estmodel-countries` | MAAS | connection failed: timed out |
-| 2026-09-23 18:04 | **kestab** | 39 min | `estmodel-subdistricts` | MAAS | connection failed: timed out |
-| 2026-09-23 18:04 | **kestab** | 39 min | `estmodel-rivers` | MAAS | connection failed: timed out |
-| 2026-09-23 18:04 | **kestab** | 39 min | `estmodel-districts` | MAAS | connection failed: timed out |
-| 2026-09-23 18:04 | **kestab** | 39 min | `estmodel-assessment-units` | MAAS | connection failed: timed out |
-| 2026-09-23 18:04 | **kestab** | 39 min | `eelis` | MAAS | 147/261 ei vasta: eelis-rahvalad (connection failed: timed out), eelis-rahvalad-dok (conne |
+| 2026-09-23 18:44 | **kestab** | 9 s | `proto-opendata` | MAAS | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldi |
+| 2026-09-23 18:44 | **kestab** | 9 s | `pakis-opendata` | MAAS | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldi |
+| 2026-09-23 18:43 | 2026-09-23 18:44 | 55 s | `kytus-source-of-pollution` | MAAS | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldi |
+| 2026-09-23 18:43 | 2026-09-23 18:44 | 54 s | `kytus-bunkering-company` | MAAS | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldi |
+| 2026-09-23 18:21 | 2026-09-23 18:44 | 23 min | `f-kliima-tund` | MAAS | connection failed: timed out |
+| 2026-09-23 18:21 | 2026-09-23 18:44 | 23 min | `f-kliima-paev` | MAAS | connection failed: timed out |
+| 2026-09-23 18:21 | 2026-09-23 18:44 | 23 min | `f-kliima-minut` | MAAS | connection failed: timed out |
+| 2026-09-23 18:21 | 2026-09-23 18:44 | 23 min | `f-kliima-kuu` | MAAS | connection failed: timed out |
+| 2026-09-23 18:20 | 2026-09-23 18:44 | 23 min | `f-kliima-jaam-vaatlus` | MAAS | connection failed: timed out |
+| 2026-09-23 18:20 | 2026-09-23 18:44 | 23 min | `f-kliima-element` | MAAS | connection failed: timed out |
+| 2026-09-23 18:20 | 2026-09-23 18:44 | 23 min | `f-keskkonnaseire` | MAAS | connection failed: timed out |
+| 2026-09-23 18:12 | 2026-09-23 18:44 | 31 min | `f-hydroseire` | MAAS | connection failed: timed out |
+| 2026-09-23 18:04 | 2026-09-23 18:44 | 39 min | `estmodel-water-outlets` | MAAS | connection failed: timed out |
+| 2026-09-23 18:04 | 2026-09-23 18:44 | 39 min | `estmodel-stations` | MAAS | connection failed: timed out |
+| 2026-09-23 18:04 | 2026-09-23 18:44 | 39 min | `estmodel-countries` | MAAS | connection failed: timed out |
+| 2026-09-23 18:04 | 2026-09-23 18:44 | 40 min | `estmodel-subdistricts` | MAAS | connection failed: timed out |
+| 2026-09-23 18:04 | 2026-09-23 18:44 | 40 min | `estmodel-rivers` | MAAS | connection failed: timed out |
+| 2026-09-23 18:04 | 2026-09-23 18:44 | 40 min | `estmodel-districts` | MAAS | connection failed: timed out |
+| 2026-09-23 18:04 | 2026-09-23 18:44 | 40 min | `estmodel-assessment-units` | MAAS | connection failed: timed out |
+| 2026-09-23 18:04 | 2026-09-23 18:44 | 40 min | `eelis` | MAAS | 147/261 ei vasta: eelis-rahvalad (connection failed: timed out), eelis-rahvalad-dok (conne |
 | 2026-09-23 17:38 | 2026-09-23 18:43 | 1 h 5 min | `proto-opendata` | MAAS | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldi |
 | 2026-09-23 17:38 | 2026-09-23 18:43 | 1 h 5 min | `pakis-opendata` | MAAS | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldi |
 | 2026-09-23 16:37 | 2026-09-23 17:04 | 26 min | `pakis-opendata` | MAAS | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldi |
@@ -462,9 +464,7 @@ Hetkeseis — MAAS: **18** · KORRAS: **24**
 | 2026-09-22 07:36 | 2026-09-22 09:04 | 1 h 27 min | `ilmateenistus-prognoos-xml` | MAAS | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldi |
 | 2026-09-22 07:36 | 2026-09-22 09:04 | 1 h 27 min | `ilmateenistus-hoiatused-rss` | MAAS | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldi |
 | 2026-09-22 07:03 | 2026-09-22 09:41 | 2 h 37 min | `kytus-bunkering-company` | MAAS | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldi |
-| 2026-09-22 06:03 | 2026-09-22 06:37 | 33 min | `ilmateenistus-prognoos-xml` | MAAS | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldi |
-| 2026-09-22 06:03 | 2026-09-22 07:36 | 1 h 33 min | `ilmateenistus-hoiatused-xml` | MAAS | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldi |
-| … | | | | | _ja veel 491 katkestust_ |
+| … | | | | | _ja veel 493 katkestust_ |
 
 ## Hoiatused
 
