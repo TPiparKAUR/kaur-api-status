@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
-<channel><title>Keskkonnaagentuuri API-de katkestused</title><link>https://tpiparkaur.github.io/kaur-api-status/</link><description>Keskkonnaagentuuri avalike andmeteenuste katkestused, uuemad eespool. Genereeritud automaatsest seirest iga kontrollitsükli järel.</description><language>et</language><lastBuildDate>Thu, 24 Sep 2026 12:04:58 +0000</lastBuildDate><item><title>PROTO: probleemtoodete avaandmed: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-proto-opendata</link><guid isPermaLink="false">proto-opendata-2026-09-24T11:03:54Z</guid><pubDate>Thu, 24 Sep 2026 11:03:54 +0000</pubDate><category>Probleemtooteregister</category><description><![CDATA[Teenus: Probleemtooteregister
+<channel><title>Keskkonnaagentuuri API-de katkestused</title><link>https://tpiparkaur.github.io/kaur-api-status/</link><description>Keskkonnaagentuuri avalike andmeteenuste katkestused, uuemad eespool. Genereeritud automaatsest seirest iga kontrollitsükli järel.</description><language>et</language><lastBuildDate>Thu, 24 Sep 2026 12:42:16 +0000</lastBuildDate><item><title>PROTO: probleemtoodete avaandmed: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-proto-opendata</link><guid isPermaLink="false">proto-opendata-2026-09-24T12:42:15Z</guid><pubDate>Thu, 24 Sep 2026 12:42:15 +0000</pubDate><category>Probleemtooteregister</category><description><![CDATA[Teenus: Probleemtooteregister
+Algus: 2026-09-24T12:42:15Z (UTC)
+Kestus: kestab endiselt
+Põhjus: http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en-US"> <![endif]--> <!--[if IE 7]> <html class="no-js ie7 oldie" lang="en-US"> <![endif]--> <!--[if ]]></description></item><item><title>Kütuseseire: seireandmed: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kytus-monitoring</link><guid isPermaLink="false">kytus-monitoring-2026-09-24T12:42:15Z</guid><pubDate>Thu, 24 Sep 2026 12:42:15 +0000</pubDate><category>Kütuseseire</category><description><![CDATA[Teenus: Kütuseseire
+Algus: 2026-09-24T12:42:15Z (UTC)
+Kestus: kestab endiselt
+Põhjus: http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en-US"> <![endif]--> <!--[if IE 7]> <html class="no-js ie7 oldie" lang="en-US"> <![endif]--> <!--[if ]]></description></item><item><title>PROTO: probleemtoodete avaandmed: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-proto-opendata</link><guid isPermaLink="false">proto-opendata-2026-09-24T11:03:54Z</guid><pubDate>Thu, 24 Sep 2026 11:03:54 +0000</pubDate><category>Probleemtooteregister</category><description><![CDATA[Teenus: Probleemtooteregister
 Algus: 2026-09-24T11:03:54Z (UTC)
 Kestus: 33 min
 Põhjus: http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en-US"> <![endif]--> <!--[if IE 7]> <html class="no-js ie7 oldie" lang="en-US"> <![endif]--> <!--[if ]]></description></item><item><title>PAKIS: pakendijäätmete avaandmed: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-pakis-opendata</link><guid isPermaLink="false">pakis-opendata-2026-09-24T10:37:19Z</guid><pubDate>Thu, 24 Sep 2026 10:37:19 +0000</pubDate><category>Pakendiregister</category><description><![CDATA[Teenus: Pakendiregister
@@ -142,12 +148,6 @@ Põhjus: connection failed: timed out]]></description></item><item><title>EstMod
 Algus: 2026-09-23T15:04:43Z (UTC)
 Kestus: 39 min
 Põhjus: connection failed: timed out]]></description></item><item><title>EstModel: Alamvesikonnad: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-estmodel-subdistricts</link><guid isPermaLink="false">estmodel-subdistricts-2026-09-23T15:04:13Z</guid><pubDate>Wed, 23 Sep 2026 15:04:13 +0000</pubDate><category>EstModel</category><description><![CDATA[Teenus: EstModel
-Algus: 2026-09-23T15:04:13Z (UTC)
-Kestus: 40 min
-Põhjus: connection failed: timed out]]></description></item><item><title>EstModel: Vooluveekogud: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-estmodel-rivers</link><guid isPermaLink="false">estmodel-rivers-2026-09-23T15:04:13Z</guid><pubDate>Wed, 23 Sep 2026 15:04:13 +0000</pubDate><category>EstModel</category><description><![CDATA[Teenus: EstModel
-Algus: 2026-09-23T15:04:13Z (UTC)
-Kestus: 40 min
-Põhjus: connection failed: timed out]]></description></item><item><title>EstModel: Vesikonnad: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-estmodel-districts</link><guid isPermaLink="false">estmodel-districts-2026-09-23T15:04:13Z</guid><pubDate>Wed, 23 Sep 2026 15:04:13 +0000</pubDate><category>EstModel</category><description><![CDATA[Teenus: EstModel
 Algus: 2026-09-23T15:04:13Z (UTC)
 Kestus: 40 min
 Põhjus: connection failed: timed out]]></description></item></channel></rss>
