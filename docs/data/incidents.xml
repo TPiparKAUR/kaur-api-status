@@ -1,8 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
-<channel><title>Keskkonnaagentuuri API-de katkestused</title><link>https://tpiparkaur.github.io/kaur-api-status/</link><description>Keskkonnaagentuuri avalike andmeteenuste katkestused, uuemad eespool. Genereeritud automaatsest seirest iga kontrollitsükli järel.</description><language>et</language><lastBuildDate>Thu, 24 Sep 2026 09:37:37 +0000</lastBuildDate><item><title>PROTO: probleemtoodete avaandmed: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-proto-opendata</link><guid isPermaLink="false">proto-opendata-2026-09-24T09:37:36Z</guid><pubDate>Thu, 24 Sep 2026 09:37:36 +0000</pubDate><category>Probleemtooteregister</category><description><![CDATA[Teenus: Probleemtooteregister
-Algus: 2026-09-24T09:37:36Z (UTC)
+<channel><title>Keskkonnaagentuuri API-de katkestused</title><link>https://tpiparkaur.github.io/kaur-api-status/</link><description>Keskkonnaagentuuri avalike andmeteenuste katkestused, uuemad eespool. Genereeritud automaatsest seirest iga kontrollitsükli järel.</description><language>et</language><lastBuildDate>Thu, 24 Sep 2026 10:10:07 +0000</lastBuildDate><item><title>Kliima ööpäeva andmed, Võru 2006 (like-filter ja sortimine): ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kliima-paev-nimefilter</link><guid isPermaLink="false">kliima-paev-nimefilter-2026-09-24T10:09:42Z</guid><pubDate>Thu, 24 Sep 2026 10:09:42 +0000</pubDate><category>Kliima</category><description><![CDATA[Teenus: Kliima
+Algus: 2026-09-24T10:09:42Z (UTC)
 Kestus: kestab endiselt
+Põhjus: http 504 Gateway Timeout — {"code":"PGRST003","details":null,"hint":null,"message":"Timed out acquiring connection from connection pool."}]]></description></item><item><title>Kliima ööpäeva andmed, Ruhnu ja Kihnu õhuniiskus 2023: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kliima-paev</link><guid isPermaLink="false">kliima-paev-2026-09-24T10:09:39Z</guid><pubDate>Thu, 24 Sep 2026 10:09:39 +0000</pubDate><category>Kliima</category><description><![CDATA[Teenus: Kliima
+Algus: 2026-09-24T10:09:39Z (UTC)
+Kestus: kestab endiselt
+Põhjus: http 504 Gateway Timeout — {"code":"PGRST003","details":null,"hint":null,"message":"Timed out acquiring connection from connection pool."}]]></description></item><item><title>Kliima 10-minuti andmed: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kliima-minut</link><guid isPermaLink="false">kliima-minut-2026-09-24T10:09:34Z</guid><pubDate>Thu, 24 Sep 2026 10:09:34 +0000</pubDate><category>Kliima</category><description><![CDATA[Teenus: Kliima
+Algus: 2026-09-24T10:09:34Z (UTC)
+Kestus: kestab endiselt
+Põhjus: http 504 Gateway Timeout — {"code":"PGRST003","details":null,"hint":null,"message":"Timed out acquiring connection from connection pool."}]]></description></item><item><title>Keskkonnaseire, programm PR0127 aastal 2021: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-keskkonnaseire</link><guid isPermaLink="false">keskkonnaseire-2026-09-24T10:09:23Z</guid><pubDate>Thu, 24 Sep 2026 10:09:23 +0000</pubDate><category>Keskkonnaseire</category><description><![CDATA[Teenus: Keskkonnaseire
+Algus: 2026-09-24T10:09:23Z (UTC)
+Kestus: kestab endiselt
+Põhjus: http 504 Gateway Timeout — {"code":"PGRST003","details":null,"hint":null,"message":"Timed out acquiring connection from connection pool."}]]></description></item><item><title>Juur-URL, OpenAPI teenusekirjeldus: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-keskkonnaandmed-root</link><guid isPermaLink="false">keskkonnaandmed-root-2026-09-24T10:09:22Z</guid><pubDate>Thu, 24 Sep 2026 10:09:22 +0000</pubDate><category>Keskkonnaandmed</category><description><![CDATA[Teenus: Keskkonnaandmed
+Algus: 2026-09-24T10:09:22Z (UTC)
+Kestus: kestab endiselt
+Põhjus: http 504 Gateway Timeout — {"code":"PGRST003","details":null,"hint":null,"message":"Timed out acquiring connection from connection pool."}]]></description></item><item><title>Hüdroloogiline seire, veetase 2023-01-02: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-hydroseire</link><guid isPermaLink="false">hydroseire-2026-09-24T10:09:20Z</guid><pubDate>Thu, 24 Sep 2026 10:09:20 +0000</pubDate><category>Hüdroloogia</category><description><![CDATA[Teenus: Hüdroloogia
+Algus: 2026-09-24T10:09:20Z (UTC)
+Kestus: kestab endiselt
+Põhjus: http 504 Gateway Timeout — {"code":"PGRST003","details":null,"hint":null,"message":"Timed out acquiring connection from connection pool."}]]></description></item><item><title>EELIS andmestikud: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-eelis</link><guid isPermaLink="false">eelis-2026-09-24T10:03:28Z</guid><pubDate>Thu, 24 Sep 2026 10:03:28 +0000</pubDate><category>EELIS</category><description><![CDATA[Teenus: EELIS
+Algus: 2026-09-24T10:03:28Z (UTC)
+Kestus: kestab endiselt
+Põhjus: 51/261 ei vasta: f-veekogud-dok (http 504 Gateway Timeout — {"code":"PGRST003","details":null), f-veekogud-ehak (http 504 Gateway Timeout — {"code":"PGRST003","details":null), f-veekogud-invelupaik (h]]></description></item><item><title>PROTO: probleemtoodete avaandmed: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-proto-opendata</link><guid isPermaLink="false">proto-opendata-2026-09-24T09:37:36Z</guid><pubDate>Thu, 24 Sep 2026 09:37:36 +0000</pubDate><category>Probleemtooteregister</category><description><![CDATA[Teenus: Probleemtooteregister
+Algus: 2026-09-24T09:37:36Z (UTC)
+Kestus: 32 min
 Põhjus: http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en-US"> <![endif]--> <!--[if IE 7]> <html class="no-js ie7 oldie" lang="en-US"> <![endif]--> <!--[if ]]></description></item><item><title>PROTO: probleemtoodete avaandmed: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-proto-opendata</link><guid isPermaLink="false">proto-opendata-2026-09-24T05:03:48Z</guid><pubDate>Thu, 24 Sep 2026 05:03:48 +0000</pubDate><category>Probleemtooteregister</category><description><![CDATA[Teenus: Probleemtooteregister
 Algus: 2026-09-24T05:03:48Z (UTC)
 Kestus: 1 h 1 min
@@ -129,25 +150,4 @@ Kestus: 40 min
 Põhjus: connection failed: timed out]]></description></item><item><title>EELIS andmestikud: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-eelis</link><guid isPermaLink="false">eelis-2026-09-23T15:04:13Z</guid><pubDate>Wed, 23 Sep 2026 15:04:13 +0000</pubDate><category>EELIS</category><description><![CDATA[Teenus: EELIS
 Algus: 2026-09-23T15:04:13Z (UTC)
 Kestus: 40 min
-Põhjus: 147/261 ei vasta: eelis-rahvalad (connection failed: timed out), eelis-rahvalad-dok (connection failed: timed out), eelis-rahvalad-linnuala (connection failed: timed out), eelis-rahvalad-seosed (conne]]></description></item><item><title>PROTO: probleemtoodete avaandmed: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-proto-opendata</link><guid isPermaLink="false">proto-opendata-2026-09-23T14:38:25Z</guid><pubDate>Wed, 23 Sep 2026 14:38:25 +0000</pubDate><category>Probleemtooteregister</category><description><![CDATA[Teenus: Probleemtooteregister
-Algus: 2026-09-23T14:38:25Z (UTC)
-Kestus: 1 h 5 min
-Põhjus: http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en-US"> <![endif]--> <!--[if IE 7]> <html class="no-js ie7 oldie" lang="en-US"> <![endif]--> <!--[if ]]></description></item><item><title>PAKIS: pakendijäätmete avaandmed: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-pakis-opendata</link><guid isPermaLink="false">pakis-opendata-2026-09-23T14:38:25Z</guid><pubDate>Wed, 23 Sep 2026 14:38:25 +0000</pubDate><category>Pakendiregister</category><description><![CDATA[Teenus: Pakendiregister
-Algus: 2026-09-23T14:38:25Z (UTC)
-Kestus: 1 h 5 min
-Põhjus: http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en-US"> <![endif]--> <!--[if IE 7]> <html class="no-js ie7 oldie" lang="en-US"> <![endif]--> <!--[if ]]></description></item><item><title>PAKIS: pakendijäätmete avaandmed: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-pakis-opendata</link><guid isPermaLink="false">pakis-opendata-2026-09-23T13:37:36Z</guid><pubDate>Wed, 23 Sep 2026 13:37:36 +0000</pubDate><category>Pakendiregister</category><description><![CDATA[Teenus: Pakendiregister
-Algus: 2026-09-23T13:37:36Z (UTC)
-Kestus: 26 min
-Põhjus: http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en-US"> <![endif]--> <!--[if IE 7]> <html class="no-js ie7 oldie" lang="en-US"> <![endif]--> <!--[if ]]></description></item><item><title>PROTO: probleemtoodete avaandmed: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-proto-opendata</link><guid isPermaLink="false">proto-opendata-2026-09-23T13:05:27Z</guid><pubDate>Wed, 23 Sep 2026 13:05:27 +0000</pubDate><category>Probleemtooteregister</category><description><![CDATA[Teenus: Probleemtooteregister
-Algus: 2026-09-23T13:05:27Z (UTC)
-Kestus: 32 min
-Põhjus: http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en-US"> <![endif]--> <!--[if IE 7]> <html class="no-js ie7 oldie" lang="en-US"> <![endif]--> <!--[if ]]></description></item><item><title>PAKIS: pakendijäätmete avaandmed: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-pakis-opendata</link><guid isPermaLink="false">pakis-opendata-2026-09-23T12:41:25Z</guid><pubDate>Wed, 23 Sep 2026 12:41:25 +0000</pubDate><category>Pakendiregister</category><description><![CDATA[Teenus: Pakendiregister
-Algus: 2026-09-23T12:41:25Z (UTC)
-Kestus: 23 min
-Põhjus: http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en-US"> <![endif]--> <!--[if IE 7]> <html class="no-js ie7 oldie" lang="en-US"> <![endif]--> <!--[if ]]></description></item><item><title>PAKIS: pakendijäätmete avaandmed: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-pakis-opendata</link><guid isPermaLink="false">pakis-opendata-2026-09-23T11:03:51Z</guid><pubDate>Wed, 23 Sep 2026 11:03:51 +0000</pubDate><category>Pakendiregister</category><description><![CDATA[Teenus: Pakendiregister
-Algus: 2026-09-23T11:03:51Z (UTC)
-Kestus: 32 min
-Põhjus: http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en-US"> <![endif]--> <!--[if IE 7]> <html class="no-js ie7 oldie" lang="en-US"> <![endif]--> <!--[if ]]></description></item><item><title>Kütuseseire: seireandmed: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kytus-monitoring</link><guid isPermaLink="false">kytus-monitoring-2026-09-23T11:03:51Z</guid><pubDate>Wed, 23 Sep 2026 11:03:51 +0000</pubDate><category>Kütuseseire</category><description><![CDATA[Teenus: Kütuseseire
-Algus: 2026-09-23T11:03:51Z (UTC)
-Kestus: 32 min
-Põhjus: http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en-US"> <![endif]--> <!--[if IE 7]> <html class="no-js ie7 oldie" lang="en-US"> <![endif]--> <!--[if ]]></description></item></channel></rss>
+Põhjus: 147/261 ei vasta: eelis-rahvalad (connection failed: timed out), eelis-rahvalad-dok (connection failed: timed out), eelis-rahvalad-linnuala (connection failed: timed out), eelis-rahvalad-seosed (conne]]></description></item></channel></rss>
