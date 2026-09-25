@@ -1,7 +1,7 @@
 {
  "availability": {
   "checks_24h": 2016,
-  "d7": 90.5,
+  "d7": 90.54,
   "h24": 97.12
  },
  "chart_dates": [
@@ -109,10 +109,10 @@
    "p95_ms": 2018
   },
   {
-   "avail_pct": 97.99,
-   "checks": 798,
+   "avail_pct": 97.98,
+   "checks": 840,
    "date": "2026-09-25",
-   "ok": 782,
+   "ok": 823,
    "p50_ms": 635,
    "p95_ms": 2093
   }
@@ -208,10 +208,10 @@
   },
   {
    "avail_pct": 100.0,
-   "checks": 95,
+   "checks": 100,
    "date": "2026-09-25",
-   "ok": 95,
-   "p50_ms": 787,
+   "ok": 100,
+   "p50_ms": 785,
    "p95_ms": 1076
   }
  ],
@@ -305,11 +305,11 @@
    "p95_ms": 2099
   },
   {
-   "avail_pct": 97.72,
-   "checks": 703,
+   "avail_pct": 97.7,
+   "checks": 740,
    "date": "2026-09-25",
-   "ok": 687,
-   "p50_ms": 578,
+   "ok": 723,
+   "p50_ms": 580,
    "p95_ms": 2179
   }
  ],
@@ -331,7 +331,7 @@
      47,
      48,
      48,
-     19
+     20
     ],
     "ok": [
      18,
@@ -345,7 +345,7 @@
      46,
      47,
      47,
-     19
+     20
     ],
     "p50_ms": [
      762,
@@ -366,11 +366,11 @@
    "http": null,
    "id": "eelis",
    "members": 261,
-   "ms": 498,
+   "ms": 454,
    "name": "EELIS andmestikud",
    "status": "ok",
    "system": "EELIS",
-   "ts": "2026-09-25T09:03:35Z",
+   "ts": "2026-09-25T09:37:28Z",
    "url": "https://keskkonnaandmed.envir.ee/",
    "verified": true
   },
@@ -391,7 +391,7 @@
      47,
      48,
      48,
-     19
+     20
     ],
     "ok": [
      0,
@@ -405,7 +405,7 @@
      46,
      47,
      48,
-     19
+     20
     ],
     "p50_ms": [
      null,
@@ -419,18 +419,18 @@
      895,
      924,
      979,
-     1007
+     1034
     ]
    },
    "detail": "",
    "http": 200,
    "id": "estmodel-assessment-units",
    "members": null,
-   "ms": 1246,
+   "ms": 1034,
    "name": "EstModel: Hindamisüksused",
    "status": "ok",
    "system": "EstModel",
-   "ts": "2026-09-25T09:03:35Z",
+   "ts": "2026-09-25T09:37:28Z",
    "url": "https://estmodel.envir.ee/assessment-units",
    "verified": false
   },
@@ -451,7 +451,7 @@
      47,
      48,
      48,
-     19
+     20
     ],
     "ok": [
      0,
@@ -465,7 +465,7 @@
      46,
      47,
      48,
-     19
+     20
     ],
     "p50_ms": [
      null,
@@ -479,18 +479,18 @@
      575,
      626,
      603,
-     673
+     693
     ]
    },
    "detail": "",
    "http": 200,
    "id": "estmodel-countries",
    "members": null,
-   "ms": 737,
+   "ms": 874,
    "name": "EstModel: Riigid",
    "status": "ok",
    "system": "EstModel",
-   "ts": "2026-09-25T09:03:35Z",
+   "ts": "2026-09-25T09:37:28Z",
    "url": "https://estmodel.envir.ee/countries",
    "verified": false
   },
@@ -511,7 +511,7 @@
      47,
      48,
      48,
-     19
+     20
     ],
     "ok": [
      0,
@@ -525,7 +525,7 @@
      46,
      47,
      48,
-     19
+     20
     ],
     "p50_ms": [
      null,
@@ -546,11 +546,11 @@
    "http": 200,
    "id": "estmodel-districts",
    "members": null,
-   "ms": 822,
+   "ms": 673,
    "name": "EstModel: Vesikonnad",
    "status": "ok",
    "system": "EstModel",
-   "ts": "2026-09-25T09:03:35Z",
+   "ts": "2026-09-25T09:37:28Z",
    "url": "https://estmodel.envir.ee/districts",
    "verified": false
   },
@@ -571,7 +571,7 @@
      47,
      48,
      48,
-     19
+     20
     ],
     "ok": [
      0,
@@ -585,7 +585,7 @@
      46,
      47,
      48,
-     19
+     20
     ],
     "p50_ms": [
      null,
@@ -599,18 +599,18 @@
      1156,
      1196,
      1163,
-     1327
+     1380
     ]
    },
    "detail": "body truncated at 262144 bytes, parse skipped",
    "http": 200,
    "id": "estmodel-rivers",
    "members": null,
-   "ms": 1301,
+   "ms": 1584,
    "name": "EstModel: Vooluveekogud",
    "status": "ok",
    "system": "EstModel",
-   "ts": "2026-09-25T09:03:35Z",
+   "ts": "2026-09-25T09:37:28Z",
    "url": "https://estmodel.envir.ee/rivers",
    "verified": false
   },
@@ -631,7 +631,7 @@
      47,
      48,
      48,
-     19
+     20
     ],
     "ok": [
      0,
@@ -645,7 +645,7 @@
      46,
      47,
      48,
-     19
+     20
     ],
     "p50_ms": [
      null,
@@ -659,18 +659,18 @@
      728,
      747,
      729,
-     846
+     882
     ]
    },
    "detail": "",
    "http": 200,
    "id": "estmodel-stations",
    "members": null,
-   "ms": 836,
+   "ms": 915,
    "name": "EstModel: Seirejaamad",
    "status": "ok",
    "system": "EstModel",
-   "ts": "2026-09-25T09:03:35Z",
+   "ts": "2026-09-25T09:37:28Z",
    "url": "https://estmodel.envir.ee/stations",
    "verified": false
   },
@@ -691,7 +691,7 @@
      47,
      48,
      48,
-     19
+     20
     ],
     "ok": [
      0,
@@ -705,7 +705,7 @@
      46,
      47,
      48,
-     19
+     20
     ],
     "p50_ms": [
      null,
@@ -719,18 +719,18 @@
      581,
      608,
      590,
-     627
+     635
     ]
    },
    "detail": "",
    "http": 200,
    "id": "estmodel-subdistricts",
    "members": null,
-   "ms": 477,
+   "ms": 700,
    "name": "EstModel: Alamvesikonnad",
    "status": "ok",
    "system": "EstModel",
-   "ts": "2026-09-25T09:03:35Z",
+   "ts": "2026-09-25T09:37:28Z",
    "url": "https://estmodel.envir.ee/subdistricts",
    "verified": false
   },
@@ -751,7 +751,7 @@
      47,
      48,
      48,
-     19
+     20
     ],
     "ok": [
      0,
@@ -765,7 +765,7 @@
      46,
      47,
      48,
-     19
+     20
     ],
     "p50_ms": [
      null,
@@ -779,18 +779,18 @@
      1182,
      1213,
      1161,
-     1367
+     1388
     ]
    },
    "detail": "body truncated at 262144 bytes, parse skipped",
    "http": 200,
    "id": "estmodel-water-outlets",
    "members": null,
-   "ms": 1473,
+   "ms": 1396,
    "name": "EstModel: Väljalasud",
    "status": "ok",
    "system": "EstModel",
-   "ts": "2026-09-25T09:03:35Z",
+   "ts": "2026-09-25T09:37:28Z",
    "url": "https://estmodel.envir.ee/water-outlets",
    "verified": false
   },
@@ -811,7 +811,7 @@
      47,
      48,
      48,
-     19
+     20
     ],
     "ok": [
      22,
@@ -825,7 +825,7 @@
      46,
      47,
      48,
-     19
+     20
     ],
     "p50_ms": [
      1124,
@@ -846,11 +846,11 @@
    "http": 200,
    "id": "f-hydroseire",
    "members": null,
-   "ms": 495,
+   "ms": 456,
    "name": "Hüdroloogiliste seireandmete aegread",
    "status": "ok",
    "system": "Hüdroloogia",
-   "ts": "2026-09-25T09:03:41Z",
+   "ts": "2026-09-25T09:37:34Z",
    "url": "https://keskkonnaandmed.envir.ee/f_hydroseire?limit=1",
    "verified": false
   },
@@ -871,7 +871,7 @@
      47,
      48,
      48,
-     19
+     20
     ],
     "ok": [
      28,
@@ -885,7 +885,7 @@
      46,
      48,
      47,
-     19
+     20
     ],
     "p50_ms": [
      3616,
@@ -906,17 +906,17 @@
    "http": 200,
    "id": "hydroseire",
    "members": null,
-   "ms": 772,
+   "ms": 1519,
    "name": "Hüdroloogiline seire, veetase 2023-01-02",
    "status": "ok",
    "system": "Hüdroloogia",
-   "ts": "2026-09-25T09:04:10Z",
+   "ts": "2026-09-25T09:38:02Z",
    "url": "https://keskkonnaandmed.envir.ee/f_hydroseire?timeline_ts_utc=lt.2023-01-02T03:00:00&timeline_ts_utc=gt.2023-01-01T23:00:00&aegrida_nimi=eq.WL%20min&limit=5",
    "verified": true
   },
   {
    "avail_24h": 100.0,
-   "avail_7d": 74.11,
+   "avail_7d": 74.4,
    "checks_24h": 48,
    "days": {
     "checks": [
@@ -931,7 +931,7 @@
      47,
      48,
      48,
-     19
+     20
     ],
     "ok": [
      0,
@@ -945,7 +945,7 @@
      38,
      48,
      48,
-     19
+     20
     ],
     "p50_ms": [
      null,
@@ -959,24 +959,24 @@
      1156,
      1154,
      1218,
-     1303
+     1329
     ]
    },
    "detail": "",
    "http": 200,
    "id": "ilmateenistus-hoiatused-rss",
    "members": null,
-   "ms": 1451,
+   "ms": 1767,
    "name": "Ilmateenistus: hoiatuste RSS",
    "status": "ok",
    "system": "Ilmateenistus",
-   "ts": "2026-09-25T09:04:10Z",
+   "ts": "2026-09-25T09:38:02Z",
    "url": "https://ilmateenistus.ee/ilma_andmed/rss/hoiatused_rss.php",
    "verified": false
   },
   {
    "avail_24h": 100.0,
-   "avail_7d": 72.32,
+   "avail_7d": 72.62,
    "checks_24h": 48,
    "days": {
     "checks": [
@@ -991,7 +991,7 @@
      47,
      48,
      48,
-     19
+     20
     ],
     "ok": [
      0,
@@ -1005,7 +1005,7 @@
      38,
      48,
      48,
-     19
+     20
     ],
     "p50_ms": [
      null,
@@ -1019,18 +1019,18 @@
      1139,
      1174,
      1179,
-     1295
+     1376
     ]
    },
    "detail": "",
    "http": 200,
    "id": "ilmateenistus-hoiatused-xml",
    "members": null,
-   "ms": 1484,
+   "ms": 1676,
    "name": "Ilmateenistus: hoiatused XML",
    "status": "ok",
    "system": "Ilmateenistus",
-   "ts": "2026-09-25T09:04:10Z",
+   "ts": "2026-09-25T09:38:02Z",
    "url": "https://ilmateenistus.ee/ilma_andmed/xml/hoiatus.php",
    "verified": false
   },
@@ -1051,7 +1051,7 @@
      47,
      48,
      48,
-     19
+     20
     ],
     "ok": [
      0,
@@ -1065,7 +1065,7 @@
      44,
      48,
      48,
-     19
+     20
     ],
     "p50_ms": [
      null,
@@ -1079,18 +1079,18 @@
      2116,
      2049,
      2116,
-     2179
+     2188
     ]
    },
    "detail": "",
    "http": 200,
    "id": "ilmateenistus-juur",
    "members": null,
-   "ms": 2514,
+   "ms": 3335,
    "name": "Ilmateenistus: teenuse juur",
    "status": "ok",
    "system": "Ilmateenistus",
-   "ts": "2026-09-25T09:04:10Z",
+   "ts": "2026-09-25T09:38:02Z",
    "url": "https://www.ilmateenistus.ee/",
    "verified": false
   },
@@ -1111,7 +1111,7 @@
      47,
      48,
      48,
-     19
+     20
     ],
     "ok": [
      0,
@@ -1125,7 +1125,7 @@
      40,
      48,
      48,
-     19
+     20
     ],
     "p50_ms": [
      null,
@@ -1146,17 +1146,17 @@
    "http": 200,
    "id": "ilmateenistus-prognoos-xml",
    "members": null,
-   "ms": 1336,
+   "ms": 952,
    "name": "Ilmateenistus: Eesti prognoos XML",
    "status": "ok",
    "system": "Ilmateenistus",
-   "ts": "2026-09-25T09:04:11Z",
+   "ts": "2026-09-25T09:38:02Z",
    "url": "https://ilmateenistus.ee/ilma_andmed/xml/forecast.php",
    "verified": false
   },
   {
    "avail_24h": 100.0,
-   "avail_7d": 68.75,
+   "avail_7d": 69.05,
    "checks_24h": 48,
    "days": {
     "checks": [
@@ -1171,7 +1171,7 @@
      47,
      48,
      48,
-     19
+     20
     ],
     "ok": [
      0,
@@ -1185,7 +1185,7 @@
      40,
      48,
      48,
-     19
+     20
     ],
     "p50_ms": [
      null,
@@ -1206,11 +1206,11 @@
    "http": 200,
    "id": "ilmateenistus-vaatlusandmed-xml",
    "members": null,
-   "ms": 1395,
+   "ms": 1117,
    "name": "Ilmateenistus: Eesti vaatlusandmed XML",
    "status": "ok",
    "system": "Ilmateenistus",
-   "ts": "2026-09-25T09:04:11Z",
+   "ts": "2026-09-25T09:38:02Z",
    "url": "https://ilmateenistus.ee/ilma_andmed/xml/observations.php",
    "verified": false
   },
@@ -1231,7 +1231,7 @@
      47,
      48,
      48,
-     19
+     20
     ],
     "ok": [
      28,
@@ -1245,7 +1245,7 @@
      46,
      48,
      48,
-     19
+     20
     ],
     "p50_ms": [
      1652,
@@ -1266,11 +1266,11 @@
    "http": 200,
    "id": "kaia-items-query",
    "members": null,
-   "ms": 555,
+   "ms": 573,
    "name": "KAIA dokumentide metaandmete päring",
    "status": "ok",
    "system": "KAIA",
-   "ts": "2026-09-25T09:04:11Z",
+   "ts": "2026-09-25T09:38:03Z",
    "url": "https://avaandmed.keskkonnaportaal.ee/api/lists/active/items/query",
    "verified": true
   },
@@ -1291,7 +1291,7 @@
      47,
      48,
      48,
-     19
+     20
     ],
     "ok": [
      28,
@@ -1305,7 +1305,7 @@
      46,
      48,
      48,
-     19
+     20
     ],
     "p50_ms": [
      1868,
@@ -1326,11 +1326,11 @@
    "http": 200,
    "id": "kaia-lists-active",
    "members": null,
-   "ms": 1045,
+   "ms": 764,
    "name": "KAIA aktiivse valikuhierarhia metaandmed",
    "status": "ok",
    "system": "KAIA",
-   "ts": "2026-09-25T09:04:11Z",
+   "ts": "2026-09-25T09:38:03Z",
    "url": "https://avaandmed.keskkonnaportaal.ee/api/lists/active",
    "verified": true
   },
@@ -1351,7 +1351,7 @@
      47,
      48,
      48,
-     19
+     20
     ],
     "ok": [
      28,
@@ -1365,7 +1365,7 @@
      46,
      48,
      48,
-     19
+     20
     ],
     "p50_ms": [
      1712,
@@ -1386,11 +1386,11 @@
    "http": 200,
    "id": "kaia-lists-archive",
    "members": null,
-   "ms": 998,
+   "ms": 792,
    "name": "KAIA arhiivi valikuhierarhia metaandmed",
    "status": "ok",
    "system": "KAIA",
-   "ts": "2026-09-25T09:04:11Z",
+   "ts": "2026-09-25T09:38:03Z",
    "url": "https://avaandmed.keskkonnaportaal.ee/api/lists/archive",
    "verified": true
   },
@@ -1411,7 +1411,7 @@
      47,
      48,
      48,
-     19
+     20
     ],
     "ok": [
      28,
@@ -1425,7 +1425,7 @@
      46,
      48,
      48,
-     19
+     20
     ],
     "p50_ms": [
      1736,
@@ -1446,11 +1446,11 @@
    "http": 200,
    "id": "kaia-swagger",
    "members": null,
-   "ms": 885,
+   "ms": 666,
    "name": "KAIA OpenAPI teenusekirjeldus",
    "status": "ok",
    "system": "KAIA",
-   "ts": "2026-09-25T09:04:11Z",
+   "ts": "2026-09-25T09:38:03Z",
    "url": "https://avaandmed.keskkonnaportaal.ee/swagger/v1/swagger.json",
    "verified": true
   },
@@ -1471,7 +1471,7 @@
      47,
      48,
      48,
-     19
+     20
     ],
     "ok": [
      0,
@@ -1485,7 +1485,7 @@
      46,
      48,
      48,
-     19
+     20
     ],
     "p50_ms": [
      null,
@@ -1506,11 +1506,11 @@
    "http": null,
    "id": "kaia-vaated",
    "members": 7,
-   "ms": 759,
+   "ms": 730,
    "name": "KAIA avaandmete failivaated",
    "status": "ok",
    "system": "KAIA",
-   "ts": "2026-09-25T09:04:11Z",
+   "ts": "2026-09-25T09:38:03Z",
    "url": "https://avaandmed.keskkonnaportaal.ee/dhs/Active/documentList.aspx",
    "verified": false
   },
@@ -1531,7 +1531,7 @@
      47,
      48,
      48,
-     19
+     20
     ],
     "ok": [
      28,
@@ -1545,7 +1545,7 @@
      46,
      48,
      47,
-     19
+     20
     ],
     "p50_ms": [
      1397,
@@ -1559,18 +1559,18 @@
      849,
      829,
      824,
-     862
+     875
     ]
    },
    "detail": "body truncated at 65536 bytes, parse skipped",
    "http": 200,
    "id": "keskkonnaandmed-root",
    "members": null,
-   "ms": 1200,
+   "ms": 982,
    "name": "Juur-URL, OpenAPI teenusekirjeldus",
    "status": "ok",
    "system": "Keskkonnaandmed",
-   "ts": "2026-09-25T09:04:13Z",
+   "ts": "2026-09-25T09:38:04Z",
    "url": "https://keskkonnaandmed.envir.ee",
    "verified": true
   },
@@ -1591,7 +1591,7 @@
      47,
      48,
      48,
-     19
+     20
     ],
     "ok": [
      22,
@@ -1605,7 +1605,7 @@
      46,
      47,
      48,
-     19
+     20
     ],
     "p50_ms": [
      942,
@@ -1626,11 +1626,11 @@
    "http": 200,
    "id": "f-keskkonnaseire",
    "members": null,
-   "ms": 509,
+   "ms": 469,
    "name": "Keskkonnaseire avaandmete andmeteenused",
    "status": "ok",
    "system": "Keskkonnaseire",
-   "ts": "2026-09-25T09:03:45Z",
+   "ts": "2026-09-25T09:37:38Z",
    "url": "https://keskkonnaandmed.envir.ee/f_keskkonnaseire?limit=1",
    "verified": false
   },
@@ -1651,7 +1651,7 @@
      47,
      48,
      48,
-     19
+     20
     ],
     "ok": [
      28,
@@ -1665,7 +1665,7 @@
      46,
      48,
      47,
-     19
+     20
     ],
     "p50_ms": [
      1284,
@@ -1679,18 +1679,18 @@
      2421,
      2435,
      2240,
-     2648
+     2686
     ]
    },
    "detail": "",
    "http": 200,
    "id": "keskkonnaseire",
    "members": null,
-   "ms": 3119,
+   "ms": 2699,
    "name": "Keskkonnaseire, programm PR0127 aastal 2021",
    "status": "ok",
    "system": "Keskkonnaseire",
-   "ts": "2026-09-25T09:04:13Z",
+   "ts": "2026-09-25T09:38:04Z",
    "url": "https://keskkonnaandmed.envir.ee/f_keskkonnaseire?seiretoo_seotud_programmi_kood_iv=eq.PR0127&seireaeg_algus=gte.2021-01-01T00:00:00&seireaeg_algus=lt.2022-01-01T00:00:00&naitaja_nimetus=in.(Kloriid,%C3%9Cldraud,Vee%20temperatuur,Elavh%C3%B5be,PAH%20summa)&limit=5",
    "verified": true
   },
@@ -1711,7 +1711,7 @@
      47,
      48,
      48,
-     19
+     20
     ],
     "ok": [
      0,
@@ -1725,7 +1725,7 @@
      46,
      48,
      48,
-     19
+     20
     ],
     "p50_ms": [
      null,
@@ -1746,11 +1746,11 @@
    "http": 200,
    "id": "kese-juur",
    "members": null,
-   "ms": 1091,
+   "ms": 717,
    "name": "KESE: teenuse juur",
    "status": "ok",
    "system": "Keskkonnaseire infosüsteem",
-   "ts": "2026-09-25T09:04:13Z",
+   "ts": "2026-09-25T09:38:04Z",
    "url": "https://kese.envir.ee",
    "verified": false
   },
@@ -1771,7 +1771,7 @@
      47,
      48,
      48,
-     19
+     20
     ],
     "ok": [
      22,
@@ -1785,7 +1785,7 @@
      46,
      47,
      48,
-     19
+     20
     ],
     "p50_ms": [
      983,
@@ -1806,11 +1806,11 @@
    "http": 200,
    "id": "f-kliima-element",
    "members": null,
-   "ms": 499,
+   "ms": 424,
    "name": "f_kliima_element",
    "status": "ok",
    "system": "Kliima",
-   "ts": "2026-09-25T09:03:45Z",
+   "ts": "2026-09-25T09:37:38Z",
    "url": "https://keskkonnaandmed.envir.ee/f_kliima_element?limit=1",
    "verified": false
   },
@@ -1831,7 +1831,7 @@
      47,
      48,
      48,
-     19
+     20
     ],
     "ok": [
      22,
@@ -1845,7 +1845,7 @@
      46,
      47,
      48,
-     19
+     20
     ],
     "p50_ms": [
      967,
@@ -1859,18 +1859,18 @@
      396,
      454,
      462,
-     484
+     493
     ]
    },
    "detail": "",
    "http": 200,
    "id": "f-kliima-jaam-vaatlus",
    "members": null,
-   "ms": 517,
+   "ms": 608,
    "name": "Kliima: jaamade metaandmed ja elementide mõõtmisperioodid Climate: station metadata and element measurement periods",
    "status": "ok",
    "system": "Kliima",
-   "ts": "2026-09-25T09:03:45Z",
+   "ts": "2026-09-25T09:37:38Z",
    "url": "https://keskkonnaandmed.envir.ee/f_kliima_jaam_vaatlus?limit=1",
    "verified": false
   },
@@ -1891,7 +1891,7 @@
      47,
      48,
      48,
-     19
+     20
     ],
     "ok": [
      22,
@@ -1905,7 +1905,7 @@
      46,
      47,
      48,
-     19
+     20
     ],
     "p50_ms": [
      966,
@@ -1919,18 +1919,18 @@
      390,
      446,
      446,
-     483
+     491
     ]
    },
    "detail": "",
    "http": 200,
    "id": "f-kliima-kuu",
    "members": null,
-   "ms": 514,
+   "ms": 635,
    "name": "Kliima: kuuandmed Climate: monthly data",
    "status": "ok",
    "system": "Kliima",
-   "ts": "2026-09-25T09:03:45Z",
+   "ts": "2026-09-25T09:37:38Z",
    "url": "https://keskkonnaandmed.envir.ee/f_kliima_kuu?limit=1",
    "verified": false
   },
@@ -1951,7 +1951,7 @@
      47,
      48,
      48,
-     19
+     20
     ],
     "ok": [
      22,
@@ -1965,7 +1965,7 @@
      46,
      47,
      48,
-     19
+     20
     ],
     "p50_ms": [
      889,
@@ -1986,11 +1986,11 @@
    "http": 200,
    "id": "f-kliima-minut",
    "members": null,
-   "ms": 508,
+   "ms": 433,
    "name": "Kliima: 10-minuti andmed Climate: 10-minute data",
    "status": "ok",
    "system": "Kliima",
-   "ts": "2026-09-25T09:03:45Z",
+   "ts": "2026-09-25T09:37:39Z",
    "url": "https://keskkonnaandmed.envir.ee/f_kliima_minut?limit=1",
    "verified": false
   },
@@ -2011,7 +2011,7 @@
      47,
      48,
      48,
-     19
+     20
     ],
     "ok": [
      22,
@@ -2025,7 +2025,7 @@
      46,
      47,
      48,
-     19
+     20
     ],
     "p50_ms": [
      883,
@@ -2039,18 +2039,18 @@
      431,
      465,
      484,
-     473
+     477
     ]
    },
    "detail": "",
    "http": 200,
    "id": "f-kliima-paev",
    "members": null,
-   "ms": 496,
+   "ms": 580,
    "name": "Kliima: ööpäevaandmed Climate: daily data",
    "status": "ok",
    "system": "Kliima",
-   "ts": "2026-09-25T09:03:46Z",
+   "ts": "2026-09-25T09:37:39Z",
    "url": "https://keskkonnaandmed.envir.ee/f_kliima_paev?limit=1",
    "verified": false
   },
@@ -2071,7 +2071,7 @@
      47,
      48,
      48,
-     19
+     20
     ],
     "ok": [
      22,
@@ -2085,7 +2085,7 @@
      46,
      47,
      48,
-     19
+     20
     ],
     "p50_ms": [
      879,
@@ -2106,11 +2106,11 @@
    "http": 200,
    "id": "f-kliima-tund",
    "members": null,
-   "ms": 483,
+   "ms": 452,
    "name": "Kliima: tunniandmed  Climate: hourly data",
    "status": "ok",
    "system": "Kliima",
-   "ts": "2026-09-25T09:03:46Z",
+   "ts": "2026-09-25T09:37:39Z",
    "url": "https://keskkonnaandmed.envir.ee/f_kliima_tund?limit=1",
    "verified": false
   },
@@ -2131,7 +2131,7 @@
      47,
      48,
      48,
-     19
+     20
     ],
     "ok": [
      28,
@@ -2145,7 +2145,7 @@
      46,
      48,
      48,
-     19
+     20
     ],
     "p50_ms": [
      858,
@@ -2166,11 +2166,11 @@
    "http": 200,
    "id": "kliima-element",
    "members": null,
-   "ms": 677,
+   "ms": 428,
    "name": "Kliima elementide metaandmed",
    "status": "ok",
    "system": "Kliima",
-   "ts": "2026-09-25T09:04:13Z",
+   "ts": "2026-09-25T09:38:04Z",
    "url": "https://keskkonnaandmed.envir.ee/f_kliima_element",
    "verified": true
   },
@@ -2191,7 +2191,7 @@
      47,
      48,
      48,
-     19
+     20
     ],
     "ok": [
      28,
@@ -2205,7 +2205,7 @@
      46,
      48,
      48,
-     19
+     20
     ],
     "p50_ms": [
      858,
@@ -2226,11 +2226,11 @@
    "http": 200,
    "id": "kliima-jaam-vaatlus",
    "members": null,
-   "ms": 982,
+   "ms": 424,
    "name": "Kliima vaatlusjaamade metaandmed",
    "status": "ok",
    "system": "Kliima",
-   "ts": "2026-09-25T09:04:14Z",
+   "ts": "2026-09-25T09:38:05Z",
    "url": "https://keskkonnaandmed.envir.ee/f_kliima_jaam_vaatlus?limit=1",
    "verified": true
   },
@@ -2251,7 +2251,7 @@
      47,
      48,
      48,
-     19
+     20
     ],
     "ok": [
      28,
@@ -2265,7 +2265,7 @@
      46,
      48,
      48,
-     19
+     20
     ],
     "p50_ms": [
      841,
@@ -2286,11 +2286,11 @@
    "http": 200,
    "id": "kliima-kuu",
    "members": null,
-   "ms": 639,
+   "ms": 439,
    "name": "Kliima kuu andmed",
    "status": "ok",
    "system": "Kliima",
-   "ts": "2026-09-25T09:04:14Z",
+   "ts": "2026-09-25T09:38:05Z",
    "url": "https://keskkonnaandmed.envir.ee/f_kliima_kuu?limit=1",
    "verified": true
   },
@@ -2311,7 +2311,7 @@
      47,
      48,
      48,
-     19
+     20
     ],
     "ok": [
      28,
@@ -2325,7 +2325,7 @@
      46,
      48,
      47,
-     19
+     20
     ],
     "p50_ms": [
      850,
@@ -2346,11 +2346,11 @@
    "http": 200,
    "id": "kliima-minut",
    "members": null,
-   "ms": 501,
+   "ms": 472,
    "name": "Kliima 10-minuti andmed",
    "status": "ok",
    "system": "Kliima",
-   "ts": "2026-09-25T09:04:14Z",
+   "ts": "2026-09-25T09:38:05Z",
    "url": "https://keskkonnaandmed.envir.ee/f_kliima_minut?limit=1",
    "verified": true
   },
@@ -2371,7 +2371,7 @@
      47,
      48,
      48,
-     19
+     20
     ],
     "ok": [
      28,
@@ -2385,7 +2385,7 @@
      46,
      48,
      47,
-     19
+     20
     ],
     "p50_ms": [
      859,
@@ -2406,11 +2406,11 @@
    "http": 200,
    "id": "kliima-paev",
    "members": null,
-   "ms": 832,
+   "ms": 456,
    "name": "Kliima ööpäeva andmed, Ruhnu ja Kihnu õhuniiskus 2023",
    "status": "ok",
    "system": "Kliima",
-   "ts": "2026-09-25T09:04:14Z",
+   "ts": "2026-09-25T09:38:05Z",
    "url": "https://keskkonnaandmed.envir.ee/f_kliima_paev?aasta=eq.2023&kuu=gt.10&paev=lt.8&element_kood=eq.DRH08&jaam_kood=in.(AJRUHN01,AJKIHN01)&limit=5",
    "verified": true
   },
@@ -2431,7 +2431,7 @@
      47,
      48,
      48,
-     19
+     20
     ],
     "ok": [
      28,
@@ -2445,7 +2445,7 @@
      46,
      48,
      47,
-     19
+     20
     ],
     "p50_ms": [
      844,
@@ -2466,11 +2466,11 @@
    "http": 200,
    "id": "kliima-paev-nimefilter",
    "members": null,
-   "ms": 635,
+   "ms": 434,
    "name": "Kliima ööpäeva andmed, Võru 2006 (like-filter ja sortimine)",
    "status": "ok",
    "system": "Kliima",
-   "ts": "2026-09-25T09:04:14Z",
+   "ts": "2026-09-25T09:38:05Z",
    "url": "https://keskkonnaandmed.envir.ee/f_kliima_paev?jaam_nimi=like.V%C3%B5ru&aasta=eq.2006&element_kood=like.DTA08&order=kuu.asc,paev.asc&limit=5",
    "verified": true
   },
@@ -2491,7 +2491,7 @@
      47,
      48,
      48,
-     19
+     20
     ],
     "ok": [
      28,
@@ -2505,7 +2505,7 @@
      46,
      48,
      48,
-     19
+     20
     ],
     "p50_ms": [
      842,
@@ -2526,11 +2526,11 @@
    "http": 200,
    "id": "kliima-tund",
    "members": null,
-   "ms": 1357,
+   "ms": 472,
    "name": "Kliima tunniandmed",
    "status": "ok",
    "system": "Kliima",
-   "ts": "2026-09-25T09:04:14Z",
+   "ts": "2026-09-25T09:38:05Z",
    "url": "https://keskkonnaandmed.envir.ee/f_kliima_tund?limit=1",
    "verified": true
   },
@@ -2551,7 +2551,7 @@
      47,
      48,
      48,
-     19
+     20
     ],
     "ok": [
      0,
@@ -2565,7 +2565,7 @@
      33,
      39,
      41,
-     17
+     18
     ],
     "p50_ms": [
      null,
@@ -2579,24 +2579,24 @@
      526,
      589,
      591,
-     648
+     639
     ]
    },
    "detail": "",
    "http": 200,
    "id": "kytus-bunkering-company",
    "members": null,
-   "ms": 679,
+   "ms": 571,
    "name": "Kütuseseire: ettevõtted",
    "status": "ok",
    "system": "Kütuseseire",
-   "ts": "2026-09-25T09:04:14Z",
+   "ts": "2026-09-25T09:38:11Z",
    "url": "https://kytus.envir.ee/bunkering-company/itemlist",
    "verified": false
   },
   {
    "avail_24h": 81.25,
-   "avail_7d": 51.19,
+   "avail_7d": 51.49,
    "checks_24h": 48,
    "days": {
     "checks": [
@@ -2611,7 +2611,7 @@
      47,
      48,
      48,
-     19
+     20
     ],
     "ok": [
      0,
@@ -2625,7 +2625,7 @@
      28,
      43,
      38,
-     17
+     18
     ],
     "p50_ms": [
      null,
@@ -2639,24 +2639,24 @@
      564,
      562,
      599,
-     682
+     639
     ]
    },
    "detail": "",
    "http": 200,
    "id": "kytus-monitoring",
    "members": null,
-   "ms": 726,
+   "ms": 575,
    "name": "Kütuseseire: seireandmed",
    "status": "ok",
    "system": "Kütuseseire",
-   "ts": "2026-09-25T09:04:15Z",
+   "ts": "2026-09-25T09:38:05Z",
    "url": "https://kytus.envir.ee/monitoring/itemlist",
    "verified": false
   },
   {
    "avail_24h": 85.42,
-   "avail_7d": 54.46,
+   "avail_7d": 54.76,
    "checks_24h": 48,
    "days": {
     "checks": [
@@ -2671,7 +2671,7 @@
      47,
      48,
      48,
-     19
+     20
     ],
     "ok": [
      0,
@@ -2685,7 +2685,7 @@
      35,
      41,
      40,
-     17
+     18
     ],
     "p50_ms": [
      null,
@@ -2699,23 +2699,23 @@
      568,
      555,
      598,
-     647
+     631
     ]
    },
    "detail": "",
    "http": 200,
    "id": "kytus-source-of-pollution",
    "members": null,
-   "ms": 682,
+   "ms": 571,
    "name": "Kütuseseire: heiteallikad",
    "status": "ok",
    "system": "Kütuseseire",
-   "ts": "2026-09-25T09:04:15Z",
+   "ts": "2026-09-25T09:38:05Z",
    "url": "https://kytus.envir.ee/source-of-pollution/itemlist",
    "verified": false
   },
   {
-   "avail_24h": 68.75,
+   "avail_24h": 66.67,
    "avail_7d": 43.75,
    "checks_24h": 48,
    "days": {
@@ -2731,7 +2731,7 @@
      47,
      48,
      48,
-     19
+     20
     ],
     "ok": [
      0,
@@ -2762,20 +2762,20 @@
      623
     ]
    },
-   "detail": "",
-   "http": 200,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 8]> <html class=\"no-js ie8 oldie\" lang=\"en-US\"> <![endif]--> <!--[if gt IE 8]><!--> <html class=\"no-js\" lang=\"en-US\"> <!--<![e",
+   "http": 429,
    "id": "pakis-opendata",
    "members": null,
-   "ms": 703,
+   "ms": 383,
    "name": "PAKIS: pakendijäätmete avaandmed",
-   "status": "ok",
+   "status": "down",
    "system": "Pakendiregister",
-   "ts": "2026-09-25T09:04:15Z",
+   "ts": "2026-09-25T09:38:11Z",
    "url": "https://pakis.envir.ee/pakis/main/opendata",
    "verified": false
   },
   {
-   "avail_24h": 75.0,
+   "avail_24h": 77.08,
    "avail_7d": 48.21,
    "checks_24h": 48,
    "days": {
@@ -2791,7 +2791,7 @@
      47,
      48,
      48,
-     19
+     20
     ],
     "ok": [
      0,
@@ -2805,7 +2805,7 @@
      36,
      27,
      35,
-     15
+     16
     ],
     "p50_ms": [
      null,
@@ -2826,19 +2826,29 @@
    "http": 200,
    "id": "proto-opendata",
    "members": null,
-   "ms": 721,
+   "ms": 536,
    "name": "PROTO: probleemtoodete avaandmed",
    "status": "ok",
    "system": "Probleemtooteregister",
-   "ts": "2026-09-25T09:04:15Z",
+   "ts": "2026-09-25T09:38:06Z",
    "url": "https://proto.envir.ee/proto/main/opendata",
    "verified": false
   }
  ],
  "first_record": "2026-09-14T13:40:24Z",
- "generated_at": "2026-09-25T09:04:17Z",
- "incident_count": 657,
+ "generated_at": "2026-09-25T09:38:12Z",
+ "incident_count": 658,
  "incidents": [
+  {
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 1,
+   "end": null,
+   "id": "pakis-opendata",
+   "name": "PAKIS: pakendijäätmete avaandmed",
+   "start": "2026-09-25T09:38:11Z",
+   "system": "Pakendiregister",
+   "worst": "down"
+  },
   {
    "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
    "duration_s": 2098,
@@ -4828,26 +4838,16 @@
    "start": "2026-09-21T18:04:42Z",
    "system": "Ilmateenistus",
    "worst": "down"
-  },
-  {
-   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
-   "duration_s": 9023,
-   "end": "2026-09-21T20:35:05Z",
-   "id": "ilmateenistus-prognoos-xml",
-   "name": "Ilmateenistus: Eesti prognoos XML",
-   "start": "2026-09-21T18:04:42Z",
-   "system": "Ilmateenistus",
-   "worst": "down"
   }
  ],
  "interval_minutes": 30,
- "outage_total_s": 3018013,
+ "outage_total_s": 3018014,
  "outages_by_endpoint": [
   {
-   "count": 70,
+   "count": 71,
    "id": "pakis-opendata",
    "name": "PAKIS: pakendijäätmete avaandmed",
-   "total_s": 403104
+   "total_s": 403105
   },
   {
    "count": 70,
@@ -4916,9 +4916,9 @@
    "total_s": 993416
   },
   {
-   "count": 70,
+   "count": 71,
    "name": "Pakendiregister",
-   "total_s": 403104
+   "total_s": 403105
   },
   {
    "count": 70,
@@ -5053,15 +5053,15 @@
    "problem": 0
   },
   {
-   "avail_24h": 68.75,
+   "avail_24h": 66.67,
    "description": "Turule lastud kauba pakendite, Eestis tekkinud pakendijäätmete, korduskasutuse ja taaskasutuse sihtarvude arvestus. Andmeid kasutatakse pakendiseadusest tulenevate kohustuste täitmiseks ja Euroopa Komisjonile aruandmiseks.",
    "endpoints": 1,
    "name": "Pakendiregister",
-   "ok": 1,
-   "problem": 0
+   "ok": 0,
+   "problem": 1
   },
   {
-   "avail_24h": 75.0,
+   "avail_24h": 77.08,
    "description": "Arvestus Eestis turule lastud probleemtoodete ja neist tekkinud jäätmete taaskasutamise ning kõrvaldamise kohta, sealhulgas taaskasutuse sihtarvude täitmise ja Euroopa Komisjonile esitatava jäätmealase teabe jaoks.",
    "endpoints": 1,
    "name": "Probleemtooteregister",
@@ -5070,8 +5070,9 @@
   }
  ],
  "totals": {
+  "down": 1,
   "endpoints": 42,
-  "ok": 42,
+  "ok": 41,
   "unverified": 27
  },
  "window_days": 31
