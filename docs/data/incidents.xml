@@ -1,101 +1,101 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
-<channel><title>Keskkonnaagentuuri API-de katkestused</title><link>https://tpiparkaur.github.io/kaur-api-status/</link><description>Keskkonnaagentuuri avalike andmeteenuste katkestused, uuemad eespool. Genereeritud automaatsest seirest iga kontrollitsükli järel.</description><language>et</language><lastBuildDate>Sat, 26 Sep 2026 18:46:56 +0000</lastBuildDate><item><title>Kliima tunniandmed: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kliima-tund</link><guid isPermaLink="false">kliima-tund-2026-09-26T18:46:24Z</guid><pubDate>Sat, 26 Sep 2026 18:46:24 +0000</pubDate><category>Kliima</category><description><![CDATA[Teenus: Kliima
+<channel><title>Keskkonnaagentuuri API-de katkestused</title><link>https://tpiparkaur.github.io/kaur-api-status/</link><description>Keskkonnaagentuuri avalike andmeteenuste katkestused, uuemad eespool. Genereeritud automaatsest seirest iga kontrollitsükli järel.</description><language>et</language><lastBuildDate>Sat, 26 Sep 2026 18:47:56 +0000</lastBuildDate><item><title>Kliima tunniandmed: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kliima-tund</link><guid isPermaLink="false">kliima-tund-2026-09-26T18:46:24Z</guid><pubDate>Sat, 26 Sep 2026 18:46:24 +0000</pubDate><category>Kliima</category><description><![CDATA[Teenus: Kliima
 Algus: 2026-09-26T18:46:24Z (UTC)
-Kestus: kestab endiselt
-Põhjus: connection failed: timed out]]></description></item><item><title>Kliima ööpäeva andmed, Võru 2006 (like-filter ja sortimine): ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kliima-paev-nimefilter</link><guid isPermaLink="false">kliima-paev-nimefilter-2026-09-26T18:46:00Z</guid><pubDate>Sat, 26 Sep 2026 18:46:00 +0000</pubDate><category>Kliima</category><description><![CDATA[Teenus: Kliima
+Kestus: 1 min
+Põhjus: connection failed: timed out]]></description></item><item><title>Kliima ööpäeva andmed, Võru 2006 (like-filter ja sortimine): ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kliima-paev-nimefilter</link><guid isPermaLink="false">kliima-paev-nimefilter-2026-09-26T18:46:00Z</guid><pubDate>Sat, 26 Sep 2026 18:46:00 +0000</pubDate><category>Kliima</category><description><![CDATA[Teenus: Kliima
 Algus: 2026-09-26T18:46:00Z (UTC)
-Kestus: kestab endiselt
-Põhjus: connection failed: timed out]]></description></item><item><title>Kliima ööpäeva andmed, Ruhnu ja Kihnu õhuniiskus 2023: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kliima-paev</link><guid isPermaLink="false">kliima-paev-2026-09-26T18:46:00Z</guid><pubDate>Sat, 26 Sep 2026 18:46:00 +0000</pubDate><category>Kliima</category><description><![CDATA[Teenus: Kliima
+Kestus: 1 min
+Põhjus: connection failed: timed out]]></description></item><item><title>Kliima ööpäeva andmed, Ruhnu ja Kihnu õhuniiskus 2023: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kliima-paev</link><guid isPermaLink="false">kliima-paev-2026-09-26T18:46:00Z</guid><pubDate>Sat, 26 Sep 2026 18:46:00 +0000</pubDate><category>Kliima</category><description><![CDATA[Teenus: Kliima
 Algus: 2026-09-26T18:46:00Z (UTC)
-Kestus: kestab endiselt
-Põhjus: connection failed: timed out]]></description></item><item><title>Kliima 10-minuti andmed: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kliima-minut</link><guid isPermaLink="false">kliima-minut-2026-09-26T18:45:59Z</guid><pubDate>Sat, 26 Sep 2026 18:45:59 +0000</pubDate><category>Kliima</category><description><![CDATA[Teenus: Kliima
+Kestus: 1 min
+Põhjus: connection failed: timed out]]></description></item><item><title>Kliima 10-minuti andmed: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kliima-minut</link><guid isPermaLink="false">kliima-minut-2026-09-26T18:45:59Z</guid><pubDate>Sat, 26 Sep 2026 18:45:59 +0000</pubDate><category>Kliima</category><description><![CDATA[Teenus: Kliima
 Algus: 2026-09-26T18:45:59Z (UTC)
-Kestus: kestab endiselt
-Põhjus: connection failed: timed out]]></description></item><item><title>Kliima kuu andmed: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kliima-kuu</link><guid isPermaLink="false">kliima-kuu-2026-09-26T18:45:29Z</guid><pubDate>Sat, 26 Sep 2026 18:45:29 +0000</pubDate><category>Kliima</category><description><![CDATA[Teenus: Kliima
+Kestus: 1 min
+Põhjus: connection failed: timed out]]></description></item><item><title>Kliima kuu andmed: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kliima-kuu</link><guid isPermaLink="false">kliima-kuu-2026-09-26T18:45:29Z</guid><pubDate>Sat, 26 Sep 2026 18:45:29 +0000</pubDate><category>Kliima</category><description><![CDATA[Teenus: Kliima
 Algus: 2026-09-26T18:45:29Z (UTC)
-Kestus: kestab endiselt
-Põhjus: connection failed: timed out]]></description></item><item><title>Kliima vaatlusjaamade metaandmed: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kliima-jaam-vaatlus</link><guid isPermaLink="false">kliima-jaam-vaatlus-2026-09-26T18:45:24Z</guid><pubDate>Sat, 26 Sep 2026 18:45:24 +0000</pubDate><category>Kliima</category><description><![CDATA[Teenus: Kliima
+Kestus: 2 min
+Põhjus: connection failed: timed out]]></description></item><item><title>Kliima vaatlusjaamade metaandmed: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kliima-jaam-vaatlus</link><guid isPermaLink="false">kliima-jaam-vaatlus-2026-09-26T18:45:24Z</guid><pubDate>Sat, 26 Sep 2026 18:45:24 +0000</pubDate><category>Kliima</category><description><![CDATA[Teenus: Kliima
 Algus: 2026-09-26T18:45:24Z (UTC)
-Kestus: kestab endiselt
-Põhjus: connection failed: timed out]]></description></item><item><title>Kliima elementide metaandmed: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kliima-element</link><guid isPermaLink="false">kliima-element-2026-09-26T18:44:59Z</guid><pubDate>Sat, 26 Sep 2026 18:44:59 +0000</pubDate><category>Kliima</category><description><![CDATA[Teenus: Kliima
+Kestus: 2 min
+Põhjus: connection failed: timed out]]></description></item><item><title>Kliima elementide metaandmed: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kliima-element</link><guid isPermaLink="false">kliima-element-2026-09-26T18:44:59Z</guid><pubDate>Sat, 26 Sep 2026 18:44:59 +0000</pubDate><category>Kliima</category><description><![CDATA[Teenus: Kliima
 Algus: 2026-09-26T18:44:59Z (UTC)
-Kestus: kestab endiselt
-Põhjus: connection failed: timed out]]></description></item><item><title>KESE: teenuse juur: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kese-juur</link><guid isPermaLink="false">kese-juur-2026-09-26T18:44:59Z</guid><pubDate>Sat, 26 Sep 2026 18:44:59 +0000</pubDate><category>Keskkonnaseire infosüsteem</category><description><![CDATA[Teenus: Keskkonnaseire infosüsteem
+Kestus: 2 min
+Põhjus: connection failed: timed out]]></description></item><item><title>KESE: teenuse juur: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kese-juur</link><guid isPermaLink="false">kese-juur-2026-09-26T18:44:59Z</guid><pubDate>Sat, 26 Sep 2026 18:44:59 +0000</pubDate><category>Keskkonnaseire infosüsteem</category><description><![CDATA[Teenus: Keskkonnaseire infosüsteem
 Algus: 2026-09-26T18:44:59Z (UTC)
-Kestus: kestab endiselt
-Põhjus: connection failed: timed out]]></description></item><item><title>Keskkonnaseire, programm PR0127 aastal 2021: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-keskkonnaseire</link><guid isPermaLink="false">keskkonnaseire-2026-09-26T18:44:55Z</guid><pubDate>Sat, 26 Sep 2026 18:44:55 +0000</pubDate><category>Keskkonnaseire</category><description><![CDATA[Teenus: Keskkonnaseire
+Kestus: 2 min
+Põhjus: connection failed: timed out]]></description></item><item><title>Keskkonnaseire, programm PR0127 aastal 2021: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-keskkonnaseire</link><guid isPermaLink="false">keskkonnaseire-2026-09-26T18:44:55Z</guid><pubDate>Sat, 26 Sep 2026 18:44:55 +0000</pubDate><category>Keskkonnaseire</category><description><![CDATA[Teenus: Keskkonnaseire
 Algus: 2026-09-26T18:44:55Z (UTC)
-Kestus: kestab endiselt
-Põhjus: connection failed: timed out]]></description></item><item><title>Juur-URL, OpenAPI teenusekirjeldus: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-keskkonnaandmed-root</link><guid isPermaLink="false">keskkonnaandmed-root-2026-09-26T18:44:54Z</guid><pubDate>Sat, 26 Sep 2026 18:44:54 +0000</pubDate><category>Keskkonnaandmed</category><description><![CDATA[Teenus: Keskkonnaandmed
+Kestus: 2 min
+Põhjus: connection failed: timed out]]></description></item><item><title>Juur-URL, OpenAPI teenusekirjeldus: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-keskkonnaandmed-root</link><guid isPermaLink="false">keskkonnaandmed-root-2026-09-26T18:44:54Z</guid><pubDate>Sat, 26 Sep 2026 18:44:54 +0000</pubDate><category>Keskkonnaandmed</category><description><![CDATA[Teenus: Keskkonnaandmed
 Algus: 2026-09-26T18:44:54Z (UTC)
-Kestus: kestab endiselt
-Põhjus: connection failed: timed out]]></description></item><item><title>KAIA arhiivi valikuhierarhia metaandmed: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kaia-lists-archive</link><guid isPermaLink="false">kaia-lists-archive-2026-09-26T18:44:08Z</guid><pubDate>Sat, 26 Sep 2026 18:44:08 +0000</pubDate><category>KAIA</category><description><![CDATA[Teenus: KAIA
+Kestus: 2 min
+Põhjus: connection failed: timed out]]></description></item><item><title>KAIA arhiivi valikuhierarhia metaandmed: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kaia-lists-archive</link><guid isPermaLink="false">kaia-lists-archive-2026-09-26T18:44:08Z</guid><pubDate>Sat, 26 Sep 2026 18:44:08 +0000</pubDate><category>KAIA</category><description><![CDATA[Teenus: KAIA
 Algus: 2026-09-26T18:44:08Z (UTC)
-Kestus: kestab endiselt
-Põhjus: connection failed: timed out]]></description></item><item><title>KAIA avaandmete failivaated: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kaia-vaated</link><guid isPermaLink="false">kaia-vaated-2026-09-26T18:43:59Z</guid><pubDate>Sat, 26 Sep 2026 18:43:59 +0000</pubDate><category>KAIA</category><description><![CDATA[Teenus: KAIA
+Kestus: 3 min
+Põhjus: connection failed: timed out]]></description></item><item><title>KAIA avaandmete failivaated: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kaia-vaated</link><guid isPermaLink="false">kaia-vaated-2026-09-26T18:43:59Z</guid><pubDate>Sat, 26 Sep 2026 18:43:59 +0000</pubDate><category>KAIA</category><description><![CDATA[Teenus: KAIA
 Algus: 2026-09-26T18:43:59Z (UTC)
-Kestus: kestab endiselt
-Põhjus: 7/7 ei vasta: kaia-vaade-07c1e468 (connection failed: timed out), kaia-vaade-319c5400 (connection failed: timed out), kaia-vaade-40a63be9 (connection failed: timed out), kaia-vaade-46df5d4a (connectio]]></description></item><item><title>KAIA OpenAPI teenusekirjeldus: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kaia-swagger</link><guid isPermaLink="false">kaia-swagger-2026-09-26T18:43:54Z</guid><pubDate>Sat, 26 Sep 2026 18:43:54 +0000</pubDate><category>KAIA</category><description><![CDATA[Teenus: KAIA
+Kestus: 3 min
+Põhjus: 7/7 ei vasta: kaia-vaade-07c1e468 (connection failed: timed out), kaia-vaade-319c5400 (connection failed: timed out), kaia-vaade-40a63be9 (connection failed: timed out), kaia-vaade-46df5d4a (connectio]]></description></item><item><title>KAIA OpenAPI teenusekirjeldus: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kaia-swagger</link><guid isPermaLink="false">kaia-swagger-2026-09-26T18:43:54Z</guid><pubDate>Sat, 26 Sep 2026 18:43:54 +0000</pubDate><category>KAIA</category><description><![CDATA[Teenus: KAIA
 Algus: 2026-09-26T18:43:54Z (UTC)
-Kestus: kestab endiselt
-Põhjus: connection failed: timed out]]></description></item><item><title>Hüdroloogiline seire, veetase 2023-01-02: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-hydroseire</link><guid isPermaLink="false">hydroseire-2026-09-26T18:43:24Z</guid><pubDate>Sat, 26 Sep 2026 18:43:24 +0000</pubDate><category>Hüdroloogia</category><description><![CDATA[Teenus: Hüdroloogia
+Kestus: 3 min
+Põhjus: connection failed: timed out]]></description></item><item><title>Hüdroloogiline seire, veetase 2023-01-02: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-hydroseire</link><guid isPermaLink="false">hydroseire-2026-09-26T18:43:24Z</guid><pubDate>Sat, 26 Sep 2026 18:43:24 +0000</pubDate><category>Hüdroloogia</category><description><![CDATA[Teenus: Hüdroloogia
 Algus: 2026-09-26T18:43:24Z (UTC)
-Kestus: kestab endiselt
-Põhjus: connection failed: timed out]]></description></item><item><title>KAIA aktiivse valikuhierarhia metaandmed: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kaia-lists-active</link><guid isPermaLink="false">kaia-lists-active-2026-09-26T18:43:23Z</guid><pubDate>Sat, 26 Sep 2026 18:43:23 +0000</pubDate><category>KAIA</category><description><![CDATA[Teenus: KAIA
+Kestus: 4 min
+Põhjus: connection failed: timed out]]></description></item><item><title>KAIA aktiivse valikuhierarhia metaandmed: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kaia-lists-active</link><guid isPermaLink="false">kaia-lists-active-2026-09-26T18:43:23Z</guid><pubDate>Sat, 26 Sep 2026 18:43:23 +0000</pubDate><category>KAIA</category><description><![CDATA[Teenus: KAIA
 Algus: 2026-09-26T18:43:23Z (UTC)
-Kestus: kestab endiselt
-Põhjus: connection failed: timed out]]></description></item><item><title>KAIA dokumentide metaandmete päring: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kaia-items-query</link><guid isPermaLink="false">kaia-items-query-2026-09-26T18:43:08Z</guid><pubDate>Sat, 26 Sep 2026 18:43:08 +0000</pubDate><category>KAIA</category><description><![CDATA[Teenus: KAIA
+Kestus: 4 min
+Põhjus: connection failed: timed out]]></description></item><item><title>KAIA dokumentide metaandmete päring: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kaia-items-query</link><guid isPermaLink="false">kaia-items-query-2026-09-26T18:43:08Z</guid><pubDate>Sat, 26 Sep 2026 18:43:08 +0000</pubDate><category>KAIA</category><description><![CDATA[Teenus: KAIA
 Algus: 2026-09-26T18:43:08Z (UTC)
-Kestus: kestab endiselt
-Põhjus: connection failed: timed out]]></description></item><item><title>Kliima: tunniandmed  Climate: hourly data: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-f-kliima-tund</link><guid isPermaLink="false">f-kliima-tund-2026-09-26T17:53:20Z</guid><pubDate>Sat, 26 Sep 2026 17:53:20 +0000</pubDate><category>Kliima</category><description><![CDATA[Teenus: Kliima
+Kestus: 4 min
+Põhjus: connection failed: timed out]]></description></item><item><title>Kliima: tunniandmed  Climate: hourly data: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-f-kliima-tund</link><guid isPermaLink="false">f-kliima-tund-2026-09-26T17:53:20Z</guid><pubDate>Sat, 26 Sep 2026 17:53:20 +0000</pubDate><category>Kliima</category><description><![CDATA[Teenus: Kliima
 Algus: 2026-09-26T17:53:20Z (UTC)
-Kestus: kestab endiselt
-Põhjus: connection failed: timed out]]></description></item><item><title>Kliima: ööpäevaandmed Climate: daily data: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-f-kliima-paev</link><guid isPermaLink="false">f-kliima-paev-2026-09-26T17:53:20Z</guid><pubDate>Sat, 26 Sep 2026 17:53:20 +0000</pubDate><category>Kliima</category><description><![CDATA[Teenus: Kliima
+Kestus: 54 min
+Põhjus: connection failed: timed out]]></description></item><item><title>Kliima: ööpäevaandmed Climate: daily data: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-f-kliima-paev</link><guid isPermaLink="false">f-kliima-paev-2026-09-26T17:53:20Z</guid><pubDate>Sat, 26 Sep 2026 17:53:20 +0000</pubDate><category>Kliima</category><description><![CDATA[Teenus: Kliima
 Algus: 2026-09-26T17:53:20Z (UTC)
-Kestus: kestab endiselt
-Põhjus: connection failed: timed out]]></description></item><item><title>Kliima: 10-minuti andmed Climate: 10-minute data: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-f-kliima-minut</link><guid isPermaLink="false">f-kliima-minut-2026-09-26T17:53:20Z</guid><pubDate>Sat, 26 Sep 2026 17:53:20 +0000</pubDate><category>Kliima</category><description><![CDATA[Teenus: Kliima
+Kestus: 54 min
+Põhjus: connection failed: timed out]]></description></item><item><title>Kliima: 10-minuti andmed Climate: 10-minute data: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-f-kliima-minut</link><guid isPermaLink="false">f-kliima-minut-2026-09-26T17:53:20Z</guid><pubDate>Sat, 26 Sep 2026 17:53:20 +0000</pubDate><category>Kliima</category><description><![CDATA[Teenus: Kliima
 Algus: 2026-09-26T17:53:20Z (UTC)
-Kestus: kestab endiselt
-Põhjus: connection failed: timed out]]></description></item><item><title>Kliima: kuuandmed Climate: monthly data: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-f-kliima-kuu</link><guid isPermaLink="false">f-kliima-kuu-2026-09-26T17:53:15Z</guid><pubDate>Sat, 26 Sep 2026 17:53:15 +0000</pubDate><category>Kliima</category><description><![CDATA[Teenus: Kliima
+Kestus: 54 min
+Põhjus: connection failed: timed out]]></description></item><item><title>Kliima: kuuandmed Climate: monthly data: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-f-kliima-kuu</link><guid isPermaLink="false">f-kliima-kuu-2026-09-26T17:53:15Z</guid><pubDate>Sat, 26 Sep 2026 17:53:15 +0000</pubDate><category>Kliima</category><description><![CDATA[Teenus: Kliima
 Algus: 2026-09-26T17:53:15Z (UTC)
-Kestus: kestab endiselt
-Põhjus: connection failed: timed out]]></description></item><item><title>Kliima: jaamade metaandmed ja elementide mõõtmisperioodid Climate: station metadata and element measurement periods: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-f-kliima-jaam-vaatlus</link><guid isPermaLink="false">f-kliima-jaam-vaatlus-2026-09-26T17:52:50Z</guid><pubDate>Sat, 26 Sep 2026 17:52:50 +0000</pubDate><category>Kliima</category><description><![CDATA[Teenus: Kliima
+Kestus: 54 min
+Põhjus: connection failed: timed out]]></description></item><item><title>Kliima: jaamade metaandmed ja elementide mõõtmisperioodid Climate: station metadata and element measurement periods: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-f-kliima-jaam-vaatlus</link><guid isPermaLink="false">f-kliima-jaam-vaatlus-2026-09-26T17:52:50Z</guid><pubDate>Sat, 26 Sep 2026 17:52:50 +0000</pubDate><category>Kliima</category><description><![CDATA[Teenus: Kliima
 Algus: 2026-09-26T17:52:50Z (UTC)
-Kestus: kestab endiselt
-Põhjus: connection failed: timed out]]></description></item><item><title>f_kliima_element: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-f-kliima-element</link><guid isPermaLink="false">f-kliima-element-2026-09-26T17:52:50Z</guid><pubDate>Sat, 26 Sep 2026 17:52:50 +0000</pubDate><category>Kliima</category><description><![CDATA[Teenus: Kliima
+Kestus: 54 min
+Põhjus: connection failed: timed out]]></description></item><item><title>f_kliima_element: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-f-kliima-element</link><guid isPermaLink="false">f-kliima-element-2026-09-26T17:52:50Z</guid><pubDate>Sat, 26 Sep 2026 17:52:50 +0000</pubDate><category>Kliima</category><description><![CDATA[Teenus: Kliima
 Algus: 2026-09-26T17:52:50Z (UTC)
-Kestus: kestab endiselt
-Põhjus: connection failed: timed out]]></description></item><item><title>Keskkonnaseire avaandmete andmeteenused: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-f-keskkonnaseire</link><guid isPermaLink="false">f-keskkonnaseire-2026-09-26T17:52:50Z</guid><pubDate>Sat, 26 Sep 2026 17:52:50 +0000</pubDate><category>Keskkonnaseire</category><description><![CDATA[Teenus: Keskkonnaseire
+Kestus: 54 min
+Põhjus: connection failed: timed out]]></description></item><item><title>Keskkonnaseire avaandmete andmeteenused: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-f-keskkonnaseire</link><guid isPermaLink="false">f-keskkonnaseire-2026-09-26T17:52:50Z</guid><pubDate>Sat, 26 Sep 2026 17:52:50 +0000</pubDate><category>Keskkonnaseire</category><description><![CDATA[Teenus: Keskkonnaseire
 Algus: 2026-09-26T17:52:50Z (UTC)
-Kestus: kestab endiselt
-Põhjus: connection failed: timed out]]></description></item><item><title>Hüdroloogiliste seireandmete aegread: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-f-hydroseire</link><guid isPermaLink="false">f-hydroseire-2026-09-26T17:44:49Z</guid><pubDate>Sat, 26 Sep 2026 17:44:49 +0000</pubDate><category>Hüdroloogia</category><description><![CDATA[Teenus: Hüdroloogia
+Kestus: 54 min
+Põhjus: connection failed: timed out]]></description></item><item><title>Hüdroloogiliste seireandmete aegread: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-f-hydroseire</link><guid isPermaLink="false">f-hydroseire-2026-09-26T17:44:49Z</guid><pubDate>Sat, 26 Sep 2026 17:44:49 +0000</pubDate><category>Hüdroloogia</category><description><![CDATA[Teenus: Hüdroloogia
 Algus: 2026-09-26T17:44:49Z (UTC)
-Kestus: kestab endiselt
-Põhjus: connection failed: timed out]]></description></item><item><title>EstModel: Vooluveekogud: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-estmodel-rivers</link><guid isPermaLink="false">estmodel-rivers-2026-09-26T17:36:42Z</guid><pubDate>Sat, 26 Sep 2026 17:36:42 +0000</pubDate><category>EstModel</category><description><![CDATA[Teenus: EstModel
+Kestus: 1 h 2 min
+Põhjus: connection failed: timed out]]></description></item><item><title>EstModel: Vooluveekogud: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-estmodel-rivers</link><guid isPermaLink="false">estmodel-rivers-2026-09-26T17:36:42Z</guid><pubDate>Sat, 26 Sep 2026 17:36:42 +0000</pubDate><category>EstModel</category><description><![CDATA[Teenus: EstModel
 Algus: 2026-09-26T17:36:42Z (UTC)
-Kestus: kestab endiselt
-Põhjus: connection failed: timed out]]></description></item><item><title>EstModel: Riigid: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-estmodel-countries</link><guid isPermaLink="false">estmodel-countries-2026-09-26T17:36:42Z</guid><pubDate>Sat, 26 Sep 2026 17:36:42 +0000</pubDate><category>EstModel</category><description><![CDATA[Teenus: EstModel
+Kestus: 1 h 10 min
+Põhjus: connection failed: timed out]]></description></item><item><title>EstModel: Riigid: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-estmodel-countries</link><guid isPermaLink="false">estmodel-countries-2026-09-26T17:36:42Z</guid><pubDate>Sat, 26 Sep 2026 17:36:42 +0000</pubDate><category>EstModel</category><description><![CDATA[Teenus: EstModel
 Algus: 2026-09-26T17:36:42Z (UTC)
-Kestus: kestab endiselt
-Põhjus: connection failed: timed out]]></description></item><item><title>EstModel: Hindamisüksused: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-estmodel-assessment-units</link><guid isPermaLink="false">estmodel-assessment-units-2026-09-26T17:36:42Z</guid><pubDate>Sat, 26 Sep 2026 17:36:42 +0000</pubDate><category>EstModel</category><description><![CDATA[Teenus: EstModel
+Kestus: 1 h 10 min
+Põhjus: connection failed: timed out]]></description></item><item><title>EstModel: Hindamisüksused: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-estmodel-assessment-units</link><guid isPermaLink="false">estmodel-assessment-units-2026-09-26T17:36:42Z</guid><pubDate>Sat, 26 Sep 2026 17:36:42 +0000</pubDate><category>EstModel</category><description><![CDATA[Teenus: EstModel
 Algus: 2026-09-26T17:36:42Z (UTC)
-Kestus: kestab endiselt
-Põhjus: connection failed: timed out]]></description></item><item><title>EstModel: Väljalasud: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-estmodel-water-outlets</link><guid isPermaLink="false">estmodel-water-outlets-2026-09-26T17:36:12Z</guid><pubDate>Sat, 26 Sep 2026 17:36:12 +0000</pubDate><category>EstModel</category><description><![CDATA[Teenus: EstModel
+Kestus: 1 h 10 min
+Põhjus: connection failed: timed out]]></description></item><item><title>EstModel: Väljalasud: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-estmodel-water-outlets</link><guid isPermaLink="false">estmodel-water-outlets-2026-09-26T17:36:12Z</guid><pubDate>Sat, 26 Sep 2026 17:36:12 +0000</pubDate><category>EstModel</category><description><![CDATA[Teenus: EstModel
 Algus: 2026-09-26T17:36:12Z (UTC)
-Kestus: kestab endiselt
-Põhjus: connection failed: timed out]]></description></item><item><title>EstModel: Alamvesikonnad: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-estmodel-subdistricts</link><guid isPermaLink="false">estmodel-subdistricts-2026-09-26T17:36:12Z</guid><pubDate>Sat, 26 Sep 2026 17:36:12 +0000</pubDate><category>EstModel</category><description><![CDATA[Teenus: EstModel
+Kestus: 1 h 10 min
+Põhjus: connection failed: timed out]]></description></item><item><title>EstModel: Alamvesikonnad: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-estmodel-subdistricts</link><guid isPermaLink="false">estmodel-subdistricts-2026-09-26T17:36:12Z</guid><pubDate>Sat, 26 Sep 2026 17:36:12 +0000</pubDate><category>EstModel</category><description><![CDATA[Teenus: EstModel
 Algus: 2026-09-26T17:36:12Z (UTC)
-Kestus: kestab endiselt
-Põhjus: connection failed: timed out]]></description></item><item><title>EstModel: Seirejaamad: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-estmodel-stations</link><guid isPermaLink="false">estmodel-stations-2026-09-26T17:36:12Z</guid><pubDate>Sat, 26 Sep 2026 17:36:12 +0000</pubDate><category>EstModel</category><description><![CDATA[Teenus: EstModel
+Kestus: 1 h 10 min
+Põhjus: connection failed: timed out]]></description></item><item><title>EstModel: Seirejaamad: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-estmodel-stations</link><guid isPermaLink="false">estmodel-stations-2026-09-26T17:36:12Z</guid><pubDate>Sat, 26 Sep 2026 17:36:12 +0000</pubDate><category>EstModel</category><description><![CDATA[Teenus: EstModel
 Algus: 2026-09-26T17:36:12Z (UTC)
-Kestus: kestab endiselt
-Põhjus: connection failed: timed out]]></description></item><item><title>EstModel: Vesikonnad: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-estmodel-districts</link><guid isPermaLink="false">estmodel-districts-2026-09-26T17:36:12Z</guid><pubDate>Sat, 26 Sep 2026 17:36:12 +0000</pubDate><category>EstModel</category><description><![CDATA[Teenus: EstModel
+Kestus: 1 h 10 min
+Põhjus: connection failed: timed out]]></description></item><item><title>EstModel: Vesikonnad: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-estmodel-districts</link><guid isPermaLink="false">estmodel-districts-2026-09-26T17:36:12Z</guid><pubDate>Sat, 26 Sep 2026 17:36:12 +0000</pubDate><category>EstModel</category><description><![CDATA[Teenus: EstModel
 Algus: 2026-09-26T17:36:12Z (UTC)
-Kestus: kestab endiselt
-Põhjus: connection failed: timed out]]></description></item><item><title>EELIS andmestikud: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-eelis</link><guid isPermaLink="false">eelis-2026-09-26T17:36:12Z</guid><pubDate>Sat, 26 Sep 2026 17:36:12 +0000</pubDate><category>EELIS</category><description><![CDATA[Teenus: EELIS
+Kestus: 1 h 10 min
+Põhjus: connection failed: timed out]]></description></item><item><title>EELIS andmestikud: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-eelis</link><guid isPermaLink="false">eelis-2026-09-26T17:36:12Z</guid><pubDate>Sat, 26 Sep 2026 17:36:12 +0000</pubDate><category>EELIS</category><description><![CDATA[Teenus: EELIS
 Algus: 2026-09-26T17:36:12Z (UTC)
-Kestus: kestab endiselt
+Kestus: 1 h 10 min
 Põhjus: 261/261 ei vasta: eelis-rahvalad (connection failed: timed out), eelis-rahvalad-dok (connection failed: timed out), eelis-rahvalad-linnuala (connection failed: timed out), eelis-rahvalad-seosed (conne]]></description></item><item><title>PROTO: probleemtoodete avaandmed: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-proto-opendata</link><guid isPermaLink="false">proto-opendata-2026-09-26T17:03:47Z</guid><pubDate>Sat, 26 Sep 2026 17:03:47 +0000</pubDate><category>Probleemtooteregister</category><description><![CDATA[Teenus: Probleemtooteregister
 Algus: 2026-09-26T17:03:47Z (UTC)
 Kestus: 1 h 41 min
