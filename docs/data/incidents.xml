@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
-<channel><title>Keskkonnaagentuuri API-de katkestused</title><link>https://tpiparkaur.github.io/kaur-api-status/</link><description>Keskkonnaagentuuri avalike andmeteenuste katkestused, uuemad eespool. Genereeritud automaatsest seirest iga kontrollitsükli järel.</description><language>et</language><lastBuildDate>Sat, 26 Sep 2026 18:47:56 +0000</lastBuildDate><item><title>Kliima tunniandmed: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kliima-tund</link><guid isPermaLink="false">kliima-tund-2026-09-26T18:46:24Z</guid><pubDate>Sat, 26 Sep 2026 18:46:24 +0000</pubDate><category>Kliima</category><description><![CDATA[Teenus: Kliima
+<channel><title>Keskkonnaagentuuri API-de katkestused</title><link>https://tpiparkaur.github.io/kaur-api-status/</link><description>Keskkonnaagentuuri avalike andmeteenuste katkestused, uuemad eespool. Genereeritud automaatsest seirest iga kontrollitsükli järel.</description><language>et</language><lastBuildDate>Sat, 26 Sep 2026 19:03:24 +0000</lastBuildDate><item><title>PROTO: probleemtoodete avaandmed: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-proto-opendata</link><guid isPermaLink="false">proto-opendata-2026-09-26T19:03:23Z</guid><pubDate>Sat, 26 Sep 2026 19:03:23 +0000</pubDate><category>Probleemtooteregister</category><description><![CDATA[Teenus: Probleemtooteregister
+Algus: 2026-09-26T19:03:23Z (UTC)
+Kestus: kestab endiselt
+Põhjus: http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en-US"> <![endif]--> <!--[if IE 7]> <html class="no-js ie7 oldie" lang="en-US"> <![endif]--> <!--[if ]]></description></item><item><title>Kliima tunniandmed: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kliima-tund</link><guid isPermaLink="false">kliima-tund-2026-09-26T18:46:24Z</guid><pubDate>Sat, 26 Sep 2026 18:46:24 +0000</pubDate><category>Kliima</category><description><![CDATA[Teenus: Kliima
 Algus: 2026-09-26T18:46:24Z (UTC)
 Kestus: 1 min
 Põhjus: connection failed: timed out]]></description></item><item><title>Kliima ööpäeva andmed, Võru 2006 (like-filter ja sortimine): ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kliima-paev-nimefilter</link><guid isPermaLink="false">kliima-paev-nimefilter-2026-09-26T18:46:00Z</guid><pubDate>Sat, 26 Sep 2026 18:46:00 +0000</pubDate><category>Kliima</category><description><![CDATA[Teenus: Kliima
@@ -145,9 +148,6 @@ Põhjus: http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html 
 Algus: 2026-09-25T20:36:59Z (UTC)
 Kestus: 27 min
 Põhjus: http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en-US"> <![endif]--> <!--[if IE 7]> <html class="no-js ie7 oldie" lang="en-US"> <![endif]--> <!--[if ]]></description></item><item><title>PAKIS: pakendijäätmete avaandmed: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-pakis-opendata</link><guid isPermaLink="false">pakis-opendata-2026-09-25T20:36:59Z</guid><pubDate>Fri, 25 Sep 2026 20:36:59 +0000</pubDate><category>Pakendiregister</category><description><![CDATA[Teenus: Pakendiregister
-Algus: 2026-09-25T20:36:59Z (UTC)
-Kestus: 27 min
-Põhjus: http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en-US"> <![endif]--> <!--[if IE 7]> <html class="no-js ie7 oldie" lang="en-US"> <![endif]--> <!--[if ]]></description></item><item><title>Kütuseseire: heiteallikad: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kytus-source-of-pollution</link><guid isPermaLink="false">kytus-source-of-pollution-2026-09-25T20:36:59Z</guid><pubDate>Fri, 25 Sep 2026 20:36:59 +0000</pubDate><category>Kütuseseire</category><description><![CDATA[Teenus: Kütuseseire
 Algus: 2026-09-25T20:36:59Z (UTC)
 Kestus: 27 min
 Põhjus: http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en-US"> <![endif]--> <!--[if IE 7]> <html class="no-js ie7 oldie" lang="en-US"> <![endif]--> <!--[if ]]></description></item></channel></rss>
