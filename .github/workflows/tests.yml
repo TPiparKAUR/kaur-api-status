@@ -30,7 +30,7 @@ jobs:
         run: ruff format --check .
 
       - name: Type check (mypy)
-        run: mypy src/kaur_monitor scripts/notify_issues.py monitor.py
+        run: mypy src/kaur_monitor scripts/notify_issues.py scripts/agent_eval.py monitor.py
 
       # Standard library only, so there is nothing to install.
       - name: Unit tests

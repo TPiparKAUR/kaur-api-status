@@ -1,0 +1,73 @@
+name: Agent readiness eval
+
+# Weekly, Monday early morning UTC and off the :00/:30 marks the monitor uses.
+# Measures how well an AI agent can use the monitored APIs from a cold start
+# (config/agent_prompts.toml) and appends one row per run to logs/agent/.
+# Without the ANTHROPIC_API_KEY secret the job prints a notice and exits 0 —
+# same reasoning as `check` on a missing inventory: nothing to run is not a failure.
+# Spends real money: see run_token_budget and max_runs_per_invocation in
+# config/agent_eval.toml. workflow_dispatch defaults to the core set, one repeat.
+on:
+  schedule:
+    - cron: "17 4 * * 1"
+  workflow_dispatch:
+    inputs:
+      core_only:
+        description: "Only the core prompt set"
+        type: boolean
+        default: true
+      repeats:
+        description: "Repeats per prompt/model/variant"
+        required: false
+        default: "1"
+      dry_run:
+        description: "Print the plan; make no API calls"
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: api-agent-eval
+
+jobs:
+  eval:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with:
+          python-version: "3.12"
+
+      - name: Run agent eval
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          EVENT: ${{ github.event_name }}
+          CORE_ONLY: ${{ inputs.core_only }}
+          REPEATS: ${{ inputs.repeats }}
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          set -euo pipefail
+          args=(--repeats "${REPEATS:-1}")
+          # Scheduled runs are always real and core-only; only manual runs can be dry.
+          if [ "$EVENT" = "schedule" ] || [ "$CORE_ONLY" != "false" ]; then args+=(--core-only); fi
+          if [ "$EVENT" != "schedule" ] && [ "$DRY_RUN" != "false" ]; then args+=(--dry-run); fi
+          python scripts/agent_eval.py "${args[@]}" | tee agent-eval.txt
+
+      - name: Job summary
+        if: always()
+        run: |
+          {
+            echo "## Agendivalmiduse jooksu tulemus"
+            echo
+            echo '```'
+            cat agent-eval.txt 2>/dev/null || echo "väljundit ei ole"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Commit results
+        if: ${{ github.event_name == 'schedule' || inputs.dry_run == false }}
+        run: scripts/commit_and_push.sh "Agent eval run" logs/agent

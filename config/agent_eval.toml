@@ -1,0 +1,62 @@
+# Agendivalmiduse harness'i seaded (scripts/agent_eval.py). Andmed, mitte kood.
+#
+# Mudelite ID-d on võetud claude-api teadmisbaasi mudelitabelist (vahemällu salvestatud
+# 2026-09-25). Kui vendor mudeli välja vahetab, muuda siin JA tõsta `epoch` — vana ja
+# uue mudeli tulemusi ei tohi võrrelda teenuse paranemise/halvenemisena.
+
+[api]
+url = "https://api.anthropic.com/v1/messages"
+version = "2023-06-01"
+key_env = "ANTHROPIC_API_KEY"
+timeout_s = 600
+# Mõtlemine loeb max_tokens-i sisse; see on ühe vooru lagi, mitte ülesande oma.
+max_output_tokens = 16000
+# Ülemise taseme cache_control. Vaikimisi väljas: harness'i pole päris API vastu
+# veel jooksutatud ja tundmatu parameeter oleks kogu jooksu 400.
+prompt_cache = false
+
+[limits]
+max_turns = 30
+max_tool_calls = 25
+# Kui ülesanne laeb alla rohkem, märgitakse F13 (ülekoormus).
+max_bytes_per_task = 5_000_000
+# Mitu tähemärki ühest vastusest mudelile antakse (ülejäänu kärbitakse ja öeldakse seda).
+tool_body_chars = 8000
+# Kogu jooksu tokenilagi (sisend+väljund kokku); ületamisel ei alustata uusi ülesandeid.
+run_token_budget = 4_000_000
+max_runs_per_invocation = 400
+# Vähemalt nii palju sekundeid järjestikuste päringute vahel sama hosti vastu.
+min_seconds_between_requests_per_host = 1.0
+max_wait_seconds = 10
+# Transkriptide kehad kärbitakse nii pikaks (repo kasv!).
+transcript_body_chars = 1500
+
+[agent]
+# Deklareeritud UA. Mitte kunagi võltsitud brauseri-UA: botikaitset ei kõrvaldata,
+# see tuleb omanikega kokku leppida (vt spetsifikatsioon §3).
+user_agent = "KAUR-agent-probe/1.0 (agent-readiness monitoring; Keskkonnaagentuur; +https://github.com/TPiparKAUR/kaur-api-status)"
+# Lisaks inventari hostidele: kataloog (A04/A05) ja meie enda seireleht (G02).
+extra_hosts = ["andmed.eesti.ee"]
+# Ainult need päised tohib agent saata (PostgREST vajab Accept-Profile'i, Prefer loendamiseks).
+allowed_request_headers = ["Accept", "Accept-Profile", "Content-Profile", "Prefer", "Range", "Range-Unit"]
+
+# Effort: mudelipõhine valik kulu ja järjepidevuse jaoks. Opus 5.5 vaikimisi 'medium',
+# Sonnet 5.5 vaikimisi 'high' — siin on mõlemad selgesõnaliselt 'medium', et need oleksid
+# võrreldavad. Haiku 4.5 ei toeta effort-i, seega puudub. Temperatuuri EI saadeta:
+# Opus 5.5 ja Sonnet 5.5 lükkavad mitte-vaikeväärtused tagasi (400).
+[[model]]
+id = "claude-opus-5-5"
+epoch = 1
+effort = "medium"
+enabled = true
+
+[[model]]
+id = "claude-sonnet-5-5"
+epoch = 1
+effort = "medium"
+enabled = true
+
+[[model]]
+id = "claude-haiku-4-5"
+epoch = 1
+enabled = false

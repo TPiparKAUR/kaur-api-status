@@ -51,9 +51,13 @@ src/kaur_monitor/
   retention.py               roll old raw months into logs/daily/, then delete them
   cli.py                     argparse
 scripts/notify_issues.py     GitHub issues as the notification channel
+scripts/agent_eval.py        entry for src/kaur_monitor/agent_eval.py (agent-readiness eval)
 scripts/commit_and_push.sh   shared by both committing workflows
 config/endpoints.toml        the inventory (data, not code)
 config/systems.toml          plain-language system descriptions for the page
+config/agent_prompts.toml    agent-eval prompts, variants and oracle declarations (data)
+config/agent_eval.toml       agent-eval API, limits, models
+logs/agent/YYYY-MM.jsonl     agent-eval results (+ gzip transcripts), committed
 logs/YYYY-MM.jsonl           append-only check log, committed
 logs/daily/YYYY-MM.jsonl     one row per (unit, day) for months past retention.py's
                              cutoff; archival only — nothing in report.py, dashboard.py
@@ -562,3 +566,27 @@ assumed:
   line per group with a real gap (not an interpolated value) on any day a
   group had no checks, and states each group's median range in the chart's
   text summary.
+
+## Agent-readiness eval (added 2026-09-29)
+
+Measures whether an AI agent can use these APIs from a cold start. Weekly
+`.github/workflows/agent-eval.yml` (needs secret `ANTHROPIC_API_KEY`; without it
+the job exits 0 with a notice) runs `config/agent_prompts.toml` against the
+models in `config/agent_eval.toml` and appends to `logs/agent/`. Plan for a
+Claude Code Routine as weekly *reader/reporter* of that log — routines stay
+read-only (the Claude GitHub App is not installed for the org, pushes are refused).
+
+- **Never run against the live API yet.** All 240 tests use fake transports and
+  a scripted model. First real run: `workflow_dispatch` with dry_run off.
+- **Raw urllib, not the SDK** — the no-runtime-dependencies rule wins. **No
+  temperature/top_p** (400 on the current models), **no server-side fallbacks**
+  (they would change the model under test).
+- **Unscored baseline.** A prompt whose oracle is not confirmed is logged with
+  `outcome.pass = null`, never as pass or fail. Eight prompts carry a scorer;
+  their reference queries still need a one-off schema check at setup.
+- Agent requests go through a GET-only tool with an allowlist of hosts (inventory
+  hosts + `andmed.eesti.ee`), a header allowlist and per-host pacing.
+- Scheduled runs are core-only, 1 repeat by default; `--repeats` raises it.
+  Cost is bounded by `run_token_budget` and `max_runs_per_invocation`.
+- Transcripts are committed (kept for repeat 0 and non-passes) — watch repo growth.
+- Single vendor: results say how *Claude* copes, not AI agents in general.
