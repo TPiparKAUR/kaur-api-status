@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
-<channel><title>Keskkonnaagentuuri API-de katkestused</title><link>https://tpiparkaur.github.io/kaur-api-status/</link><description>Keskkonnaagentuuri avalike andmeteenuste katkestused, uuemad eespool. Genereeritud automaatsest seirest iga kontrollitsükli järel.</description><language>et</language><lastBuildDate>Wed, 07 Oct 2026 20:40:01 +0000</lastBuildDate><item><title>Kütuseseire: seireandmed: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kytus-monitoring</link><guid isPermaLink="false">kytus-monitoring-2026-10-07T20:39:59Z</guid><pubDate>Wed, 07 Oct 2026 20:39:59 +0000</pubDate><category>Kütuseseire</category><description><![CDATA[Teenus: Kütuseseire
-Algus: 2026-10-07T20:39:59Z (UTC)
+<channel><title>Keskkonnaagentuuri API-de katkestused</title><link>https://tpiparkaur.github.io/kaur-api-status/</link><description>Keskkonnaagentuuri avalike andmeteenuste katkestused, uuemad eespool. Genereeritud automaatsest seirest iga kontrollitsükli järel.</description><language>et</language><lastBuildDate>Wed, 07 Oct 2026 21:05:44 +0000</lastBuildDate><item><title>PROTO: probleemtoodete avaandmed: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-proto-opendata</link><guid isPermaLink="false">proto-opendata-2026-10-07T21:05:42Z</guid><pubDate>Wed, 07 Oct 2026 21:05:42 +0000</pubDate><category>Probleemtooteregister</category><description><![CDATA[Teenus: Probleemtooteregister
+Algus: 2026-10-07T21:05:42Z (UTC)
 Kestus: kestab endiselt
-Põhjus: http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en-US"> <![endif]--> <!--[if IE 7]> <html class="no-js ie7 oldie" lang="en-US"> <![endif]--> <!--[if ]]></description></item><item><title>Kütuseseire: ettevõtted: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kytus-bunkering-company</link><guid isPermaLink="false">kytus-bunkering-company-2026-10-07T20:39:59Z</guid><pubDate>Wed, 07 Oct 2026 20:39:59 +0000</pubDate><category>Kütuseseire</category><description><![CDATA[Teenus: Kütuseseire
+Põhjus: http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en-US"> <![endif]--> <!--[if IE 7]> <html class="no-js ie7 oldie" lang="en-US"> <![endif]--> <!--[if ]]></description></item><item><title>Kütuseseire: seireandmed: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kytus-monitoring</link><guid isPermaLink="false">kytus-monitoring-2026-10-07T20:39:59Z</guid><pubDate>Wed, 07 Oct 2026 20:39:59 +0000</pubDate><category>Kütuseseire</category><description><![CDATA[Teenus: Kütuseseire
 Algus: 2026-10-07T20:39:59Z (UTC)
-Kestus: kestab endiselt
+Kestus: 25 min
+Põhjus: http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en-US"> <![endif]--> <!--[if IE 7]> <html class="no-js ie7 oldie" lang="en-US"> <![endif]--> <!--[if ]]></description></item><item><title>Kütuseseire: ettevõtted: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kytus-bunkering-company</link><guid isPermaLink="false">kytus-bunkering-company-2026-10-07T20:39:59Z</guid><pubDate>Wed, 07 Oct 2026 20:39:59 +0000</pubDate><category>Kütuseseire</category><description><![CDATA[Teenus: Kütuseseire
+Algus: 2026-10-07T20:39:59Z (UTC)
+Kestus: 25 min
 Põhjus: http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en-US"> <![endif]--> <!--[if IE 7]> <html class="no-js ie7 oldie" lang="en-US"> <![endif]--> <!--[if ]]></description></item><item><title>Kütuseseire: heiteallikad: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kytus-source-of-pollution</link><guid isPermaLink="false">kytus-source-of-pollution-2026-10-07T14:05:57Z</guid><pubDate>Wed, 07 Oct 2026 14:05:57 +0000</pubDate><category>Kütuseseire</category><description><![CDATA[Teenus: Kütuseseire
 Algus: 2026-10-07T14:05:57Z (UTC)
 Kestus: 35 min
@@ -145,9 +148,6 @@ Põhjus: http 504 Gateway Timeout — {"code":"PGRST003","details":null,"hint":n
 Algus: 2026-10-05T21:39:31Z (UTC)
 Kestus: 25 min
 Põhjus: 24/261 ei vasta: eelis-rahvalad-seosed (http 504 Gateway Timeout — {"code":"PGRST003","details":null), f-alad (http 504 Gateway Timeout — {"code":"PGRST003","details":null), f-alad-ehak (http 504 Gate]]></description></item><item><title>PROTO: probleemtoodete avaandmed: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-proto-opendata</link><guid isPermaLink="false">proto-opendata-2026-10-05T17:05:06Z</guid><pubDate>Mon, 05 Oct 2026 17:05:06 +0000</pubDate><category>Probleemtooteregister</category><description><![CDATA[Teenus: Probleemtooteregister
-Algus: 2026-10-05T17:05:06Z (UTC)
-Kestus: 34 min
-Põhjus: http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en-US"> <![endif]--> <!--[if IE 7]> <html class="no-js ie7 oldie" lang="en-US"> <![endif]--> <!--[if ]]></description></item><item><title>PAKIS: pakendijäätmete avaandmed: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-pakis-opendata</link><guid isPermaLink="false">pakis-opendata-2026-10-05T17:05:06Z</guid><pubDate>Mon, 05 Oct 2026 17:05:06 +0000</pubDate><category>Pakendiregister</category><description><![CDATA[Teenus: Pakendiregister
 Algus: 2026-10-05T17:05:06Z (UTC)
 Kestus: 34 min
 Põhjus: http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en-US"> <![endif]--> <!--[if IE 7]> <html class="no-js ie7 oldie" lang="en-US"> <![endif]--> <!--[if ]]></description></item></channel></rss>
