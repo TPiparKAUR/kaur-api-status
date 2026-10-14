@@ -1,372 +1,378 @@
 # Keskkonnaagentuuri API-de seisundiraport
 
-Koostatud: **2026-10-14 14:56** (EET/EEST) · jälgitavaid otspunkte: **42** · kontrollikirjeid viimase 31 päeva jooksul: **57549**
+Koostatud: **2026-10-14 19:15** (EET/EEST) · jälgitavaid otspunkte: **42** · kontrollikirjeid viimase 31 päeva jooksul: **57591**
 
-Hetkeseis — MAAS: **3** · KORRAS: **39**
+Hetkeseis — MAAS: **8** · KORRAS: **34**
 
 ## Praegune seis
 
 | Otspunkt | Seisund | Vastus | Andmete vanus | Viimane kontroll | Märkus |
 |---|---|---|---|---|---|
-| `eelis`<br><sub>EELIS andmestikud</sub> | **KORRAS** | 450 ms | - | 2026-10-14 14:56 |  |
-| `estmodel-assessment-units`<br><sub>EstModel: Hindamisüksused</sub> | **KORRAS** | 200 · 591 ms | - | 2026-10-14 14:56 |  |
-| `estmodel-countries`<br><sub>EstModel: Riigid</sub> | **KORRAS** | 200 · 547 ms | - | 2026-10-14 14:56 |  |
-| `estmodel-districts`<br><sub>EstModel: Vesikonnad</sub> | **KORRAS** | 200 · 696 ms | - | 2026-10-14 14:56 |  |
-| `estmodel-rivers`<br><sub>EstModel: Vooluveekogud</sub> | **KORRAS** | 200 · 612 ms | - | 2026-10-14 14:56 |  |
-| `estmodel-stations`<br><sub>EstModel: Seirejaamad</sub> | **KORRAS** | 200 · 550 ms | - | 2026-10-14 14:56 |  |
-| `estmodel-subdistricts`<br><sub>EstModel: Alamvesikonnad</sub> | **KORRAS** | 200 · 531 ms | - | 2026-10-14 14:56 |  |
-| `estmodel-water-outlets`<br><sub>EstModel: Väljalasud</sub> | **KORRAS** | 200 · 475 ms | - | 2026-10-14 14:56 |  |
-| `f-hydroseire`<br><sub>Hüdroloogiliste seireandmete aegread</sub> | **KORRAS** | 200 · 441 ms | - | 2026-10-14 14:56 |  |
-| `f-keskkonnaseire`<br><sub>Keskkonnaseire avaandmete andmeteenused</sub> | **KORRAS** | 200 · 484 ms | - | 2026-10-14 14:56 |  |
-| `f-kliima-element`<br><sub>f_kliima_element</sub> | **KORRAS** | 200 · 431 ms | - | 2026-10-14 14:56 |  |
-| `f-kliima-jaam-vaatlus`<br><sub>Kliima: jaamade metaandmed ja elementide mõõtmisperioodid Climate: station metadata and element measurement periods</sub> | **KORRAS** | 200 · 429 ms | - | 2026-10-14 14:56 |  |
-| `f-kliima-kuu`<br><sub>Kliima: kuuandmed Climate: monthly data</sub> | **KORRAS** | 200 · 435 ms | - | 2026-10-14 14:56 |  |
-| `f-kliima-minut`<br><sub>Kliima: 10-minuti andmed Climate: 10-minute data</sub> | **KORRAS** | 200 · 440 ms | - | 2026-10-14 14:56 |  |
-| `f-kliima-paev`<br><sub>Kliima: ööpäevaandmed Climate: daily data</sub> | **KORRAS** | 200 · 466 ms | - | 2026-10-14 14:56 |  |
-| `f-kliima-tund`<br><sub>Kliima: tunniandmed  Climate: hourly data</sub> | **KORRAS** | 200 · 451 ms | - | 2026-10-14 14:56 |  |
-| `hydroseire`<br><sub>Hüdroloogiline seire, veetase 2023-01-02</sub> | **KORRAS** | 200 · 7382 ms | - | 2026-10-14 14:56 |  |
-| `ilmateenistus-hoiatused-rss`<br><sub>Ilmateenistus: hoiatuste RSS</sub> | **KORRAS** | 200 · 1187 ms | - | 2026-10-14 14:56 |  |
-| `ilmateenistus-hoiatused-xml`<br><sub>Ilmateenistus: hoiatused XML</sub> | **KORRAS** | 200 · 1145 ms | - | 2026-10-14 14:56 |  |
-| `ilmateenistus-juur`<br><sub>Ilmateenistus: teenuse juur</sub> | **KORRAS** | 200 · 1831 ms | - | 2026-10-14 14:56 |  |
-| `ilmateenistus-prognoos-xml`<br><sub>Ilmateenistus: Eesti prognoos XML</sub> | **KORRAS** | 200 · 991 ms | - | 2026-10-14 14:56 |  |
-| `ilmateenistus-vaatlusandmed-xml`<br><sub>Ilmateenistus: Eesti vaatlusandmed XML</sub> | **KORRAS** | 200 · 1124 ms | - | 2026-10-14 14:56 |  |
-| `kaia-items-query`<br><sub>KAIA dokumentide metaandmete päring</sub> | **KORRAS** | 200 · 666 ms | - | 2026-10-14 14:56 |  |
-| `kaia-lists-active`<br><sub>KAIA aktiivse valikuhierarhia metaandmed</sub> | **KORRAS** | 200 · 933 ms | - | 2026-10-14 14:56 |  |
-| `kaia-lists-archive`<br><sub>KAIA arhiivi valikuhierarhia metaandmed</sub> | **KORRAS** | 200 · 860 ms | - | 2026-10-14 14:56 |  |
-| `kaia-swagger`<br><sub>KAIA OpenAPI teenusekirjeldus</sub> | **KORRAS** | 200 · 759 ms | - | 2026-10-14 14:56 |  |
-| `kaia-vaated`<br><sub>KAIA avaandmete failivaated</sub> | **KORRAS** | 712 ms | - | 2026-10-14 14:56 |  |
-| `kese-juur`<br><sub>KESE: teenuse juur</sub> | **KORRAS** | 200 · 732 ms | - | 2026-10-14 14:56 |  |
-| `keskkonnaandmed-root`<br><sub>Juur-URL, OpenAPI teenusekirjeldus</sub> | **KORRAS** | 200 · 878 ms | - | 2026-10-14 14:56 | body truncated at 65536 bytes, parse skipped |
-| `keskkonnaseire`<br><sub>Keskkonnaseire, programm PR0127 aastal 2021</sub> | **KORRAS** | 200 · 6909 ms | - | 2026-10-14 14:56 |  |
-| `kliima-element`<br><sub>Kliima elementide metaandmed</sub> | **KORRAS** | 200 · 462 ms | - | 2026-10-14 14:56 |  |
-| `kliima-jaam-vaatlus`<br><sub>Kliima vaatlusjaamade metaandmed</sub> | **KORRAS** | 200 · 430 ms | - | 2026-10-14 14:56 |  |
-| `kliima-kuu`<br><sub>Kliima kuu andmed</sub> | **KORRAS** | 200 · 439 ms | - | 2026-10-14 14:56 |  |
-| `kliima-minut`<br><sub>Kliima 10-minuti andmed</sub> | **KORRAS** | 200 · 440 ms | - | 2026-10-14 14:56 |  |
-| `kliima-paev`<br><sub>Kliima ööpäeva andmed, Ruhnu ja Kihnu õhuniiskus 2023</sub> | **KORRAS** | 200 · 468 ms | - | 2026-10-14 14:56 |  |
-| `kliima-paev-nimefilter`<br><sub>Kliima ööpäeva andmed, Võru 2006 (like-filter ja sortimine)</sub> | **KORRAS** | 200 · 456 ms | - | 2026-10-14 14:56 |  |
-| `kliima-tund`<br><sub>Kliima tunniandmed</sub> | **KORRAS** | 200 · 399 ms | - | 2026-10-14 14:56 |  |
-| `kytus-bunkering-company`<br><sub>Kütuseseire: ettevõtted</sub> | **MAAS** | 429 · 393 ms | - | 2026-10-14 14:56 | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-j |
-| `kytus-monitoring`<br><sub>Kütuseseire: seireandmed</sub> | **MAAS** | 429 · 407 ms | - | 2026-10-14 14:56 | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-j |
-| `kytus-source-of-pollution`<br><sub>Kütuseseire: heiteallikad</sub> | **MAAS** | 429 · 416 ms | - | 2026-10-14 14:56 | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-j |
-| `pakis-opendata`<br><sub>PAKIS: pakendijäätmete avaandmed</sub> | **KORRAS** | 200 · 565 ms | - | 2026-10-14 14:56 |  |
-| `proto-opendata`<br><sub>PROTO: probleemtoodete avaandmed</sub> | **KORRAS** | 200 · 582 ms | - | 2026-10-14 14:56 |  |
+| `eelis`<br><sub>EELIS andmestikud</sub> | **KORRAS** | 441 ms | - | 2026-10-14 19:15 |  |
+| `estmodel-assessment-units`<br><sub>EstModel: Hindamisüksused</sub> | **KORRAS** | 200 · 673 ms | - | 2026-10-14 19:15 |  |
+| `estmodel-countries`<br><sub>EstModel: Riigid</sub> | **KORRAS** | 200 · 668 ms | - | 2026-10-14 19:15 |  |
+| `estmodel-districts`<br><sub>EstModel: Vesikonnad</sub> | **KORRAS** | 200 · 547 ms | - | 2026-10-14 19:15 |  |
+| `estmodel-rivers`<br><sub>EstModel: Vooluveekogud</sub> | **KORRAS** | 200 · 665 ms | - | 2026-10-14 19:15 |  |
+| `estmodel-stations`<br><sub>EstModel: Seirejaamad</sub> | **KORRAS** | 200 · 498 ms | - | 2026-10-14 19:15 |  |
+| `estmodel-subdistricts`<br><sub>EstModel: Alamvesikonnad</sub> | **KORRAS** | 200 · 668 ms | - | 2026-10-14 19:15 |  |
+| `estmodel-water-outlets`<br><sub>EstModel: Väljalasud</sub> | **KORRAS** | 200 · 627 ms | - | 2026-10-14 19:15 |  |
+| `f-hydroseire`<br><sub>Hüdroloogiliste seireandmete aegread</sub> | **KORRAS** | 200 · 447 ms | - | 2026-10-14 19:15 |  |
+| `f-keskkonnaseire`<br><sub>Keskkonnaseire avaandmete andmeteenused</sub> | **KORRAS** | 200 · 453 ms | - | 2026-10-14 19:15 |  |
+| `f-kliima-element`<br><sub>f_kliima_element</sub> | **KORRAS** | 200 · 430 ms | - | 2026-10-14 19:15 |  |
+| `f-kliima-jaam-vaatlus`<br><sub>Kliima: jaamade metaandmed ja elementide mõõtmisperioodid Climate: station metadata and element measurement periods</sub> | **KORRAS** | 200 · 430 ms | - | 2026-10-14 19:15 |  |
+| `f-kliima-kuu`<br><sub>Kliima: kuuandmed Climate: monthly data</sub> | **KORRAS** | 200 · 432 ms | - | 2026-10-14 19:15 |  |
+| `f-kliima-minut`<br><sub>Kliima: 10-minuti andmed Climate: 10-minute data</sub> | **KORRAS** | 200 · 461 ms | - | 2026-10-14 19:15 |  |
+| `f-kliima-paev`<br><sub>Kliima: ööpäevaandmed Climate: daily data</sub> | **KORRAS** | 200 · 439 ms | - | 2026-10-14 19:15 |  |
+| `f-kliima-tund`<br><sub>Kliima: tunniandmed  Climate: hourly data</sub> | **KORRAS** | 200 · 453 ms | - | 2026-10-14 19:15 |  |
+| `hydroseire`<br><sub>Hüdroloogiline seire, veetase 2023-01-02</sub> | **KORRAS** | 200 · 1404 ms | - | 2026-10-14 19:15 |  |
+| `ilmateenistus-hoiatused-rss`<br><sub>Ilmateenistus: hoiatuste RSS</sub> | **MAAS** | 429 · 963 ms | - | 2026-10-14 19:15 | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-j |
+| `ilmateenistus-hoiatused-xml`<br><sub>Ilmateenistus: hoiatused XML</sub> | **MAAS** | 429 · 950 ms | - | 2026-10-14 19:15 | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-j |
+| `ilmateenistus-juur`<br><sub>Ilmateenistus: teenuse juur</sub> | **MAAS** | 429 · 456 ms | - | 2026-10-14 19:15 | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-j |
+| `ilmateenistus-prognoos-xml`<br><sub>Ilmateenistus: Eesti prognoos XML</sub> | **MAAS** | 429 · 458 ms | - | 2026-10-14 19:15 | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-j |
+| `ilmateenistus-vaatlusandmed-xml`<br><sub>Ilmateenistus: Eesti vaatlusandmed XML</sub> | **KORRAS** | 200 · 1392 ms | - | 2026-10-14 19:15 |  |
+| `kaia-items-query`<br><sub>KAIA dokumentide metaandmete päring</sub> | **KORRAS** | 200 · 773 ms | - | 2026-10-14 19:15 |  |
+| `kaia-lists-active`<br><sub>KAIA aktiivse valikuhierarhia metaandmed</sub> | **KORRAS** | 200 · 851 ms | - | 2026-10-14 19:15 |  |
+| `kaia-lists-archive`<br><sub>KAIA arhiivi valikuhierarhia metaandmed</sub> | **KORRAS** | 200 · 877 ms | - | 2026-10-14 19:15 |  |
+| `kaia-swagger`<br><sub>KAIA OpenAPI teenusekirjeldus</sub> | **KORRAS** | 200 · 737 ms | - | 2026-10-14 19:15 |  |
+| `kaia-vaated`<br><sub>KAIA avaandmete failivaated</sub> | **KORRAS** | 795 ms | - | 2026-10-14 19:15 |  |
+| `kese-juur`<br><sub>KESE: teenuse juur</sub> | **KORRAS** | 200 · 691 ms | - | 2026-10-14 19:15 |  |
+| `keskkonnaandmed-root`<br><sub>Juur-URL, OpenAPI teenusekirjeldus</sub> | **KORRAS** | 200 · 900 ms | - | 2026-10-14 19:15 | body truncated at 65536 bytes, parse skipped |
+| `keskkonnaseire`<br><sub>Keskkonnaseire, programm PR0127 aastal 2021</sub> | **KORRAS** | 200 · 2418 ms | - | 2026-10-14 19:15 |  |
+| `kliima-element`<br><sub>Kliima elementide metaandmed</sub> | **KORRAS** | 200 · 433 ms | - | 2026-10-14 19:15 |  |
+| `kliima-jaam-vaatlus`<br><sub>Kliima vaatlusjaamade metaandmed</sub> | **KORRAS** | 200 · 428 ms | - | 2026-10-14 19:15 |  |
+| `kliima-kuu`<br><sub>Kliima kuu andmed</sub> | **KORRAS** | 200 · 433 ms | - | 2026-10-14 19:15 |  |
+| `kliima-minut`<br><sub>Kliima 10-minuti andmed</sub> | **KORRAS** | 200 · 442 ms | - | 2026-10-14 19:15 |  |
+| `kliima-paev`<br><sub>Kliima ööpäeva andmed, Ruhnu ja Kihnu õhuniiskus 2023</sub> | **KORRAS** | 200 · 437 ms | - | 2026-10-14 19:15 |  |
+| `kliima-paev-nimefilter`<br><sub>Kliima ööpäeva andmed, Võru 2006 (like-filter ja sortimine)</sub> | **KORRAS** | 200 · 444 ms | - | 2026-10-14 19:15 |  |
+| `kliima-tund`<br><sub>Kliima tunniandmed</sub> | **KORRAS** | 200 · 436 ms | - | 2026-10-14 19:15 |  |
+| `kytus-bunkering-company`<br><sub>Kütuseseire: ettevõtted</sub> | **MAAS** | 429 · 434 ms | - | 2026-10-14 19:15 | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-j |
+| `kytus-monitoring`<br><sub>Kütuseseire: seireandmed</sub> | **MAAS** | 429 · 438 ms | - | 2026-10-14 19:15 | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-j |
+| `kytus-source-of-pollution`<br><sub>Kütuseseire: heiteallikad</sub> | **KORRAS** | 200 · 706 ms | - | 2026-10-14 19:15 |  |
+| `pakis-opendata`<br><sub>PAKIS: pakendijäätmete avaandmed</sub> | **MAAS** | 429 · 429 ms | - | 2026-10-14 19:15 | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-j |
+| `proto-opendata`<br><sub>PROTO: probleemtoodete avaandmed</sub> | **MAAS** | 429 · 473 ms | - | 2026-10-14 19:15 | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-j |
 
 ## Käideldavus
 
 | Otspunkt | 24 h | 7 päeva | 30 päeva |
 |---|---|---|---|
-| `eelis` | 100.0 % <sub>(n=46)</sub> | 99.7 % <sub>(n=332)</sub> | 99.3 % <sub>(n=1381)</sub> |
-| `eelis-rahvalad` | - | - | 100.0 % <sub>(n=10)</sub> |
-| `eelis-rahvalad-dok` | - | - | 100.0 % <sub>(n=10)</sub> |
-| `eelis-rahvalad-linnuala` | - | - | 100.0 % <sub>(n=10)</sub> |
-| `eelis-rahvalad-seosed` | - | - | 100.0 % <sub>(n=10)</sub> |
-| `estmodel-assessment-units` | 95.7 % <sub>(n=46)</sub> | 99.4 % <sub>(n=332)</sub> | 99.5 % <sub>(n=1292)</sub> |
-| `estmodel-countries` | 95.7 % <sub>(n=46)</sub> | 99.4 % <sub>(n=332)</sub> | 99.5 % <sub>(n=1292)</sub> |
-| `estmodel-districts` | 95.7 % <sub>(n=46)</sub> | 99.4 % <sub>(n=332)</sub> | 99.5 % <sub>(n=1292)</sub> |
-| `estmodel-rivers` | 95.7 % <sub>(n=46)</sub> | 99.4 % <sub>(n=332)</sub> | 99.5 % <sub>(n=1292)</sub> |
-| `estmodel-stations` | 95.7 % <sub>(n=46)</sub> | 99.4 % <sub>(n=332)</sub> | 99.5 % <sub>(n=1292)</sub> |
-| `estmodel-subdistricts` | 95.7 % <sub>(n=46)</sub> | 99.4 % <sub>(n=332)</sub> | 99.5 % <sub>(n=1292)</sub> |
-| `estmodel-water-outlets` | 95.7 % <sub>(n=46)</sub> | 99.4 % <sub>(n=332)</sub> | 99.5 % <sub>(n=1292)</sub> |
-| `f-alad` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-alad-dok` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-alad-ehak` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-alad-elupaigatyyp` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-alad-fjisik` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-alad-invelupaik` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-alad-kandealus` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-alad-kava` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-alad-kirjandus` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-alad-lkoht` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-alad-lkoht-py` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-alad-lnim` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-alad-rahvala` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-alad-seotud-ala` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-alad-veekogu` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-alad-vep` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-alad-voond` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-alad-yksikobj-moot` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-alad-yrg` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-hks-elemendid` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-hks-elemendid-seirejaam` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-hks-elemendid-veekogum` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-hks-indikaatorid` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-hks-indikaatorid-dok` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-hks-indikaatorid-kirjandus` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-hks-indikaatorid-veekogum` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-hks-kriteeriumid` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-hks-kriteeriumid-dok` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-hks-kriteeriumid-sr-programm` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-hks-kriteeriumid-vmmeede` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-hks-seisud` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-hks-sihid` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-hks-sihid-sr-programm` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-hks-sihid-vmmeede` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-hks-siht-seisud` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-hydroseire` | 100.0 % <sub>(n=46)</sub> | 100.0 % <sub>(n=332)</sub> | 99.6 % <sub>(n=1385)</sub> |
-| `f-invelupaigad` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-invelupaigad-ala` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-invelupaigad-ehak` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-invelupaigad-invelupaigatyyp` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-invelupaigad-invmojutegur` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-invelupaigad-invtunnus` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-invelupaigad-kandealus` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-invelupaigad-lkoht` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-invelupaigad-lnim` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-invelupaigad-rahvala` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-invelupaigad-veekogu` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-jaakreostusalad` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-jaakreostusalad-alamobjekt` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-jaakreostusalad-ehak` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-jaakreostusalad-kandealus` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-jaakreostusalad-kirjandus` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-jaakreostusalad-puurauk` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-jaakreostusalad-vesikond` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-jaatmejaamad-jaatmeliigid-curr` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-jaatmekohad` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-jaatmekohad-kandealus` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-jaatmekohad-kirjandus` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-jaatmeliikumine-fix-riik` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-jahiala` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-jahiala-dokument` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-jahiala-kandealus` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-jahiala-seirejaam` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-jkkregister-curr` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-keskkonnaseire` | 100.0 % <sub>(n=46)</sub> | 100.0 % <sub>(n=332)</sub> | 99.6 % <sub>(n=1385)</sub> |
-| `f-kliima-element` | 100.0 % <sub>(n=46)</sub> | 100.0 % <sub>(n=332)</sub> | 99.6 % <sub>(n=1385)</sub> |
-| `f-kliima-jaam-vaatlus` | 100.0 % <sub>(n=46)</sub> | 100.0 % <sub>(n=332)</sub> | 99.6 % <sub>(n=1385)</sub> |
-| `f-kliima-kuu` | 100.0 % <sub>(n=46)</sub> | 100.0 % <sub>(n=332)</sub> | 99.6 % <sub>(n=1385)</sub> |
-| `f-kliima-minut` | 100.0 % <sub>(n=46)</sub> | 100.0 % <sub>(n=332)</sub> | 99.6 % <sub>(n=1385)</sub> |
-| `f-kliima-paev` | 100.0 % <sub>(n=46)</sub> | 100.0 % <sub>(n=332)</sub> | 99.6 % <sub>(n=1385)</sub> |
-| `f-kliima-tund` | 100.0 % <sub>(n=46)</sub> | 100.0 % <sub>(n=332)</sub> | 99.6 % <sub>(n=1385)</sub> |
-| `f-kohustus-yld-curr` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-lcp-poletusseadmed-allikas-curr` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-lkohad` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-lkohad-ala` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-lkohad-alamosa` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-lkohad-ehak` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-lkohad-invelupaik` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-lkohad-lnim` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-lkohad-py-ala` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-lkohad-veekogu` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-luba-curr` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-maa-deklar-kaevand-maht-api` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-maa-deklar-tasu-api` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-maa-deklar-tulusaaja-api` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-maasoojussysteemid` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-maasoojussysteemid-ehak` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-maasoojussysteemid-puurauk` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-paisud` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-paisud-kandealus` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-paisud-kirjandus` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-paisud-klis-luba` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-paisud-veekogum` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-paisud-veekogum-seis` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-paisud-vesiviljelus` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-paisud-yld` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-parandobjd` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-parandobjd-ehak` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-parandobjd-veekogu` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-pohjaveekogumi-seisud` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-pohjaveekogumi-seisud-kandealus` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-pohjaveekogumi-seisud-kirjandus` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-pohjaveekogumid` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-pohjaveekogumid-dok` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-pohjaveekogumid-eelnev-pohjaveekogum` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-pohjaveekogumid-jargnev-pohjaveekogum` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-pohjaveekogumid-kandealus` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-pohjaveekogumid-pohjaveekogum-seis` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-pohjaveekogumid-pohjaveevaru` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-pohjaveekogumid-puurauk` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-pohjaveekogumid-puurauk-pealmine` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-pohjaveekogumid-rahvala` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-pohjaveekogumid-tundlik-ala` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-pohjaveekogumid-vesikond` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-pohjaveevarud` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-pohjaveevarud-dok` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-pohjaveevarud-eelnev-pohjaveevaru` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-pohjaveevarud-ehak` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-pohjaveevarud-jargnev-pohjaveevaru` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-pohjaveevarud-kandealus` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-pohjaveevarud-kirjandus` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-pohjaveevarud-pohjaveekogum-seis` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-pohjaveevarud-puurauk` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-puhastid` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-puhastid-ehak` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-puhastid-veehaare` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-puhastid-veelase` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-puuraugud` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-puuraugud-ehak` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-puuraugud-konstruktsioon` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-puuraugud-labiloige` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-puuraugud-pohjaveekogum-seis` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-puuraugud-pohjaveevaru` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-puuraugud-puurauk-param` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-puuraugud-seirejaam` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-puuraugud-vesikond` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-puuraugud-voond` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-rahvalad` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-rahvalad-dok` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-rahvalad-ehak` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-rahvalad-elupaigatyyp` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-rahvalad-elupaikstat` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-rahvalad-invmojutegur` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-rahvalad-kandealus` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-rahvalad-lkohtstat` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-rahvalad-lnim` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-reoveealad` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-reoveealad-dok` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-reoveealad-ehak` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-reoveealad-fjisik` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-reoveealad-kandealus` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-reoveealad-kirjandus` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-reoveealad-koormus` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-reoveealad-puhasti` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-reoveealad-veekogum` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-reoveealad-veekogum-seis` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-reoveealad-veelase` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-reoveealad-vv-veelase` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-rongastused` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-saared` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-saared-ala` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-saared-ehak` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-saared-kandealus` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-saared-saar` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-saared-seirejaam` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-saared-veekogu` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-seirejaamad` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-seirejaamad-dok` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-seirejaamad-kandealus` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-seirejaamad-mootekoht` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-seirejaamad-sr-programm` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-seirejaamad-valgla` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-smi-tulemused` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-toetused` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-toetused-ehak` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-toetused-kandealus` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-tundlikud-alad` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-tundlikud-alad-alamobjekt` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-tundlikud-alad-dok` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-tundlikud-alad-ehak` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-tundlikud-alad-kandealus` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-tundlikud-alad-kirjandus` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-tundlikud-alad-pohjaveekogum-seis` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-tundlikud-alad-veekogu` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veehaarded` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veehaarded-dok` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veehaarded-ehak` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veehaarded-fjisik` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veehaarded-kandealus` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veehaarded-kirjandus` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veehaarded-puurauk` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veehaarded-veekogum` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veehaarded-veekogum-seis` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veehaarded-vesikond` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veehaarded-vesiviljelus` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veehaarded-voond` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veekogud` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veekogud-ala-kaitse-pyp` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veekogud-ala-obj` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veekogud-allikas-yrg` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veekogud-dok` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veekogud-ehak` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veekogud-invelupaik` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veekogud-jvv-pais` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veekogud-jvv-veekogu` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veekogud-jvv-veekogum` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veekogud-kaitsealune-ala` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veekogud-kandealus` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veekogud-kirjandus` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veekogud-lahtuv-veekogu` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veekogud-lkoht` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veekogud-mere-veekogu` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veekogud-pais` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veekogud-parandobj` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veekogud-rahvala` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veekogud-saar` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veekogud-seirejaam` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veekogud-suubuv-veekogu` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veekogud-veehaare` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veekogud-veekogum-seis` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veekogud-veelase` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veekogud-vesikond` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veekogud-vesiviljelus` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veekogud-vkg-veekogum` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veekogud-yrg` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veekogumi-seisundid` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veekogumi-seisundid-kese-seirejaam` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veekogumi-seisundid-ose-seirejaam` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veekogumid` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veekogumid-eelnev` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veekogumid-hks-koondseis` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veekogumid-hks-siht` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veekogumid-jargnev` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veekogumid-jvv-veekogu` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veekogumid-kandealus` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veekogumid-kirjandus` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veekogumid-koormus` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veekogumid-naitaja` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veekogumid-pais` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veekogumid-pohjaveekogum` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veekogumid-veehaare` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veekogumid-veekogu` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veekogumid-veekogum-seis` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veekogumid-veelase` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veekogumid-vesikond` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veekogumid-vesiviljelus` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veelaskmed` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veelaskmed-ehak` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veelaskmed-kandealus` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veelaskmed-veekogum` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veelaskmed-veekogum-seis` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veelaskmed-vesikond` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-veenaitajad-w10-w1-public` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-vepid` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-vepid-dok` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-vepid-ehak` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-vepid-kandealus` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-vepid-majandamine` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-vepid-mojutegur` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-vepid-tunnus` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-yrgid` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-yrgid-ala` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-yrgid-ehak` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-yrgid-kandealus` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `f-yrgid-veekogu` | - | - | 100.0 % <sub>(n=4)</sub> |
-| `hydroseire` | 100.0 % <sub>(n=46)</sub> | 100.0 % <sub>(n=332)</sub> | 99.6 % <sub>(n=1391)</sub> |
-| `ilmateenistus-hoiatused-rss` | 76.1 % <sub>(n=46)</sub> | 96.4 % <sub>(n=332)</sub> | 90.1 % <sub>(n=1291)</sub> |
-| `ilmateenistus-hoiatused-xml` | 89.1 % <sub>(n=46)</sub> | 98.5 % <sub>(n=332)</sub> | 89.9 % <sub>(n=1291)</sub> |
-| `ilmateenistus-juur` | 95.7 % <sub>(n=46)</sub> | 98.2 % <sub>(n=332)</sub> | 96.0 % <sub>(n=1292)</sub> |
-| `ilmateenistus-prognoos-xml` | 76.1 % <sub>(n=46)</sub> | 96.7 % <sub>(n=332)</sub> | 88.9 % <sub>(n=1291)</sub> |
-| `ilmateenistus-vaatlusandmed-xml` | 76.1 % <sub>(n=46)</sub> | 96.7 % <sub>(n=332)</sub> | 88.4 % <sub>(n=1292)</sub> |
-| `kaia-items-query` | 100.0 % <sub>(n=46)</sub> | 100.0 % <sub>(n=332)</sub> | 99.7 % <sub>(n=1391)</sub> |
-| `kaia-lists-active` | 100.0 % <sub>(n=46)</sub> | 100.0 % <sub>(n=332)</sub> | 99.7 % <sub>(n=1391)</sub> |
-| `kaia-lists-archive` | 100.0 % <sub>(n=46)</sub> | 100.0 % <sub>(n=332)</sub> | 99.7 % <sub>(n=1391)</sub> |
-| `kaia-swagger` | 100.0 % <sub>(n=46)</sub> | 100.0 % <sub>(n=332)</sub> | 99.7 % <sub>(n=1391)</sub> |
-| `kaia-vaated` | 100.0 % <sub>(n=46)</sub> | 100.0 % <sub>(n=332)</sub> | 99.7 % <sub>(n=1292)</sub> |
-| `kese-juur` | 100.0 % <sub>(n=46)</sub> | 100.0 % <sub>(n=332)</sub> | 99.7 % <sub>(n=1292)</sub> |
-| `keskkonnaandmed-root` | 100.0 % <sub>(n=46)</sub> | 100.0 % <sub>(n=332)</sub> | 99.6 % <sub>(n=1391)</sub> |
-| `keskkonnaseire` | 100.0 % <sub>(n=46)</sub> | 100.0 % <sub>(n=332)</sub> | 99.5 % <sub>(n=1391)</sub> |
-| `kliima-element` | 100.0 % <sub>(n=46)</sub> | 100.0 % <sub>(n=332)</sub> | 99.7 % <sub>(n=1391)</sub> |
-| `kliima-jaam-vaatlus` | 100.0 % <sub>(n=46)</sub> | 100.0 % <sub>(n=332)</sub> | 99.7 % <sub>(n=1391)</sub> |
-| `kliima-kuu` | 100.0 % <sub>(n=46)</sub> | 100.0 % <sub>(n=332)</sub> | 99.7 % <sub>(n=1391)</sub> |
-| `kliima-minut` | 100.0 % <sub>(n=46)</sub> | 100.0 % <sub>(n=332)</sub> | 99.6 % <sub>(n=1391)</sub> |
-| `kliima-paev` | 100.0 % <sub>(n=46)</sub> | 100.0 % <sub>(n=332)</sub> | 99.6 % <sub>(n=1391)</sub> |
-| `kliima-paev-nimefilter` | 100.0 % <sub>(n=46)</sub> | 100.0 % <sub>(n=332)</sub> | 99.6 % <sub>(n=1391)</sub> |
-| `kliima-tund` | 100.0 % <sub>(n=46)</sub> | 100.0 % <sub>(n=332)</sub> | 99.7 % <sub>(n=1391)</sub> |
+| `eelis` | 100.0 % <sub>(n=38)</sub> | 99.7 % <sub>(n=325)</sub> | 99.3 % <sub>(n=1379)</sub> |
+| `eelis-rahvalad` | - | - | - |
+| `eelis-rahvalad-dok` | - | - | - |
+| `eelis-rahvalad-linnuala` | - | - | - |
+| `eelis-rahvalad-seosed` | - | - | - |
+| `estmodel-assessment-units` | 94.7 % <sub>(n=38)</sub> | 99.4 % <sub>(n=325)</sub> | 99.5 % <sub>(n=1293)</sub> |
+| `estmodel-countries` | 94.7 % <sub>(n=38)</sub> | 99.4 % <sub>(n=325)</sub> | 99.5 % <sub>(n=1293)</sub> |
+| `estmodel-districts` | 94.7 % <sub>(n=38)</sub> | 99.4 % <sub>(n=325)</sub> | 99.5 % <sub>(n=1293)</sub> |
+| `estmodel-rivers` | 94.7 % <sub>(n=38)</sub> | 99.4 % <sub>(n=325)</sub> | 99.5 % <sub>(n=1293)</sub> |
+| `estmodel-stations` | 94.7 % <sub>(n=38)</sub> | 99.4 % <sub>(n=325)</sub> | 99.5 % <sub>(n=1293)</sub> |
+| `estmodel-subdistricts` | 94.7 % <sub>(n=38)</sub> | 99.4 % <sub>(n=325)</sub> | 99.5 % <sub>(n=1293)</sub> |
+| `estmodel-water-outlets` | 94.7 % <sub>(n=38)</sub> | 99.4 % <sub>(n=325)</sub> | 99.5 % <sub>(n=1293)</sub> |
+| `f-alad` | - | - | - |
+| `f-alad-dok` | - | - | - |
+| `f-alad-ehak` | - | - | - |
+| `f-alad-elupaigatyyp` | - | - | - |
+| `f-alad-fjisik` | - | - | - |
+| `f-alad-invelupaik` | - | - | - |
+| `f-alad-kandealus` | - | - | - |
+| `f-alad-kava` | - | - | - |
+| `f-alad-kirjandus` | - | - | - |
+| `f-alad-lkoht` | - | - | - |
+| `f-alad-lkoht-py` | - | - | - |
+| `f-alad-lnim` | - | - | - |
+| `f-alad-rahvala` | - | - | - |
+| `f-alad-seotud-ala` | - | - | - |
+| `f-alad-veekogu` | - | - | - |
+| `f-alad-vep` | - | - | - |
+| `f-alad-voond` | - | - | - |
+| `f-alad-yksikobj-moot` | - | - | - |
+| `f-alad-yrg` | - | - | - |
+| `f-hks-elemendid` | - | - | - |
+| `f-hks-elemendid-seirejaam` | - | - | - |
+| `f-hks-elemendid-veekogum` | - | - | - |
+| `f-hks-indikaatorid` | - | - | - |
+| `f-hks-indikaatorid-dok` | - | - | - |
+| `f-hks-indikaatorid-kirjandus` | - | - | - |
+| `f-hks-indikaatorid-veekogum` | - | - | - |
+| `f-hks-kriteeriumid` | - | - | - |
+| `f-hks-kriteeriumid-dok` | - | - | - |
+| `f-hks-kriteeriumid-sr-programm` | - | - | - |
+| `f-hks-kriteeriumid-vmmeede` | - | - | - |
+| `f-hks-seisud` | - | - | - |
+| `f-hks-sihid` | - | - | - |
+| `f-hks-sihid-sr-programm` | - | - | - |
+| `f-hks-sihid-vmmeede` | - | - | - |
+| `f-hks-siht-seisud` | - | - | - |
+| `f-hydroseire` | 100.0 % <sub>(n=38)</sub> | 100.0 % <sub>(n=325)</sub> | 99.6 % <sub>(n=1379)</sub> |
+| `f-invelupaigad` | - | - | - |
+| `f-invelupaigad-ala` | - | - | - |
+| `f-invelupaigad-ehak` | - | - | - |
+| `f-invelupaigad-invelupaigatyyp` | - | - | - |
+| `f-invelupaigad-invmojutegur` | - | - | - |
+| `f-invelupaigad-invtunnus` | - | - | - |
+| `f-invelupaigad-kandealus` | - | - | - |
+| `f-invelupaigad-lkoht` | - | - | - |
+| `f-invelupaigad-lnim` | - | - | - |
+| `f-invelupaigad-rahvala` | - | - | - |
+| `f-invelupaigad-veekogu` | - | - | - |
+| `f-jaakreostusalad` | - | - | - |
+| `f-jaakreostusalad-alamobjekt` | - | - | - |
+| `f-jaakreostusalad-ehak` | - | - | - |
+| `f-jaakreostusalad-kandealus` | - | - | - |
+| `f-jaakreostusalad-kirjandus` | - | - | - |
+| `f-jaakreostusalad-puurauk` | - | - | - |
+| `f-jaakreostusalad-vesikond` | - | - | - |
+| `f-jaatmejaamad-jaatmeliigid-curr` | - | - | - |
+| `f-jaatmekohad` | - | - | - |
+| `f-jaatmekohad-kandealus` | - | - | - |
+| `f-jaatmekohad-kirjandus` | - | - | - |
+| `f-jaatmeliikumine-fix-riik` | - | - | - |
+| `f-jahiala` | - | - | - |
+| `f-jahiala-dokument` | - | - | - |
+| `f-jahiala-kandealus` | - | - | - |
+| `f-jahiala-seirejaam` | - | - | - |
+| `f-jkkregister-curr` | - | - | - |
+| `f-keskkonnaseire` | 100.0 % <sub>(n=38)</sub> | 100.0 % <sub>(n=325)</sub> | 99.6 % <sub>(n=1379)</sub> |
+| `f-kliima-element` | 100.0 % <sub>(n=38)</sub> | 100.0 % <sub>(n=325)</sub> | 99.6 % <sub>(n=1379)</sub> |
+| `f-kliima-jaam-vaatlus` | 100.0 % <sub>(n=38)</sub> | 100.0 % <sub>(n=325)</sub> | 99.6 % <sub>(n=1379)</sub> |
+| `f-kliima-kuu` | 100.0 % <sub>(n=38)</sub> | 100.0 % <sub>(n=325)</sub> | 99.6 % <sub>(n=1379)</sub> |
+| `f-kliima-minut` | 100.0 % <sub>(n=38)</sub> | 100.0 % <sub>(n=325)</sub> | 99.6 % <sub>(n=1379)</sub> |
+| `f-kliima-paev` | 100.0 % <sub>(n=38)</sub> | 100.0 % <sub>(n=325)</sub> | 99.6 % <sub>(n=1379)</sub> |
+| `f-kliima-tund` | 100.0 % <sub>(n=38)</sub> | 100.0 % <sub>(n=325)</sub> | 99.6 % <sub>(n=1379)</sub> |
+| `f-kohustus-yld-curr` | - | - | - |
+| `f-lcp-poletusseadmed-allikas-curr` | - | - | - |
+| `f-lkohad` | - | - | - |
+| `f-lkohad-ala` | - | - | - |
+| `f-lkohad-alamosa` | - | - | - |
+| `f-lkohad-ehak` | - | - | - |
+| `f-lkohad-invelupaik` | - | - | - |
+| `f-lkohad-lnim` | - | - | - |
+| `f-lkohad-py-ala` | - | - | - |
+| `f-lkohad-veekogu` | - | - | - |
+| `f-luba-curr` | - | - | - |
+| `f-maa-deklar-kaevand-maht-api` | - | - | - |
+| `f-maa-deklar-tasu-api` | - | - | - |
+| `f-maa-deklar-tulusaaja-api` | - | - | - |
+| `f-maasoojussysteemid` | - | - | - |
+| `f-maasoojussysteemid-ehak` | - | - | - |
+| `f-maasoojussysteemid-puurauk` | - | - | - |
+| `f-paisud` | - | - | - |
+| `f-paisud-kandealus` | - | - | - |
+| `f-paisud-kirjandus` | - | - | - |
+| `f-paisud-klis-luba` | - | - | - |
+| `f-paisud-veekogum` | - | - | - |
+| `f-paisud-veekogum-seis` | - | - | - |
+| `f-paisud-vesiviljelus` | - | - | - |
+| `f-paisud-yld` | - | - | - |
+| `f-parandobjd` | - | - | - |
+| `f-parandobjd-ehak` | - | - | - |
+| `f-parandobjd-veekogu` | - | - | - |
+| `f-pohjaveekogumi-seisud` | - | - | - |
+| `f-pohjaveekogumi-seisud-kandealus` | - | - | - |
+| `f-pohjaveekogumi-seisud-kirjandus` | - | - | - |
+| `f-pohjaveekogumid` | - | - | - |
+| `f-pohjaveekogumid-dok` | - | - | - |
+| `f-pohjaveekogumid-eelnev-pohjaveekogum` | - | - | - |
+| `f-pohjaveekogumid-jargnev-pohjaveekogum` | - | - | - |
+| `f-pohjaveekogumid-kandealus` | - | - | - |
+| `f-pohjaveekogumid-pohjaveekogum-seis` | - | - | - |
+| `f-pohjaveekogumid-pohjaveevaru` | - | - | - |
+| `f-pohjaveekogumid-puurauk` | - | - | - |
+| `f-pohjaveekogumid-puurauk-pealmine` | - | - | - |
+| `f-pohjaveekogumid-rahvala` | - | - | - |
+| `f-pohjaveekogumid-tundlik-ala` | - | - | - |
+| `f-pohjaveekogumid-vesikond` | - | - | - |
+| `f-pohjaveevarud` | - | - | - |
+| `f-pohjaveevarud-dok` | - | - | - |
+| `f-pohjaveevarud-eelnev-pohjaveevaru` | - | - | - |
+| `f-pohjaveevarud-ehak` | - | - | - |
+| `f-pohjaveevarud-jargnev-pohjaveevaru` | - | - | - |
+| `f-pohjaveevarud-kandealus` | - | - | - |
+| `f-pohjaveevarud-kirjandus` | - | - | - |
+| `f-pohjaveevarud-pohjaveekogum-seis` | - | - | - |
+| `f-pohjaveevarud-puurauk` | - | - | - |
+| `f-puhastid` | - | - | - |
+| `f-puhastid-ehak` | - | - | - |
+| `f-puhastid-veehaare` | - | - | - |
+| `f-puhastid-veelase` | - | - | - |
+| `f-puuraugud` | - | - | - |
+| `f-puuraugud-ehak` | - | - | - |
+| `f-puuraugud-konstruktsioon` | - | - | - |
+| `f-puuraugud-labiloige` | - | - | - |
+| `f-puuraugud-pohjaveekogum-seis` | - | - | - |
+| `f-puuraugud-pohjaveevaru` | - | - | - |
+| `f-puuraugud-puurauk-param` | - | - | - |
+| `f-puuraugud-seirejaam` | - | - | - |
+| `f-puuraugud-vesikond` | - | - | - |
+| `f-puuraugud-voond` | - | - | - |
+| `f-rahvalad` | - | - | - |
+| `f-rahvalad-dok` | - | - | - |
+| `f-rahvalad-ehak` | - | - | - |
+| `f-rahvalad-elupaigatyyp` | - | - | - |
+| `f-rahvalad-elupaikstat` | - | - | - |
+| `f-rahvalad-invmojutegur` | - | - | - |
+| `f-rahvalad-kandealus` | - | - | - |
+| `f-rahvalad-lkohtstat` | - | - | - |
+| `f-rahvalad-lnim` | - | - | - |
+| `f-reoveealad` | - | - | - |
+| `f-reoveealad-dok` | - | - | - |
+| `f-reoveealad-ehak` | - | - | - |
+| `f-reoveealad-fjisik` | - | - | - |
+| `f-reoveealad-kandealus` | - | - | - |
+| `f-reoveealad-kirjandus` | - | - | - |
+| `f-reoveealad-koormus` | - | - | - |
+| `f-reoveealad-puhasti` | - | - | - |
+| `f-reoveealad-veekogum` | - | - | - |
+| `f-reoveealad-veekogum-seis` | - | - | - |
+| `f-reoveealad-veelase` | - | - | - |
+| `f-reoveealad-vv-veelase` | - | - | - |
+| `f-rongastused` | - | - | - |
+| `f-saared` | - | - | - |
+| `f-saared-ala` | - | - | - |
+| `f-saared-ehak` | - | - | - |
+| `f-saared-kandealus` | - | - | - |
+| `f-saared-saar` | - | - | - |
+| `f-saared-seirejaam` | - | - | - |
+| `f-saared-veekogu` | - | - | - |
+| `f-seirejaamad` | - | - | - |
+| `f-seirejaamad-dok` | - | - | - |
+| `f-seirejaamad-kandealus` | - | - | - |
+| `f-seirejaamad-mootekoht` | - | - | - |
+| `f-seirejaamad-sr-programm` | - | - | - |
+| `f-seirejaamad-valgla` | - | - | - |
+| `f-smi-tulemused` | - | - | - |
+| `f-toetused` | - | - | - |
+| `f-toetused-ehak` | - | - | - |
+| `f-toetused-kandealus` | - | - | - |
+| `f-tundlikud-alad` | - | - | - |
+| `f-tundlikud-alad-alamobjekt` | - | - | - |
+| `f-tundlikud-alad-dok` | - | - | - |
+| `f-tundlikud-alad-ehak` | - | - | - |
+| `f-tundlikud-alad-kandealus` | - | - | - |
+| `f-tundlikud-alad-kirjandus` | - | - | - |
+| `f-tundlikud-alad-pohjaveekogum-seis` | - | - | - |
+| `f-tundlikud-alad-veekogu` | - | - | - |
+| `f-veehaarded` | - | - | - |
+| `f-veehaarded-dok` | - | - | - |
+| `f-veehaarded-ehak` | - | - | - |
+| `f-veehaarded-fjisik` | - | - | - |
+| `f-veehaarded-kandealus` | - | - | - |
+| `f-veehaarded-kirjandus` | - | - | - |
+| `f-veehaarded-puurauk` | - | - | - |
+| `f-veehaarded-veekogum` | - | - | - |
+| `f-veehaarded-veekogum-seis` | - | - | - |
+| `f-veehaarded-vesikond` | - | - | - |
+| `f-veehaarded-vesiviljelus` | - | - | - |
+| `f-veehaarded-voond` | - | - | - |
+| `f-veekogud` | - | - | - |
+| `f-veekogud-ala-kaitse-pyp` | - | - | - |
+| `f-veekogud-ala-obj` | - | - | - |
+| `f-veekogud-allikas-yrg` | - | - | - |
+| `f-veekogud-dok` | - | - | - |
+| `f-veekogud-ehak` | - | - | - |
+| `f-veekogud-invelupaik` | - | - | - |
+| `f-veekogud-jvv-pais` | - | - | - |
+| `f-veekogud-jvv-veekogu` | - | - | - |
+| `f-veekogud-jvv-veekogum` | - | - | - |
+| `f-veekogud-kaitsealune-ala` | - | - | - |
+| `f-veekogud-kandealus` | - | - | - |
+| `f-veekogud-kirjandus` | - | - | - |
+| `f-veekogud-lahtuv-veekogu` | - | - | - |
+| `f-veekogud-lkoht` | - | - | - |
+| `f-veekogud-mere-veekogu` | - | - | - |
+| `f-veekogud-pais` | - | - | - |
+| `f-veekogud-parandobj` | - | - | - |
+| `f-veekogud-rahvala` | - | - | - |
+| `f-veekogud-saar` | - | - | - |
+| `f-veekogud-seirejaam` | - | - | - |
+| `f-veekogud-suubuv-veekogu` | - | - | - |
+| `f-veekogud-veehaare` | - | - | - |
+| `f-veekogud-veekogum-seis` | - | - | - |
+| `f-veekogud-veelase` | - | - | - |
+| `f-veekogud-vesikond` | - | - | - |
+| `f-veekogud-vesiviljelus` | - | - | - |
+| `f-veekogud-vkg-veekogum` | - | - | - |
+| `f-veekogud-yrg` | - | - | - |
+| `f-veekogumi-seisundid` | - | - | - |
+| `f-veekogumi-seisundid-kese-seirejaam` | - | - | - |
+| `f-veekogumi-seisundid-ose-seirejaam` | - | - | - |
+| `f-veekogumid` | - | - | - |
+| `f-veekogumid-eelnev` | - | - | - |
+| `f-veekogumid-hks-koondseis` | - | - | - |
+| `f-veekogumid-hks-siht` | - | - | - |
+| `f-veekogumid-jargnev` | - | - | - |
+| `f-veekogumid-jvv-veekogu` | - | - | - |
+| `f-veekogumid-kandealus` | - | - | - |
+| `f-veekogumid-kirjandus` | - | - | - |
+| `f-veekogumid-koormus` | - | - | - |
+| `f-veekogumid-naitaja` | - | - | - |
+| `f-veekogumid-pais` | - | - | - |
+| `f-veekogumid-pohjaveekogum` | - | - | - |
+| `f-veekogumid-veehaare` | - | - | - |
+| `f-veekogumid-veekogu` | - | - | - |
+| `f-veekogumid-veekogum-seis` | - | - | - |
+| `f-veekogumid-veelase` | - | - | - |
+| `f-veekogumid-vesikond` | - | - | - |
+| `f-veekogumid-vesiviljelus` | - | - | - |
+| `f-veelaskmed` | - | - | - |
+| `f-veelaskmed-ehak` | - | - | - |
+| `f-veelaskmed-kandealus` | - | - | - |
+| `f-veelaskmed-veekogum` | - | - | - |
+| `f-veelaskmed-veekogum-seis` | - | - | - |
+| `f-veelaskmed-vesikond` | - | - | - |
+| `f-veenaitajad-w10-w1-public` | - | - | - |
+| `f-vepid` | - | - | - |
+| `f-vepid-dok` | - | - | - |
+| `f-vepid-ehak` | - | - | - |
+| `f-vepid-kandealus` | - | - | - |
+| `f-vepid-majandamine` | - | - | - |
+| `f-vepid-mojutegur` | - | - | - |
+| `f-vepid-tunnus` | - | - | - |
+| `f-yrgid` | - | - | - |
+| `f-yrgid-ala` | - | - | - |
+| `f-yrgid-ehak` | - | - | - |
+| `f-yrgid-kandealus` | - | - | - |
+| `f-yrgid-veekogu` | - | - | - |
+| `hydroseire` | 100.0 % <sub>(n=38)</sub> | 100.0 % <sub>(n=325)</sub> | 99.6 % <sub>(n=1379)</sub> |
+| `ilmateenistus-hoiatused-rss` | 73.7 % <sub>(n=38)</sub> | 96.0 % <sub>(n=325)</sub> | 90.0 % <sub>(n=1292)</sub> |
+| `ilmateenistus-hoiatused-xml` | 86.8 % <sub>(n=38)</sub> | 98.2 % <sub>(n=325)</sub> | 89.9 % <sub>(n=1292)</sub> |
+| `ilmateenistus-juur` | 92.1 % <sub>(n=38)</sub> | 97.8 % <sub>(n=325)</sub> | 95.9 % <sub>(n=1293)</sub> |
+| `ilmateenistus-prognoos-xml` | 76.3 % <sub>(n=38)</sub> | 96.3 % <sub>(n=325)</sub> | 88.9 % <sub>(n=1292)</sub> |
+| `ilmateenistus-vaatlusandmed-xml` | 76.3 % <sub>(n=38)</sub> | 96.6 % <sub>(n=325)</sub> | 88.4 % <sub>(n=1293)</sub> |
+| `kaia-items-query` | 100.0 % <sub>(n=38)</sub> | 100.0 % <sub>(n=325)</sub> | 99.7 % <sub>(n=1379)</sub> |
+| `kaia-lists-active` | 100.0 % <sub>(n=38)</sub> | 100.0 % <sub>(n=325)</sub> | 99.7 % <sub>(n=1379)</sub> |
+| `kaia-lists-archive` | 100.0 % <sub>(n=38)</sub> | 100.0 % <sub>(n=325)</sub> | 99.7 % <sub>(n=1379)</sub> |
+| `kaia-swagger` | 100.0 % <sub>(n=38)</sub> | 100.0 % <sub>(n=325)</sub> | 99.7 % <sub>(n=1379)</sub> |
+| `kaia-vaated` | 100.0 % <sub>(n=38)</sub> | 100.0 % <sub>(n=325)</sub> | 99.7 % <sub>(n=1293)</sub> |
+| `kese-juur` | 100.0 % <sub>(n=38)</sub> | 100.0 % <sub>(n=325)</sub> | 99.7 % <sub>(n=1293)</sub> |
+| `keskkonnaandmed-root` | 100.0 % <sub>(n=38)</sub> | 100.0 % <sub>(n=325)</sub> | 99.6 % <sub>(n=1379)</sub> |
+| `keskkonnaseire` | 100.0 % <sub>(n=38)</sub> | 100.0 % <sub>(n=325)</sub> | 99.5 % <sub>(n=1379)</sub> |
+| `kliima-element` | 100.0 % <sub>(n=38)</sub> | 100.0 % <sub>(n=325)</sub> | 99.7 % <sub>(n=1379)</sub> |
+| `kliima-jaam-vaatlus` | 100.0 % <sub>(n=38)</sub> | 100.0 % <sub>(n=325)</sub> | 99.7 % <sub>(n=1379)</sub> |
+| `kliima-kuu` | 100.0 % <sub>(n=38)</sub> | 100.0 % <sub>(n=325)</sub> | 99.7 % <sub>(n=1379)</sub> |
+| `kliima-minut` | 100.0 % <sub>(n=38)</sub> | 100.0 % <sub>(n=325)</sub> | 99.6 % <sub>(n=1379)</sub> |
+| `kliima-paev` | 100.0 % <sub>(n=38)</sub> | 100.0 % <sub>(n=325)</sub> | 99.6 % <sub>(n=1379)</sub> |
+| `kliima-paev-nimefilter` | 100.0 % <sub>(n=38)</sub> | 100.0 % <sub>(n=325)</sub> | 99.6 % <sub>(n=1379)</sub> |
+| `kliima-tund` | 100.0 % <sub>(n=38)</sub> | 100.0 % <sub>(n=325)</sub> | 99.7 % <sub>(n=1379)</sub> |
 | `kotkas-aastaaruanded` | - | - | 0.0 % <sub>(n=1)</sub> |
-| `kytus-bunkering-company` | 69.6 % <sub>(n=46)</sub> | 84.0 % <sub>(n=332)</sub> | 75.7 % <sub>(n=1292)</sub> |
-| `kytus-monitoring` | 67.4 % <sub>(n=46)</sub> | 83.7 % <sub>(n=332)</sub> | 75.9 % <sub>(n=1292)</sub> |
-| `kytus-source-of-pollution` | 73.9 % <sub>(n=46)</sub> | 83.7 % <sub>(n=332)</sub> | 76.2 % <sub>(n=1292)</sub> |
-| `pakis-opendata` | 54.3 % <sub>(n=46)</sub> | 75.9 % <sub>(n=332)</sub> | 68.3 % <sub>(n=1292)</sub> |
-| `proto-opendata` | 47.8 % <sub>(n=46)</sub> | 73.5 % <sub>(n=332)</sub> | 65.9 % <sub>(n=1292)</sub> |
+| `kytus-bunkering-company` | 68.4 % <sub>(n=38)</sub> | 83.4 % <sub>(n=325)</sub> | 75.6 % <sub>(n=1293)</sub> |
+| `kytus-monitoring` | 60.5 % <sub>(n=38)</sub> | 83.1 % <sub>(n=325)</sub> | 75.9 % <sub>(n=1293)</sub> |
+| `kytus-source-of-pollution` | 76.3 % <sub>(n=38)</sub> | 83.7 % <sub>(n=325)</sub> | 76.3 % <sub>(n=1293)</sub> |
+| `pakis-opendata` | 50.0 % <sub>(n=38)</sub> | 75.4 % <sub>(n=325)</sub> | 68.2 % <sub>(n=1293)</sub> |
+| `proto-opendata` | 44.7 % <sub>(n=38)</sub> | 73.2 % <sub>(n=325)</sub> | 65.9 % <sub>(n=1293)</sub> |
 
 ## Katkestused
 
 | Algus | Lõpp | Kestus | Otspunkt | Tüüp | Põhjus |
 |---|---|---|---|---|---|
-| 2026-10-14 14:56 | **kestab** | 1 s | `kytus-source-of-pollution` | MAAS | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldi |
-| 2026-10-14 14:56 | **kestab** | 1 s | `kytus-monitoring` | MAAS | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldi |
-| 2026-10-14 14:56 | **kestab** | 1 s | `kytus-bunkering-company` | MAAS | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldi |
+| 2026-10-14 19:15 | **kestab** | 1 s | `proto-opendata` | MAAS | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldi |
+| 2026-10-14 19:15 | **kestab** | 1 s | `pakis-opendata` | MAAS | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldi |
+| 2026-10-14 19:15 | **kestab** | 5 s | `ilmateenistus-prognoos-xml` | MAAS | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldi |
+| 2026-10-14 19:15 | **kestab** | 5 s | `ilmateenistus-hoiatused-xml` | MAAS | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldi |
+| 2026-10-14 19:15 | **kestab** | 5 s | `ilmateenistus-hoiatused-rss` | MAAS | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldi |
+| 2026-10-14 19:15 | **kestab** | 6 s | `ilmateenistus-juur` | MAAS | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldi |
+| 2026-10-14 14:56 | 2026-10-14 19:15 | 4 h 18 min | `kytus-source-of-pollution` | MAAS | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldi |
+| 2026-10-14 14:56 | **kestab** | 4 h 18 min | `kytus-monitoring` | MAAS | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldi |
+| 2026-10-14 14:56 | **kestab** | 4 h 18 min | `kytus-bunkering-company` | MAAS | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldi |
 | 2026-10-14 14:24 | 2026-10-14 14:56 | 31 min | `proto-opendata` | MAAS | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldi |
 | 2026-10-14 14:24 | 2026-10-14 14:56 | 31 min | `ilmateenistus-vaatlusandmed-xml` | MAAS | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldi |
 | 2026-10-14 13:27 | 2026-10-14 13:59 | 31 min | `proto-opendata` | MAAS | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldi |
@@ -458,13 +464,7 @@ Hetkeseis — MAAS: **3** · KORRAS: **39**
 | 2026-10-13 15:09 | 2026-10-13 15:53 | 43 min | `ilmateenistus-hoiatused-xml` | MAAS | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldi |
 | 2026-10-13 15:09 | 2026-10-13 15:53 | 43 min | `ilmateenistus-hoiatused-rss` | MAAS | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldi |
 | 2026-10-13 14:43 | 2026-10-13 15:09 | 26 min | `pakis-opendata` | MAAS | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldi |
-| 2026-10-13 13:44 | 2026-10-13 14:08 | 23 min | `proto-opendata` | MAAS | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldi |
-| 2026-10-13 13:44 | 2026-10-13 14:08 | 23 min | `ilmateenistus-juur` | MAAS | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldi |
-| 2026-10-13 13:44 | 2026-10-13 14:08 | 23 min | `ilmateenistus-hoiatused-rss` | MAAS | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldi |
-| 2026-10-13 13:08 | 2026-10-13 14:08 | 1 h 0 min | `kytus-monitoring` | MAAS | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldi |
-| 2026-10-13 09:08 | 2026-10-13 09:53 | 44 min | `proto-opendata` | MAAS | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldi |
-| 2026-10-13 09:08 | 2026-10-13 10:14 | 1 h 5 min | `pakis-opendata` | MAAS | http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldi |
-| … | | | | | _ja veel 1179 katkestust_ |
+| … | | | | | _ja veel 1185 katkestust_ |
 
 ## Hoiatused
 
