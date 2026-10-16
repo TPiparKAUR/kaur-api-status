@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
-<channel><title>Keskkonnaagentuuri API-de katkestused</title><link>https://tpiparkaur.github.io/kaur-api-status/</link><description>Keskkonnaagentuuri avalike andmeteenuste katkestused, uuemad eespool. Genereeritud automaatsest seirest iga kontrollitsükli järel.</description><language>et</language><lastBuildDate>Fri, 16 Oct 2026 12:00:33 +0000</lastBuildDate><item><title>PAKIS: pakendijäätmete avaandmed: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-pakis-opendata</link><guid isPermaLink="false">pakis-opendata-2026-10-16T12:00:31Z</guid><pubDate>Fri, 16 Oct 2026 12:00:31 +0000</pubDate><category>Pakendiregister</category><description><![CDATA[Teenus: Pakendiregister
+<channel><title>Keskkonnaagentuuri API-de katkestused</title><link>https://tpiparkaur.github.io/kaur-api-status/</link><description>Keskkonnaagentuuri avalike andmeteenuste katkestused, uuemad eespool. Genereeritud automaatsest seirest iga kontrollitsükli järel.</description><language>et</language><lastBuildDate>Fri, 16 Oct 2026 16:18:02 +0000</lastBuildDate><item><title>PAKIS: pakendijäätmete avaandmed: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-pakis-opendata</link><guid isPermaLink="false">pakis-opendata-2026-10-16T12:00:31Z</guid><pubDate>Fri, 16 Oct 2026 12:00:31 +0000</pubDate><category>Pakendiregister</category><description><![CDATA[Teenus: Pakendiregister
 Algus: 2026-10-16T12:00:31Z (UTC)
-Kestus: kestab endiselt
+Kestus: 4 h 17 min
 Põhjus: http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en-US"> <![endif]--> <!--[if IE 7]> <html class="no-js ie7 oldie" lang="en-US"> <![endif]--> <!--[if ]]></description></item><item><title>Kütuseseire: ettevõtted: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kytus-bunkering-company</link><guid isPermaLink="false">kytus-bunkering-company-2026-10-16T06:34:03Z</guid><pubDate>Fri, 16 Oct 2026 06:34:03 +0000</pubDate><category>Kütuseseire</category><description><![CDATA[Teenus: Kütuseseire
 Algus: 2026-10-16T06:34:03Z (UTC)
 Kestus: 5 h 26 min
