@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
-<channel><title>Keskkonnaagentuuri API-de katkestused</title><link>https://tpiparkaur.github.io/kaur-api-status/</link><description>Keskkonnaagentuuri avalike andmeteenuste katkestused, uuemad eespool. Genereeritud automaatsest seirest iga kontrollitsükli järel.</description><language>et</language><lastBuildDate>Sun, 18 Oct 2026 11:28:21 +0000</lastBuildDate><item><title>Kütuseseire: ettevõtted: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kytus-bunkering-company</link><guid isPermaLink="false">kytus-bunkering-company-2026-10-18T11:28:19Z</guid><pubDate>Sun, 18 Oct 2026 11:28:19 +0000</pubDate><category>Kütuseseire</category><description><![CDATA[Teenus: Kütuseseire
-Algus: 2026-10-18T11:28:19Z (UTC)
+<channel><title>Keskkonnaagentuuri API-de katkestused</title><link>https://tpiparkaur.github.io/kaur-api-status/</link><description>Keskkonnaagentuuri avalike andmeteenuste katkestused, uuemad eespool. Genereeritud automaatsest seirest iga kontrollitsükli järel.</description><language>et</language><lastBuildDate>Sun, 18 Oct 2026 14:44:24 +0000</lastBuildDate><item><title>Kütuseseire: seireandmed: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kytus-monitoring</link><guid isPermaLink="false">kytus-monitoring-2026-10-18T14:44:21Z</guid><pubDate>Sun, 18 Oct 2026 14:44:21 +0000</pubDate><category>Kütuseseire</category><description><![CDATA[Teenus: Kütuseseire
+Algus: 2026-10-18T14:44:21Z (UTC)
 Kestus: kestab endiselt
+Põhjus: http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en-US"> <![endif]--> <!--[if IE 7]> <html class="no-js ie7 oldie" lang="en-US"> <![endif]--> <!--[if ]]></description></item><item><title>Kütuseseire: ettevõtted: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kytus-bunkering-company</link><guid isPermaLink="false">kytus-bunkering-company-2026-10-18T11:28:19Z</guid><pubDate>Sun, 18 Oct 2026 11:28:19 +0000</pubDate><category>Kütuseseire</category><description><![CDATA[Teenus: Kütuseseire
+Algus: 2026-10-18T11:28:19Z (UTC)
+Kestus: 3 h 16 min
 Põhjus: http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en-US"> <![endif]--> <!--[if IE 7]> <html class="no-js ie7 oldie" lang="en-US"> <![endif]--> <!--[if ]]></description></item><item><title>PROTO: probleemtoodete avaandmed: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-proto-opendata</link><guid isPermaLink="false">proto-opendata-2026-10-18T06:10:11Z</guid><pubDate>Sun, 18 Oct 2026 06:10:11 +0000</pubDate><category>Probleemtooteregister</category><description><![CDATA[Teenus: Probleemtooteregister
 Algus: 2026-10-18T06:10:11Z (UTC)
 Kestus: 5 h 18 min
@@ -146,8 +149,5 @@ Algus: 2026-10-14T10:27:44Z (UTC)
 Kestus: 56 min
 Põhjus: http 503 Service Unavailable — <html><body><h1>503 Service Unavailable</h1> No server is available to handle this request. <script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a]]></description></item><item><title>EstModel: Hindamisüksused: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-estmodel-assessment-units</link><guid isPermaLink="false">estmodel-assessment-units-2026-10-14T10:27:44Z</guid><pubDate>Wed, 14 Oct 2026 10:27:44 +0000</pubDate><category>EstModel</category><description><![CDATA[Teenus: EstModel
 Algus: 2026-10-14T10:27:44Z (UTC)
-Kestus: 56 min
-Põhjus: http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en-US"> <![endif]--> <!--[if IE 7]> <html class="no-js ie7 oldie" lang="en-US"> <![endif]--> <!--[if ]]></description></item><item><title>EstModel: Väljalasud: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-estmodel-water-outlets</link><guid isPermaLink="false">estmodel-water-outlets-2026-10-14T10:27:28Z</guid><pubDate>Wed, 14 Oct 2026 10:27:28 +0000</pubDate><category>EstModel</category><description><![CDATA[Teenus: EstModel
-Algus: 2026-10-14T10:27:28Z (UTC)
 Kestus: 56 min
 Põhjus: http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en-US"> <![endif]--> <!--[if IE 7]> <html class="no-js ie7 oldie" lang="en-US"> <![endif]--> <!--[if ]]></description></item></channel></rss>
