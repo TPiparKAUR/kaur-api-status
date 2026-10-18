@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
-<channel><title>Keskkonnaagentuuri API-de katkestused</title><link>https://tpiparkaur.github.io/kaur-api-status/</link><description>Keskkonnaagentuuri avalike andmeteenuste katkestused, uuemad eespool. Genereeritud automaatsest seirest iga kontrollitsükli järel.</description><language>et</language><lastBuildDate>Sun, 18 Oct 2026 06:10:12 +0000</lastBuildDate><item><title>PROTO: probleemtoodete avaandmed: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-proto-opendata</link><guid isPermaLink="false">proto-opendata-2026-10-18T06:10:11Z</guid><pubDate>Sun, 18 Oct 2026 06:10:11 +0000</pubDate><category>Probleemtooteregister</category><description><![CDATA[Teenus: Probleemtooteregister
-Algus: 2026-10-18T06:10:11Z (UTC)
+<channel><title>Keskkonnaagentuuri API-de katkestused</title><link>https://tpiparkaur.github.io/kaur-api-status/</link><description>Keskkonnaagentuuri avalike andmeteenuste katkestused, uuemad eespool. Genereeritud automaatsest seirest iga kontrollitsükli järel.</description><language>et</language><lastBuildDate>Sun, 18 Oct 2026 11:28:21 +0000</lastBuildDate><item><title>Kütuseseire: ettevõtted: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kytus-bunkering-company</link><guid isPermaLink="false">kytus-bunkering-company-2026-10-18T11:28:19Z</guid><pubDate>Sun, 18 Oct 2026 11:28:19 +0000</pubDate><category>Kütuseseire</category><description><![CDATA[Teenus: Kütuseseire
+Algus: 2026-10-18T11:28:19Z (UTC)
 Kestus: kestab endiselt
+Põhjus: http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en-US"> <![endif]--> <!--[if IE 7]> <html class="no-js ie7 oldie" lang="en-US"> <![endif]--> <!--[if ]]></description></item><item><title>PROTO: probleemtoodete avaandmed: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-proto-opendata</link><guid isPermaLink="false">proto-opendata-2026-10-18T06:10:11Z</guid><pubDate>Sun, 18 Oct 2026 06:10:11 +0000</pubDate><category>Probleemtooteregister</category><description><![CDATA[Teenus: Probleemtooteregister
+Algus: 2026-10-18T06:10:11Z (UTC)
+Kestus: 5 h 18 min
 Põhjus: http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en-US"> <![endif]--> <!--[if IE 7]> <html class="no-js ie7 oldie" lang="en-US"> <![endif]--> <!--[if ]]></description></item><item><title>Kütuseseire: heiteallikad: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kytus-source-of-pollution</link><guid isPermaLink="false">kytus-source-of-pollution-2026-10-17T21:10:37Z</guid><pubDate>Sat, 17 Oct 2026 21:10:37 +0000</pubDate><category>Kütuseseire</category><description><![CDATA[Teenus: Kütuseseire
 Algus: 2026-10-17T21:10:37Z (UTC)
 Kestus: 2 h 4 min
@@ -147,7 +150,4 @@ Kestus: 56 min
 Põhjus: http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en-US"> <![endif]--> <!--[if IE 7]> <html class="no-js ie7 oldie" lang="en-US"> <![endif]--> <!--[if ]]></description></item><item><title>EstModel: Väljalasud: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-estmodel-water-outlets</link><guid isPermaLink="false">estmodel-water-outlets-2026-10-14T10:27:28Z</guid><pubDate>Wed, 14 Oct 2026 10:27:28 +0000</pubDate><category>EstModel</category><description><![CDATA[Teenus: EstModel
 Algus: 2026-10-14T10:27:28Z (UTC)
 Kestus: 56 min
-Põhjus: http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en-US"> <![endif]--> <!--[if IE 7]> <html class="no-js ie7 oldie" lang="en-US"> <![endif]--> <!--[if ]]></description></item><item><title>EstModel: Seirejaamad: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-estmodel-stations</link><guid isPermaLink="false">estmodel-stations-2026-10-14T10:27:28Z</guid><pubDate>Wed, 14 Oct 2026 10:27:28 +0000</pubDate><category>EstModel</category><description><![CDATA[Teenus: EstModel
-Algus: 2026-10-14T10:27:28Z (UTC)
-Kestus: 56 min
-Põhjus: connection failed: The read operation timed out]]></description></item></channel></rss>
+Põhjus: http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en-US"> <![endif]--> <!--[if IE 7]> <html class="no-js ie7 oldie" lang="en-US"> <![endif]--> <!--[if ]]></description></item></channel></rss>
