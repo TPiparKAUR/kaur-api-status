@@ -411,6 +411,9 @@ def write(entries: list[dict[str, Any]], path: Path = DATA_PATH) -> Path:
         json.dumps(data, ensure_ascii=False, indent=1, sort_keys=True) + "\n",
         encoding="utf-8",
     )
-    FEED_PATH.parent.mkdir(parents=True, exist_ok=True)
-    FEED_PATH.write_text(render_incidents_feed(data), encoding="utf-8")
+    # The feed sits beside the data file it describes. Deriving it from `path`
+    # (rather than a module constant) means a caller writing to a scratch
+    # location cannot silently overwrite the published feed — a test once did.
+    feed_path = path.parent / FEED_PATH.name
+    feed_path.write_text(render_incidents_feed(data), encoding="utf-8")
     return path

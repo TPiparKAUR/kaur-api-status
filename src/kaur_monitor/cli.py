@@ -12,9 +12,11 @@ from urllib.parse import urlsplit
 
 from . import analysis, dashboard, discover, inventory, report, retention, store
 from .check import (
+    BREAKER_THRESHOLD,
     DEFAULT_MAX_PER_HOST,
     STATUS_UNKNOWN,
     CertCache,
+    HostBreaker,
     HostLimiter,
     check_endpoint,
     looks_like_local_network_failure,
@@ -57,11 +59,16 @@ def cmd_check(args: argparse.Namespace) -> int:
     # become a recorded outage. host_limiter caps concurrency per host,
     # independent of --workers: almost the whole inventory sits behind one
     # PostgREST host, and a monitor is a guest on the service it watches.
+    # breaker: once a host has given no response to several connections in a
+    # row, the rest of its endpoints are recorded as not dialled for this run,
+    # instead of each costing a full timeout (see check.HostBreaker).
+    breaker = HostBreaker(args.breaker_threshold)
     run_check = functools.partial(
         check_endpoint,
         cert_cache=CertCache(),
         retry=True,
         host_limiter=HostLimiter(args.max_per_host),
+        breaker=breaker,
     )
     with ThreadPoolExecutor(max_workers=args.workers) as pool:
         records = list(pool.map(run_check, entries))
@@ -75,6 +82,14 @@ def cmd_check(args: argparse.Namespace) -> int:
         )
         for record in records:
             record["status"] = STATUS_UNKNOWN
+
+    if breaker.open_hosts():
+        skipped = sum(1 for r in records if r["stage"] == "breaker")
+        print(
+            f"HOIATUS: hostid {', '.join(breaker.open_hosts())} ei vastanud "
+            f"{breaker.threshold} ühendusele järjest — nende ülejäänud otspunkte "
+            f"ei kõnetatud sel jooksul ({skipped} kirjet, staatus DOWN).\n"
+        )
 
     _print_results(records)
 
@@ -275,6 +290,14 @@ def build_parser() -> argparse.ArgumentParser:
         help="rohkem kui selle arvu päringuid ei saadeta samale hostile korraga, "
         "sõltumata --workers väärtusest (vaikimisi 4 — enamik inventarist "
         "jagab üht hosti)",
+    )
+    check.add_argument(
+        "--breaker-threshold",
+        type=int,
+        default=BREAKER_THRESHOLD,
+        help="mitu järjestikust ühenduse ebaõnnestumist (vastust ei tulnud) hostil "
+        "enne, kui selle hosti ülejäänud otspunkte sel jooksul enam ei kontrollita "
+        f"(vaikimisi {BREAKER_THRESHOLD})",
     )
     check.add_argument("--dry-run", action="store_true", help="ära kirjuta logi ega raportit")
     check.add_argument(

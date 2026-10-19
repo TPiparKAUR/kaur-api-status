@@ -157,6 +157,34 @@ overwrites both files immediately after, and the `merge=union` driver in
 `git push origin HEAD:$ref` so a detached HEAD cannot break the push. Verified
 by replaying the same race against both the old and the new script.
 
+**A dead host is written off for the rest of the run, not dialled 279 times.**
+`check.HostBreaker` counts consecutive connection-level failures per host: no
+HTTP response at all (DNS, refused, timeout). Any response, even a 500 or a 429,
+proves the host answers and resets the count. At `BREAKER_THRESHOLD` (6, CLI
+`--breaker-threshold`) the rest of that host's endpoints in the run are recorded
+`status: down, stage: breaker` with a detail saying they were not dialled.
+They are `down`, not `unknown`, on purpose: the host really is failing, and
+`unknown` would erase the outage from the availability arithmetic. The count
+covers the final record after the retry, so a flaky host that answers at all
+never trips it. Each scheduled run starts closed and probes again.
+`breaker` belongs to `_REACHABILITY_STAGES`, so a dead host's skipped records
+still count towards the local-network check, which needs failures on two hosts.
+
+**Retries only where a transient cause is plausible.** `_worth_retrying`
+refuses a second attempt for any 4xx except 408 and 429 (a 406 from a misspelt
+PostgREST profile is the same answer five seconds later), for config-stage
+failures, and for breaker-skipped endpoints. A 429 waits `Retry-After` seconds,
+capped at 30; anything else waits `retry_delay_s`. Only delta-seconds
+`Retry-After` is read — the HTTP-date form is not guessed at.
+
+**HTTP error records carry where the answer came from.** On 4xx/5xx a record
+also has `server`, `cf_ray` (`CF-Ray`) and `retry_after_s`, read from the
+response headers. These are optional, additive keys — present only on HTTP
+error responses, so readers must not assume them — and the schema stays `v: 2`.
+Their purpose is the 429 question above: Cloudflare's `cf-ray` on a 429 means
+the limit is set in front of the origin, while a PostgREST origin answering
+with its own `Server` header means the service itself.
+
 **Log schema is versioned from 2026-09-14 (`v: 2`).** That date is also when
 EELIS started being collapsed into one `eelis` group record — the two changes
 shipped together. `v` and `attempts` (1, or 2 if the retry above fired) are
@@ -371,13 +399,14 @@ change to what the published numbers mean. All figures below are measured.
   and `DEFAULT_MAX_PER_HOST` 4 serialises them: 279/4 × 65 s ≈ 4 550 s against
   the 4 313 s actually measured, agreement within 5 %. This is exactly the cost
   the "Actions minutes" note above said had not been measured during a real,
-  widespread outage. It has now. The proposed fix is a per-host circuit
-  breaker — after N consecutive *connection-level* failures on a host (timeout
-  or refused, never an HTTP status) mark the rest of that host's endpoints
-  without dialling, which also stops hammering a service that is already
-  struggling. Not done: N is a guess until the pattern recurs, and the
-  alternative (a whole-run `--deadline-s`, writing partial results and
-  `unknown` for the rest) needs `analysis.py` to not read a short run as good
+  widespread outage. It has now. **Done 2026-10-19:** `check.HostBreaker`
+  (see "Design decisions") stops dialling a host after `BREAKER_THRESHOLD` (6)
+  consecutive connection-level failures. Simulated against a local socket that
+  accepts and never answers, 40 endpoints with a 1 s timeout: 37 s without it,
+  14 s with it, 27 of 40 skipped. The shape at 279 endpoints, 30 s timeout and
+  retry is roughly 4 300 s down to two rounds of about 65 s each. Not done: a
+  whole-run `--deadline-s` (writing partial results and `unknown` for the rest)
+  — that needs `analysis.py` to not read a short run as good
   news.
 - **A run longer than ~30 minutes silently loses a cycle.** Run 232 was
   cancelled at 16:35:10, one second after run 233 was created, while run 231
@@ -407,7 +436,8 @@ change to what the published numbers mean. All figures below are measured.
   the published figures and break comparability with existing history, needing
   the same kind of transition note in `REPORT.md` as the `v: 2` schema change
   — and stays undone. Logging `Retry-After`, `Server` and `cf-ray` on 4xx/5xx
-  also stays undone; see below.
+  is **done (2026-10-19)**, see "Design decisions"; the data it needs accrues
+  from the next run on.
 - **Measured 2026-09-21: it is very unlikely to be our own request volume,
   and the exact mechanism is still unknown.** Three things rule out "we
   triggered a volume threshold": our observed cadence to the affected hosts
@@ -433,8 +463,9 @@ change to what the published numbers mean. All figures below are measured.
   Still unconfirmed and unconfirmable from this log: whether the actual
   trigger is the User-Agent, the TLS/JA3 fingerprint, or the GitHub Actions
   runner's shared IP reputation. Logging `Retry-After`, `Server` and `cf-ray`
-  on 4xx/5xx remains the cheapest way to narrow it further; until that is
-  done, do not assert which of the three it is.
+  on 4xx/5xx is now in place and is the cheapest way to narrow it further;
+  until enough 429 records carry those fields, do not assert which of the
+  three it is.
 - **`monitor.yml`'s billing header and the Pages note below it are stale.**
   Lines 15–25 of the workflow say "This repository is private" and compute
   1 440 min against a 2 000-minute allowance. The repository is public now,

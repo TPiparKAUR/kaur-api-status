@@ -396,6 +396,8 @@ class LocalServer(unittest.TestCase):
     """Exercise the full pipeline against a real socket, offline and deterministic."""
 
     bodies: ClassVar[dict[str, tuple[int, str, bytes]]] = {}
+    extra_headers: ClassVar[dict[str, dict[str, str]]] = {}
+    server_banner: ClassVar[str] = "BaseHTTP/0.6"
     last_headers: ClassVar[dict[str, str]] = {}
     last_body: ClassVar[bytes] = b""
 
@@ -411,6 +413,8 @@ class LocalServer(unittest.TestCase):
                 status, ctype, body = outer.bodies.get(self.path, (404, "text/plain", b"not found"))
                 self.send_response(status)
                 self.send_header("Content-Type", ctype)
+                for name, value in outer.extra_headers.get(self.path, {}).items():
+                    self.send_header(name, value)
                 self.send_header("Content-Length", str(len(body)))
                 self.end_headers()
                 self.wfile.write(body)
@@ -426,6 +430,9 @@ class LocalServer(unittest.TestCase):
                 self.send_header("Content-Type", ctype)
                 self.send_header("Content-Length", "0")
                 self.end_headers()
+
+            def version_string(self):
+                return outer.server_banner
 
             def log_message(self, *args):
                 pass
@@ -1574,6 +1581,142 @@ class ReportRendering(unittest.TestCase):
         self.assertIn("Hetkeseis — KORRAS: **1**", text)
         self.assertIn("`current`", text)
         self.assertNotIn("`retired-ghost`", text.split("## Käideldavus")[0])
+
+
+class BreakerAndRetryPolicy(unittest.TestCase):
+    """A dead host must cost one round of timeouts, not one per endpoint, and a
+    retry must only be spent where a transient cause is plausible."""
+
+    @staticmethod
+    def _down(stage="dns", http=None, **extra):
+        return {
+            "id": "x",
+            "status": check.STATUS_DOWN,
+            "stage": stage,
+            "http": http,
+            "detail": "",
+            "attempts": 1,
+            **extra,
+        }
+
+    def test_breaker_opens_after_threshold_connection_failures(self):
+        breaker = check.HostBreaker(3)
+        for _ in range(2):
+            breaker.observe("h.example", connection_failed=True)
+        self.assertFalse(breaker.is_open("h.example"))
+        breaker.observe("h.example", connection_failed=True)
+        self.assertTrue(breaker.is_open("h.example"))
+        self.assertFalse(breaker.is_open("other.example"))
+
+    def test_any_http_response_resets_the_count(self):
+        breaker = check.HostBreaker(3)
+        breaker.observe("h", connection_failed=True)
+        breaker.observe("h", connection_failed=True)
+        breaker.observe("h", connection_failed=False)  # a 500 still proves the host answers
+        breaker.observe("h", connection_failed=True)
+        breaker.observe("h", connection_failed=True)
+        self.assertFalse(breaker.is_open("h"))
+
+    def test_open_host_is_not_dialled_and_is_recorded_as_down(self):
+        breaker = check.HostBreaker(1)
+        breaker.observe("dead.invalid", connection_failed=True)
+        with mock.patch("kaur_monitor.check._safe_check") as safe:
+            result = check.check_endpoint(
+                {"id": "x", "url": "https://dead.invalid/a"}, breaker=breaker
+            )
+        safe.assert_not_called()
+        self.assertEqual(result["status"], check.STATUS_DOWN)
+        self.assertEqual(result["stage"], "breaker")
+        self.assertIn("not dialled", result["detail"])
+
+    def test_breaker_counts_only_failures_before_any_response(self):
+        breaker = check.HostBreaker(1)
+        http_error = self._down(stage="http", http=503)
+        with mock.patch("kaur_monitor.check._safe_check", return_value=http_error):
+            check.check_endpoint({"id": "x", "url": "https://up.invalid/a"}, breaker=breaker)
+        self.assertFalse(breaker.is_open("up.invalid"))
+
+    def test_a_404_or_406_is_never_retried(self):
+        for code in (404, 406):
+            calls = 0
+
+            def fake(endpoint, cache, host_limiter=None, code=code):
+                nonlocal calls
+                calls += 1
+                return self._down(stage="http", http=code)
+
+            with (
+                mock.patch("kaur_monitor.check._safe_check", side_effect=fake),
+                mock.patch("kaur_monitor.check.time.sleep") as sleep,
+            ):
+                check.check_endpoint({"id": "x", "url": "https://a.invalid/a"}, retry=True)
+            self.assertEqual(calls, 1, code)
+            sleep.assert_not_called()
+
+    def test_a_503_and_a_429_are_retried(self):
+        for code in (429, 503):
+            calls = 0
+
+            def fake(endpoint, cache, host_limiter=None, code=code):
+                nonlocal calls
+                calls += 1
+                return self._down(stage="http", http=code)
+
+            with (
+                mock.patch("kaur_monitor.check._safe_check", side_effect=fake),
+                mock.patch("kaur_monitor.check.time.sleep"),
+            ):
+                check.check_endpoint({"id": "x", "url": "https://a.invalid/a"}, retry=True)
+            self.assertEqual(calls, 2, code)
+
+    def test_retry_after_is_honoured_up_to_the_cap(self):
+        short = self._down(stage="http", http=429, retry_after_s=12)
+        huge = self._down(stage="http", http=429, retry_after_s=3600)
+        self.assertEqual(check._retry_delay(short, 5.0), 12.0)
+        self.assertEqual(check._retry_delay(huge, 5.0), check._RETRY_AFTER_CAP_S)
+        self.assertEqual(check._retry_delay(self._down(stage="dns"), 5.0), 5.0)
+
+    def test_retry_after_parses_only_delta_seconds(self):
+        self.assertEqual(check._parse_retry_after("120"), 120)
+        self.assertIsNone(check._parse_retry_after("Wed, 21 Oct 2026 07:28:00 GMT"))
+        self.assertIsNone(check._parse_retry_after(None))
+
+
+class ErrorResponseHeaders(LocalServer):
+    """Which layer answered and whether it said when to come back, on 4xx/5xx."""
+
+    def test_429_records_server_cf_ray_and_retry_after(self):
+        self.bodies["/limited"] = (429, "text/html", b"<html>Too Many Requests</html>")
+        self.extra_headers["/limited"] = {"CF-Ray": "abc-ARN", "Retry-After": "7"}
+        # The handler reads the banner from the class that owns the server.
+        type(self).server_banner = "cloudflare"
+        self.addCleanup(setattr, type(self), "server_banner", "BaseHTTP/0.6")
+        result = check.check_endpoint({"id": "lim", "url": f"{self.base}/limited"})
+        self.assertEqual(result["http"], 429)
+        self.assertEqual(result["server"], "cloudflare")
+        self.assertEqual(result["cf_ray"], "abc-ARN")
+        self.assertEqual(result["retry_after_s"], 7)
+
+    def test_successful_responses_carry_no_header_fields(self):
+        self.bodies["/plain"] = (200, "application/json", b"[]")
+        result = check.check_endpoint({"id": "ok", "url": f"{self.base}/plain"})
+        self.assertNotIn("cf_ray", result)
+        self.assertNotIn("retry_after_s", result)
+
+
+class FeedBesideItsData(unittest.TestCase):
+    """Writing status data to a scratch path must not touch the published feed."""
+
+    def test_feed_follows_the_data_file_not_the_module_constant(self):
+        import tempfile
+
+        with tempfile.TemporaryDirectory() as tmp:
+            target = Path(tmp) / "status.json"
+            before = dashboard.FEED_PATH.read_bytes() if dashboard.FEED_PATH.exists() else None
+            dashboard.write([], target)
+            self.assertTrue((Path(tmp) / "incidents.xml").exists())
+            after = dashboard.FEED_PATH.read_bytes() if dashboard.FEED_PATH.exists() else None
+            self.assertEqual(before, after)
 
 
 if __name__ == "__main__":

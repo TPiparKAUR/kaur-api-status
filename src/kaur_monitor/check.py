@@ -32,7 +32,10 @@ STATUS_UNKNOWN = "unknown"
 
 # Stages at or below this index failing means we could not reach the host at
 # all, which may equally well be our own network. The caller decides.
-_REACHABILITY_STAGES = frozenset({"dns", "connect"})
+# Stages in which the request never reached the server's application layer.
+# "breaker" belongs here too: a skipped endpoint is one whose host was already
+# judged unreachable, and must count the same way in the local-network check.
+_REACHABILITY_STAGES = frozenset({"dns", "connect", "breaker"})
 
 _OWS_EXCEPTION_TAGS = frozenset({"serviceexceptionreport", "exceptionreport"})
 
@@ -46,6 +49,18 @@ _RETRY_DELAY_S = 5.0
 # once", independent of --workers. 4 was chosen as a cautious default, not a
 # measured one — nobody involved in this project runs that service.
 DEFAULT_MAX_PER_HOST = 4
+
+# Consecutive connection-level failures (no HTTP response at all) on one host
+# before the rest of that host's endpoints in the same run are not dialled.
+# Six is above the per-host concurrency cap, so a host that is merely slow for
+# a few endpoints does not trip it, while a host that is gone is written off
+# after about two rounds instead of 279 timeouts (run 231: 72 minutes).
+BREAKER_THRESHOLD = 6
+
+# A 429 says when to come back. Honour it up to this many seconds; beyond that
+# the endpoint is recorded as limited rather than holding the run open.
+_RETRY_AFTER_CAP_S = 30.0
+
 
 # Log schema version. Bumped when a field is added or a record's meaning
 # changes — 2 adds 'attempts' and the group fields ('members', 'ok') that
@@ -151,6 +166,50 @@ class HostLimiter:
         return self._semaphore(host)
 
 
+class HostBreaker:
+    """Stops dialling a host for the rest of a run once it has plainly gone.
+
+    Counts consecutive connection-level failures per host: no HTTP response at
+    all (DNS, refused, timeout). Any response, even a 500 or a 429, proves the
+    host is answering and resets the count, because an HTTP status is a
+    service talking, not a service absent. Once a host reaches the threshold
+    it stays open for this run; the next scheduled run starts closed and probes
+    again, so recovery is seen within one interval.
+
+    Why it exists: a dead host with 279 endpoints and a 30 s timeout took 72
+    minutes of runtime to say the same thing 279 times, and every one of those
+    timeouts was load aimed at a service that was already not answering.
+    """
+
+    def __init__(self, threshold: int = BREAKER_THRESHOLD) -> None:
+        self._threshold = max(1, int(threshold))
+        self._consecutive: dict[str, int] = {}
+        self._open: set[str] = set()
+        self._lock = threading.Lock()
+
+    def is_open(self, host: str) -> bool:
+        with self._lock:
+            return host in self._open
+
+    def observe(self, host: str, connection_failed: bool) -> None:
+        with self._lock:
+            if not connection_failed:
+                self._consecutive[host] = 0
+                return
+            count = self._consecutive.get(host, 0) + 1
+            self._consecutive[host] = count
+            if count >= self._threshold:
+                self._open.add(host)
+
+    @property
+    def threshold(self) -> int:
+        return self._threshold
+
+    def open_hosts(self) -> list[str]:
+        with self._lock:
+            return sorted(self._open)
+
+
 def _find_service_exception(body: bytes) -> str | None:
     """Return the exception text if the payload is an OGC/OWS exception report.
 
@@ -178,6 +237,7 @@ def check_endpoint(
     retry: bool = False,
     retry_delay_s: float = _RETRY_DELAY_S,
     host_limiter: HostLimiter | None = None,
+    breaker: HostBreaker | None = None,
 ) -> dict[str, Any]:
     """Run one endpoint through every configured stage, and never raise.
 
@@ -202,12 +262,98 @@ def check_endpoint(
     a shared semaphore they never asked for.
     """
     cache = cert_cache if cert_cache is not None else CertCache()
+    host = _host_of(endpoint)
+    if breaker is not None and host is not None and breaker.is_open(host):
+        return _skipped_record(endpoint, host, breaker)
+
     record = _safe_check(endpoint, cache, host_limiter)
-    if retry and record["status"] != STATUS_OK:
-        time.sleep(retry_delay_s)
+    if retry and _worth_retrying(record) and not _breaker_open(breaker, host):
+        time.sleep(_retry_delay(record, retry_delay_s))
         record = _safe_check(endpoint, cache, host_limiter)
         record["attempts"] = 2
+    if breaker is not None and host is not None:
+        breaker.observe(host, _is_connection_failure(record))
     return record
+
+
+def _host_of(endpoint: dict[str, Any]) -> str | None:
+    try:
+        return urllib.parse.urlsplit(str(endpoint.get("url", ""))).hostname or None
+    except ValueError:
+        return None
+
+
+def _breaker_open(breaker: HostBreaker | None, host: str | None) -> bool:
+    return breaker is not None and host is not None and breaker.is_open(host)
+
+
+def _is_connection_failure(record: dict[str, Any]) -> bool:
+    """No HTTP response at all, and the failure happened on the network path."""
+    return (
+        record.get("status") == STATUS_DOWN
+        and record.get("http") is None
+        and record.get("stage") in {"dns", "connect"}
+    )
+
+
+def _worth_retrying(record: dict[str, Any]) -> bool:
+    """A second attempt only where a transient cause is plausible.
+
+    A 4xx other than 408/429 is the server saying the request is wrong (406 for
+    a misspelled PostgREST profile, 404, 403); repeating it five seconds later
+    changes nothing and costs one more request. A config-stage failure is local
+    and deterministic. A breaker-skipped endpoint was never attempted at all.
+    """
+    if record.get("status") == STATUS_OK:
+        return False
+    if record.get("stage") in {"config", "breaker"}:
+        return False
+    http = record.get("http")
+    if isinstance(http, int) and 400 <= http < 500 and http not in (408, 429):
+        return False
+    return True
+
+
+def _retry_delay(record: dict[str, Any], default: float) -> float:
+    """Wait as long as a 429 asks, up to a cap; otherwise the usual short pause."""
+    retry_after = record.get("retry_after_s")
+    if record.get("http") == 429 and isinstance(retry_after, int):
+        return float(min(retry_after, _RETRY_AFTER_CAP_S))
+    return default
+
+
+def _skipped_record(endpoint: dict[str, Any], host: str, breaker: HostBreaker) -> dict[str, Any]:
+    """Recorded as down, deliberately: the host really is failing, and hiding
+    that as ``unknown`` would erase the outage from the availability figures.
+    The detail says the endpoint was not dialled, so nobody reads it as a
+    measurement of this endpoint on its own."""
+    return {
+        "ts": datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "id": str(endpoint.get("id", "?")),
+        "status": STATUS_DOWN,
+        "stage": "breaker",
+        "http": None,
+        "ms": None,
+        "bytes": None,
+        "sha256": None,
+        "cert_days": None,
+        "age_s": None,
+        "detail": (
+            f"not dialled: {host} gave no response to {breaker.threshold} "
+            f"connections in a row earlier in this run"
+        ),
+        "attempts": 1,
+        "v": LOG_SCHEMA_VERSION,
+    }
+
+
+def _parse_retry_after(raw: str | None) -> int | None:
+    """Delta-seconds form only. The HTTP-date form is rare from these hosts and
+    is not guessed at: None means "no usable value", and the default pause runs."""
+    if raw is None:
+        return None
+    value = raw.strip()
+    return int(value) if value.isdigit() else None
 
 
 def _safe_check(
@@ -324,6 +470,15 @@ def _check_endpoint(
         record["http"] = exc.code
         record["ms"] = int((time.monotonic() - started) * 1000)
         record["detail"] = f"http {exc.code} {exc.reason}"
+        # Which layer answered, and whether it said when to come back. Cloudflare
+        # (cf-ray) versus the origin (server) is the one thing that separates
+        # "the service limits us" from "a bot filter in front of it does" — see
+        # CLAUDE.md, 429 measurements. Present only on HTTP error records.
+        error_headers = exc.headers
+        if error_headers is not None:
+            record["server"] = (error_headers.get("Server") or "")[:64] or None
+            record["cf_ray"] = (error_headers.get("CF-Ray") or "")[:64] or None
+            record["retry_after_s"] = _parse_retry_after(error_headers.get("Retry-After"))
         # The error body usually says what is actually wrong — PostgREST, for
         # one, answers 406 with the list of schemas it will accept. Throwing it
         # away turns a self-explaining failure into a guessing game.
