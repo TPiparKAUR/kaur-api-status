@@ -70,4 +70,11 @@ jobs:
 
       - name: Commit results
         if: ${{ github.event_name == 'schedule' || inputs.dry_run == false }}
-        run: scripts/commit_and_push.sh "Agent eval run" logs/agent
+        run: |
+          # No key (or no run) means nothing was written; `git add` of a missing
+          # path dies with exit 128, which made a skipped run look like a failure.
+          if [ ! -d logs/agent ]; then
+            echo "::notice::logs/agent puudub — midagi pole salvestada."
+            exit 0
+          fi
+          scripts/commit_and_push.sh "Agent eval run" logs/agent
