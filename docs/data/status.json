@@ -1,19 +1,22 @@
 {
  "availability": {
-  "checks_24h": 252,
-  "d7": 92.46,
-  "h24": 92.06
+  "checks_24h": 210,
+  "checks_7d": 1722,
+  "d7": 92.62,
+  "h24": 92.86,
+  "ok_24h": 195,
+  "ok_7d": 1595
  },
  "cadence": {
   "days": 7.0,
+  "expected_runs": 336,
   "max_gap_minutes": 429,
-  "median_gap_minutes": 228,
+  "median_gap_minutes": 238,
   "nominal_minutes": 30,
-  "p90_gap_minutes": 356,
-  "runs": 42
+  "p90_gap_minutes": 382,
+  "runs": 41
  },
  "chart_dates": [
-  "2026-09-28",
   "2026-09-29",
   "2026-09-30",
   "2026-10-01",
@@ -47,14 +50,6 @@
  ],
  "chart_days": 30,
  "daily": [
-  {
-   "avail_pct": 99.4,
-   "checks": 168,
-   "date": "2026-09-28",
-   "ok": 167,
-   "p50_ms": 537,
-   "p95_ms": 1394
-  },
   {
    "avail_pct": 98.06,
    "checks": 2058,
@@ -299,14 +294,6 @@
  "daily_kaia": [
   {
    "avail_pct": 100.0,
-   "checks": 20,
-   "date": "2026-09-28",
-   "ok": 20,
-   "p50_ms": 783,
-   "p95_ms": 909
-  },
-  {
-   "avail_pct": 100.0,
    "checks": 245,
    "date": "2026-09-29",
    "ok": 245,
@@ -547,14 +534,6 @@
   }
  ],
  "daily_postgrest": [
-  {
-   "avail_pct": 99.32,
-   "checks": 148,
-   "date": "2026-09-28",
-   "ok": 147,
-   "p50_ms": 504,
-   "p95_ms": 1418
-  },
   {
    "avail_pct": 97.79,
    "checks": 1813,
@@ -799,11 +778,11 @@
  "endpoints": [
   {
    "avail_24h": 100.0,
-   "avail_7d": 97.62,
-   "checks_24h": 6,
+   "avail_7d": 97.56,
+   "checks_24h": 5,
+   "checks_7d": 41,
    "days": {
     "checks": [
-     48,
      49,
      48,
      48,
@@ -836,7 +815,6 @@
      5
     ],
     "ok": [
-     48,
      49,
      48,
      48,
@@ -869,7 +847,6 @@
      5
     ],
     "p50_ms": [
-     413,
      389,
      443,
      434,
@@ -908,6 +885,8 @@
    "members": 261,
    "ms": 438,
    "name": "EELIS andmestikud",
+   "ok_24h": 5,
+   "ok_7d": 40,
    "status": "ok",
    "system": "EELIS",
    "ts": "2026-10-28T21:55:43Z",
@@ -917,10 +896,10 @@
   {
    "avail_24h": 100.0,
    "avail_7d": 100.0,
-   "checks_24h": 6,
+   "checks_24h": 5,
+   "checks_7d": 41,
    "days": {
     "checks": [
-     48,
      49,
      48,
      48,
@@ -953,7 +932,6 @@
      5
     ],
     "ok": [
-     48,
      49,
      48,
      48,
@@ -986,7 +964,6 @@
      5
     ],
     "p50_ms": [
-     898,
      899,
      951,
      964,
@@ -1025,6 +1002,8 @@
    "members": null,
    "ms": 800,
    "name": "EstModel: Hindamisüksused",
+   "ok_24h": 5,
+   "ok_7d": 41,
    "status": "ok",
    "system": "EstModel",
    "ts": "2026-10-28T21:55:43Z",
@@ -1034,10 +1013,10 @@
   {
    "avail_24h": 100.0,
    "avail_7d": 100.0,
-   "checks_24h": 6,
+   "checks_24h": 5,
+   "checks_7d": 41,
    "days": {
     "checks": [
-     48,
      49,
      48,
      48,
@@ -1070,7 +1049,6 @@
      5
     ],
     "ok": [
-     48,
      49,
      48,
      48,
@@ -1103,7 +1081,6 @@
      5
     ],
     "p50_ms": [
-     592,
      594,
      661,
      589,
@@ -1142,6 +1119,8 @@
    "members": null,
    "ms": 580,
    "name": "EstModel: Riigid",
+   "ok_24h": 5,
+   "ok_7d": 41,
    "status": "ok",
    "system": "EstModel",
    "ts": "2026-10-28T21:55:43Z",
@@ -1151,10 +1130,10 @@
   {
    "avail_24h": 100.0,
    "avail_7d": 100.0,
-   "checks_24h": 6,
+   "checks_24h": 5,
+   "checks_7d": 41,
    "days": {
     "checks": [
-     48,
      49,
      48,
      48,
@@ -1187,7 +1166,6 @@
      5
     ],
     "ok": [
-     48,
      49,
      48,
      48,
@@ -1220,7 +1198,6 @@
      5
     ],
     "p50_ms": [
-     593,
      578,
      591,
      581,
@@ -1259,6 +1236,8 @@
    "members": null,
    "ms": 658,
    "name": "EstModel: Vesikonnad",
+   "ok_24h": 5,
+   "ok_7d": 41,
    "status": "ok",
    "system": "EstModel",
    "ts": "2026-10-28T21:55:43Z",
@@ -1268,10 +1247,10 @@
   {
    "avail_24h": 100.0,
    "avail_7d": 100.0,
-   "checks_24h": 6,
+   "checks_24h": 5,
+   "checks_7d": 41,
    "days": {
     "checks": [
-     48,
      49,
      48,
      48,
@@ -1304,7 +1283,6 @@
      5
     ],
     "ok": [
-     48,
      49,
      48,
      48,
@@ -1337,7 +1315,6 @@
      5
     ],
     "p50_ms": [
-     1227,
      1242,
      1244,
      1264,
@@ -1376,6 +1353,8 @@
    "members": null,
    "ms": 972,
    "name": "EstModel: Vooluveekogud",
+   "ok_24h": 5,
+   "ok_7d": 41,
    "status": "ok",
    "system": "EstModel",
    "ts": "2026-10-28T21:55:43Z",
@@ -1385,10 +1364,10 @@
   {
    "avail_24h": 100.0,
    "avail_7d": 100.0,
-   "checks_24h": 6,
+   "checks_24h": 5,
+   "checks_7d": 41,
    "days": {
     "checks": [
-     48,
      49,
      48,
      48,
@@ -1421,7 +1400,6 @@
      5
     ],
     "ok": [
-     48,
      49,
      48,
      48,
@@ -1454,7 +1432,6 @@
      5
     ],
     "p50_ms": [
-     737,
      733,
      768,
      783,
@@ -1493,6 +1470,8 @@
    "members": null,
    "ms": 689,
    "name": "EstModel: Seirejaamad",
+   "ok_24h": 5,
+   "ok_7d": 41,
    "status": "ok",
    "system": "EstModel",
    "ts": "2026-10-28T21:55:43Z",
@@ -1502,10 +1481,10 @@
   {
    "avail_24h": 100.0,
    "avail_7d": 100.0,
-   "checks_24h": 6,
+   "checks_24h": 5,
+   "checks_7d": 41,
    "days": {
     "checks": [
-     48,
      49,
      48,
      48,
@@ -1538,7 +1517,6 @@
      5
     ],
     "ok": [
-     48,
      49,
      48,
      48,
@@ -1571,7 +1549,6 @@
      5
     ],
     "p50_ms": [
-     580,
      569,
      582,
      582,
@@ -1610,6 +1587,8 @@
    "members": null,
    "ms": 470,
    "name": "EstModel: Alamvesikonnad",
+   "ok_24h": 5,
+   "ok_7d": 41,
    "status": "ok",
    "system": "EstModel",
    "ts": "2026-10-28T21:55:43Z",
@@ -1619,10 +1598,10 @@
   {
    "avail_24h": 100.0,
    "avail_7d": 100.0,
-   "checks_24h": 6,
+   "checks_24h": 5,
+   "checks_7d": 41,
    "days": {
     "checks": [
-     48,
      49,
      48,
      48,
@@ -1655,7 +1634,6 @@
      5
     ],
     "ok": [
-     48,
      49,
      48,
      48,
@@ -1688,7 +1666,6 @@
      5
     ],
     "p50_ms": [
-     1178,
      1173,
      1263,
      1237,
@@ -1727,6 +1704,8 @@
    "members": null,
    "ms": 850,
    "name": "EstModel: Väljalasud",
+   "ok_24h": 5,
+   "ok_7d": 41,
    "status": "ok",
    "system": "EstModel",
    "ts": "2026-10-28T21:55:43Z",
@@ -1735,11 +1714,11 @@
   },
   {
    "avail_24h": 100.0,
-   "avail_7d": 97.62,
-   "checks_24h": 6,
+   "avail_7d": 97.56,
+   "checks_24h": 5,
+   "checks_7d": 41,
    "days": {
     "checks": [
-     48,
      49,
      48,
      48,
@@ -1772,7 +1751,6 @@
      5
     ],
     "ok": [
-     48,
      49,
      48,
      48,
@@ -1805,7 +1783,6 @@
      5
     ],
     "p50_ms": [
-     472,
      475,
      491,
      480,
@@ -1844,6 +1821,8 @@
    "members": null,
    "ms": 627,
    "name": "Hüdroloogiliste seireandmete aegread",
+   "ok_24h": 5,
+   "ok_7d": 40,
    "status": "ok",
    "system": "Hüdroloogia",
    "ts": "2026-10-28T21:55:48Z",
@@ -1852,11 +1831,11 @@
   },
   {
    "avail_24h": 100.0,
-   "avail_7d": 97.62,
-   "checks_24h": 6,
+   "avail_7d": 97.56,
+   "checks_24h": 5,
+   "checks_7d": 41,
    "days": {
     "checks": [
-     48,
      49,
      48,
      48,
@@ -1889,7 +1868,6 @@
      5
     ],
     "ok": [
-     48,
      49,
      48,
      48,
@@ -1922,7 +1900,6 @@
      5
     ],
     "p50_ms": [
-     2844,
      2673,
      2129,
      2206,
@@ -1961,6 +1938,8 @@
    "members": null,
    "ms": 907,
    "name": "Hüdroloogiline seire, veetase 2023-01-02",
+   "ok_24h": 5,
+   "ok_7d": 40,
    "status": "ok",
    "system": "Hüdroloogia",
    "ts": "2026-10-28T21:56:14Z",
@@ -1969,11 +1948,11 @@
   },
   {
    "avail_24h": 100.0,
-   "avail_7d": 83.33,
-   "checks_24h": 6,
+   "avail_7d": 85.37,
+   "checks_24h": 5,
+   "checks_7d": 41,
    "days": {
     "checks": [
-     48,
      49,
      48,
      48,
@@ -2006,7 +1985,6 @@
      5
     ],
     "ok": [
-     48,
      49,
      48,
      48,
@@ -2039,7 +2017,6 @@
      5
     ],
     "p50_ms": [
-     1169,
      1216,
      1225,
      1184,
@@ -2078,6 +2055,8 @@
    "members": null,
    "ms": 1172,
    "name": "Ilmateenistus: hoiatuste RSS",
+   "ok_24h": 5,
+   "ok_7d": 35,
    "status": "ok",
    "system": "Ilmateenistus",
    "ts": "2026-10-28T21:56:14Z",
@@ -2086,11 +2065,11 @@
   },
   {
    "avail_24h": 100.0,
-   "avail_7d": 78.57,
-   "checks_24h": 6,
+   "avail_7d": 80.49,
+   "checks_24h": 5,
+   "checks_7d": 41,
    "days": {
     "checks": [
-     48,
      49,
      48,
      48,
@@ -2123,7 +2102,6 @@
      5
     ],
     "ok": [
-     48,
      49,
      48,
      48,
@@ -2156,7 +2134,6 @@
      5
     ],
     "p50_ms": [
-     1158,
      1124,
      1261,
      1212,
@@ -2195,6 +2172,8 @@
    "members": null,
    "ms": 1186,
    "name": "Ilmateenistus: hoiatused XML",
+   "ok_24h": 5,
+   "ok_7d": 33,
    "status": "ok",
    "system": "Ilmateenistus",
    "ts": "2026-10-28T21:56:14Z",
@@ -2202,12 +2181,12 @@
    "verified": false
   },
   {
-   "avail_24h": 83.33,
-   "avail_7d": 92.86,
-   "checks_24h": 6,
+   "avail_24h": 80.0,
+   "avail_7d": 92.68,
+   "checks_24h": 5,
+   "checks_7d": 41,
    "days": {
     "checks": [
-     48,
      49,
      48,
      48,
@@ -2244,7 +2223,6 @@
      48,
      48,
      48,
-     48,
      25,
      10,
      41,
@@ -2273,7 +2251,6 @@
      4
     ],
     "p50_ms": [
-     2092,
      2142,
      2122,
      1958,
@@ -2312,6 +2289,8 @@
    "members": null,
    "ms": 1656,
    "name": "Ilmateenistus: teenuse juur",
+   "ok_24h": 4,
+   "ok_7d": 38,
    "status": "ok",
    "system": "Ilmateenistus",
    "ts": "2026-10-28T21:56:14Z",
@@ -2319,12 +2298,12 @@
    "verified": false
   },
   {
-   "avail_24h": 66.67,
-   "avail_7d": 80.95,
-   "checks_24h": 6,
+   "avail_24h": 60.0,
+   "avail_7d": 82.93,
+   "checks_24h": 5,
+   "checks_7d": 41,
    "days": {
     "checks": [
-     48,
      49,
      48,
      48,
@@ -2357,7 +2336,6 @@
      5
     ],
     "ok": [
-     48,
      49,
      48,
      48,
@@ -2390,7 +2368,6 @@
      3
     ],
     "p50_ms": [
-     997,
      962,
      1035,
      997,
@@ -2429,6 +2406,8 @@
    "members": null,
    "ms": 971,
    "name": "Ilmateenistus: Eesti prognoos XML",
+   "ok_24h": 3,
+   "ok_7d": 34,
    "status": "ok",
    "system": "Ilmateenistus",
    "ts": "2026-10-28T21:56:14Z",
@@ -2436,12 +2415,12 @@
    "verified": false
   },
   {
-   "avail_24h": 66.67,
-   "avail_7d": 76.19,
-   "checks_24h": 6,
+   "avail_24h": 60.0,
+   "avail_7d": 78.05,
+   "checks_24h": 5,
+   "checks_7d": 41,
    "days": {
     "checks": [
-     48,
      49,
      48,
      48,
@@ -2474,7 +2453,6 @@
      5
     ],
     "ok": [
-     48,
      49,
      48,
      48,
@@ -2507,7 +2485,6 @@
      3
     ],
     "p50_ms": [
-     1090,
      1077,
      1150,
      1095,
@@ -2546,6 +2523,8 @@
    "members": null,
    "ms": 1052,
    "name": "Ilmateenistus: Eesti vaatlusandmed XML",
+   "ok_24h": 3,
+   "ok_7d": 32,
    "status": "ok",
    "system": "Ilmateenistus",
    "ts": "2026-10-28T21:56:14Z",
@@ -2554,11 +2533,11 @@
   },
   {
    "avail_24h": 100.0,
-   "avail_7d": 97.62,
-   "checks_24h": 6,
+   "avail_7d": 97.56,
+   "checks_24h": 5,
+   "checks_7d": 41,
    "days": {
     "checks": [
-     48,
      49,
      48,
      48,
@@ -2591,7 +2570,6 @@
      5
     ],
     "ok": [
-     48,
      49,
      48,
      48,
@@ -2624,7 +2602,6 @@
      5
     ],
     "p50_ms": [
-     647,
      572,
      625,
      642,
@@ -2663,6 +2640,8 @@
    "members": null,
    "ms": 635,
    "name": "KAIA dokumentide metaandmete päring",
+   "ok_24h": 5,
+   "ok_7d": 40,
    "status": "ok",
    "system": "KAIA",
    "ts": "2026-10-28T21:56:14Z",
@@ -2671,11 +2650,11 @@
   },
   {
    "avail_24h": 100.0,
-   "avail_7d": 97.62,
-   "checks_24h": 6,
+   "avail_7d": 97.56,
+   "checks_24h": 5,
+   "checks_7d": 41,
    "days": {
     "checks": [
-     48,
      49,
      48,
      48,
@@ -2708,7 +2687,6 @@
      5
     ],
     "ok": [
-     48,
      49,
      48,
      48,
@@ -2741,7 +2719,6 @@
      5
     ],
     "p50_ms": [
-     776,
      812,
      814,
      827,
@@ -2780,6 +2757,8 @@
    "members": null,
    "ms": 914,
    "name": "KAIA aktiivse valikuhierarhia metaandmed",
+   "ok_24h": 5,
+   "ok_7d": 40,
    "status": "ok",
    "system": "KAIA",
    "ts": "2026-10-28T21:56:15Z",
@@ -2788,11 +2767,11 @@
   },
   {
    "avail_24h": 100.0,
-   "avail_7d": 97.62,
-   "checks_24h": 6,
+   "avail_7d": 97.56,
+   "checks_24h": 5,
+   "checks_7d": 41,
    "days": {
     "checks": [
-     48,
      49,
      48,
      48,
@@ -2825,7 +2804,6 @@
      5
     ],
     "ok": [
-     48,
      49,
      48,
      48,
@@ -2858,7 +2836,6 @@
      5
     ],
     "p50_ms": [
-     789,
      743,
      800,
      798,
@@ -2897,6 +2874,8 @@
    "members": null,
    "ms": 866,
    "name": "KAIA arhiivi valikuhierarhia metaandmed",
+   "ok_24h": 5,
+   "ok_7d": 40,
    "status": "ok",
    "system": "KAIA",
    "ts": "2026-10-28T21:56:15Z",
@@ -2905,11 +2884,11 @@
   },
   {
    "avail_24h": 100.0,
-   "avail_7d": 97.62,
-   "checks_24h": 6,
+   "avail_7d": 97.56,
+   "checks_24h": 5,
+   "checks_7d": 41,
    "days": {
     "checks": [
-     48,
      49,
      48,
      48,
@@ -2942,7 +2921,6 @@
      5
     ],
     "ok": [
-     48,
      49,
      48,
      48,
@@ -2975,7 +2953,6 @@
      5
     ],
     "p50_ms": [
-     689,
      686,
      696,
      672,
@@ -3014,6 +2991,8 @@
    "members": null,
    "ms": 810,
    "name": "KAIA OpenAPI teenusekirjeldus",
+   "ok_24h": 5,
+   "ok_7d": 40,
    "status": "ok",
    "system": "KAIA",
    "ts": "2026-10-28T21:56:15Z",
@@ -3022,11 +3001,11 @@
   },
   {
    "avail_24h": 100.0,
-   "avail_7d": 97.62,
-   "checks_24h": 6,
+   "avail_7d": 97.56,
+   "checks_24h": 5,
+   "checks_7d": 41,
    "days": {
     "checks": [
-     48,
      49,
      48,
      48,
@@ -3059,7 +3038,6 @@
      5
     ],
     "ok": [
-     48,
      49,
      48,
      48,
@@ -3092,7 +3070,6 @@
      5
     ],
     "p50_ms": [
-     654,
      644,
      651,
      661,
@@ -3131,6 +3108,8 @@
    "members": 7,
    "ms": 743,
    "name": "KAIA avaandmete failivaated",
+   "ok_24h": 5,
+   "ok_7d": 40,
    "status": "ok",
    "system": "KAIA",
    "ts": "2026-10-28T21:56:15Z",
@@ -3139,11 +3118,11 @@
   },
   {
    "avail_24h": 100.0,
-   "avail_7d": 97.62,
-   "checks_24h": 6,
+   "avail_7d": 97.56,
+   "checks_24h": 5,
+   "checks_7d": 41,
    "days": {
     "checks": [
-     48,
      49,
      48,
      48,
@@ -3176,7 +3155,6 @@
      5
     ],
     "ok": [
-     48,
      49,
      48,
      48,
@@ -3209,7 +3187,6 @@
      5
     ],
     "p50_ms": [
-     841,
      814,
      892,
      890,
@@ -3248,6 +3225,8 @@
    "members": null,
    "ms": 963,
    "name": "Juur-URL, OpenAPI teenusekirjeldus",
+   "ok_24h": 5,
+   "ok_7d": 40,
    "status": "ok",
    "system": "Keskkonnaandmed",
    "ts": "2026-10-28T21:56:16Z",
@@ -3256,11 +3235,11 @@
   },
   {
    "avail_24h": 100.0,
-   "avail_7d": 97.62,
-   "checks_24h": 6,
+   "avail_7d": 97.56,
+   "checks_24h": 5,
+   "checks_7d": 41,
    "days": {
     "checks": [
-     48,
      49,
      48,
      48,
@@ -3293,7 +3272,6 @@
      5
     ],
     "ok": [
-     48,
      49,
      48,
      48,
@@ -3326,7 +3304,6 @@
      5
     ],
     "p50_ms": [
-     475,
      459,
      479,
      445,
@@ -3365,6 +3342,8 @@
    "members": null,
    "ms": 463,
    "name": "Keskkonnaseire avaandmete andmeteenused",
+   "ok_24h": 5,
+   "ok_7d": 40,
    "status": "ok",
    "system": "Keskkonnaseire",
    "ts": "2026-10-28T21:55:51Z",
@@ -3373,11 +3352,11 @@
   },
   {
    "avail_24h": 100.0,
-   "avail_7d": 97.62,
-   "checks_24h": 6,
+   "avail_7d": 97.56,
+   "checks_24h": 5,
+   "checks_7d": 41,
    "days": {
     "checks": [
-     48,
      49,
      48,
      48,
@@ -3410,7 +3389,6 @@
      5
     ],
     "ok": [
-     48,
      49,
      48,
      48,
@@ -3443,7 +3421,6 @@
      5
     ],
     "p50_ms": [
-     2520,
      2459,
      2546,
      2507,
@@ -3482,6 +3459,8 @@
    "members": null,
    "ms": 699,
    "name": "Keskkonnaseire, programm PR0127 aastal 2021",
+   "ok_24h": 5,
+   "ok_7d": 40,
    "status": "ok",
    "system": "Keskkonnaseire",
    "ts": "2026-10-28T21:56:16Z",
@@ -3490,11 +3469,11 @@
   },
   {
    "avail_24h": 100.0,
-   "avail_7d": 97.62,
-   "checks_24h": 6,
+   "avail_7d": 97.56,
+   "checks_24h": 5,
+   "checks_7d": 41,
    "days": {
     "checks": [
-     48,
      49,
      48,
      48,
@@ -3527,7 +3506,6 @@
      5
     ],
     "ok": [
-     48,
      49,
      48,
      48,
@@ -3560,7 +3538,6 @@
      5
     ],
     "p50_ms": [
-     664,
      650,
      701,
      660,
@@ -3599,6 +3576,8 @@
    "members": null,
    "ms": 661,
    "name": "KESE: teenuse juur",
+   "ok_24h": 5,
+   "ok_7d": 40,
    "status": "ok",
    "system": "Keskkonnaseire infosüsteem",
    "ts": "2026-10-28T21:56:16Z",
@@ -3607,11 +3586,11 @@
   },
   {
    "avail_24h": 100.0,
-   "avail_7d": 97.62,
-   "checks_24h": 6,
+   "avail_7d": 97.56,
+   "checks_24h": 5,
+   "checks_7d": 41,
    "days": {
     "checks": [
-     48,
      49,
      48,
      48,
@@ -3644,7 +3623,6 @@
      5
     ],
     "ok": [
-     48,
      49,
      48,
      48,
@@ -3677,7 +3655,6 @@
      5
     ],
     "p50_ms": [
-     443,
      441,
      477,
      458,
@@ -3716,6 +3693,8 @@
    "members": null,
    "ms": 434,
    "name": "f_kliima_element",
+   "ok_24h": 5,
+   "ok_7d": 40,
    "status": "ok",
    "system": "Kliima",
    "ts": "2026-10-28T21:55:52Z",
@@ -3724,11 +3703,11 @@
   },
   {
    "avail_24h": 100.0,
-   "avail_7d": 97.62,
-   "checks_24h": 6,
+   "avail_7d": 97.56,
+   "checks_24h": 5,
+   "checks_7d": 41,
    "days": {
     "checks": [
-     48,
      49,
      48,
      48,
@@ -3761,7 +3740,6 @@
      5
     ],
     "ok": [
-     48,
      49,
      48,
      48,
@@ -3794,7 +3772,6 @@
      5
     ],
     "p50_ms": [
-     442,
      454,
      478,
      454,
@@ -3833,6 +3810,8 @@
    "members": null,
    "ms": 422,
    "name": "Kliima: jaamade metaandmed ja elementide mõõtmisperioodid Climate: station metadata and element measurement periods",
+   "ok_24h": 5,
+   "ok_7d": 40,
    "status": "ok",
    "system": "Kliima",
    "ts": "2026-10-28T21:55:52Z",
@@ -3841,11 +3820,11 @@
   },
   {
    "avail_24h": 100.0,
-   "avail_7d": 97.62,
-   "checks_24h": 6,
+   "avail_7d": 97.56,
+   "checks_24h": 5,
+   "checks_7d": 41,
    "days": {
     "checks": [
-     48,
      49,
      48,
      48,
@@ -3878,7 +3857,6 @@
      5
     ],
     "ok": [
-     48,
      49,
      48,
      48,
@@ -3911,7 +3889,6 @@
      5
     ],
     "p50_ms": [
-     446,
      463,
      492,
      444,
@@ -3950,6 +3927,8 @@
    "members": null,
    "ms": 457,
    "name": "Kliima: kuuandmed Climate: monthly data",
+   "ok_24h": 5,
+   "ok_7d": 40,
    "status": "ok",
    "system": "Kliima",
    "ts": "2026-10-28T21:55:52Z",
@@ -3958,11 +3937,11 @@
   },
   {
    "avail_24h": 100.0,
-   "avail_7d": 97.62,
-   "checks_24h": 6,
+   "avail_7d": 97.56,
+   "checks_24h": 5,
+   "checks_7d": 41,
    "days": {
     "checks": [
-     48,
      49,
      48,
      48,
@@ -3995,7 +3974,6 @@
      5
     ],
     "ok": [
-     48,
      49,
      48,
      48,
@@ -4028,7 +4006,6 @@
      5
     ],
     "p50_ms": [
-     472,
      443,
      469,
      459,
@@ -4067,6 +4044,8 @@
    "members": null,
    "ms": 450,
    "name": "Kliima: 10-minuti andmed Climate: 10-minute data",
+   "ok_24h": 5,
+   "ok_7d": 40,
    "status": "ok",
    "system": "Kliima",
    "ts": "2026-10-28T21:55:52Z",
@@ -4075,11 +4054,11 @@
   },
   {
    "avail_24h": 100.0,
-   "avail_7d": 97.62,
-   "checks_24h": 6,
+   "avail_7d": 97.56,
+   "checks_24h": 5,
+   "checks_7d": 41,
    "days": {
     "checks": [
-     48,
      49,
      48,
      48,
@@ -4112,7 +4091,6 @@
      5
     ],
     "ok": [
-     48,
      49,
      48,
      48,
@@ -4145,7 +4123,6 @@
      5
     ],
     "p50_ms": [
-     451,
      444,
      480,
      436,
@@ -4184,6 +4161,8 @@
    "members": null,
    "ms": 840,
    "name": "Kliima: ööpäevaandmed Climate: daily data",
+   "ok_24h": 5,
+   "ok_7d": 40,
    "status": "ok",
    "system": "Kliima",
    "ts": "2026-10-28T21:55:52Z",
@@ -4192,11 +4171,11 @@
   },
   {
    "avail_24h": 100.0,
-   "avail_7d": 97.62,
-   "checks_24h": 6,
+   "avail_7d": 97.56,
+   "checks_24h": 5,
+   "checks_7d": 41,
    "days": {
     "checks": [
-     48,
      49,
      48,
      48,
@@ -4229,7 +4208,6 @@
      5
     ],
     "ok": [
-     48,
      49,
      48,
      48,
@@ -4262,7 +4240,6 @@
      5
     ],
     "p50_ms": [
-     444,
      432,
      468,
      435,
@@ -4301,6 +4278,8 @@
    "members": null,
    "ms": 798,
    "name": "Kliima: tunniandmed  Climate: hourly data",
+   "ok_24h": 5,
+   "ok_7d": 40,
    "status": "ok",
    "system": "Kliima",
    "ts": "2026-10-28T21:55:52Z",
@@ -4309,11 +4288,11 @@
   },
   {
    "avail_24h": 100.0,
-   "avail_7d": 97.62,
-   "checks_24h": 6,
+   "avail_7d": 97.56,
+   "checks_24h": 5,
+   "checks_7d": 41,
    "days": {
     "checks": [
-     48,
      49,
      48,
      48,
@@ -4346,7 +4325,6 @@
      5
     ],
     "ok": [
-     48,
      49,
      48,
      48,
@@ -4379,7 +4357,6 @@
      5
     ],
     "p50_ms": [
-     409,
      414,
      448,
      411,
@@ -4418,6 +4395,8 @@
    "members": null,
    "ms": 455,
    "name": "Kliima elementide metaandmed",
+   "ok_24h": 5,
+   "ok_7d": 40,
    "status": "ok",
    "system": "Kliima",
    "ts": "2026-10-28T21:56:16Z",
@@ -4426,11 +4405,11 @@
   },
   {
    "avail_24h": 100.0,
-   "avail_7d": 97.62,
-   "checks_24h": 6,
+   "avail_7d": 97.56,
+   "checks_24h": 5,
+   "checks_7d": 41,
    "days": {
     "checks": [
-     48,
      49,
      48,
      48,
@@ -4463,7 +4442,6 @@
      5
     ],
     "ok": [
-     48,
      49,
      48,
      48,
@@ -4496,7 +4474,6 @@
      5
     ],
     "p50_ms": [
-     436,
      409,
      434,
      428,
@@ -4535,6 +4512,8 @@
    "members": null,
    "ms": 454,
    "name": "Kliima vaatlusjaamade metaandmed",
+   "ok_24h": 5,
+   "ok_7d": 40,
    "status": "ok",
    "system": "Kliima",
    "ts": "2026-10-28T21:56:16Z",
@@ -4543,11 +4522,11 @@
   },
   {
    "avail_24h": 100.0,
-   "avail_7d": 97.62,
-   "checks_24h": 6,
+   "avail_7d": 97.56,
+   "checks_24h": 5,
+   "checks_7d": 41,
    "days": {
     "checks": [
-     48,
      49,
      48,
      48,
@@ -4580,7 +4559,6 @@
      5
     ],
     "ok": [
-     48,
      49,
      48,
      48,
@@ -4613,7 +4591,6 @@
      5
     ],
     "p50_ms": [
-     433,
      406,
      445,
      415,
@@ -4652,6 +4629,8 @@
    "members": null,
    "ms": 409,
    "name": "Kliima kuu andmed",
+   "ok_24h": 5,
+   "ok_7d": 40,
    "status": "ok",
    "system": "Kliima",
    "ts": "2026-10-28T21:56:17Z",
@@ -4660,11 +4639,11 @@
   },
   {
    "avail_24h": 100.0,
-   "avail_7d": 97.62,
-   "checks_24h": 6,
+   "avail_7d": 97.56,
+   "checks_24h": 5,
+   "checks_7d": 41,
    "days": {
     "checks": [
-     48,
      49,
      48,
      48,
@@ -4697,7 +4676,6 @@
      5
     ],
     "ok": [
-     48,
      49,
      48,
      48,
@@ -4730,7 +4708,6 @@
      5
     ],
     "p50_ms": [
-     406,
      417,
      448,
      419,
@@ -4769,6 +4746,8 @@
    "members": null,
    "ms": 418,
    "name": "Kliima 10-minuti andmed",
+   "ok_24h": 5,
+   "ok_7d": 40,
    "status": "ok",
    "system": "Kliima",
    "ts": "2026-10-28T21:56:17Z",
@@ -4777,11 +4756,11 @@
   },
   {
    "avail_24h": 100.0,
-   "avail_7d": 97.62,
-   "checks_24h": 6,
+   "avail_7d": 97.56,
+   "checks_24h": 5,
+   "checks_7d": 41,
    "days": {
     "checks": [
-     48,
      49,
      48,
      48,
@@ -4814,7 +4793,6 @@
      5
     ],
     "ok": [
-     48,
      49,
      48,
      48,
@@ -4847,7 +4825,6 @@
      5
     ],
     "p50_ms": [
-     431,
      440,
      443,
      438,
@@ -4886,6 +4863,8 @@
    "members": null,
    "ms": 457,
    "name": "Kliima ööpäeva andmed, Ruhnu ja Kihnu õhuniiskus 2023",
+   "ok_24h": 5,
+   "ok_7d": 40,
    "status": "ok",
    "system": "Kliima",
    "ts": "2026-10-28T21:56:17Z",
@@ -4894,11 +4873,11 @@
   },
   {
    "avail_24h": 100.0,
-   "avail_7d": 97.62,
-   "checks_24h": 6,
+   "avail_7d": 97.56,
+   "checks_24h": 5,
+   "checks_7d": 41,
    "days": {
     "checks": [
-     48,
      49,
      48,
      48,
@@ -4931,7 +4910,6 @@
      5
     ],
     "ok": [
-     48,
      49,
      48,
      48,
@@ -4964,7 +4942,6 @@
      5
     ],
     "p50_ms": [
-     457,
      441,
      454,
      466,
@@ -5003,6 +4980,8 @@
    "members": null,
    "ms": 424,
    "name": "Kliima ööpäeva andmed, Võru 2006 (like-filter ja sortimine)",
+   "ok_24h": 5,
+   "ok_7d": 40,
    "status": "ok",
    "system": "Kliima",
    "ts": "2026-10-28T21:56:17Z",
@@ -5011,11 +4990,11 @@
   },
   {
    "avail_24h": 100.0,
-   "avail_7d": 97.62,
-   "checks_24h": 6,
+   "avail_7d": 97.56,
+   "checks_24h": 5,
+   "checks_7d": 41,
    "days": {
     "checks": [
-     48,
      49,
      48,
      48,
@@ -5048,7 +5027,6 @@
      5
     ],
     "ok": [
-     48,
      49,
      48,
      48,
@@ -5081,7 +5059,6 @@
      5
     ],
     "p50_ms": [
-     404,
      396,
      438,
      411,
@@ -5120,6 +5097,8 @@
    "members": null,
    "ms": 450,
    "name": "Kliima tunniandmed",
+   "ok_24h": 5,
+   "ok_7d": 40,
    "status": "ok",
    "system": "Kliima",
    "ts": "2026-10-28T21:56:17Z",
@@ -5127,12 +5106,12 @@
    "verified": true
   },
   {
-   "avail_24h": 50.0,
-   "avail_7d": 64.29,
-   "checks_24h": 6,
+   "avail_24h": 60.0,
+   "avail_7d": 65.85,
+   "checks_24h": 5,
+   "checks_7d": 41,
    "days": {
     "checks": [
-     48,
      49,
      48,
      48,
@@ -5165,7 +5144,6 @@
      5
     ],
     "ok": [
-     41,
      44,
      41,
      42,
@@ -5198,7 +5176,6 @@
      3
     ],
     "p50_ms": [
-     580,
      584,
      616,
      572,
@@ -5237,6 +5214,8 @@
    "members": null,
    "ms": 579,
    "name": "Kütuseseire: ettevõtted",
+   "ok_24h": 3,
+   "ok_7d": 27,
    "status": "ok",
    "system": "Kütuseseire",
    "ts": "2026-10-28T21:56:17Z",
@@ -5244,12 +5223,12 @@
    "verified": false
   },
   {
-   "avail_24h": 66.67,
-   "avail_7d": 61.9,
-   "checks_24h": 6,
+   "avail_24h": 80.0,
+   "avail_7d": 63.41,
+   "checks_24h": 5,
+   "checks_7d": 41,
    "days": {
     "checks": [
-     48,
      49,
      48,
      48,
@@ -5282,7 +5261,6 @@
      5
     ],
     "ok": [
-     44,
      46,
      39,
      42,
@@ -5315,7 +5293,6 @@
      4
     ],
     "p50_ms": [
-     576,
      589,
      606,
      587,
@@ -5354,6 +5331,8 @@
    "members": null,
    "ms": 654,
    "name": "Kütuseseire: seireandmed",
+   "ok_24h": 4,
+   "ok_7d": 26,
    "status": "ok",
    "system": "Kütuseseire",
    "ts": "2026-10-28T21:56:17Z",
@@ -5361,12 +5340,12 @@
    "verified": false
   },
   {
-   "avail_24h": 50.0,
-   "avail_7d": 71.43,
-   "checks_24h": 6,
+   "avail_24h": 60.0,
+   "avail_7d": 70.73,
+   "checks_24h": 5,
+   "checks_7d": 41,
    "days": {
     "checks": [
-     48,
      49,
      48,
      48,
@@ -5399,7 +5378,6 @@
      5
     ],
     "ok": [
-     41,
      44,
      40,
      42,
@@ -5432,7 +5410,6 @@
      3
     ],
     "p50_ms": [
-     562,
      602,
      595,
      585,
@@ -5471,6 +5448,8 @@
    "members": null,
    "ms": 424,
    "name": "Kütuseseire: heiteallikad",
+   "ok_24h": 3,
+   "ok_7d": 29,
    "status": "down",
    "system": "Kütuseseire",
    "ts": "2026-10-28T21:56:48Z",
@@ -5478,12 +5457,12 @@
    "verified": false
   },
   {
-   "avail_24h": 50.0,
-   "avail_7d": 69.05,
-   "checks_24h": 6,
+   "avail_24h": 60.0,
+   "avail_7d": 68.29,
+   "checks_24h": 5,
+   "checks_7d": 41,
    "days": {
     "checks": [
-     48,
      49,
      48,
      48,
@@ -5516,7 +5495,6 @@
      5
     ],
     "ok": [
-     35,
      40,
      35,
      37,
@@ -5549,7 +5527,6 @@
      3
     ],
     "p50_ms": [
-     548,
      541,
      558,
      571,
@@ -5588,6 +5565,8 @@
    "members": null,
    "ms": 580,
    "name": "PAKIS: pakendijäätmete avaandmed",
+   "ok_24h": 3,
+   "ok_7d": 28,
    "status": "ok",
    "system": "Pakendiregister",
    "ts": "2026-10-28T21:56:17Z",
@@ -5595,12 +5574,12 @@
    "verified": false
   },
   {
-   "avail_24h": 33.33,
-   "avail_7d": 64.29,
-   "checks_24h": 6,
+   "avail_24h": 40.0,
+   "avail_7d": 63.41,
+   "checks_24h": 5,
+   "checks_7d": 41,
    "days": {
     "checks": [
-     48,
      49,
      48,
      48,
@@ -5633,7 +5612,6 @@
      5
     ],
     "ok": [
-     28,
      32,
      33,
      35,
@@ -5666,7 +5644,6 @@
      2
     ],
     "p50_ms": [
-     494,
      577,
      516,
      524,
@@ -5705,6 +5682,8 @@
    "members": null,
    "ms": 431,
    "name": "PROTO: probleemtoodete avaandmed",
+   "ok_24h": 2,
+   "ok_7d": 26,
    "status": "down",
    "system": "Probleemtooteregister",
    "ts": "2026-10-28T21:56:48Z",
@@ -5712,13 +5691,3688 @@
    "verified": false
   }
  ],
- "first_record": "2026-09-27T22:03:07Z",
- "generated_at": "2026-10-28T21:56:49Z",
+ "event_count": 283,
+ "event_count_verified": 7,
+ "events": [
+  {
+   "after": "2026-10-28T20:40:45Z",
+   "cause": "rate_limited",
+   "count": 1,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 6150,
+   "end": null,
+   "last_ts": "2026-10-28T21:56:48Z",
+   "max_s": 10713,
+   "members": [
+    {
+     "end": null,
+     "id": "proto-opendata",
+     "max_s": 10713,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-28T21:56:48Z",
+   "systems": [
+    "Probleemtooteregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-28T15:37:16Z",
+   "cause": "rate_limited",
+   "count": 5,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 10684,
+   "end": null,
+   "last_ts": "2026-10-28T21:56:48Z",
+   "max_s": 28922,
+   "members": [
+    {
+     "end": "2026-10-28T21:56:14Z",
+     "id": "ilmateenistus-prognoos-xml",
+     "max_s": 22738,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-28T21:56:17Z",
+     "id": "kytus-bunkering-company",
+     "max_s": 22736,
+     "min_s": 0
+    },
+    {
+     "end": null,
+     "id": "kytus-source-of-pollution",
+     "max_s": 28916,
+     "min_s": 4532
+    },
+    {
+     "end": "2026-10-28T21:56:17Z",
+     "id": "kytus-monitoring",
+     "max_s": 22735,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-28T21:56:17Z",
+     "id": "pakis-opendata",
+     "max_s": 22704,
+     "min_s": 0
+    }
+   ],
+   "min_s": 4532,
+   "start": "2026-10-28T20:41:14Z",
+   "systems": [
+    "Ilmateenistus",
+    "Kütuseseire",
+    "Pakendiregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-28T08:51:04Z",
+   "cause": "rate_limited",
+   "count": 2,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 18177,
+   "end": "2026-10-28T20:40:45Z",
+   "last_ts": "2026-10-28T15:37:53Z",
+   "max_s": 42581,
+   "members": [
+    {
+     "end": "2026-10-28T20:40:43Z",
+     "id": "ilmateenistus-vaatlusandmed-xml",
+     "max_s": 42579,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-28T20:40:45Z",
+     "id": "proto-opendata",
+     "max_s": 42577,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-28T15:37:48Z",
+   "systems": [
+    "Ilmateenistus",
+    "Probleemtooteregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-27T23:19:37Z",
+   "cause": "rate_limited",
+   "count": 3,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 22915,
+   "end": "2026-10-28T08:51:04Z",
+   "last_ts": "2026-10-28T02:29:10Z",
+   "max_s": 34287,
+   "members": [
+    {
+     "end": "2026-10-28T08:51:04Z",
+     "id": "ilmateenistus-prognoos-xml",
+     "max_s": 34287,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-28T08:51:04Z",
+     "id": "ilmateenistus-vaatlusandmed-xml",
+     "max_s": 34287,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-28T08:51:04Z",
+     "id": "ilmateenistus-juur",
+     "max_s": 34287,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-28T02:29:09Z",
+   "systems": [
+    "Ilmateenistus"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-27T19:45:52Z",
+   "cause": "rate_limited",
+   "count": 2,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 34258,
+   "end": "2026-10-28T08:51:08Z",
+   "last_ts": "2026-10-28T02:29:13Z",
+   "max_s": 47116,
+   "members": [
+    {
+     "end": "2026-10-28T02:29:13Z",
+     "id": "kytus-source-of-pollution",
+     "max_s": 24201,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-28T08:51:08Z",
+     "id": "proto-opendata",
+     "max_s": 47116,
+     "min_s": 11342
+    }
+   ],
+   "min_s": 11342,
+   "start": "2026-10-27T23:20:10Z",
+   "systems": [
+    "Kütuseseire",
+    "Probleemtooteregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-27T14:45:20Z",
+   "cause": "rate_limited",
+   "count": 3,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 47116,
+   "end": "2026-10-28T08:51:08Z",
+   "last_ts": "2026-10-28T02:29:13Z",
+   "max_s": 65148,
+   "members": [
+    {
+     "end": "2026-10-28T08:51:07Z",
+     "id": "kytus-bunkering-company",
+     "max_s": 65147,
+     "min_s": 24201
+    },
+    {
+     "end": "2026-10-28T02:29:13Z",
+     "id": "kytus-monitoring",
+     "max_s": 42233,
+     "min_s": 12858
+    },
+    {
+     "end": "2026-10-28T08:51:08Z",
+     "id": "pakis-opendata",
+     "max_s": 65148,
+     "min_s": 24201
+    }
+   ],
+   "min_s": 24201,
+   "start": "2026-10-27T19:45:52Z",
+   "systems": [
+    "Kütuseseire",
+    "Pakendiregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-26T23:27:34Z",
+   "cause": "rate_limited",
+   "count": 1,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 21000,
+   "end": "2026-10-27T08:06:39Z",
+   "last_ts": "2026-10-27T02:16:39Z",
+   "max_s": 31145,
+   "members": [
+    {
+     "end": "2026-10-27T08:06:39Z",
+     "id": "proto-opendata",
+     "max_s": 31145,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-27T02:16:39Z",
+   "systems": [
+    "Probleemtooteregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-26T13:43:34Z",
+   "cause": "rate_limited",
+   "count": 3,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 13650,
+   "end": "2026-10-26T23:27:34Z",
+   "last_ts": "2026-10-26T19:40:07Z",
+   "max_s": 35040,
+   "members": [
+    {
+     "end": "2026-10-26T23:27:31Z",
+     "id": "ilmateenistus-prognoos-xml",
+     "max_s": 35037,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-26T23:27:31Z",
+     "id": "ilmateenistus-hoiatused-xml",
+     "max_s": 35037,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-26T23:27:34Z",
+     "id": "kytus-bunkering-company",
+     "max_s": 35038,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-26T19:40:04Z",
+   "systems": [
+    "Ilmateenistus",
+    "Kütuseseire"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-26T01:25:54Z",
+   "cause": "rate_limited",
+   "count": 5,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 60729,
+   "end": "2026-10-26T23:27:34Z",
+   "last_ts": "2026-10-26T19:40:07Z",
+   "max_s": 79300,
+   "members": [
+    {
+     "end": "2026-10-26T13:43:34Z",
+     "id": "ilmateenistus-hoiatused-xml",
+     "max_s": 44260,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-26T13:43:34Z",
+     "id": "ilmateenistus-hoiatused-rss",
+     "max_s": 44260,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-26T23:27:34Z",
+     "id": "kytus-source-of-pollution",
+     "max_s": 79297,
+     "min_s": 47079
+    },
+    {
+     "end": "2026-10-26T23:27:34Z",
+     "id": "kytus-monitoring",
+     "max_s": 79298,
+     "min_s": 47079
+    },
+    {
+     "end": "2026-10-26T13:43:37Z",
+     "id": "pakis-opendata",
+     "max_s": 44260,
+     "min_s": 0
+    }
+   ],
+   "min_s": 47079,
+   "start": "2026-10-26T06:35:25Z",
+   "systems": [
+    "Ilmateenistus",
+    "Kütuseseire",
+    "Pakendiregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-25T18:30:09Z",
+   "cause": "rate_limited",
+   "count": 2,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 8232,
+   "end": "2026-10-25T23:24:18Z",
+   "last_ts": "2026-10-25T21:07:07Z",
+   "max_s": 17649,
+   "members": [
+    {
+     "end": "2026-10-25T23:24:18Z",
+     "id": "kytus-monitoring",
+     "max_s": 17649,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-25T23:24:18Z",
+     "id": "proto-opendata",
+     "max_s": 17618,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-25T21:07:06Z",
+   "systems": [
+    "Kütuseseire",
+    "Probleemtooteregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-25T01:29:24Z",
+   "cause": "rate_limited",
+   "count": 2,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 19651,
+   "end": "2026-10-25T11:52:20Z",
+   "last_ts": "2026-10-25T06:24:50Z",
+   "max_s": 37376,
+   "members": [
+    {
+     "end": "2026-10-25T11:52:20Z",
+     "id": "kytus-monitoring",
+     "max_s": 37376,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-25T11:52:20Z",
+     "id": "proto-opendata",
+     "max_s": 37374,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-25T06:24:49Z",
+   "systems": [
+    "Kütuseseire",
+    "Probleemtooteregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-24T23:27:43Z",
+   "cause": "no_response",
+   "count": 25,
+   "detail": "261/261 ei vasta: eelis-rahvalad (connection failed: timed out), eelis-rahvalad-dok (connection failed: timed out), eelis-rahvalad-linnuala (connection failed: timed out), eelis-rahvalad-seosed (conne",
+   "duration_s": 17962,
+   "end": "2026-10-25T06:24:18Z",
+   "last_ts": "2026-10-25T01:29:28Z",
+   "max_s": 24995,
+   "members": [
+    {
+     "end": "2026-10-25T06:23:38Z",
+     "id": "eelis",
+     "max_s": 24955,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-25T06:24:14Z",
+     "id": "hydroseire",
+     "max_s": 24966,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-25T06:23:44Z",
+     "id": "f-hydroseire",
+     "max_s": 24957,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-25T06:24:15Z",
+     "id": "kaia-swagger",
+     "max_s": 24966,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-25T06:24:15Z",
+     "id": "kaia-lists-active",
+     "max_s": 24966,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-25T06:24:15Z",
+     "id": "kaia-lists-archive",
+     "max_s": 24966,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-25T06:24:15Z",
+     "id": "kaia-vaated",
+     "max_s": 24966,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-25T06:24:15Z",
+     "id": "kaia-items-query",
+     "max_s": 24966,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-25T06:24:17Z",
+     "id": "keskkonnaandmed-root",
+     "max_s": 24967,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-25T06:23:48Z",
+     "id": "f-keskkonnaseire",
+     "max_s": 24958,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-25T06:24:17Z",
+     "id": "keskkonnaseire",
+     "max_s": 24967,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-25T06:24:17Z",
+     "id": "kese-juur",
+     "max_s": 24967,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-25T06:24:18Z",
+     "id": "kliima-minut",
+     "max_s": 24967,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-25T06:24:17Z",
+     "id": "kliima-element",
+     "max_s": 24966,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-25T06:24:18Z",
+     "id": "kliima-kuu",
+     "max_s": 24967,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-25T06:24:18Z",
+     "id": "kliima-tund",
+     "max_s": 24967,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-25T06:24:18Z",
+     "id": "kliima-jaam-vaatlus",
+     "max_s": 24967,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-25T06:24:18Z",
+     "id": "kliima-paev",
+     "max_s": 24967,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-25T06:24:18Z",
+     "id": "kliima-paev-nimefilter",
+     "max_s": 24967,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-25T06:23:48Z",
+     "id": "f-kliima-minut",
+     "max_s": 24958,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-25T06:23:48Z",
+     "id": "f-kliima-jaam-vaatlus",
+     "max_s": 24958,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-25T06:23:48Z",
+     "id": "f-kliima-kuu",
+     "max_s": 24958,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-25T06:23:49Z",
+     "id": "f-kliima-tund",
+     "max_s": 24958,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-25T06:23:49Z",
+     "id": "f-kliima-paev",
+     "max_s": 24958,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-25T06:23:48Z",
+     "id": "f-kliima-element",
+     "max_s": 24958,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-25T01:24:56Z",
+   "systems": [
+    "EELIS",
+    "Hüdroloogia",
+    "KAIA",
+    "Keskkonnaandmed",
+    "Keskkonnaseire",
+    "Keskkonnaseire infosüsteem",
+    "Kliima"
+   ],
+   "verified": 15
+  },
+  {
+   "after": "2026-10-24T21:19:15Z",
+   "cause": "rate_limited",
+   "count": 3,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 7244,
+   "end": "2026-10-25T01:29:26Z",
+   "last_ts": "2026-10-24T23:28:42Z",
+   "max_s": 15011,
+   "members": [
+    {
+     "end": "2026-10-25T01:29:24Z",
+     "id": "kytus-monitoring",
+     "max_s": 15009,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-25T01:29:25Z",
+     "id": "pakis-opendata",
+     "max_s": 15010,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-25T01:29:26Z",
+     "id": "proto-opendata",
+     "max_s": 15011,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-24T23:28:42Z",
+   "systems": [
+    "Kütuseseire",
+    "Pakendiregister",
+    "Probleemtooteregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-24T12:10:17Z",
+   "cause": "rate_limited",
+   "count": 4,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 18605,
+   "end": "2026-10-24T21:19:15Z",
+   "last_ts": "2026-10-24T18:54:31Z",
+   "max_s": 32938,
+   "members": [
+    {
+     "end": "2026-10-24T21:19:15Z",
+     "id": "kytus-bunkering-company",
+     "max_s": 32938,
+     "min_s": 9921
+    },
+    {
+     "end": "2026-10-24T18:54:00Z",
+     "id": "kytus-source-of-pollution",
+     "max_s": 24222,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-24T18:54:31Z",
+     "id": "pakis-opendata",
+     "max_s": 24253,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-24T18:54:00Z",
+     "id": "proto-opendata",
+     "max_s": 24222,
+     "min_s": 0
+    }
+   ],
+   "min_s": 9921,
+   "start": "2026-10-24T16:09:10Z",
+   "systems": [
+    "Kütuseseire",
+    "Pakendiregister",
+    "Probleemtooteregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-24T02:27:16Z",
+   "cause": "rate_limited",
+   "count": 2,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 16761,
+   "end": "2026-10-24T12:10:18Z",
+   "last_ts": "2026-10-24T07:30:57Z",
+   "max_s": 34982,
+   "members": [
+    {
+     "end": "2026-10-24T12:10:18Z",
+     "id": "pakis-opendata",
+     "max_s": 34982,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-24T12:10:18Z",
+     "id": "proto-opendata",
+     "max_s": 34951,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-24T07:30:57Z",
+   "systems": [
+    "Pakendiregister",
+    "Probleemtooteregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-23T23:39:32Z",
+   "cause": "rate_limited",
+   "count": 3,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 34952,
+   "end": "2026-10-24T12:10:18Z",
+   "last_ts": "2026-10-24T07:30:57Z",
+   "max_s": 45046,
+   "members": [
+    {
+     "end": "2026-10-24T07:30:26Z",
+     "id": "kytus-bunkering-company",
+     "max_s": 28254,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-24T07:30:26Z",
+     "id": "kytus-source-of-pollution",
+     "max_s": 28254,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-24T12:10:18Z",
+     "id": "kytus-monitoring",
+     "max_s": 45015,
+     "min_s": 18191
+    }
+   ],
+   "min_s": 18191,
+   "start": "2026-10-24T02:27:46Z",
+   "systems": [
+    "Kütuseseire"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-23T17:40:04Z",
+   "cause": "rate_limited",
+   "count": 5,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 10343,
+   "end": "2026-10-23T23:40:03Z",
+   "last_ts": "2026-10-23T20:47:43Z",
+   "max_s": 21599,
+   "members": [
+    {
+     "end": "2026-10-23T23:39:30Z",
+     "id": "ilmateenistus-vaatlusandmed-xml",
+     "max_s": 21566,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-23T23:39:32Z",
+     "id": "kytus-source-of-pollution",
+     "max_s": 21534,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-23T23:40:03Z",
+     "id": "kytus-monitoring",
+     "max_s": 21596,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-23T23:40:03Z",
+     "id": "pakis-opendata",
+     "max_s": 21565,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-23T23:39:32Z",
+     "id": "proto-opendata",
+     "max_s": 21564,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-23T20:47:40Z",
+   "systems": [
+    "Ilmateenistus",
+    "Kütuseseire",
+    "Pakendiregister",
+    "Probleemtooteregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-23T12:57:25Z",
+   "cause": "rate_limited",
+   "count": 1,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 11225,
+   "end": "2026-10-23T20:47:43Z",
+   "last_ts": "2026-10-23T17:40:38Z",
+   "max_s": 28218,
+   "members": [
+    {
+     "end": "2026-10-23T20:47:43Z",
+     "id": "kytus-bunkering-company",
+     "max_s": 28218,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-23T17:40:38Z",
+   "systems": [
+    "Kütuseseire"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-23T02:29:09Z",
+   "cause": "rate_limited",
+   "count": 2,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 18413,
+   "end": "2026-10-23T12:57:25Z",
+   "last_ts": "2026-10-23T07:50:36Z",
+   "max_s": 37696,
+   "members": [
+    {
+     "end": "2026-10-23T12:57:22Z",
+     "id": "ilmateenistus-prognoos-xml",
+     "max_s": 37693,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-23T12:57:25Z",
+     "id": "kytus-source-of-pollution",
+     "max_s": 37692,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-23T07:50:32Z",
+   "systems": [
+    "Ilmateenistus",
+    "Kütuseseire"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-22T23:46:32Z",
+   "cause": "rate_limited",
+   "count": 1,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 37661,
+   "end": "2026-10-23T12:57:22Z",
+   "last_ts": "2026-10-23T07:50:32Z",
+   "max_s": 47450,
+   "members": [
+    {
+     "end": "2026-10-23T12:57:22Z",
+     "id": "ilmateenistus-hoiatused-rss",
+     "max_s": 47450,
+     "min_s": 19251
+    }
+   ],
+   "min_s": 19251,
+   "start": "2026-10-23T02:29:41Z",
+   "systems": [
+    "Ilmateenistus"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-22T20:40:37Z",
+   "cause": "rate_limited",
+   "count": 3,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 29014,
+   "end": "2026-10-23T07:50:38Z",
+   "last_ts": "2026-10-23T02:29:45Z",
+   "max_s": 40201,
+   "members": [
+    {
+     "end": "2026-10-23T02:29:09Z",
+     "id": "ilmateenistus-juur",
+     "max_s": 20912,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-23T02:29:13Z",
+     "id": "kytus-monitoring",
+     "max_s": 20912,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-23T07:50:38Z",
+     "id": "pakis-opendata",
+     "max_s": 40197,
+     "min_s": 9758
+    }
+   ],
+   "min_s": 9758,
+   "start": "2026-10-22T23:47:04Z",
+   "systems": [
+    "Ilmateenistus",
+    "Kütuseseire",
+    "Pakendiregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-22T17:25:22Z",
+   "cause": "rate_limited",
+   "count": 6,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 58574,
+   "end": "2026-10-23T12:57:22Z",
+   "last_ts": "2026-10-23T07:50:32Z",
+   "max_s": 70320,
+   "members": [
+    {
+     "end": "2026-10-23T02:29:09Z",
+     "id": "ilmateenistus-prognoos-xml",
+     "max_s": 32626,
+     "min_s": 11156
+    },
+    {
+     "end": "2026-10-23T12:57:22Z",
+     "id": "ilmateenistus-vaatlusandmed-xml",
+     "max_s": 70319,
+     "min_s": 40164
+    },
+    {
+     "end": "2026-10-23T12:57:22Z",
+     "id": "ilmateenistus-hoiatused-xml",
+     "max_s": 70319,
+     "min_s": 40164
+    },
+    {
+     "end": "2026-10-22T23:46:32Z",
+     "id": "ilmateenistus-hoiatused-rss",
+     "max_s": 22870,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-23T07:50:36Z",
+     "id": "kytus-bunkering-company",
+     "max_s": 51910,
+     "min_s": 20913
+    },
+    {
+     "end": "2026-10-23T02:29:14Z",
+     "id": "proto-opendata",
+     "max_s": 32628,
+     "min_s": 11156
+    }
+   ],
+   "min_s": 40164,
+   "start": "2026-10-22T20:41:08Z",
+   "systems": [
+    "Ilmateenistus",
+    "Kütuseseire",
+    "Probleemtooteregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-22T06:15:43Z",
+   "cause": "rate_limited",
+   "count": 1,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 18792,
+   "end": "2026-10-22T17:25:23Z",
+   "last_ts": "2026-10-22T12:12:11Z",
+   "max_s": 40180,
+   "members": [
+    {
+     "end": "2026-10-22T17:25:23Z",
+     "id": "ilmateenistus-juur",
+     "max_s": 40180,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-22T12:12:11Z",
+   "systems": [
+    "Ilmateenistus"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-22T01:05:29Z",
+   "cause": "rate_limited",
+   "count": 9,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 40152,
+   "end": "2026-10-22T17:25:26Z",
+   "last_ts": "2026-10-22T12:12:16Z",
+   "max_s": 58797,
+   "members": [
+    {
+     "end": "2026-10-22T12:12:12Z",
+     "id": "ilmateenistus-prognoos-xml",
+     "max_s": 40003,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-22T17:25:23Z",
+     "id": "ilmateenistus-vaatlusandmed-xml",
+     "max_s": 58793,
+     "min_s": 21357
+    },
+    {
+     "end": "2026-10-22T17:25:23Z",
+     "id": "ilmateenistus-hoiatused-xml",
+     "max_s": 58794,
+     "min_s": 21357
+    },
+    {
+     "end": "2026-10-22T17:25:22Z",
+     "id": "ilmateenistus-hoiatused-rss",
+     "max_s": 58793,
+     "min_s": 21358
+    },
+    {
+     "end": "2026-10-22T17:25:26Z",
+     "id": "kytus-bunkering-company",
+     "max_s": 58793,
+     "min_s": 21359
+    },
+    {
+     "end": "2026-10-22T17:25:26Z",
+     "id": "kytus-source-of-pollution",
+     "max_s": 58793,
+     "min_s": 21359
+    },
+    {
+     "end": "2026-10-22T17:25:26Z",
+     "id": "kytus-monitoring",
+     "max_s": 58793,
+     "min_s": 21359
+    },
+    {
+     "end": "2026-10-22T17:25:26Z",
+     "id": "pakis-opendata",
+     "max_s": 58793,
+     "min_s": 21359
+    },
+    {
+     "end": "2026-10-22T17:25:26Z",
+     "id": "proto-opendata",
+     "max_s": 58793,
+     "min_s": 21359
+    }
+   ],
+   "min_s": 21362,
+   "start": "2026-10-22T06:16:14Z",
+   "systems": [
+    "Ilmateenistus",
+    "Kütuseseire",
+    "Pakendiregister",
+    "Probleemtooteregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-21T19:46:14Z",
+   "cause": "rate_limited",
+   "count": 5,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 7878,
+   "end": "2026-10-22T01:05:33Z",
+   "last_ts": "2026-10-21T22:54:20Z",
+   "max_s": 19159,
+   "members": [
+    {
+     "end": "2026-10-22T01:05:29Z",
+     "id": "ilmateenistus-prognoos-xml",
+     "max_s": 19155,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-22T01:05:30Z",
+     "id": "ilmateenistus-vaatlusandmed-xml",
+     "max_s": 19156,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-22T01:05:29Z",
+     "id": "ilmateenistus-hoiatused-xml",
+     "max_s": 19155,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-22T01:05:29Z",
+     "id": "ilmateenistus-hoiatused-rss",
+     "max_s": 19155,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-22T01:05:33Z",
+     "id": "kytus-bunkering-company",
+     "max_s": 19156,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-21T22:54:15Z",
+   "systems": [
+    "Ilmateenistus",
+    "Kütuseseire"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-21T15:44:33Z",
+   "cause": "rate_limited",
+   "count": 2,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 19125,
+   "end": "2026-10-22T01:05:33Z",
+   "last_ts": "2026-10-21T22:54:20Z",
+   "max_s": 33660,
+   "members": [
+    {
+     "end": "2026-10-21T22:54:20Z",
+     "id": "kytus-source-of-pollution",
+     "max_s": 25787,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-22T01:05:33Z",
+     "id": "kytus-monitoring",
+     "max_s": 33660,
+     "min_s": 11252
+    }
+   ],
+   "min_s": 11252,
+   "start": "2026-10-21T19:46:48Z",
+   "systems": [
+    "Kütuseseire"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-21T00:47:07Z",
+   "cause": "rate_limited",
+   "count": 2,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 18946,
+   "end": "2026-10-21T10:48:36Z",
+   "last_ts": "2026-10-21T05:32:50Z",
+   "max_s": 36089,
+   "members": [
+    {
+     "end": "2026-10-21T10:48:36Z",
+     "id": "kytus-source-of-pollution",
+     "max_s": 36089,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-21T10:48:36Z",
+     "id": "kytus-monitoring",
+     "max_s": 36089,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-21T05:32:50Z",
+   "systems": [
+    "Kütuseseire"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-20T19:28:09Z",
+   "cause": "rate_limited",
+   "count": 1,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 8230,
+   "end": "2026-10-21T00:47:07Z",
+   "last_ts": "2026-10-20T22:29:57Z",
+   "max_s": 19138,
+   "members": [
+    {
+     "end": "2026-10-21T00:47:07Z",
+     "id": "proto-opendata",
+     "max_s": 19138,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-20T22:29:57Z",
+   "systems": [
+    "Probleemtooteregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-20T10:37:09Z",
+   "cause": "rate_limited",
+   "count": 3,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 14377,
+   "end": "2026-10-20T19:28:05Z",
+   "last_ts": "2026-10-20T15:28:28Z",
+   "max_s": 31856,
+   "members": [
+    {
+     "end": "2026-10-20T19:28:05Z",
+     "id": "ilmateenistus-prognoos-xml",
+     "max_s": 31855,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-20T19:28:05Z",
+     "id": "ilmateenistus-hoiatused-xml",
+     "max_s": 31855,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-20T19:28:05Z",
+     "id": "ilmateenistus-hoiatused-rss",
+     "max_s": 31856,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-20T15:28:28Z",
+   "systems": [
+    "Ilmateenistus"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-20T05:31:35Z",
+   "cause": "rate_limited",
+   "count": 2,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 31825,
+   "end": "2026-10-20T19:28:09Z",
+   "last_ts": "2026-10-20T15:28:31Z",
+   "max_s": 50194,
+   "members": [
+    {
+     "end": "2026-10-20T19:28:09Z",
+     "id": "kytus-bunkering-company",
+     "max_s": 50194,
+     "min_s": 17447
+    },
+    {
+     "end": "2026-10-20T15:28:00Z",
+     "id": "kytus-source-of-pollution",
+     "max_s": 35785,
+     "min_s": 0
+    }
+   ],
+   "min_s": 17447,
+   "start": "2026-10-20T10:37:44Z",
+   "systems": [
+    "Kütuseseire"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-19T21:37:55Z",
+   "cause": "rate_limited",
+   "count": 2,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 16941,
+   "end": "2026-10-20T05:31:35Z",
+   "last_ts": "2026-10-20T00:49:14Z",
+   "max_s": 28420,
+   "members": [
+    {
+     "end": "2026-10-20T05:31:35Z",
+     "id": "kytus-bunkering-company",
+     "max_s": 28420,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-20T05:31:35Z",
+     "id": "kytus-monitoring",
+     "max_s": 28389,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-20T00:49:14Z",
+   "systems": [
+    "Kütuseseire"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-19T17:15:23Z",
+   "cause": "rate_limited",
+   "count": 9,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 15691,
+   "end": "2026-10-20T00:48:43Z",
+   "last_ts": "2026-10-19T21:38:27Z",
+   "max_s": 27200,
+   "members": [
+    {
+     "end": "2026-10-19T21:37:51Z",
+     "id": "ilmateenistus-vaatlusandmed-xml",
+     "max_s": 15748,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-20T00:48:40Z",
+     "id": "ilmateenistus-hoiatused-xml",
+     "max_s": 27197,
+     "min_s": 4270
+    },
+    {
+     "end": "2026-10-20T00:48:40Z",
+     "id": "ilmateenistus-hoiatused-rss",
+     "max_s": 27197,
+     "min_s": 4271
+    },
+    {
+     "end": "2026-10-20T00:48:40Z",
+     "id": "ilmateenistus-juur",
+     "max_s": 27197,
+     "min_s": 4270
+    },
+    {
+     "end": "2026-10-19T21:37:55Z",
+     "id": "kytus-bunkering-company",
+     "max_s": 15749,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-19T21:37:56Z",
+     "id": "kytus-source-of-pollution",
+     "max_s": 15750,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-19T21:38:26Z",
+     "id": "kytus-monitoring",
+     "max_s": 15780,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-20T00:48:43Z",
+     "id": "pakis-opendata",
+     "max_s": 27197,
+     "min_s": 4272
+    },
+    {
+     "end": "2026-10-19T21:37:56Z",
+     "id": "proto-opendata",
+     "max_s": 15750,
+     "min_s": 0
+    }
+   ],
+   "min_s": 4275,
+   "start": "2026-10-19T20:27:12Z",
+   "systems": [
+    "Ilmateenistus",
+    "Kütuseseire",
+    "Pakendiregister",
+    "Probleemtooteregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-19T04:59:01Z",
+   "cause": "rate_limited",
+   "count": 3,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 24211,
+   "end": "2026-10-19T17:15:26Z",
+   "last_ts": "2026-10-19T10:31:57Z",
+   "max_s": 44185,
+   "members": [
+    {
+     "end": "2026-10-19T17:15:26Z",
+     "id": "kytus-bunkering-company",
+     "max_s": 44185,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-19T17:15:26Z",
+     "id": "kytus-source-of-pollution",
+     "max_s": 44185,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-19T17:15:26Z",
+     "id": "pakis-opendata",
+     "max_s": 44185,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-19T10:31:55Z",
+   "systems": [
+    "Kütuseseire",
+    "Pakendiregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-19T00:18:00Z",
+   "cause": "rate_limited",
+   "count": 5,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 44183,
+   "end": "2026-10-19T17:15:26Z",
+   "last_ts": "2026-10-19T10:31:56Z",
+   "max_s": 61046,
+   "members": [
+    {
+     "end": "2026-10-19T10:31:46Z",
+     "id": "ilmateenistus-prognoos-xml",
+     "max_s": 36826,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-19T10:31:46Z",
+     "id": "ilmateenistus-hoiatused-xml",
+     "max_s": 36826,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-19T10:31:45Z",
+     "id": "ilmateenistus-hoiatused-rss",
+     "max_s": 36825,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-19T17:15:26Z",
+     "id": "kytus-monitoring",
+     "max_s": 61043,
+     "min_s": 19970
+    },
+    {
+     "end": "2026-10-19T17:15:26Z",
+     "id": "proto-opendata",
+     "max_s": 61043,
+     "min_s": 19968
+    }
+   ],
+   "min_s": 19970,
+   "start": "2026-10-19T04:59:03Z",
+   "systems": [
+    "Ilmateenistus",
+    "Kütuseseire",
+    "Probleemtooteregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-18T19:51:12Z",
+   "cause": "rate_limited",
+   "count": 1,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 8140,
+   "end": "2026-10-19T00:18:03Z",
+   "last_ts": "2026-10-18T22:02:23Z",
+   "max_s": 16011,
+   "members": [
+    {
+     "end": "2026-10-19T00:18:03Z",
+     "id": "proto-opendata",
+     "max_s": 16011,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-18T22:02:23Z",
+   "systems": [
+    "Probleemtooteregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-18T14:44:11Z",
+   "cause": "rate_limited",
+   "count": 5,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 7867,
+   "end": "2026-10-18T19:51:12Z",
+   "last_ts": "2026-10-18T17:40:09Z",
+   "max_s": 18421,
+   "members": [
+    {
+     "end": "2026-10-18T19:51:03Z",
+     "id": "ilmateenistus-vaatlusandmed-xml",
+     "max_s": 18412,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-18T19:51:03Z",
+     "id": "ilmateenistus-hoiatused-xml",
+     "max_s": 18412,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-18T19:51:06Z",
+     "id": "kytus-bunkering-company",
+     "max_s": 18405,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-18T19:51:06Z",
+     "id": "pakis-opendata",
+     "max_s": 18411,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-18T19:51:12Z",
+     "id": "proto-opendata",
+     "max_s": 18417,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-18T17:40:05Z",
+   "systems": [
+    "Ilmateenistus",
+    "Kütuseseire",
+    "Pakendiregister",
+    "Probleemtooteregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-18T11:28:13Z",
+   "cause": "rate_limited",
+   "count": 1,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 26276,
+   "end": "2026-10-18T22:02:17Z",
+   "last_ts": "2026-10-18T19:51:12Z",
+   "max_s": 38044,
+   "members": [
+    {
+     "end": "2026-10-18T22:02:17Z",
+     "id": "kytus-monitoring",
+     "max_s": 38044,
+     "min_s": 18411
+    }
+   ],
+   "min_s": 18411,
+   "start": "2026-10-18T14:44:21Z",
+   "systems": [
+    "Kütuseseire"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-18T06:10:05Z",
+   "cause": "rate_limited",
+   "count": 1,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 11762,
+   "end": "2026-10-18T14:44:21Z",
+   "last_ts": "2026-10-18T11:28:19Z",
+   "max_s": 30856,
+   "members": [
+    {
+     "end": "2026-10-18T14:44:21Z",
+     "id": "kytus-bunkering-company",
+     "max_s": 30856,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-18T11:28:19Z",
+   "systems": [
+    "Kütuseseire"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-18T01:16:58Z",
+   "cause": "rate_limited",
+   "count": 1,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 19082,
+   "end": "2026-10-18T11:28:13Z",
+   "last_ts": "2026-10-18T06:10:11Z",
+   "max_s": 36675,
+   "members": [
+    {
+     "end": "2026-10-18T11:28:13Z",
+     "id": "proto-opendata",
+     "max_s": 36675,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-18T06:10:11Z",
+   "systems": [
+    "Probleemtooteregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-17T18:56:49Z",
+   "cause": "rate_limited",
+   "count": 5,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 7466,
+   "end": "2026-10-17T23:15:01Z",
+   "last_ts": "2026-10-17T21:10:37Z",
+   "max_s": 15492,
+   "members": [
+    {
+     "end": "2026-10-17T23:14:51Z",
+     "id": "ilmateenistus-prognoos-xml",
+     "max_s": 15482,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-17T23:14:51Z",
+     "id": "ilmateenistus-hoiatused-xml",
+     "max_s": 15482,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-17T23:14:55Z",
+     "id": "kytus-bunkering-company",
+     "max_s": 15476,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-17T23:15:01Z",
+     "id": "kytus-source-of-pollution",
+     "max_s": 15488,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-17T23:14:55Z",
+     "id": "kytus-monitoring",
+     "max_s": 15482,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-17T21:10:35Z",
+   "systems": [
+    "Ilmateenistus",
+    "Kütuseseire"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-17T16:32:36Z",
+   "cause": "rate_limited",
+   "count": 2,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 15475,
+   "end": "2026-10-17T23:14:51Z",
+   "last_ts": "2026-10-17T21:10:35Z",
+   "max_s": 24135,
+   "members": [
+    {
+     "end": "2026-10-17T21:10:29Z",
+     "id": "ilmateenistus-vaatlusandmed-xml",
+     "max_s": 16672,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-17T23:14:51Z",
+     "id": "ilmateenistus-hoiatused-rss",
+     "max_s": 24135,
+     "min_s": 8019
+    }
+   ],
+   "min_s": 8019,
+   "start": "2026-10-17T18:56:56Z",
+   "systems": [
+    "Ilmateenistus"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-17T09:32:00Z",
+   "cause": "rate_limited",
+   "count": 4,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 11472,
+   "end": "2026-10-17T16:32:40Z",
+   "last_ts": "2026-10-17T13:21:28Z",
+   "max_s": 25240,
+   "members": [
+    {
+     "end": "2026-10-17T16:32:40Z",
+     "id": "kytus-bunkering-company",
+     "max_s": 25240,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-17T16:32:40Z",
+     "id": "kytus-monitoring",
+     "max_s": 25240,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-17T16:32:40Z",
+     "id": "pakis-opendata",
+     "max_s": 25240,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-17T16:32:40Z",
+     "id": "proto-opendata",
+     "max_s": 25240,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-17T13:21:28Z",
+   "systems": [
+    "Kütuseseire",
+    "Pakendiregister",
+    "Probleemtooteregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-16T22:19:40Z",
+   "cause": "rate_limited",
+   "count": 1,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 32024,
+   "end": "2026-10-17T09:32:00Z",
+   "last_ts": "2026-10-17T05:11:37Z",
+   "max_s": 40340,
+   "members": [
+    {
+     "end": "2026-10-17T09:32:00Z",
+     "id": "kytus-source-of-pollution",
+     "max_s": 40340,
+     "min_s": 16401
+    }
+   ],
+   "min_s": 16401,
+   "start": "2026-10-17T00:38:16Z",
+   "systems": [
+    "Kütuseseire"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-16T19:37:15Z",
+   "cause": "rate_limited",
+   "count": 2,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 8316,
+   "end": "2026-10-17T00:38:16Z",
+   "last_ts": "2026-10-16T22:19:40Z",
+   "max_s": 18061,
+   "members": [
+    {
+     "end": "2026-10-17T00:38:10Z",
+     "id": "kytus-bunkering-company",
+     "max_s": 18049,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-17T00:38:16Z",
+     "id": "pakis-opendata",
+     "max_s": 18061,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-16T22:19:40Z",
+   "systems": [
+    "Kütuseseire",
+    "Pakendiregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-16T16:17:58Z",
+   "cause": "rate_limited",
+   "count": 2,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 34456,
+   "end": "2026-10-17T05:11:37Z",
+   "last_ts": "2026-10-17T00:38:16Z",
+   "max_s": 46419,
+   "members": [
+    {
+     "end": "2026-10-17T05:11:37Z",
+     "id": "kytus-monitoring",
+     "max_s": 46419,
+     "min_s": 18055
+    },
+    {
+     "end": "2026-10-17T05:11:29Z",
+     "id": "proto-opendata",
+     "max_s": 46411,
+     "min_s": 18055
+    }
+   ],
+   "min_s": 18055,
+   "start": "2026-10-16T19:37:21Z",
+   "systems": [
+    "Kütuseseire",
+    "Probleemtooteregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-16T06:33:57Z",
+   "cause": "rate_limited",
+   "count": 1,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 15447,
+   "end": "2026-10-16T16:17:58Z",
+   "last_ts": "2026-10-16T12:00:31Z",
+   "max_s": 35041,
+   "members": [
+    {
+     "end": "2026-10-16T16:17:58Z",
+     "id": "pakis-opendata",
+     "max_s": 35041,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-16T12:00:31Z",
+   "systems": [
+    "Pakendiregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-16T01:32:25Z",
+   "cause": "rate_limited",
+   "count": 1,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 19582,
+   "end": "2026-10-16T12:00:25Z",
+   "last_ts": "2026-10-16T06:34:03Z",
+   "max_s": 37680,
+   "members": [
+    {
+     "end": "2026-10-16T12:00:25Z",
+     "id": "kytus-bunkering-company",
+     "max_s": 37680,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-16T06:34:03Z",
+   "systems": [
+    "Kütuseseire"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-15T23:09:18Z",
+   "cause": "rate_limited",
+   "count": 3,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 37675,
+   "end": "2026-10-16T12:00:26Z",
+   "last_ts": "2026-10-16T06:34:04Z",
+   "max_s": 46268,
+   "members": [
+    {
+     "end": "2026-10-16T06:34:03Z",
+     "id": "kytus-source-of-pollution",
+     "max_s": 26685,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-16T06:33:57Z",
+     "id": "pakis-opendata",
+     "max_s": 26679,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-16T12:00:26Z",
+     "id": "proto-opendata",
+     "max_s": 46267,
+     "min_s": 18093
+    }
+   ],
+   "min_s": 18093,
+   "start": "2026-10-16T01:32:31Z",
+   "systems": [
+    "Kütuseseire",
+    "Pakendiregister",
+    "Probleemtooteregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-15T12:16:52Z",
+   "cause": "rate_limited",
+   "count": 1,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 21351,
+   "end": "2026-10-15T23:09:19Z",
+   "last_ts": "2026-10-15T20:26:24Z",
+   "max_s": 39147,
+   "members": [
+    {
+     "end": "2026-10-15T23:09:19Z",
+     "id": "proto-opendata",
+     "max_s": 39147,
+     "min_s": 11576
+    }
+   ],
+   "min_s": 11576,
+   "start": "2026-10-15T17:13:28Z",
+   "systems": [
+    "Probleemtooteregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-15T06:41:52Z",
+   "cause": "rate_limited",
+   "count": 4,
+   "detail": "http 429 Too Many Requests — {\"status\":429,\"traceId\":\"00-4be1ceb23b69f3c004ba57d621744c41-de21a22a3aa226b2-01\"}",
+   "duration_s": 29370,
+   "end": "2026-10-15T20:26:24Z",
+   "last_ts": "2026-10-15T17:13:28Z",
+   "max_s": 49472,
+   "members": [
+    {
+     "end": "2026-10-15T17:13:19Z",
+     "id": "kaia-lists-active",
+     "max_s": 37887,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-15T17:13:19Z",
+     "id": "kaia-lists-archive",
+     "max_s": 37887,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-15T20:26:18Z",
+     "id": "kytus-bunkering-company",
+     "max_s": 49464,
+     "min_s": 17791
+    },
+    {
+     "end": "2026-10-15T20:26:24Z",
+     "id": "kytus-monitoring",
+     "max_s": 49469,
+     "min_s": 17791
+    }
+   ],
+   "min_s": 17791,
+   "start": "2026-10-15T12:16:54Z",
+   "systems": [
+    "KAIA",
+    "Kütuseseire"
+   ],
+   "verified": 2
+  },
+  {
+   "after": "2026-10-15T01:37:07Z",
+   "cause": "rate_limited",
+   "count": 2,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 20093,
+   "end": "2026-10-15T12:16:51Z",
+   "last_ts": "2026-10-15T06:42:00Z",
+   "max_s": 38384,
+   "members": [
+    {
+     "end": "2026-10-15T12:16:47Z",
+     "id": "ilmateenistus-hoiatused-rss",
+     "max_s": 38380,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-15T12:16:51Z",
+     "id": "kytus-source-of-pollution",
+     "max_s": 38380,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-15T06:41:58Z",
+   "systems": [
+    "Ilmateenistus",
+    "Kütuseseire"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-14T23:20:37Z",
+   "cause": "rate_limited",
+   "count": 1,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 38375,
+   "end": "2026-10-15T12:16:52Z",
+   "last_ts": "2026-10-15T06:42:01Z",
+   "max_s": 46575,
+   "members": [
+    {
+     "end": "2026-10-15T12:16:52Z",
+     "id": "pakis-opendata",
+     "max_s": 46575,
+     "min_s": 18284
+    }
+   ],
+   "min_s": 18284,
+   "start": "2026-10-15T01:37:17Z",
+   "systems": [
+    "Pakendiregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-14T20:16:16Z",
+   "cause": "rate_limited",
+   "count": 3,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 46575,
+   "end": "2026-10-15T12:16:52Z",
+   "last_ts": "2026-10-15T06:42:00Z",
+   "max_s": 57636,
+   "members": [
+    {
+     "end": "2026-10-15T01:37:11Z",
+     "id": "kytus-bunkering-company",
+     "max_s": 19255,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-15T01:37:11Z",
+     "id": "kytus-monitoring",
+     "max_s": 19255,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-15T12:16:52Z",
+     "id": "proto-opendata",
+     "max_s": 57635,
+     "min_s": 26483
+    }
+   ],
+   "min_s": 26483,
+   "start": "2026-10-14T23:20:37Z",
+   "systems": [
+    "Kütuseseire",
+    "Probleemtooteregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-14T11:56:39Z",
+   "cause": "rate_limited",
+   "count": 6,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 14437,
+   "end": "2026-10-14T20:16:17Z",
+   "last_ts": "2026-10-14T16:15:45Z",
+   "max_s": 29978,
+   "members": [
+    {
+     "end": "2026-10-14T20:16:14Z",
+     "id": "ilmateenistus-prognoos-xml",
+     "max_s": 29975,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-14T20:16:14Z",
+     "id": "ilmateenistus-hoiatused-xml",
+     "max_s": 29975,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-14T20:16:14Z",
+     "id": "ilmateenistus-hoiatused-rss",
+     "max_s": 29975,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-14T20:16:14Z",
+     "id": "ilmateenistus-juur",
+     "max_s": 29975,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-14T20:16:16Z",
+     "id": "pakis-opendata",
+     "max_s": 29973,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-14T20:16:17Z",
+     "id": "proto-opendata",
+     "max_s": 29974,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-14T16:15:40Z",
+   "systems": [
+    "Ilmateenistus",
+    "Pakendiregister",
+    "Probleemtooteregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-14T11:24:40Z",
+   "cause": "rate_limited",
+   "count": 3,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 29968,
+   "end": "2026-10-14T20:16:16Z",
+   "last_ts": "2026-10-14T16:15:45Z",
+   "max_s": 31896,
+   "members": [
+    {
+     "end": "2026-10-14T20:16:16Z",
+     "id": "kytus-bunkering-company",
+     "max_s": 31890,
+     "min_s": 15537
+    },
+    {
+     "end": "2026-10-14T16:15:39Z",
+     "id": "kytus-source-of-pollution",
+     "max_s": 17459,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-14T20:16:16Z",
+     "id": "kytus-monitoring",
+     "max_s": 31896,
+     "min_s": 15537
+    }
+   ],
+   "min_s": 15537,
+   "start": "2026-10-14T11:56:48Z",
+   "systems": [
+    "Kütuseseire"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-14T10:59:13Z",
+   "cause": "rate_limited",
+   "count": 2,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 1920,
+   "end": "2026-10-14T11:56:43Z",
+   "last_ts": "2026-10-14T11:24:46Z",
+   "max_s": 3450,
+   "members": [
+    {
+     "end": "2026-10-14T11:56:39Z",
+     "id": "ilmateenistus-vaatlusandmed-xml",
+     "max_s": 3446,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-14T11:56:43Z",
+     "id": "proto-opendata",
+     "max_s": 3445,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-14T11:24:43Z",
+   "systems": [
+    "Ilmateenistus",
+    "Probleemtooteregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-14T09:59:53Z",
+   "cause": "server_error",
+   "count": 3,
+   "detail": "http 503 Service Unavailable — <html><body><h1>503 Service Unavailable</h1> No server is available to handle this request. <script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a",
+   "duration_s": 3397,
+   "end": "2026-10-14T11:24:05Z",
+   "last_ts": "2026-10-14T10:59:30Z",
+   "max_s": 5052,
+   "members": [
+    {
+     "end": "2026-10-14T11:24:05Z",
+     "id": "estmodel-subdistricts",
+     "max_s": 5052,
+     "min_s": 1872
+    },
+    {
+     "end": "2026-10-14T11:24:05Z",
+     "id": "estmodel-districts",
+     "max_s": 5052,
+     "min_s": 1922
+    },
+    {
+     "end": "2026-10-14T11:24:05Z",
+     "id": "estmodel-rivers",
+     "max_s": 5052,
+     "min_s": 1903
+    }
+   ],
+   "min_s": 1922,
+   "start": "2026-10-14T10:27:28Z",
+   "systems": [
+    "EstModel"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-14T09:59:53Z",
+   "cause": "rate_limited",
+   "count": 3,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 3397,
+   "end": "2026-10-14T11:24:05Z",
+   "last_ts": "2026-10-14T10:59:00Z",
+   "max_s": 5052,
+   "members": [
+    {
+     "end": "2026-10-14T11:24:05Z",
+     "id": "estmodel-assessment-units",
+     "max_s": 5052,
+     "min_s": 1876
+    },
+    {
+     "end": "2026-10-14T11:24:05Z",
+     "id": "estmodel-water-outlets",
+     "max_s": 5052,
+     "min_s": 1892
+    },
+    {
+     "end": "2026-10-14T10:59:18Z",
+     "id": "proto-opendata",
+     "max_s": 3533,
+     "min_s": 0
+    }
+   ],
+   "min_s": 1892,
+   "start": "2026-10-14T10:27:28Z",
+   "systems": [
+    "EstModel",
+    "Probleemtooteregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-14T09:59:53Z",
+   "cause": "no_response",
+   "count": 2,
+   "detail": "connection failed: The read operation timed out",
+   "duration_s": 3397,
+   "end": "2026-10-14T11:24:05Z",
+   "last_ts": "2026-10-14T10:59:27Z",
+   "max_s": 5052,
+   "members": [
+    {
+     "end": "2026-10-14T11:24:05Z",
+     "id": "estmodel-countries",
+     "max_s": 5052,
+     "min_s": 1919
+    },
+    {
+     "end": "2026-10-14T11:24:05Z",
+     "id": "estmodel-stations",
+     "max_s": 5052,
+     "min_s": 1888
+    }
+   ],
+   "min_s": 1919,
+   "start": "2026-10-14T10:27:28Z",
+   "systems": [
+    "EstModel"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-14T09:28:56Z",
+   "cause": "rate_limited",
+   "count": 2,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 1644,
+   "end": "2026-10-14T10:27:55Z",
+   "last_ts": "2026-10-14T10:00:31Z",
+   "max_s": 3539,
+   "members": [
+    {
+     "end": "2026-10-14T10:27:54Z",
+     "id": "kytus-monitoring",
+     "max_s": 3538,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-14T10:27:55Z",
+     "id": "pakis-opendata",
+     "max_s": 3539,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-14T10:00:31Z",
+   "systems": [
+    "Kütuseseire",
+    "Pakendiregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-14T09:00:34Z",
+   "cause": "rate_limited",
+   "count": 1,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 1883,
+   "end": "2026-10-14T10:00:25Z",
+   "last_ts": "2026-10-14T09:29:02Z",
+   "max_s": 3591,
+   "members": [
+    {
+     "end": "2026-10-14T10:00:25Z",
+     "id": "kytus-source-of-pollution",
+     "max_s": 3591,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-14T09:29:02Z",
+   "systems": [
+    "Kütuseseire"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-14T07:59:28Z",
+   "cause": "rate_limited",
+   "count": 4,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 3733,
+   "end": "2026-10-14T09:28:50Z",
+   "last_ts": "2026-10-14T09:00:36Z",
+   "max_s": 5362,
+   "members": [
+    {
+     "end": "2026-10-14T09:28:50Z",
+     "id": "ilmateenistus-prognoos-xml",
+     "max_s": 5362,
+     "min_s": 2039
+    },
+    {
+     "end": "2026-10-14T09:00:36Z",
+     "id": "ilmateenistus-vaatlusandmed-xml",
+     "max_s": 3667,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-14T09:28:49Z",
+     "id": "ilmateenistus-hoiatused-rss",
+     "max_s": 5361,
+     "min_s": 2039
+    },
+    {
+     "end": "2026-10-14T09:00:34Z",
+     "id": "kytus-monitoring",
+     "max_s": 3658,
+     "min_s": 0
+    }
+   ],
+   "min_s": 2039,
+   "start": "2026-10-14T08:26:37Z",
+   "systems": [
+    "Ilmateenistus",
+    "Kütuseseire"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-14T05:55:01Z",
+   "cause": "rate_limited",
+   "count": 4,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 3187,
+   "end": "2026-10-14T07:10:47Z",
+   "last_ts": "2026-10-14T06:17:40Z",
+   "max_s": 4546,
+   "members": [
+    {
+     "end": "2026-10-14T07:10:47Z",
+     "id": "ilmateenistus-prognoos-xml",
+     "max_s": 4546,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-14T07:10:47Z",
+     "id": "ilmateenistus-vaatlusandmed-xml",
+     "max_s": 4546,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-14T07:10:47Z",
+     "id": "ilmateenistus-hoiatused-xml",
+     "max_s": 4546,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-14T07:10:47Z",
+     "id": "ilmateenistus-juur",
+     "max_s": 4546,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-14T06:17:40Z",
+   "systems": [
+    "Ilmateenistus"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-14T05:20:24Z",
+   "cause": "rate_limited",
+   "count": 6,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 12829,
+   "end": "2026-10-14T09:28:56Z",
+   "last_ts": "2026-10-14T09:00:40Z",
+   "max_s": 14912,
+   "members": [
+    {
+     "end": "2026-10-14T07:10:47Z",
+     "id": "ilmateenistus-hoiatused-rss",
+     "max_s": 6623,
+     "min_s": 1353
+    },
+    {
+     "end": "2026-10-14T07:10:50Z",
+     "id": "kytus-bunkering-company",
+     "max_s": 6617,
+     "min_s": 1354
+    },
+    {
+     "end": "2026-10-14T07:10:51Z",
+     "id": "kytus-source-of-pollution",
+     "max_s": 6623,
+     "min_s": 1354
+    },
+    {
+     "end": "2026-10-14T07:59:36Z",
+     "id": "kytus-monitoring",
+     "max_s": 9548,
+     "min_s": 4547
+    },
+    {
+     "end": "2026-10-14T09:28:56Z",
+     "id": "pakis-opendata",
+     "max_s": 14908,
+     "min_s": 11131
+    },
+    {
+     "end": "2026-10-14T09:00:40Z",
+     "id": "proto-opendata",
+     "max_s": 13206,
+     "min_s": 9091
+    }
+   ],
+   "min_s": 11133,
+   "start": "2026-10-14T05:55:07Z",
+   "systems": [
+    "Ilmateenistus",
+    "Kütuseseire",
+    "Pakendiregister",
+    "Probleemtooteregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-14T03:17:04Z",
+   "cause": "rate_limited",
+   "count": 2,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 4955,
+   "end": "2026-10-14T05:20:34Z",
+   "last_ts": "2026-10-14T04:57:42Z",
+   "max_s": 7410,
+   "members": [
+    {
+     "end": "2026-10-14T04:21:58Z",
+     "id": "kytus-source-of-pollution",
+     "max_s": 3894,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-14T05:20:34Z",
+     "id": "proto-opendata",
+     "max_s": 7410,
+     "min_s": 3583
+    }
+   ],
+   "min_s": 3583,
+   "start": "2026-10-14T03:57:59Z",
+   "systems": [
+    "Kütuseseire",
+    "Probleemtooteregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-14T02:53:43Z",
+   "cause": "rate_limited",
+   "count": 2,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 3891,
+   "end": "2026-10-14T04:21:58Z",
+   "last_ts": "2026-10-14T03:57:59Z",
+   "max_s": 5295,
+   "members": [
+    {
+     "end": "2026-10-14T03:57:49Z",
+     "id": "ilmateenistus-hoiatused-xml",
+     "max_s": 3846,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-14T04:21:58Z",
+     "id": "pakis-opendata",
+     "max_s": 5284,
+     "min_s": 2449
+    }
+   ],
+   "min_s": 2449,
+   "start": "2026-10-14T03:17:07Z",
+   "systems": [
+    "Ilmateenistus",
+    "Pakendiregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-14T02:15:27Z",
+   "cause": "rate_limited",
+   "count": 5,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 5289,
+   "end": "2026-10-14T04:21:58Z",
+   "last_ts": "2026-10-14T03:57:59Z",
+   "max_s": 7591,
+   "members": [
+    {
+     "end": "2026-10-14T03:57:49Z",
+     "id": "ilmateenistus-prognoos-xml",
+     "max_s": 6141,
+     "min_s": 1397
+    },
+    {
+     "end": "2026-10-14T03:17:01Z",
+     "id": "ilmateenistus-vaatlusandmed-xml",
+     "max_s": 3693,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-14T03:57:49Z",
+     "id": "ilmateenistus-hoiatused-rss",
+     "max_s": 6142,
+     "min_s": 1397
+    },
+    {
+     "end": "2026-10-14T04:21:58Z",
+     "id": "kytus-bunkering-company",
+     "max_s": 7587,
+     "min_s": 3846
+    },
+    {
+     "end": "2026-10-14T03:17:04Z",
+     "id": "proto-opendata",
+     "max_s": 3687,
+     "min_s": 0
+    }
+   ],
+   "min_s": 3849,
+   "start": "2026-10-14T02:53:49Z",
+   "systems": [
+    "Ilmateenistus",
+    "Kütuseseire",
+    "Probleemtooteregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-14T01:52:44Z",
+   "cause": "rate_limited",
+   "count": 2,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 9719,
+   "end": "2026-10-14T04:57:36Z",
+   "last_ts": "2026-10-14T04:22:04Z",
+   "max_s": 11092,
+   "members": [
+    {
+     "end": "2026-10-14T02:53:48Z",
+     "id": "kytus-source-of-pollution",
+     "max_s": 3664,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-14T04:57:36Z",
+     "id": "kytus-monitoring",
+     "max_s": 11086,
+     "min_s": 7587
+    }
+   ],
+   "min_s": 7587,
+   "start": "2026-10-14T02:15:37Z",
+   "systems": [
+    "Kütuseseire"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-14T01:07:10Z",
+   "cause": "rate_limited",
+   "count": 5,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 1371,
+   "end": "2026-10-14T02:15:37Z",
+   "last_ts": "2026-10-14T01:52:51Z",
+   "max_s": 4107,
+   "members": [
+    {
+     "end": "2026-10-14T02:15:28Z",
+     "id": "ilmateenistus-prognoos-xml",
+     "max_s": 4097,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-14T02:15:28Z",
+     "id": "ilmateenistus-vaatlusandmed-xml",
+     "max_s": 4097,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-14T02:15:27Z",
+     "id": "ilmateenistus-hoiatused-rss",
+     "max_s": 4097,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-14T02:15:28Z",
+     "id": "ilmateenistus-juur",
+     "max_s": 4097,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-14T02:15:37Z",
+     "id": "proto-opendata",
+     "max_s": 4097,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-14T01:52:46Z",
+   "systems": [
+    "Ilmateenistus",
+    "Probleemtooteregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-14T00:13:20Z",
+   "cause": "rate_limited",
+   "count": 1,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 4097,
+   "end": "2026-10-14T02:15:37Z",
+   "last_ts": "2026-10-14T01:52:50Z",
+   "max_s": 7337,
+   "members": [
+    {
+     "end": "2026-10-14T02:15:37Z",
+     "id": "pakis-opendata",
+     "max_s": 7337,
+     "min_s": 2730
+    }
+   ],
+   "min_s": 2730,
+   "start": "2026-10-14T01:07:20Z",
+   "systems": [
+    "Pakendiregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-13T23:13:25Z",
+   "cause": "rate_limited",
+   "count": 7,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 4747,
+   "end": "2026-10-14T01:07:20Z",
+   "last_ts": "2026-10-14T00:13:20Z",
+   "max_s": 6835,
+   "members": [
+    {
+     "end": "2026-10-14T00:13:10Z",
+     "id": "ilmateenistus-prognoos-xml",
+     "max_s": 3584,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-14T01:07:11Z",
+     "id": "ilmateenistus-vaatlusandmed-xml",
+     "max_s": 6825,
+     "min_s": 1504
+    },
+    {
+     "end": "2026-10-14T00:13:10Z",
+     "id": "ilmateenistus-hoiatused-xml",
+     "max_s": 3584,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-14T00:13:10Z",
+     "id": "ilmateenistus-hoiatused-rss",
+     "max_s": 3585,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-14T00:13:14Z",
+     "id": "kytus-source-of-pollution",
+     "max_s": 3578,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-14T00:13:20Z",
+     "id": "pakis-opendata",
+     "max_s": 3590,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-14T01:07:20Z",
+     "id": "proto-opendata",
+     "max_s": 6830,
+     "min_s": 1503
+    }
+   ],
+   "min_s": 1507,
+   "start": "2026-10-13T23:48:13Z",
+   "systems": [
+    "Ilmateenistus",
+    "Kütuseseire",
+    "Pakendiregister",
+    "Probleemtooteregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-13T22:52:20Z",
+   "cause": "rate_limited",
+   "count": 1,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 3577,
+   "end": "2026-10-14T00:13:13Z",
+   "last_ts": "2026-10-13T23:48:16Z",
+   "max_s": 4853,
+   "members": [
+    {
+     "end": "2026-10-14T00:13:13Z",
+     "id": "kytus-bunkering-company",
+     "max_s": 4853,
+     "min_s": 2080
+    }
+   ],
+   "min_s": 2080,
+   "start": "2026-10-13T23:13:36Z",
+   "systems": [
+    "Kütuseseire"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-13T22:14:40Z",
+   "cause": "rate_limited",
+   "count": 2,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 3346,
+   "end": "2026-10-13T23:48:11Z",
+   "last_ts": "2026-10-13T23:13:36Z",
+   "max_s": 5611,
+   "members": [
+    {
+     "end": "2026-10-13T23:48:11Z",
+     "id": "kytus-monitoring",
+     "max_s": 5611,
+     "min_s": 1271
+    },
+    {
+     "end": "2026-10-13T23:13:30Z",
+     "id": "pakis-opendata",
+     "max_s": 3530,
+     "min_s": 0
+    }
+   ],
+   "min_s": 1271,
+   "start": "2026-10-13T22:52:25Z",
+   "systems": [
+    "Kütuseseire",
+    "Pakendiregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-13T21:53:33Z",
+   "cause": "rate_limited",
+   "count": 1,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 2254,
+   "end": "2026-10-13T22:52:17Z",
+   "last_ts": "2026-10-13T22:14:43Z",
+   "max_s": 3524,
+   "members": [
+    {
+     "end": "2026-10-13T22:52:17Z",
+     "id": "ilmateenistus-vaatlusandmed-xml",
+     "max_s": 3524,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-13T22:14:43Z",
+   "systems": [
+    "Ilmateenistus"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-13T21:18:05Z",
+   "cause": "rate_limited",
+   "count": 2,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 3519,
+   "end": "2026-10-13T22:52:20Z",
+   "last_ts": "2026-10-13T22:14:46Z",
+   "max_s": 5655,
+   "members": [
+    {
+     "end": "2026-10-13T22:14:40Z",
+     "id": "kytus-bunkering-company",
+     "max_s": 3395,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-13T22:52:20Z",
+     "id": "kytus-source-of-pollution",
+     "max_s": 5655,
+     "min_s": 1265
+    }
+   ],
+   "min_s": 1265,
+   "start": "2026-10-13T21:53:41Z",
+   "systems": [
+    "Kütuseseire"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-13T20:57:39Z",
+   "cause": "rate_limited",
+   "count": 2,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 3395,
+   "end": "2026-10-13T22:14:46Z",
+   "last_ts": "2026-10-13T21:53:42Z",
+   "max_s": 4627,
+   "members": [
+    {
+     "end": "2026-10-13T22:14:40Z",
+     "id": "pakis-opendata",
+     "max_s": 4621,
+     "min_s": 2131
+    },
+    {
+     "end": "2026-10-13T22:14:46Z",
+     "id": "proto-opendata",
+     "max_s": 4621,
+     "min_s": 2131
+    }
+   ],
+   "min_s": 2131,
+   "start": "2026-10-13T21:18:11Z",
+   "systems": [
+    "Pakendiregister",
+    "Probleemtooteregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-13T19:20:07Z",
+   "cause": "rate_limited",
+   "count": 1,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 1316,
+   "end": "2026-10-13T20:17:28Z",
+   "last_ts": "2026-10-13T19:55:32Z",
+   "max_s": 3441,
+   "members": [
+    {
+     "end": "2026-10-13T20:17:28Z",
+     "id": "pakis-opendata",
+     "max_s": 3441,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-13T19:55:32Z",
+   "systems": [
+    "Pakendiregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-13T18:52:06Z",
+   "cause": "rate_limited",
+   "count": 5,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 2117,
+   "end": "2026-10-13T19:55:26Z",
+   "last_ts": "2026-10-13T19:20:12Z",
+   "max_s": 3800,
+   "members": [
+    {
+     "end": "2026-10-13T19:55:23Z",
+     "id": "ilmateenistus-prognoos-xml",
+     "max_s": 3797,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-13T19:55:23Z",
+     "id": "ilmateenistus-vaatlusandmed-xml",
+     "max_s": 3797,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-13T19:55:23Z",
+     "id": "ilmateenistus-hoiatused-xml",
+     "max_s": 3797,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-13T19:55:23Z",
+     "id": "ilmateenistus-hoiatused-rss",
+     "max_s": 3797,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-13T19:55:26Z",
+     "id": "kytus-monitoring",
+     "max_s": 3797,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-13T19:20:09Z",
+   "systems": [
+    "Ilmateenistus",
+    "Kütuseseire"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-13T18:08:52Z",
+   "cause": "rate_limited",
+   "count": 2,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 3797,
+   "end": "2026-10-13T19:55:32Z",
+   "last_ts": "2026-10-13T19:20:12Z",
+   "max_s": 6400,
+   "members": [
+    {
+     "end": "2026-10-13T19:55:32Z",
+     "id": "kytus-bunkering-company",
+     "max_s": 6400,
+     "min_s": 1677
+    },
+    {
+     "end": "2026-10-13T19:20:07Z",
+     "id": "pakis-opendata",
+     "max_s": 4275,
+     "min_s": 0
+    }
+   ],
+   "min_s": 1677,
+   "start": "2026-10-13T18:52:15Z",
+   "systems": [
+    "Kütuseseire",
+    "Pakendiregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-13T17:42:26Z",
+   "cause": "rate_limited",
+   "count": 1,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 7711,
+   "end": "2026-10-13T20:17:29Z",
+   "last_ts": "2026-10-13T19:55:32Z",
+   "max_s": 9303,
+   "members": [
+    {
+     "end": "2026-10-13T20:17:29Z",
+     "id": "proto-opendata",
+     "max_s": 9303,
+     "min_s": 6394
+    }
+   ],
+   "min_s": 6394,
+   "start": "2026-10-13T18:08:58Z",
+   "systems": [
+    "Probleemtooteregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-13T17:07:55Z",
+   "cause": "rate_limited",
+   "count": 1,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 1586,
+   "end": "2026-10-13T18:08:52Z",
+   "last_ts": "2026-10-13T17:42:26Z",
+   "max_s": 3657,
+   "members": [
+    {
+     "end": "2026-10-13T18:08:52Z",
+     "id": "pakis-opendata",
+     "max_s": 3657,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-13T17:42:26Z",
+   "systems": [
+    "Pakendiregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-13T15:45:14Z",
+   "cause": "rate_limited",
+   "count": 3,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 2136,
+   "end": "2026-10-13T16:44:32Z",
+   "last_ts": "2026-10-13T16:08:56Z",
+   "max_s": 3558,
+   "members": [
+    {
+     "end": "2026-10-13T16:44:31Z",
+     "id": "kytus-source-of-pollution",
+     "max_s": 3557,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-13T16:44:32Z",
+     "id": "pakis-opendata",
+     "max_s": 3557,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-13T16:44:32Z",
+     "id": "proto-opendata",
+     "max_s": 3551,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-13T16:08:56Z",
+   "systems": [
+    "Kütuseseire",
+    "Pakendiregister",
+    "Probleemtooteregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-13T15:10:16Z",
+   "cause": "rate_limited",
+   "count": 1,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 1410,
+   "end": "2026-10-13T16:08:50Z",
+   "last_ts": "2026-10-13T15:45:20Z",
+   "max_s": 3514,
+   "members": [
+    {
+     "end": "2026-10-13T16:08:50Z",
+     "id": "kytus-bunkering-company",
+     "max_s": 3514,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-13T15:45:20Z",
+   "systems": [
+    "Kütuseseire"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-13T14:47:04Z",
+   "cause": "rate_limited",
+   "count": 5,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 3509,
+   "end": "2026-10-13T16:08:47Z",
+   "last_ts": "2026-10-13T15:45:17Z",
+   "max_s": 4903,
+   "members": [
+    {
+     "end": "2026-10-13T16:08:47Z",
+     "id": "ilmateenistus-prognoos-xml",
+     "max_s": 4902,
+     "min_s": 2099
+    },
+    {
+     "end": "2026-10-13T15:45:11Z",
+     "id": "ilmateenistus-vaatlusandmed-xml",
+     "max_s": 3486,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-13T15:45:10Z",
+     "id": "ilmateenistus-hoiatused-rss",
+     "max_s": 3486,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-13T15:45:14Z",
+     "id": "kytus-source-of-pollution",
+     "max_s": 3487,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-13T15:45:21Z",
+     "id": "proto-opendata",
+     "max_s": 3493,
+     "min_s": 0
+    }
+   ],
+   "min_s": 2099,
+   "start": "2026-10-13T15:10:18Z",
+   "systems": [
+    "Ilmateenistus",
+    "Kütuseseire",
+    "Probleemtooteregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-13T13:49:09Z",
+   "cause": "rate_limited",
+   "count": 4,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 2123,
+   "end": "2026-10-13T14:47:08Z",
+   "last_ts": "2026-10-13T14:11:46Z",
+   "max_s": 3479,
+   "members": [
+    {
+     "end": "2026-10-13T14:47:07Z",
+     "id": "kytus-bunkering-company",
+     "max_s": 3478,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-13T14:47:07Z",
+     "id": "kytus-monitoring",
+     "max_s": 3478,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-13T14:47:08Z",
+     "id": "pakis-opendata",
+     "max_s": 3479,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-13T14:47:08Z",
+     "id": "proto-opendata",
+     "max_s": 3479,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-13T14:11:45Z",
+   "systems": [
+    "Kütuseseire",
+    "Pakendiregister",
+    "Probleemtooteregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-13T12:53:13Z",
+   "cause": "rate_limited",
+   "count": 1,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 1980,
+   "end": "2026-10-13T13:49:09Z",
+   "last_ts": "2026-10-13T13:16:09Z",
+   "max_s": 3356,
+   "members": [
+    {
+     "end": "2026-10-13T13:49:09Z",
+     "id": "proto-opendata",
+     "max_s": 3356,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-13T13:16:09Z",
+   "systems": [
+    "Probleemtooteregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-13T12:09:41Z",
+   "cause": "rate_limited",
+   "count": 1,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 1364,
+   "end": "2026-10-13T13:16:03Z",
+   "last_ts": "2026-10-13T12:53:19Z",
+   "max_s": 3982,
+   "members": [
+    {
+     "end": "2026-10-13T13:16:03Z",
+     "id": "pakis-opendata",
+     "max_s": 3982,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-13T12:53:19Z",
+   "systems": [
+    "Pakendiregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-13T11:43:08Z",
+   "cause": "rate_limited",
+   "count": 6,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 2621,
+   "end": "2026-10-13T12:53:19Z",
+   "last_ts": "2026-10-13T12:09:41Z",
+   "max_s": 4211,
+   "members": [
+    {
+     "end": "2026-10-13T12:53:10Z",
+     "id": "ilmateenistus-prognoos-xml",
+     "max_s": 4201,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-13T12:53:10Z",
+     "id": "ilmateenistus-vaatlusandmed-xml",
+     "max_s": 4201,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-13T12:53:10Z",
+     "id": "ilmateenistus-hoiatused-xml",
+     "max_s": 4201,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-13T12:53:10Z",
+     "id": "ilmateenistus-hoiatused-rss",
+     "max_s": 4202,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-13T12:53:19Z",
+     "id": "kytus-bunkering-company",
+     "max_s": 4206,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-13T12:53:13Z",
+     "id": "kytus-source-of-pollution",
+     "max_s": 4200,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-13T12:09:38Z",
+   "systems": [
+    "Ilmateenistus",
+    "Kütuseseire"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-13T11:08:33Z",
+   "cause": "rate_limited",
+   "count": 1,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 1582,
+   "end": "2026-10-13T12:09:41Z",
+   "last_ts": "2026-10-13T11:43:19Z",
+   "max_s": 3668,
+   "members": [
+    {
+     "end": "2026-10-13T12:09:41Z",
+     "id": "pakis-opendata",
+     "max_s": 3668,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-13T11:43:19Z",
+   "systems": [
+    "Pakendiregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-13T10:08:08Z",
+   "cause": "rate_limited",
+   "count": 3,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 1429,
+   "end": "2026-10-13T11:08:33Z",
+   "last_ts": "2026-10-13T10:44:47Z",
+   "max_s": 3625,
+   "members": [
+    {
+     "end": "2026-10-13T11:08:30Z",
+     "id": "ilmateenistus-hoiatused-rss",
+     "max_s": 3622,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-13T11:08:30Z",
+     "id": "ilmateenistus-juur",
+     "max_s": 3622,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-13T11:08:33Z",
+     "id": "proto-opendata",
+     "max_s": 3614,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-13T10:44:44Z",
+   "systems": [
+    "Ilmateenistus",
+    "Probleemtooteregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-13T09:43:28Z",
+   "cause": "rate_limited",
+   "count": 1,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 3621,
+   "end": "2026-10-13T11:08:39Z",
+   "last_ts": "2026-10-13T10:44:47Z",
+   "max_s": 5111,
+   "members": [
+    {
+     "end": "2026-10-13T11:08:39Z",
+     "id": "kytus-monitoring",
+     "max_s": 5111,
+     "min_s": 2189
+    }
+   ],
+   "min_s": 2189,
+   "start": "2026-10-13T10:08:18Z",
+   "systems": [
+    "Kütuseseire"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-13T05:43:48Z",
+   "cause": "rate_limited",
+   "count": 5,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 3930,
+   "end": "2026-10-13T07:14:06Z",
+   "last_ts": "2026-10-13T06:53:37Z",
+   "max_s": 5418,
+   "members": [
+    {
+     "end": "2026-10-13T06:53:30Z",
+     "id": "kytus-bunkering-company",
+     "max_s": 4182,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-13T06:53:30Z",
+     "id": "kytus-source-of-pollution",
+     "max_s": 4182,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-13T06:53:30Z",
+     "id": "kytus-monitoring",
+     "max_s": 4182,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-13T07:14:06Z",
+     "id": "pakis-opendata",
+     "max_s": 5418,
+     "min_s": 2701
+    },
+    {
+     "end": "2026-10-13T06:53:31Z",
+     "id": "proto-opendata",
+     "max_s": 4183,
+     "min_s": 0
+    }
+   ],
+   "min_s": 2701,
+   "start": "2026-10-13T06:08:36Z",
+   "systems": [
+    "Kütuseseire",
+    "Pakendiregister",
+    "Probleemtooteregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-13T04:45:38Z",
+   "cause": "rate_limited",
+   "count": 1,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 2114,
+   "end": "2026-10-13T05:43:48Z",
+   "last_ts": "2026-10-13T05:08:34Z",
+   "max_s": 3490,
+   "members": [
+    {
+     "end": "2026-10-13T05:43:48Z",
+     "id": "kytus-source-of-pollution",
+     "max_s": 3490,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-13T05:08:34Z",
+   "systems": [
+    "Kütuseseire"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-13T03:44:54Z",
+   "cause": "rate_limited",
+   "count": 2,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 3623,
+   "end": "2026-10-13T05:08:34Z",
+   "last_ts": "2026-10-13T04:45:43Z",
+   "max_s": 5020,
+   "members": [
+    {
+     "end": "2026-10-13T05:08:34Z",
+     "id": "kytus-bunkering-company",
+     "max_s": 5020,
+     "min_s": 2252
+    },
+    {
+     "end": "2026-10-13T04:45:38Z",
+     "id": "kytus-monitoring",
+     "max_s": 3638,
+     "min_s": 0
+    }
+   ],
+   "min_s": 2252,
+   "start": "2026-10-13T04:08:11Z",
+   "systems": [
+    "Kütuseseire"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-13T03:07:18Z",
+   "cause": "rate_limited",
+   "count": 3,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 7128,
+   "end": "2026-10-13T05:43:48Z",
+   "last_ts": "2026-10-13T05:08:34Z",
+   "max_s": 9390,
+   "members": [
+    {
+     "end": "2026-10-13T04:45:38Z",
+     "id": "kytus-source-of-pollution",
+     "max_s": 5900,
+     "min_s": 1391
+    },
+    {
+     "end": "2026-10-13T04:45:38Z",
+     "id": "pakis-opendata",
+     "max_s": 5900,
+     "min_s": 1392
+    },
+    {
+     "end": "2026-10-13T05:43:48Z",
+     "id": "proto-opendata",
+     "max_s": 9384,
+     "min_s": 5013
+    }
+   ],
+   "min_s": 5014,
+   "start": "2026-10-13T03:45:00Z",
+   "systems": [
+    "Kütuseseire",
+    "Pakendiregister",
+    "Probleemtooteregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-13T02:07:22Z",
+   "cause": "rate_limited",
+   "count": 2,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 1414,
+   "end": "2026-10-13T03:07:18Z",
+   "last_ts": "2026-10-13T02:43:44Z",
+   "max_s": 3596,
+   "members": [
+    {
+     "end": "2026-10-13T03:07:18Z",
+     "id": "kytus-bunkering-company",
+     "max_s": 3596,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-13T03:07:18Z",
+     "id": "kytus-source-of-pollution",
+     "max_s": 3596,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-13T02:43:44Z",
+   "systems": [
+    "Kütuseseire"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-13T01:13:06Z",
+   "cause": "rate_limited",
+   "count": 5,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 5006,
+   "end": "2026-10-13T03:07:18Z",
+   "last_ts": "2026-10-13T02:43:44Z",
+   "max_s": 6852,
+   "members": [
+    {
+     "end": "2026-10-13T02:07:22Z",
+     "id": "kytus-bunkering-company",
+     "max_s": 3256,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-13T02:07:22Z",
+     "id": "kytus-source-of-pollution",
+     "max_s": 3256,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-13T02:07:22Z",
+     "id": "kytus-monitoring",
+     "max_s": 3256,
+     "min_s": 0
+    },
+    {
+     "end": "2026-10-13T03:07:18Z",
+     "id": "pakis-opendata",
+     "max_s": 6852,
+     "min_s": 3592
+    },
+    {
+     "end": "2026-10-13T02:43:38Z",
+     "id": "proto-opendata",
+     "max_s": 5431,
+     "min_s": 1416
+    }
+   ],
+   "min_s": 3592,
+   "start": "2026-10-13T01:43:52Z",
+   "systems": [
+    "Kütuseseire",
+    "Pakendiregister",
+    "Probleemtooteregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-12T23:06:16Z",
+   "cause": "rate_limited",
+   "count": 2,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 5573,
+   "end": "2026-10-13T01:13:06Z",
+   "last_ts": "2026-10-13T00:54:47Z",
+   "max_s": 7610,
+   "members": [
+    {
+     "end": "2026-10-13T00:54:41Z",
+     "id": "kytus-monitoring",
+     "max_s": 6505,
+     "min_s": 1688
+    },
+    {
+     "end": "2026-10-13T01:13:06Z",
+     "id": "pakis-opendata",
+     "max_s": 7610,
+     "min_s": 4474
+    }
+   ],
+   "min_s": 4474,
+   "start": "2026-10-12T23:40:13Z",
+   "systems": [
+    "Kütuseseire",
+    "Pakendiregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-12T22:41:09Z",
+   "cause": "rate_limited",
+   "count": 3,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 7611,
+   "end": "2026-10-13T01:13:07Z",
+   "last_ts": "2026-10-13T00:54:47Z",
+   "max_s": 9118,
+   "members": [
+    {
+     "end": "2026-10-13T00:54:41Z",
+     "id": "kytus-bunkering-company",
+     "max_s": 8012,
+     "min_s": 3725
+    },
+    {
+     "end": "2026-10-13T00:54:41Z",
+     "id": "kytus-source-of-pollution",
+     "max_s": 8012,
+     "min_s": 3725
+    },
+    {
+     "end": "2026-10-13T01:13:07Z",
+     "id": "proto-opendata",
+     "max_s": 9118,
+     "min_s": 6511
+    }
+   ],
+   "min_s": 6511,
+   "start": "2026-10-12T23:06:16Z",
+   "systems": [
+    "Kütuseseire",
+    "Probleemtooteregister"
+   ],
+   "verified": 0
+  },
+  {
+   "after": "2026-10-12T19:41:20Z",
+   "cause": "rate_limited",
+   "count": 1,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 2180,
+   "end": "2026-10-12T20:43:05Z",
+   "last_ts": "2026-10-12T20:06:45Z",
+   "max_s": 3705,
+   "members": [
+    {
+     "end": "2026-10-12T20:43:05Z",
+     "id": "proto-opendata",
+     "max_s": 3705,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-10-12T20:06:45Z",
+   "systems": [
+    "Probleemtooteregister"
+   ],
+   "verified": 0
+  }
+ ],
+ "first_record": "2026-09-28T00:04:35Z",
+ "generated_at": "2026-10-28T23:39:18Z",
  "incident_count": 691,
  "incidents": [
   {
    "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
-   "duration_s": 1,
+   "duration_s": 6150,
    "end": null,
    "id": "proto-opendata",
    "name": "PROTO: probleemtoodete avaandmed",
@@ -5738,7 +9392,7 @@
   },
   {
    "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
-   "duration_s": 4533,
+   "duration_s": 10682,
    "end": null,
    "id": "kytus-source-of-pollution",
    "name": "Kütuseseire: heiteallikad",
@@ -7718,226 +11372,294 @@
   }
  ],
  "interval_minutes": 30,
- "outage_total_s": 4894753,
+ "last_check": "2026-10-28T21:56:48Z",
  "outages_by_endpoint": [
   {
    "count": 140,
    "id": "proto-opendata",
    "name": "PROTO: probleemtoodete avaandmed",
-   "total_s": 850549
+   "total_max_s": 1402960,
+   "total_min_s": 292435,
+   "total_s": 856698
   },
   {
    "count": 121,
    "id": "pakis-opendata",
    "name": "PAKIS: pakendijäätmete avaandmed",
+   "total_max_s": 1084478,
+   "total_min_s": 183295,
    "total_s": 635949
   },
   {
    "count": 94,
    "id": "kytus-bunkering-company",
    "name": "Kütuseseire: ettevõtted",
+   "total_max_s": 1056217,
+   "total_min_s": 191708,
    "total_s": 613700
   },
   {
    "count": 88,
    "id": "kytus-monitoring",
    "name": "Kütuseseire: seireandmed",
+   "total_max_s": 1068297,
+   "total_min_s": 268923,
    "total_s": 662663
   },
   {
    "count": 88,
    "id": "kytus-source-of-pollution",
    "name": "Kütuseseire: heiteallikad",
-   "total_s": 535088
+   "total_max_s": 916399,
+   "total_min_s": 151179,
+   "total_s": 541237
   },
   {
    "count": 20,
    "id": "ilmateenistus-hoiatused-rss",
    "name": "Ilmateenistus: hoiatuste RSS",
+   "total_max_s": 421811,
+   "total_min_s": 57688,
    "total_s": 245732
   },
   {
    "count": 19,
    "id": "ilmateenistus-vaatlusandmed-xml",
    "name": "Ilmateenistus: Eesti vaatlusandmed XML",
+   "total_max_s": 338814,
+   "total_min_s": 63025,
    "total_s": 201814
   },
   {
    "count": 19,
    "id": "ilmateenistus-prognoos-xml",
    "name": "Ilmateenistus: Eesti prognoos XML",
+   "total_max_s": 372307,
+   "total_min_s": 16691,
    "total_s": 187665
   },
   {
    "count": 17,
    "id": "ilmateenistus-hoiatused-xml",
    "name": "Ilmateenistus: hoiatused XML",
+   "total_max_s": 410862,
+   "total_min_s": 65791,
    "total_s": 239596
   },
   {
    "count": 14,
    "id": "ilmateenistus-juur",
    "name": "Ilmateenistus: teenuse juur",
+   "total_max_s": 186374,
+   "total_min_s": 4270,
    "total_s": 100113
   }
  ],
  "outages_by_system": [
   {
+   "affected_max_s": 1462827,
+   "affected_min_s": 377862,
+   "affected_s": 965329,
    "count": 270,
-   "name": "Kütuseseire",
-   "total_s": 1811451
+   "name": "Kütuseseire"
   },
   {
-   "count": 89,
-   "name": "Ilmateenistus",
-   "total_s": 974920
-  },
-  {
+   "affected_max_s": 1402960,
+   "affected_min_s": 292435,
+   "affected_s": 856698,
    "count": 140,
-   "name": "Probleemtooteregister",
-   "total_s": 850549
+   "name": "Probleemtooteregister"
   },
   {
+   "affected_max_s": 1084478,
+   "affected_min_s": 183295,
+   "affected_s": 635949,
    "count": 121,
-   "name": "Pakendiregister",
-   "total_s": 635949
+   "name": "Pakendiregister"
   },
   {
-   "count": 27,
-   "name": "Kliima",
-   "total_s": 252516
+   "affected_max_s": 614986,
+   "affected_min_s": 82204,
+   "affected_s": 356383,
+   "count": 89,
+   "name": "Ilmateenistus"
   },
   {
-   "count": 12,
-   "name": "KAIA",
-   "total_s": 125619
-  },
-  {
+   "affected_max_s": 77663,
+   "affected_min_s": 0,
+   "affected_s": 46265,
    "count": 6,
-   "name": "Hüdroloogia",
-   "total_s": 88896
+   "name": "Hüdroloogia"
   },
   {
+   "affected_max_s": 68398,
+   "affected_min_s": 0,
+   "affected_s": 35839,
+   "count": 12,
+   "name": "KAIA"
+  },
+  {
+   "affected_max_s": 48672,
+   "affected_min_s": 0,
+   "affected_s": 26617,
+   "count": 4,
+   "name": "EELIS"
+  },
+  {
+   "affected_max_s": 42521,
+   "affected_min_s": 0,
+   "affected_s": 22443,
+   "count": 27,
+   "name": "Kliima"
+  },
+  {
+   "affected_max_s": 30555,
+   "affected_min_s": 0,
+   "affected_s": 21154,
+   "count": 4,
+   "name": "Keskkonnaseire"
+  },
+  {
+   "affected_max_s": 30513,
+   "affected_min_s": 0,
+   "affected_s": 17876,
+   "count": 2,
+   "name": "Keskkonnaandmed"
+  },
+  {
+   "affected_max_s": 30513,
+   "affected_min_s": 0,
+   "affected_s": 17865,
+   "count": 2,
+   "name": "Keskkonnaseire infosüsteem"
+  },
+  {
+   "affected_max_s": 10592,
+   "affected_min_s": 1922,
+   "affected_s": 7666,
    "count": 14,
-   "name": "EstModel",
-   "total_s": 53524
-  },
-  {
-   "count": 4,
-   "name": "Keskkonnaseire",
-   "total_s": 38971
-  },
-  {
-   "count": 4,
-   "name": "EELIS",
-   "total_s": 26617
-  },
-  {
-   "count": 2,
-   "name": "Keskkonnaandmed",
-   "total_s": 17876
-  },
-  {
-   "count": 2,
-   "name": "Keskkonnaseire infosüsteem",
-   "total_s": 17865
+   "name": "EstModel"
   }
  ],
  "systems": [
   {
    "avail_24h": 100.0,
+   "checks_24h": 5,
    "description": "Eesti Looduse Infosüsteemi andmed: kaitsealad, kaitstavad loodusobjektid ja nendega seotud dokumendid ning õiguslikud alused. Kasutatakse looduskaitse korralduses ja planeerimisel.",
    "endpoints": 1,
    "name": "EELIS",
    "ok": 1,
+   "ok_24h": 5,
    "problem": 0
   },
   {
    "avail_24h": 100.0,
+   "checks_24h": 35,
    "description": "Reostuskoormuste ja vooluhulkade hinnangud seirejaamades, vooluveekogude lävendites ja hindamisüksustes. Hinnangud tulevad Keskkonnaagentuuri seirepõhisest ja allikapõhisest EstModeli mudelist; rakendus näitab ka hinnangute aluseks olevaid seireandmeid.",
    "endpoints": 7,
    "name": "EstModel",
    "ok": 7,
+   "ok_24h": 35,
    "problem": 0
   },
   {
    "avail_24h": 100.0,
+   "checks_24h": 10,
    "description": "Hüdroloogilise seire tunniandmed: veetasemed ja muud veekogude näitajad jõgedel ja rannikumeres, koos mõõtejaamade asukohtadega. Kasutatakse veeolukorra jälgimiseks ja veemajanduses.",
    "endpoints": 2,
    "name": "Hüdroloogia",
    "ok": 2,
+   "ok_24h": 10,
    "problem": 0
   },
   {
-   "avail_24h": 83.33,
+   "avail_24h": 80.0,
+   "checks_24h": 25,
    "description": "Riigi ilmateenistuse avalik teenus: ilmaprognoosid, hoiatused ohtliku ilma kohta, mereilmateade, mudelprognoosid ning ilmajaamade vaatlusandmed. Vaatlusandmed on masinliidesena saadaval XML-kujul.",
    "endpoints": 5,
    "name": "Ilmateenistus",
    "ok": 5,
+   "ok_24h": 20,
    "problem": 0
   },
   {
    "avail_24h": 100.0,
+   "checks_24h": 25,
    "description": "Looduskeskkonna avaandmete failide allalaadimise teenus. Võimaldab masinliidese kaudu otsida ja alla laadida meteoroloogia ja hüdroloogia andmefaile.",
    "endpoints": 5,
    "name": "KAIA",
    "ok": 5,
+   "ok_24h": 25,
    "problem": 0
   },
   {
    "avail_24h": 100.0,
+   "checks_24h": 5,
    "description": "Keskkonna- ja ilmavaldkonna andmeteenuste keskkonna juurteenus. See loetleb kõik saadaolevad andmestikud ja nende kuju, mistõttu on see esimene koht, kust arendaja alustab. Kui see teenus ei vasta, ei ole ka ülejäänud andmeteenused leitavad.",
    "endpoints": 1,
    "name": "Keskkonnaandmed",
    "ok": 1,
+   "ok_24h": 5,
    "problem": 0
   },
   {
    "avail_24h": 100.0,
+   "checks_24h": 10,
    "description": "Riikliku keskkonnaseire mõõtmistulemused seireprogrammide ja näitajate kaupa. Kasutatakse keskkonnaseisundi hindamisel ja aruandluses.",
    "endpoints": 2,
    "name": "Keskkonnaseire",
    "ok": 2,
+   "ok_24h": 10,
    "problem": 0
   },
   {
    "avail_24h": 100.0,
+   "checks_24h": 5,
    "description": "KESE on andmekogu, kuhu kogutakse keskkonnaseire seaduse alusel riikliku seireprogrammi, kalanduse andmekogumise ning muude uuringute seireandmed. Avaandmetena jõuavad need andmeteenuste kaudu välja.",
    "endpoints": 1,
    "name": "Keskkonnaseire infosüsteem",
    "ok": 1,
+   "ok_24h": 5,
    "problem": 0
   },
   {
    "avail_24h": 100.0,
+   "checks_24h": 65,
    "description": "Ilmajaamade mõõtmisandmed kuu, ööpäeva, tunni ja 10 minuti täpsusega, koos jaamade ja mõõdetavate suuruste kirjeldustega. Neid andmeid kasutatakse kliimastatistikas, aruandluses ja uuringutes.",
    "endpoints": 13,
    "name": "Kliima",
    "ok": 13,
+   "ok_24h": 65,
    "problem": 0
   },
   {
-   "avail_24h": 55.56,
+   "avail_24h": 66.67,
+   "checks_24h": 15,
    "description": "Eesti turul müüdavate ja tarbitavate vedelkütuste keskkonnaparameetrite kvaliteedi ja koguste seire. Osa riiklikust kütusekvaliteedi juhtimissüsteemist, mille kaudu täidetakse Euroopa Liidu kütusedirektiivide nõudeid.",
    "endpoints": 3,
    "name": "Kütuseseire",
    "ok": 2,
+   "ok_24h": 10,
    "problem": 1
   },
   {
-   "avail_24h": 50.0,
+   "avail_24h": 60.0,
+   "checks_24h": 5,
    "description": "Turule lastud kauba pakendite, Eestis tekkinud pakendijäätmete, korduskasutuse ja taaskasutuse sihtarvude arvestus. Andmeid kasutatakse pakendiseadusest tulenevate kohustuste täitmiseks ja Euroopa Komisjonile aruandmiseks.",
    "endpoints": 1,
    "name": "Pakendiregister",
    "ok": 1,
+   "ok_24h": 3,
    "problem": 0
   },
   {
-   "avail_24h": 33.33,
+   "avail_24h": 40.0,
+   "checks_24h": 5,
    "description": "Arvestus Eestis turule lastud probleemtoodete ja neist tekkinud jäätmete taaskasutamise ning kõrvaldamise kohta, sealhulgas taaskasutuse sihtarvude täitmise ja Euroopa Komisjonile esitatava jäätmealase teabe jaoks.",
    "endpoints": 1,
    "name": "Probleemtooteregister",
    "ok": 0,
+   "ok_24h": 2,
    "problem": 1
   }
  ],

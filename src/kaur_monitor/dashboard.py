@@ -43,6 +43,12 @@ _CHART_DAYS = 30
 
 _PROBLEM = ("down", "degraded")
 
+_INCIDENT_KEYS = ("id", "name", "system", "start", "end", "duration_s", "worst", "detail")
+
+# Events sent to the page. Each carries its member incidents, so this is the
+# cap that keeps status.json small rather than a judgement about relevance.
+_EVENTS_SHOWN = 100
+
 # The latency chart pools every system into one line by default, which
 # compares KAIA (file downloads) against PostgREST queries — different
 # things with different natural response times. Split two ways rather than
@@ -112,10 +118,164 @@ def _cadence(records: list[dict[str, Any]], now: datetime) -> dict[str, Any] | N
         "nominal_minutes": _NOMINAL_INTERVAL_MIN,
         "days": _CADENCE_DAYS,
         "runs": len(starts),
+        # What the schedule promises over the same window, so the page can say
+        # "42 of 336" — received against expected, the way WMO's WDQMS reports
+        # observation availability — rather than leave the reader to divide.
+        "expected_runs": round(_CADENCE_DAYS * 24 * 60 / _NOMINAL_INTERVAL_MIN),
         "median_gap_minutes": round(gaps[len(gaps) // 2]),
         "p90_gap_minutes": round(gaps[min(len(gaps) - 1, int(0.9 * len(gaps)))]),
         "max_gap_minutes": round(gaps[-1]),
     }
+
+
+# Checked in order; the first prefix or fragment found in a failure's detail
+# names its cause. The page turns each key into Estonian words — the raw
+# detail (for a 429, Cloudflare's own HTML) stays one click away, but it is
+# not what a reader deciding "is this real" should have to parse first.
+_CAUSES: tuple[tuple[str, tuple[str, ...]], ...] = (
+    ("rate_limited", ("http 429",)),
+    ("not_dialled", ("not dialled",)),
+    ("dns", ("dns lookup failed",)),
+    ("no_response", ("connection failed",)),
+    ("server_error", ("http 5",)),
+    ("client_error", ("http 4",)),
+    ("service_exception", ("ogc service exception",)),
+    ("stale", ("stale data", "freshness_regex")),
+    ("unreadable", ("invalid json", "invalid xml", "empty response body", "content-type")),
+    ("check_error", ("check aborted", "unexpected error", "unparseable url")),
+)
+
+
+# An endpoint skipped by the circuit breaker failed because its host had just
+# stopped answering other endpoints in the same run: one outage, not two
+# events side by side. The members keep their own cause.
+_EVENT_CAUSE = {"not_dialled": "no_response"}
+
+
+def classify_cause(detail: str) -> str:
+    """One of the _CAUSES keys, or 'other'.
+
+    A group record's detail reads "7/7 ei vasta: member (member's detail), …";
+    the group failed for whatever its first named member failed for, so the
+    text inside the first parenthesis is what gets classified.
+    """
+    text = (detail or "").strip().lower()
+    if " ei vasta: " in text and "(" in text:
+        text = text.split("(", 1)[1]
+    for cause, fragments in _CAUSES:
+        if text.startswith(fragments):
+            return cause
+    return "other"
+
+
+def _union_seconds(spans: list[tuple[datetime, datetime]]) -> int:
+    """Calendar time covered by at least one span. Two endpoints down for the
+    same hour is one hour here, which is what "how long was the service
+    disturbed" means — summing them would say two."""
+    covered = 0.0
+    reach: datetime | None = None
+    for begin, finish in sorted(spans):
+        if reach is None or begin > reach:
+            covered += (finish - begin).total_seconds()
+            reach = finish
+        elif finish > reach:
+            covered += (finish - reach).total_seconds()
+            reach = finish
+    return int(covered)
+
+
+def _spans(
+    incidents: list[dict[str, Any]], now: datetime
+) -> dict[str, list[tuple[datetime, datetime]]]:
+    """Each incident's time on the axis three ways: observed failing (first to
+    last failing check), as reported (first failing to first ok check), and
+    the widest it can have been (last ok before, or the window's start, to
+    first ok after)."""
+    out: dict[str, list[tuple[datetime, datetime]]] = {"min": [], "point": [], "max": []}
+    for incident in incidents:
+        start = store.parse_ts(incident["start"])
+        if start is None:
+            continue
+        end = store.parse_ts(incident["end"]) or now
+        last = store.parse_ts(incident.get("last_ts")) or start
+        after = store.parse_ts(incident.get("after_bound")) or start
+        out["min"].append((start, max(start, last)))
+        out["point"].append((start, end))
+        out["max"].append((after, end))
+    return out
+
+
+# Only what differs per member: name, service and verified flag are already in
+# `endpoints` under the same id, and members of one event share a cause, so
+# the event carries one sample detail. Repeating those per member — a
+# 200-character Cloudflare page each time — doubled a file committed every run.
+_EVENT_MEMBER_KEYS = ("id", "end", "min_s", "max_s")
+
+
+def _events(incidents: list[dict[str, Any]], now: datetime) -> list[dict[str, Any]]:
+    """Incidents with the same cause that began in the same check run.
+
+    One host stopping answering, or one rate limit switching on, opens a
+    separate incident on every endpoint behind it, and a log of those reads as
+    fifteen problems when it is one. Grouping says only what was observed —
+    same run, same cause — not that they share a root cause.
+    """
+
+    def key(incident: dict[str, Any]) -> str:
+        return _EVENT_CAUSE.get(incident["cause"], incident["cause"])
+
+    ordered = sorted(
+        (i for i in incidents if store.parse_ts(i["start"]) is not None),
+        key=lambda i: (key(i), i["start"]),
+    )
+    clusters: list[list[dict[str, Any]]] = []
+    anchor: datetime | None = None
+    for incident in ordered:
+        start = store.parse_ts(incident["start"])
+        assert start is not None
+        if (
+            clusters
+            and key(clusters[-1][0]) == key(incident)
+            and anchor is not None
+            and start - anchor <= _RUN_GAP
+        ):
+            clusters[-1].append(incident)
+        else:
+            clusters.append([incident])
+            anchor = start
+
+    events = []
+    for members in clusters:
+        afters = [m["after"] for m in members if m.get("after") is not None]
+        open_ = any(m["end"] is None for m in members)
+        start = min(m["start"] for m in members)
+        end = None if open_ else max(m["end"] for m in members)
+        spans = _spans(members, now)
+        lower = _union_seconds(spans["min"])
+        events.append(
+            {
+                "start": start,
+                # The event began after the earliest of its members' last ok
+                # checks; unknown if any member opened the log already failing.
+                "after": min(afters) if len(afters) == len(members) else None,
+                "end": end,
+                "last_ts": max(m.get("last_ts") or m["start"] for m in members),
+                "duration_s": _union_seconds(spans["point"]),
+                "min_s": lower,
+                "max_s": max(lower, _union_seconds(spans["max"])),
+                "cause": key(members[0]),
+                "detail": members[0]["detail"],
+                "count": len(members),
+                "verified": sum(1 for m in members if m["verified"]),
+                "systems": sorted({m["system"] for m in members}),
+                "members": [
+                    {k: m[k] for k in _EVENT_MEMBER_KEYS}
+                    for m in sorted(members, key=lambda m: (m["system"], m["name"], m["id"]))
+                ],
+            }
+        )
+    events.sort(key=lambda e: (e["start"], e["cause"]), reverse=True)
+    return events
 
 
 def _daily(records: list[dict[str, Any]], now: datetime) -> list[dict[str, Any]]:
@@ -194,7 +354,8 @@ def _unit_days(series: list[dict[str, Any]], dates: list[str]) -> dict[str, list
 
 def build(entries: list[dict[str, Any]]) -> dict[str, Any]:
     now = datetime.now(UTC)
-    records = list(store.read_all(since=store.window_start(analysis.WINDOW_DAYS)))
+    since = store.window_start(analysis.WINDOW_DAYS)
+    records = list(store.read_all(since=since))
     grouped = analysis.by_endpoint(records)
     descriptions = load_system_descriptions()
 
@@ -211,8 +372,10 @@ def build(entries: list[dict[str, Any]]) -> dict[str, Any]:
         eid = entry["id"]
         series = grouped.get(eid, [])
         latest = series[-1] if series else None
-        avail_24h, checks_24h = analysis.uptime(series, day_ago)
-        avail_7d, _ = analysis.uptime(series, week_ago)
+        ok_24h, checks_24h = analysis.uptime_counts(series, day_ago)
+        ok_7d, checks_7d = analysis.uptime_counts(series, week_ago)
+        avail_24h = 100.0 * ok_24h / checks_24h if checks_24h else None
+        avail_7d = 100.0 * ok_7d / checks_7d if checks_7d else None
         endpoints.append(
             {
                 "id": eid,
@@ -226,7 +389,12 @@ def build(entries: list[dict[str, Any]]) -> dict[str, Any]:
                 "detail": (latest or {}).get("detail") or "",
                 "avail_24h": None if avail_24h is None else round(avail_24h, 2),
                 "avail_7d": None if avail_7d is None else round(avail_7d, 2),
+                # The counts behind both percentages: 50 % of 6 checks and
+                # 50 % of 600 are different claims, and the page shows which.
                 "checks_24h": checks_24h,
+                "ok_24h": ok_24h,
+                "checks_7d": checks_7d,
+                "ok_7d": ok_7d,
                 # A grouped unit stands for many endpoints; say how many rather
                 # than letting one row quietly represent 261.
                 "members": entry.get("members"),
@@ -256,7 +424,7 @@ def build(entries: list[dict[str, Any]]) -> dict[str, Any]:
         # with few checks (e.g. new, or mostly 'unknown') against one with
         # many, and treats a 261-endpoint group unit as equal to a single one.
         pooled = [record for e in members for record in grouped.get(e["id"], [])]
-        system_avail_24h, _ = analysis.uptime(pooled, day_ago)
+        system_ok_24h, system_checks_24h = analysis.uptime_counts(pooled, day_ago)
         systems.append(
             {
                 "name": name,
@@ -264,7 +432,13 @@ def build(entries: list[dict[str, Any]]) -> dict[str, Any]:
                 "endpoints": len(members),
                 "ok": sum(1 for e in members if e["status"] == "ok"),
                 "problem": sum(1 for e in members if e["status"] in _PROBLEM),
-                "avail_24h": None if system_avail_24h is None else round(system_avail_24h, 2),
+                "avail_24h": (
+                    round(100.0 * system_ok_24h / system_checks_24h, 2)
+                    if system_checks_24h
+                    else None
+                ),
+                "ok_24h": system_ok_24h,
+                "checks_24h": system_checks_24h,
             }
         )
 
@@ -279,45 +453,85 @@ def build(entries: list[dict[str, Any]]) -> dict[str, Any]:
             if incident["end"] is None and eid not in by_name:
                 incident = {**incident, "end": incident.get("last_ts")}
             seconds = analysis.duration_seconds(incident, now)
+            # A series that opens failing has no ok check before it in the
+            # window, but the window's own start still bounds it: nothing on
+            # this page claims to know about time before that. Kept separate
+            # from 'after' so the page can still say "since the log began".
+            after_bound = incident.get("after") or since.strftime("%Y-%m-%dT%H:%M:%SZ")
+            lower, upper = analysis.duration_bounds({**incident, "after": after_bound}, now)
             incidents.append(
                 {
                     "id": eid,
                     "name": by_name.get(eid, {}).get("name", eid),
                     "system": by_name.get(eid, {}).get("system", "Muu"),
                     "start": incident["start"],
+                    "after": incident.get("after"),
+                    "after_bound": after_bound,
                     "end": incident["end"],
+                    "last_ts": incident.get("last_ts"),
                     "duration_s": None if seconds is None else int(seconds),
+                    "min_s": None if lower is None else int(lower),
+                    "max_s": None if upper is None else int(upper),
                     "worst": incident["worst"],
+                    "cause": classify_cause(incident.get("detail") or ""),
+                    # An id no longer in the inventory has nobody vouching for
+                    # its URL either, so it counts as unverified.
+                    "verified": bool(by_name.get(eid, {}).get("verified", False)),
                     "detail": (incident.get("detail") or "")[:200],
                 }
             )
     incidents.sort(key=lambda i: (i["start"] or "", i["id"]), reverse=True)
 
+    # One endpoint's incidents never overlap, so summing them is its calendar
+    # downtime; the bounds travel with it because with checks hours apart the
+    # point figure alone claims a precision the log does not have.
     tally: dict[str, dict[str, Any]] = {}
     for incident in incidents:
         row = tally.setdefault(
             incident["id"],
-            {"id": incident["id"], "name": incident["name"], "count": 0, "total_s": 0},
+            {
+                "id": incident["id"],
+                "name": incident["name"],
+                "count": 0,
+                "total_s": 0,
+                "total_min_s": 0,
+                "total_max_s": 0,
+            },
         )
         row["count"] += 1
         row["total_s"] += incident["duration_s"] or 0
+        row["total_min_s"] += incident["min_s"] or 0
+        row["total_max_s"] += incident["max_s"] or 0
     outages_by_endpoint = sorted(tally.values(), key=lambda r: (-r["count"], -r["total_s"]))
 
-    # The same tally, one level up: a reader thinking in business terms (a
+    # The same incidents, one level up: a reader thinking in business terms (a
     # manager, a product owner) asks "which service", not "which of its 261
     # tables" — EELIS's members would otherwise never surface here at all,
-    # since none of them individually cracks the top 10 by endpoint.
-    system_tally: dict[str, dict[str, Any]] = {}
+    # since none of them individually cracks the top 10 by endpoint. Time is
+    # the union across the service's endpoints, not their sum: three
+    # endpoints down for the same hour disturbed the service for one hour.
+    by_system: dict[str, list[dict[str, Any]]] = {}
     for incident in incidents:
-        row = system_tally.setdefault(
-            incident["system"], {"name": incident["system"], "count": 0, "total_s": 0}
+        by_system.setdefault(incident["system"], []).append(incident)
+    outages_by_system: list[dict[str, Any]] = []
+    for name, members in by_system.items():
+        spans = _spans(members, now)
+        lower = _union_seconds(spans["min"])
+        outages_by_system.append(
+            {
+                "name": name,
+                "count": len(members),
+                "affected_s": _union_seconds(spans["point"]),
+                "affected_min_s": lower,
+                "affected_max_s": max(lower, _union_seconds(spans["max"])),
+            }
         )
-        row["count"] += 1
-        row["total_s"] += incident["duration_s"] or 0
-    outages_by_system = sorted(system_tally.values(), key=lambda r: (-r["total_s"], -r["count"]))
+    outages_by_system.sort(key=lambda r: (-r["affected_s"], -r["count"]))
 
-    overall_24h, overall_checks = analysis.uptime(records, day_ago)
-    overall_7d, _ = analysis.uptime(records, week_ago)
+    events = _events(incidents, now)
+
+    overall_ok_24h, overall_checks = analysis.uptime_counts(records, day_ago)
+    overall_ok_7d, overall_checks_7d = analysis.uptime_counts(records, week_ago)
     stamps = [s for s in (store.parse_ts(r.get("ts")) for r in records) if s is not None]
 
     # Same pooled-records approach as the per-system availability fix above:
@@ -340,11 +554,19 @@ def build(entries: list[dict[str, Any]]) -> dict[str, Any]:
         "chart_days": _CHART_DAYS,
         "chart_dates": chart_dates,
         "first_record": min(stamps).strftime("%Y-%m-%dT%H:%M:%SZ") if stamps else None,
+        # The newest record, as distinct from generated_at: the page measures
+        # the data's age against the reader's clock from this.
+        "last_check": max(stamps).strftime("%Y-%m-%dT%H:%M:%SZ") if stamps else None,
         "totals": totals,
         "availability": {
-            "h24": None if overall_24h is None else round(overall_24h, 2),
-            "d7": None if overall_7d is None else round(overall_7d, 2),
+            "h24": (round(100.0 * overall_ok_24h / overall_checks, 2) if overall_checks else None),
+            "d7": (
+                round(100.0 * overall_ok_7d / overall_checks_7d, 2) if overall_checks_7d else None
+            ),
             "checks_24h": overall_checks,
+            "ok_24h": overall_ok_24h,
+            "checks_7d": overall_checks_7d,
+            "ok_7d": overall_ok_7d,
         },
         "systems": systems,
         "endpoints": endpoints,
@@ -355,13 +577,16 @@ def build(entries: list[dict[str, Any]]) -> dict[str, Any]:
         # be worth splitting.
         "daily_postgrest": _daily(postgrest_records, now),
         "daily_kaia": _daily(kaia_records, now),
-        "incidents": incidents[:200],
+        # The per-endpoint list feeds the RSS feed and stays in its published
+        # shape; the page itself reads `events`, which carry the bounds.
+        "incidents": [{k: i[k] for k in _INCIDENT_KEYS} for i in incidents[:200]],
         "incident_count": len(incidents),
-        # Summed over every incident, not just the 200 sent to the page: a
-        # management tile reading "how much downtime" must not quietly become
-        # "how much downtime among the 200 most recent" once the list is
-        # truncated.
-        "outage_total_s": sum(i["duration_s"] or 0 for i in incidents),
+        "events": events[:_EVENTS_SHOWN],
+        "event_count": len(events),
+        # Counted over every event, not just the ones sent, so the page's
+        # "how many of these involve a verified endpoint" stays true when the
+        # list is truncated.
+        "event_count_verified": sum(1 for e in events if e["verified"]),
         "outages_by_endpoint": outages_by_endpoint[:10],
         "outages_by_system": outages_by_system,
     }

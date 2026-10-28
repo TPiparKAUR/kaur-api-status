@@ -29,11 +29,12 @@
     <p class="lede">
       See leht näitab, kas Keskkonnaagentuuri avalikud andmeteenused vastavad ja
       kui usaldusväärselt nad on viimasel ajal töötanud. Seisundit kontrollitakse
-      automaatselt (kavandatud iga 30 minuti järel; tegelik sagedus on allpool
-      kuupäeva real) ja tulemused salvestatakse, nii et katkestused jäävad
+      automaatselt (kavandatud iga 30 minuti järel; tegelik sagedus on kohe
+      allpool) ja tulemused salvestatakse, nii et katkestused jäävad
       tagantjärele nähtavaks.
     </p>
     <p class="updated" id="updated">Laen andmeid…</p>
+    <div class="health" id="monitor-health" role="status" hidden></div>
   </div>
 </header>
 
@@ -114,6 +115,10 @@
         Sama katkestuste logi, kokku loetud teenuse, mitte otspunkti kaupa.
         Näiteks EELIS-e 261 tabelit ei jõua kunagi otspunktide graafiku
         kümne hulka üksikult, aga teenusena on tema katkestused siin näha.
+        <strong>Häiritud aeg</strong> on kalendriaeg, mil vähemalt üks teenuse
+        otspunkt ei töötanud — kaks samal tunnil maas olnud otspunkti on üks
+        tund, mitte kaks. See on vahemik, sest kontrollide vahel ei tea me,
+        mis toimus.
       </p>
       <div class="table-scroll">
         <table id="system-outages">
@@ -121,8 +126,7 @@
             <tr>
               <th scope="col" data-sort="name" data-type="text">Teenus</th>
               <th scope="col" data-sort="count" data-type="number">Katkestusi</th>
-              <th scope="col" data-sort="total_s" data-type="number">Kokku kestus</th>
-              <th scope="col">Osakaal</th>
+              <th scope="col" data-sort="affected_s" data-type="number">Häiritud aeg</th>
             </tr>
           </thead>
           <tbody></tbody>
@@ -177,28 +181,40 @@
   </section>
 
   <section class="panel panel-wide" aria-labelledby="h-katkestused">
-    <h2 id="h-katkestused">Katkestuste logi</h2>
-    <p class="note">Millal, milline otspunkt ja kui kaua. Uuemad eespool;
-       veerupäisele klõpsates saab ümber järjestada, näiteks kestuse järgi.
-       Reale viitamiseks kasuta otspunktide tahvlil nime enda peal olevat linki
-       — see viib otse siia lehele, õigele reale kerituna. Sama logi on
-       tellitav ka <a href="data/incidents.xml">RSS-ina</a>, kuni 50 uuemat
-       katkestust.</p>
+    <h2 id="h-katkestused">Sündmuste logi</h2>
+    <p class="note">Mis juhtus, millal, kui kaua ja keda see puudutas. Üks
+       sündmus koondab kõik katkestused, mis algasid samal kontrollimiskorral
+       sama põhjusega — kui üks host lakkab vastamast, on see üks rida, mitte
+       viisteist. See ei väida, et põhjus oli sama, vaid et need nähti koos.
+       Uuemad eespool; veerupäisele klõpsates saab ümber järjestada.
+       Otspunktide kaupa on sama logi tellitav <a href="data/incidents.xml">RSS-ina</a>.</p>
+    <p class="note">Kontrollid on sagedusega, mis on näha lehe ülaosas, seega
+       ei ole algus ja lõpp täpsed hetked: <strong>algus</strong> on esimene
+       ebaõnnestunud kontroll ja selle all viimane õnnestunud kontroll enne
+       seda — tegelik algus jääb nende vahele. <strong>Kestus</strong> on
+       vahemik lühimast võimalikust pikimani.</p>
+    <div class="toolbar">
+      <label class="toggle">
+        <input type="checkbox" id="events-verified-only">
+        <span>Ainult sündmused, mis puudutavad kinnitatud otspunkte</span>
+      </label>
+      <span class="note" id="events-note"></span>
+    </div>
     <div class="table-scroll">
-      <table id="incidents">
+      <table id="events">
         <thead>
           <tr>
             <th scope="col" data-sort="start" data-type="text">Algus</th>
             <th scope="col" data-sort="end" data-type="text">Lõpp</th>
             <th scope="col" data-sort="duration_s" data-type="number">Kestus</th>
-            <th scope="col" data-sort="name" data-type="text">Otspunkt</th>
-            <th scope="col" data-sort="detail" data-type="text">Põhjus</th>
+            <th scope="col" data-sort="cause_word" data-type="text">Põhjus</th>
+            <th scope="col" data-sort="count" data-type="number">Mõjutatud</th>
           </tr>
         </thead>
         <tbody></tbody>
       </table>
     </div>
-    <p class="empty" id="empty-incidents" hidden></p>
+    <p class="empty" id="empty-events" hidden></p>
   </section>
 
   <section class="panel" aria-labelledby="h-metoodika">
@@ -217,7 +233,35 @@
           kättesaadavuse arvestusest välja, sest need ei ütle teenuse kohta midagi.</dd>
 
       <dt>Kättesaadavus</dt>
-      <dd>Õnnestunud kontrollide osakaal kõigist kontrollidest valitud ajavahemikus.</dd>
+      <dd>Õnnestunud kontrollide osakaal kõigist kontrollidest valitud ajavahemikus.
+          Protsendi juures on alati ka kontrollide arv (näiteks 3/6): 50 % kuuest
+          kontrollist ja 50 % kuuesajast on väga erineva kaaluga väited.</dd>
+
+      <dt>95 % vahemik</dt>
+      <dd>Wilsoni usaldusvahemik õnnestunud kontrollide osakaalule — vahemik,
+          kuhu tegelik kättesaadavus nende kontrollide põhjal tõenäoliselt jääb.
+          Mida vähem kontrolle, seda laiem vahemik. Vahemik eeldab, et
+          kontrollid on üksteisest sõltumatud; sama hosti samal kontrollimiskorral
+          tehtud kontrollid ei ole seda täielikult, seega on tegelik määramatus
+          pigem suurem kui väiksem. "Nõrgim teenus" järjestatakse vahemiku
+          ülemise piiri järgi — teenus, mis ka parimal juhul jääb kõige
+          madalamale — ja kui see vahemik kattub järgmise teenuse omaga, ütleb
+          leht, et järjestus pole kindel.</dd>
+
+      <dt>Sündmus</dt>
+      <dd>Katkestused, mis algasid samal kontrollimiskorral (kuni 10 minuti
+          jooksul) sama põhjusega. Põhjus on loetud teenuse vastusest:
+          päring piirati (HTTP 429), ei vastanud, jäeti kontrollimata (sama host
+          ei vastanud samal kontrollimiskorral mitu korda järjest), serveri
+          viga (HTTP 5xx) jne. Teenuse toores vastus on iga sündmuse detailides.</dd>
+
+      <dt>Kestus vahemikuna</dt>
+      <dd>Lühim võimalik kestus on aeg esimesest viimase ebaõnnestunud
+          kontrollini; pikim võimalik on aeg viimasest õnnestunud kontrollist
+          enne katkestust esimese õnnestunud kontrollini pärast seda. Ühe
+          ebaõnnestunud kontrolli puhul on lühim kestus null — me teame ainult,
+          et katkestus kestis kuni nii kaua. Kui kontrollid on tundide kaugusel,
+          on vahemik lai; see on kontrollisageduse, mitte teenuse omadus.</dd>
 
       <dt>Seisund "Piiratud (429)"</dt>
       <dd>Teenus vastas HTTP koodiga 429 ("liiga palju päringuid") — see
@@ -227,12 +271,13 @@
           nagu varem — muutus on ainult sõnas, mida seisundi veerus loed, mitte
           numbrites.</dd>
 
-      <dt>"Otspunkte maas kokku"</dt>
-      <dd>Kõigi katkestuste kestuste summa, liidetud üle otspunktide. Kui kaks
-          otspunkti on tund aega korraga maas, on see siin kaks tundi, mitte üks —
-          see ei ole kalendriaeg, mille jooksul platvorm oli maas, vaid kogunenud
-          teenusekatkestuse maht. Summa katab kõik logitud katkestused, ka need,
-          mida allolevas tabelis (kuni 200 uuemat) ei näidata.</dd>
+      <dt>Seire enda sagedus</dt>
+      <dd>Kontrollid on kavandatud iga 30 minuti järel, kuid GitHub käivitab
+          ajastatud töid parima võimaluse järgi ning võib neid viivitada või
+          vahele jätta. Lehe ülaosas on mõõdetud tegelik sagedus: mitu
+          kontrollimiskorda viimase 7 päeva jooksul toimus kavandatud arvust,
+          ja kui vanad on praegu näidatud andmed. Kõik muud arvud lehel on
+          täpselt nii värsked ja nii täpsed, kui see sagedus lubab.</dd>
 
       <dt>Ajaloo ruudustiku värvid</dt>
       <dd>Üks ruut on üks ööpäev. Roheline tähendab, et kõik selle päeva kontrollid

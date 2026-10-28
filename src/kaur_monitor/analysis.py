@@ -115,6 +115,7 @@ def incidents(series: list[dict[str, Any]]) -> list[dict[str, Any]]:
     """
     found: list[dict[str, Any]] = []
     current: dict[str, Any] | None = None
+    last_ok: str | None = None
 
     for record in series:
         status = record.get("status")
@@ -125,10 +126,16 @@ def incidents(series: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 current["end"] = record.get("ts")
                 found.append(current)
                 current = None
+            last_ok = record.get("ts")
             continue
         if current is None:
             current = {
                 "start": record.get("ts"),
+                # The true start lies somewhere after the last ok check and no
+                # later than 'start'; with checks hours apart that gap is the
+                # whole uncertainty in the incident's timing, so it is kept.
+                # None when the series opens already failing.
+                "after": last_ok,
                 "end": None,
                 "worst": status,
                 "detail": record.get("detail") or "",
@@ -151,26 +158,54 @@ def incidents(series: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return found
 
 
-def uptime(series: list[dict[str, Any]], since: datetime) -> tuple[float | None, int]:
-    """Share of checks that succeeded, and how many were counted.
+def uptime_counts(series: list[dict[str, Any]], since: datetime) -> tuple[int, int]:
+    """Successful checks and checks counted, since `since`.
 
     Records in the 'unknown' state are left out of both: they say our own
     checker had no network, which is not evidence about the service. A record
     whose timestamp will not parse is dropped rather than counted, matching
     what store.read_all does, so the two paths cannot disagree.
     """
-    considered = []
+    ok = counted = 0
     for record in series:
         if record.get("status") == "unknown":
             continue
         stamp = store.parse_ts(record.get("ts"))
         if stamp is None or stamp < since:
             continue
-        considered.append(record)
-    if not considered:
+        counted += 1
+        if record.get("status") == "ok":
+            ok += 1
+    return ok, counted
+
+
+def uptime(series: list[dict[str, Any]], since: datetime) -> tuple[float | None, int]:
+    """Share of checks that succeeded, and how many were counted."""
+    ok, counted = uptime_counts(series, since)
+    if not counted:
         return None, 0
-    ok = sum(1 for r in considered if r.get("status") == "ok")
-    return 100.0 * ok / len(considered), len(considered)
+    return 100.0 * ok / counted, counted
+
+
+def duration_bounds(incident: dict[str, Any], now: datetime) -> tuple[float | None, float | None]:
+    """The shortest and longest the outage can have lasted, given when we looked.
+
+    Checks are a sample, so an incident is only known to have run from its
+    first failing check to its last one (the lower bound), and at most from
+    the last ok check before it to the first ok check after it (the upper
+    bound). The upper bound is None when no ok check precedes the incident.
+    For an open incident the upper bound runs to `now`.
+    """
+    start = store.parse_ts(incident.get("start"))
+    if start is None:
+        return None, None
+    last = store.parse_ts(incident.get("last_ts")) or start
+    lower = max(0.0, (last - start).total_seconds())
+    after = store.parse_ts(incident.get("after"))
+    if after is None:
+        return lower, None
+    end = store.parse_ts(incident.get("end")) or now
+    return lower, max(lower, (end - after).total_seconds())
 
 
 def duration_seconds(incident: dict[str, Any], now: datetime) -> float | None:

@@ -125,6 +125,48 @@ class Incidents(unittest.TestCase):
         series = [_record("a", "degraded", 30), _record("a", "down", 20)]
         self.assertEqual(analysis.incidents(series)[0]["worst"], "down")
 
+    def test_incident_remembers_the_last_ok_check_before_it(self):
+        series = [
+            _record("a", "ok", 300),
+            _record("a", "unknown", 250),
+            _record("a", "down", 200),
+            _record("a", "ok", 100),
+        ]
+        incident = analysis.incidents(series)[0]
+        self.assertEqual(incident["after"], series[0]["ts"])
+
+    def test_a_series_that_opens_failing_has_no_lower_start_bound(self):
+        series = [_record("a", "down", 200), _record("a", "ok", 100)]
+        self.assertIsNone(analysis.incidents(series)[0]["after"])
+
+    def test_duration_bounds_bracket_the_reported_duration(self):
+        """Checks every 100 min, two failing: observed failing for 100 min,
+        reported as 200 (first failure to first ok), at most 300 (last ok
+        before to first ok after)."""
+        series = [
+            _record("a", "ok", 400),
+            _record("a", "down", 300),
+            _record("a", "down", 200),
+            _record("a", "ok", 100),
+        ]
+        incident = analysis.incidents(series)[0]
+        now = datetime.now(UTC)
+        lower, upper = analysis.duration_bounds(incident, now)
+        self.assertEqual(lower, 100 * 60)
+        self.assertEqual(analysis.duration_seconds(incident, now), 200 * 60)
+        self.assertEqual(upper, 300 * 60)
+
+    def test_a_single_failed_check_has_zero_lower_bound_not_none(self):
+        series = [_record("a", "ok", 300), _record("a", "down", 200), _record("a", "ok", 100)]
+        lower, upper = analysis.duration_bounds(analysis.incidents(series)[0], datetime.now(UTC))
+        self.assertEqual(lower, 0)
+        self.assertEqual(upper, 200 * 60)
+
+    def test_upper_bound_is_unknown_without_a_preceding_ok(self):
+        series = [_record("a", "down", 200), _record("a", "ok", 100)]
+        _, upper = analysis.duration_bounds(analysis.incidents(series)[0], datetime.now(UTC))
+        self.assertIsNone(upper)
+
 
 class Uptime(unittest.TestCase):
     def test_unknown_is_excluded_from_the_denominator(self):
@@ -1242,19 +1284,99 @@ class DashboardData(unittest.TestCase):
         self.assertEqual(len(rows), 1)
         self.assertEqual(rows[0]["name"], "Kliima")
         self.assertEqual(rows[0]["count"], 2)
-        by_endpoint_total = sum(r["total_s"] for r in data["outages_by_endpoint"])
-        self.assertEqual(rows[0]["total_s"], by_endpoint_total)
 
-    def test_total_downtime_covers_every_incident_not_just_the_listed_ones(self):
+    def test_service_time_is_the_union_of_its_endpoints_not_their_sum(self):
+        """Two endpoints down over the same 29 minutes disturbed the service for
+        29 minutes. The old summed figure said 58, and the page's headline tile
+        once read 56 days for a 31-day window that way."""
         self._write(
-            [dict(_record("a", "down", 30 - i), ms=None) for i in range(4)]
+            [dict(_record(eid, "ok", 40), ms=100) for eid in ("a", "b")]
+            + [dict(_record(eid, "down", 30), ms=None) for eid in ("a", "b")]
+            + [dict(_record(eid, "ok", 1), ms=100) for eid in ("a", "b")]
+        )
+        data = dashboard.build([self._entry("a", "Kliima"), self._entry("b", "Kliima")])
+        row = data["outages_by_system"][0]
+        self.assertEqual(row["affected_s"], 29 * 60)
+        self.assertEqual(row["affected_min_s"], 0)
+        self.assertEqual(row["affected_max_s"], 39 * 60)
+        self.assertNotIn("outage_total_s", data)
+
+    def test_a_series_opening_failing_is_bounded_by_the_window_not_unbounded(self):
+        """No ok check precedes it inside the window, but the page only speaks
+        for the window, so its start is the upper bound — not "at least"."""
+        self._write([dict(_record("a", "down", 60), ms=None), dict(_record("a", "ok", 1), ms=100)])
+        data = dashboard.build([self._entry("a")])
+        event = data["events"][0]
+        self.assertIsNone(event["after"])
+        window = analysis.WINDOW_DAYS * 86400
+        self.assertGreater(event["max_s"], window - 120)
+        self.assertLessEqual(event["max_s"], window)
+        self.assertEqual(data["outages_by_system"][0]["affected_max_s"], event["max_s"])
+
+    def test_endpoint_tally_carries_duration_bounds(self):
+        self._write(
+            [dict(_record("a", "ok", 40), ms=100)]
+            + [dict(_record("a", "down", 30 - 10 * i), ms=None) for i in range(2)]
             + [dict(_record("a", "ok", 1), ms=100)]
         )
-        data = dashboard.build([self._entry("a")])
-        self.assertEqual(
-            data["outage_total_s"], sum(i["duration_s"] or 0 for i in data["incidents"])
+        row = dashboard.build([self._entry("a")])["outages_by_endpoint"][0]
+        self.assertEqual(row["total_min_s"], 10 * 60)
+        self.assertEqual(row["total_s"], 29 * 60)
+        self.assertEqual(row["total_max_s"], 39 * 60)
+
+    def test_same_cause_in_the_same_run_is_one_event(self):
+        self._write(
+            [dict(_record(eid, "ok", 40), ms=100) for eid in ("a", "b", "c")]
+            + [
+                dict(_record("a", "down", 30), ms=None, detail="http 429 Too Many Requests"),
+                dict(_record("b", "down", 30), ms=None, detail="http 429 Too Many Requests"),
+                dict(_record("c", "down", 30), ms=None, detail="connection failed: timed out"),
+            ]
+            + [dict(_record(eid, "ok", 1), ms=100) for eid in ("a", "b", "c")]
         )
-        self.assertGreater(data["outage_total_s"], 0)
+        data = dashboard.build([self._entry("a"), self._entry("b", "KAIA"), self._entry("c")])
+        self.assertEqual(data["incident_count"], 3)
+        self.assertEqual(data["event_count"], 2)
+        limited = next(e for e in data["events"] if e["cause"] == "rate_limited")
+        self.assertEqual(limited["count"], 2)
+        self.assertEqual(limited["systems"], ["KAIA", "Kliima"])
+        self.assertEqual(limited["duration_s"], 29 * 60)
+        self.assertEqual({m["id"] for m in limited["members"]}, {"a", "b"})
+
+    def test_breaker_skipped_endpoints_join_their_hosts_outage(self):
+        self._write(
+            [dict(_record(eid, "ok", 40), ms=100) for eid in ("a", "b")]
+            + [
+                dict(_record("a", "down", 30), ms=None, detail="connection failed: timed out"),
+                dict(_record("b", "down", 30), ms=None, detail="not dialled: h gave no response"),
+            ]
+        )
+        data = dashboard.build([self._entry("a"), self._entry("b")])
+        self.assertEqual(data["event_count"], 1)
+        self.assertEqual(data["events"][0]["cause"], "no_response")
+
+    def test_failures_in_different_runs_stay_separate_events(self):
+        self._write(
+            [dict(_record(eid, "ok", 120), ms=100) for eid in ("a", "b")]
+            + [
+                dict(_record("a", "down", 100), ms=None, detail="http 429 x"),
+                dict(_record("b", "down", 60), ms=None, detail="http 429 x"),
+            ]
+            + [dict(_record(eid, "ok", 1), ms=100) for eid in ("a", "b")]
+        )
+        self.assertEqual(dashboard.build([self._entry("a"), self._entry("b")])["event_count"], 2)
+
+    def test_event_counts_whether_any_member_is_verified(self):
+        self._write(
+            [dict(_record(eid, "ok", 40), ms=100) for eid in ("a", "b")]
+            + [dict(_record(eid, "down", 30), ms=None, detail="http 503 x") for eid in ("a", "b")]
+        )
+        verified = dict(self._entry("a"), verified=True)
+        data = dashboard.build([verified, self._entry("b")])
+        event = data["events"][0]
+        self.assertEqual((event["count"], event["verified"]), (2, 1))
+        self.assertIsNone(event["end"])
+        self.assertEqual(data["event_count_verified"], 1)
 
     def test_availability_counts_only_real_outcomes(self):
         self._write(
@@ -1267,6 +1389,13 @@ class DashboardData(unittest.TestCase):
         data = dashboard.build([self._entry("a")])
         self.assertAlmostEqual(data["endpoints"][0]["avail_24h"], 50.0)
         self.assertEqual(data["endpoints"][0]["checks_24h"], 2)
+        # The counts behind every percentage travel with it, so the page can
+        # say "1/2" and draw an interval instead of a bare 50 %.
+        endpoint, system, overall = data["endpoints"][0], data["systems"][0], data["availability"]
+        self.assertEqual((endpoint["ok_24h"], endpoint["ok_7d"]), (1, 1))
+        self.assertEqual((system["ok_24h"], system["checks_24h"]), (1, 2))
+        self.assertEqual((overall["ok_24h"], overall["checks_7d"]), (1, 2))
+        self.assertEqual(data["last_check"], _record("a", "ok", 10)["ts"])
 
     def test_daily_rows_skip_unknown_and_carry_latency_percentiles(self):
         self._write(
@@ -1747,6 +1876,7 @@ class CadenceMeasurement(unittest.TestCase):
         result = dashboard._cadence(self._records([120, 90, 60, 30, 0]), self.NOW)
         self.assertEqual(result["runs"], 5)
         self.assertEqual(result["median_gap_minutes"], 30)
+        self.assertEqual(result["expected_runs"], 7 * 48)
 
     def test_too_few_runs_gives_no_cadence(self):
         self.assertIsNone(dashboard._cadence(self._records([60, 30]), self.NOW))
@@ -1762,3 +1892,29 @@ class CadenceMeasurement(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class CauseClassification(unittest.TestCase):
+    """The page shows these as words, so the raw detail strings check.py writes
+    have to land in the right bucket."""
+
+    CASES: ClassVar[dict[str, str]] = {
+        "http 429 Too Many Requests — <!doctype html>": "rate_limited",
+        "not dialled: h.example gave no response to 6 connections": "not_dialled",
+        "dns lookup failed: [Errno -2]": "dns",
+        "connection failed: timed out": "no_response",
+        "http 503 Service Unavailable": "server_error",
+        "http 406 Not Acceptable": "client_error",
+        "OGC service exception: InvalidParameterValue": "service_exception",
+        "stale data: newest record is 9000s old (limit 3600s)": "stale",
+        "invalid json: Expecting value": "unreadable",
+        "check aborted: ValueError: x": "check_error",
+        "7/7 ei vasta: kaia-1 (connection failed: timed out), kaia-2 (connection": "no_response",
+        "": "other",
+        "something new": "other",
+    }
+
+    def test_every_known_detail_shape(self):
+        for detail, cause in self.CASES.items():
+            with self.subTest(detail=detail):
+                self.assertEqual(dashboard.classify_cause(detail), cause)

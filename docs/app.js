@@ -56,7 +56,7 @@ let snapshot = null;
 let rows = [];
 const sortState = {
   endpoints: { key: null, dir: 1 },
-  incidents: { key: null, dir: 1 },
+  events: { key: null, dir: 1 },
   systemOutages: { key: null, dir: 1 },
 };
 
@@ -102,6 +102,70 @@ function duration(seconds) {
 
 const pct = (value) => (value == null ? "–" : `${value.toFixed(1)} %`);
 const millis = (value) => (value == null ? "–" : `${value} ms`);
+
+/* The shortest and longest an outage can have lasted, given when we looked
+ * (dashboard.py computes both). With checks hours apart a single figure
+ * claims a precision the log does not have. A lower bound under a minute is
+ * one failed check: all we know is "up to" the upper bound. */
+function durationRange(low, high) {
+  if (low == null) return "–";
+  if (high == null) return `vähemalt ${duration(low)}`;
+  if (low < 60) return `kuni ${duration(high)}`;
+  const a = duration(low);
+  const b = duration(high);
+  return a === b ? a : `${a} – ${b}`;
+}
+
+/* Wilson score interval for ok/n, in percent. Brown, Cai & DasGupta (2001,
+ * Statistical Science 16(2)) show the textbook Wald interval behaves
+ * erratically at small n — exactly the case here, where one unit has six
+ * checks a day — and recommend Wilson's. It assumes independent checks; ours
+ * are not quite (same host, same run), which the page says in words. */
+function wilson(ok, n, z = 1.96) {
+  if (!n) return null;
+  const p = ok / n;
+  const z2 = z * z;
+  const denominator = 1 + z2 / n;
+  const centre = (p + z2 / (2 * n)) / denominator;
+  const half = (z * Math.sqrt((p * (1 - p)) / n + z2 / (4 * n * n))) / denominator;
+  return [100 * Math.max(0, centre - half), 100 * Math.min(1, centre + half)];
+}
+
+function intervalText(interval) {
+  if (!interval) return "–";
+  const [low, high] = interval;
+  // Whole percents once the interval is wide: "10.3–69.6 %" implies a
+  // precision the interval itself says is not there.
+  const digits = high - low < 10 ? 1 : 0;
+  return `${low.toFixed(digits)}–${high.toFixed(digits)} %`;
+}
+
+/* "232/252 kontrolli, 95 % vahemik 88.1–94.8 %". status.json written before
+ * the counts were added carries only the percentage and n; the success count
+ * is recovered from those rather than shown as missing. */
+function countsText(avail, ok, n) {
+  if (!n) return "kontrolle ei ole";
+  const k = ok ?? Math.round(((avail ?? 0) * n) / 100);
+  return `${k}/${n} kontrolli, 95 % vahemik ${intervalText(wilson(k, n))}`;
+}
+const okCount = (avail, ok, n) => ok ?? (n ? Math.round(((avail ?? 0) * n) / 100) : 0);
+
+/* Plain words for dashboard.classify_cause's keys. The raw detail — for a 429,
+ * Cloudflare's own HTML page — stays one click away in each event's details,
+ * but it is not what a reader deciding "is this real" should parse first. */
+const CAUSE_WORD = {
+  rate_limited: "Päring piirati (HTTP 429)",
+  not_dialled: "Jäeti kontrollimata — host ei vastanud",
+  dns: "Nime ei leitud (DNS)",
+  no_response: "Ei vastanud",
+  server_error: "Serveri viga (HTTP 5xx)",
+  client_error: "Päring lükati tagasi (HTTP 4xx)",
+  service_exception: "Teenus vastas veateatega",
+  stale: "Andmed vananenud",
+  unreadable: "Vastus ei olnud loetav",
+  check_error: "Kontrolli enda viga",
+  other: "Muu",
+};
 
 function chip(status) {
   const span = document.createElement("span");
@@ -249,22 +313,38 @@ function latencySparkline(dates, p50) {
 /* Which service is currently costing the most trust. A management reader
  * scanning four averages cannot tell whether 97 % overall is "everything is
  * fine" or "one service is on the floor and the rest carry the mean" — and in
- * this log that difference is real. Named, not colour-coded. */
+ * this log that difference is real. Named, not colour-coded.
+ *
+ * Ranked by the upper end of the Wilson interval, not the point value: with
+ * six checks a day one unlucky check moves a single-unit service by 17
+ * points, and "weakest" should mean "even at best, lowest". When the winner's
+ * interval overlaps the runner-up's, the tile says the order is not settled
+ * rather than leaving a confident-looking ranking. */
 function worstSystemTile(data) {
-  const measured = (data.systems || []).filter((s) => s.avail_24h != null);
+  const measured = (data.systems || [])
+    .filter((s) => s.avail_24h != null && s.checks_24h)
+    .map((s) => {
+      const ok = okCount(s.avail_24h, s.ok_24h, s.checks_24h);
+      return { ...s, ok_24h: ok, interval: wilson(ok, s.checks_24h) };
+    })
+    .sort((a, b) => a.interval[1] - b.interval[1] || a.avail_24h - b.avail_24h);
   if (!measured.length) {
     return { label: "Nõrgim teenus 24 h", value: "–", sub: "Viimase ööpäeva kohta ei ole mõõtmisi." };
   }
-  const worst = measured.reduce((a, b) => (b.avail_24h < a.avail_24h ? b : a));
+  const [worst, next] = measured;
+  const overlaps = next && next.interval[0] <= worst.interval[1];
   return {
     label: "Nõrgim teenus 24 h",
     value: pct(worst.avail_24h),
-    sub: `${worst.name} · ${worst.problem} / ${worst.endpoints} üksust probleemiga`,
+    sub:
+      `${worst.name} · ${countsText(worst.avail_24h, worst.ok_24h, worst.checks_24h)}` +
+      (overlaps ? ` · järjestus pole kindel: vahemik kattub teenuse ${next.name} omaga` : ""),
   };
 }
 
 function renderTiles(data) {
   const t = data.totals || {};
+  const a = data.availability || {};
   const problem = (t.down || 0) + (t.degraded || 0);
   const tiles = [
     {
@@ -274,23 +354,29 @@ function renderTiles(data) {
     },
     {
       label: "Kättesaadavus 24 h",
-      value: pct(data.availability?.h24),
-      sub: `${data.availability?.checks_24h || 0} kontrolli`,
+      value: pct(a.h24),
+      sub: countsText(a.h24, a.ok_24h, a.checks_24h),
     },
-    { label: "Kättesaadavus 7 päeva", value: pct(data.availability?.d7), sub: "Õnnestunud kontrollide osakaal" },
+    {
+      label: "Kättesaadavus 7 päeva",
+      value: pct(a.d7),
+      // Older status.json has no 7-day count; the tile then says only what it
+      // is, instead of an interval built from a guessed n.
+      sub: a.checks_7d ? countsText(a.d7, a.ok_7d, a.checks_7d) : "Õnnestunud kontrollide osakaal",
+    },
     worstSystemTile(data),
     {
-      label: "Katkestusi logis",
-      value: String(data.incident_count ?? 0),
-      // The count alone does not say whether this was a bad month: 194 blips
-      // of a minute and 194 outages of an hour are the same number. The hours
-      // are what a budget conversation runs on — but they are summed across
-      // endpoints, so two endpoints down for an hour is two hours here and
-      // not one. Saying so in four words beats a tile that reads as "the
-      // platform was down for ten days".
+      // Events, not per-endpoint incidents: one rate limit switching on
+      // across five endpoints is one thing that happened. The summed
+      // "endpoints down in total" figure this tile used to carry is gone on
+      // purpose — it added overlapping outages together and, with checks
+      // hours apart, read 56 days for a 31-day window.
+      label: "Sündmusi logis",
+      value: String(data.event_count ?? data.incident_count ?? 0),
       sub:
-        data.outage_total_s
-          ? `Otspunkte maas kokku ${duration(data.outage_total_s)} (liidetud)`
+        data.event_count != null
+          ? `${data.event_count_verified} puudutab kinnitatud otspunkte · ` +
+            `${data.incident_count} otspunkti katkestust`
           : `Jälgimine algas ${data.first_record ? moment(data.first_record) : "–"}`,
     },
   ];
@@ -327,7 +413,8 @@ function renderSystems(data) {
       meta.className = "meta";
       meta.textContent =
         `${system.ok} / ${system.endpoints} jälgitavat üksust korras · ` +
-        `kättesaadavus 24 h ${pct(system.avail_24h)}`;
+        `kättesaadavus 24 h ${pct(system.avail_24h)}` +
+        (system.checks_24h ? ` (${countsText(system.avail_24h, system.ok_24h, system.checks_24h)})` : "");
 
       card.append(title, text, meta);
 
@@ -529,13 +616,8 @@ function renderEndpoints(data) {
       response.className = "num";
       response.textContent = item.http ? `${item.http} · ${millis(item.ms)}` : millis(item.ms);
 
-      const d1 = document.createElement("td");
-      d1.className = "num";
-      d1.textContent = pct(item.avail_24h);
-
-      const d7 = document.createElement("td");
-      d7.className = "num";
-      d7.textContent = pct(item.avail_7d);
+      const d1 = availCell(item.avail_24h, item.ok_24h, item.checks_24h);
+      const d7 = availCell(item.avail_7d, item.ok_7d, item.checks_7d);
 
       const history = document.createElement("td");
       history.className = "viz";
@@ -564,6 +646,23 @@ function renderEndpoints(data) {
   );
 }
 
+/* A percentage with the counts it came from underneath, and the interval on
+ * hover: "50.0 %" over "3/6" says at a glance how little that 50 rests on. */
+function availCell(avail, ok, n) {
+  const cell = document.createElement("td");
+  cell.className = "num";
+  cell.textContent = pct(avail);
+  if (n) {
+    const k = okCount(avail, ok, n);
+    const counts = document.createElement("span");
+    counts.className = "counts";
+    counts.textContent = `${k}/${n}`;
+    cell.append(counts);
+    cell.title = `${k}/${n} kontrolli õnnestus, 95 % vahemik ${intervalText(wilson(k, n))}`;
+  }
+  return cell;
+}
+
 function legendKey(kind, text) {
   const key = document.createElement("span");
   key.className = "legend-key";
@@ -574,44 +673,123 @@ function legendKey(kind, text) {
   return key;
 }
 
-function renderIncidents(data) {
-  const all = data.incidents || [];
-  const body = document.querySelector("#incidents tbody");
-  const empty = $("empty-incidents");
+function cellWith(main, sub, className = "num") {
+  const cell = document.createElement("td");
+  cell.className = className;
+  cell.append(main);
+  if (sub) {
+    const line = document.createElement("span");
+    line.className = "subline";
+    line.textContent = sub;
+    cell.append(line);
+  }
+  return cell;
+}
 
-  empty.hidden = all.length > 0;
-  if (!all.length) {
-    empty.textContent = "Logitud perioodil katkestusi ei ole.";
+function memberName(id) {
+  return rows.find((r) => r.id === id)?.name || id;
+}
+
+function memberLink(id) {
+  const link = document.createElement("a");
+  link.href = `#row-${id}`;
+  link.textContent = memberName(id);
+  return link;
+}
+
+/* One row per event: what happened, to how many, for how long at least and
+ * at most. dashboard.py does the grouping (same cause, same check run); this
+ * only words it. Events that touch no verified endpoint can be hidden — they
+ * are as likely a wrong query as an outage, which is why they never open an
+ * Issue either — but are shown by default, since hiding them silently would
+ * hide most of today's log. */
+function renderEvents(data) {
+  const all = (data.events || []).map((event) => ({
+    ...event,
+    cause_word: CAUSE_WORD[event.cause] || CAUSE_WORD.other,
+  }));
+  const verifiedOnly = $("events-verified-only").checked;
+  const shown = verifiedOnly ? all.filter((e) => e.verified > 0) : all;
+  const body = document.querySelector("#events tbody");
+  const empty = $("empty-events");
+
+  const total = data.event_count ?? all.length;
+  $("events-note").textContent =
+    `${total} sündmust (${data.incident_count ?? 0} otspunkti katkestust), neist ` +
+    `${data.event_count_verified ?? 0} puudutab vähemalt üht kinnitatud otspunkti. ` +
+    (all.length < total ? `Tabelis on ${all.length} uuemat.` : "");
+
+  empty.hidden = shown.length > 0;
+  document.querySelector("#events").hidden = shown.length === 0;
+  if (!shown.length) {
+    empty.textContent = all.length
+      ? "Kinnitatud otspunkte puudutavaid sündmusi tabelis ei ole."
+      : "Logitud perioodil katkestusi ei ole.";
     body.replaceChildren();
     return;
   }
 
   body.replaceChildren(
-    ...applySort(all, "incidents", "incidents").map((item) => {
+    ...applySort(shown, "events", "events").map((event) => {
       const row = document.createElement("tr");
-      const cells = [
-        moment(item.start),
-        item.end ? moment(item.end) : "kestab",
-        duration(item.duration_s),
-        item.name,
-      ];
-      cells.forEach((text, index) => {
-        const cell = document.createElement("td");
-        if (index !== 3) cell.className = "num";
-        cell.textContent = text;
-        row.append(cell);
-      });
-      const reason = document.createElement("td");
-      reason.className = "reason";
-      if ((item.detail || "").toLowerCase().startsWith("http 429")) {
-        const tag = document.createElement("span");
-        tag.className = "rate-limited-flag";
-        tag.textContent = "429";
-        tag.title = "Teenus vastas, aga keeldus — vt “Kuidas seda mõõdetakse”.";
-        reason.append(tag, " ");
+      const began = cellWith(
+        moment(event.start),
+        event.after ? `pärast ${moment(event.after)}` : "logi algusest",
+      );
+      began.title =
+        "Esimene ebaõnnestunud kontroll; all viimane õnnestunud kontroll enne seda. " +
+        "Tegelik algus jääb nende vahele.";
+      const ended = cellWith(
+        event.end ? moment(event.end) : "kestab",
+        event.last_ts && event.last_ts !== event.start ? `viimati maas ${moment(event.last_ts)}` : "",
+      );
+      const lasted = cellWith(durationRange(event.min_s, event.max_s), "");
+      lasted.title = `Esimesest ebaõnnestunud kontrollist esimese õnnestununi: ${duration(event.duration_s)}`;
+
+      const reason = cellWith(event.cause_word, "", "reason");
+      if (!event.verified) {
+        const flag = document.createElement("span");
+        flag.className = "unverified-flag";
+        flag.textContent = "kinnitamata";
+        flag.title = "Ükski selle sündmuse otspunkt ei ole kinnitatud — vt “Kuidas seda mõõdetakse”.";
+        reason.append(" ", flag);
       }
-      reason.append(item.detail || STATUS_WORD[item.worst] || "");
-      row.append(reason);
+
+      const affected = document.createElement("td");
+      affected.className = "affected";
+      const members = event.members || [];
+      if (members.length === 1) affected.append(memberLink(members[0].id));
+      else affected.append(`${event.count} otspunkti`);
+      const systems = document.createElement("span");
+      systems.className = "subline";
+      systems.textContent = (event.systems || []).join(", ");
+      affected.append(systems);
+
+      const more = document.createElement("details");
+      const summary = document.createElement("summary");
+      summary.textContent = "Detailid";
+      more.append(summary);
+      if (members.length > 1) {
+        const list = document.createElement("ul");
+        members.forEach((member) => {
+          const item = document.createElement("li");
+          item.append(
+            memberLink(member.id),
+            ` — ${durationRange(member.min_s, member.max_s)}${member.end ? "" : ", kestab"}`,
+          );
+          list.append(item);
+        });
+        more.append(list);
+      }
+      if (event.detail) {
+        const raw = document.createElement("code");
+        raw.className = "raw";
+        raw.textContent = event.detail;
+        more.append(raw);
+      }
+      affected.append(more);
+
+      row.append(began, ended, lasted, reason, affected);
       return row;
     }),
   );
@@ -632,7 +810,6 @@ function renderSystemOutages(data) {
     return;
   }
   section.hidden = false;
-  const total = sum(rows.map((r) => r.total_s));
   body.replaceChildren(
     ...rows.map((r) => {
       const row = document.createElement("tr");
@@ -641,13 +818,13 @@ function renderSystemOutages(data) {
       const count = document.createElement("td");
       count.className = "num";
       count.textContent = String(r.count);
-      const total_ = document.createElement("td");
-      total_.className = "num";
-      total_.textContent = duration(r.total_s);
-      const share_ = document.createElement("td");
-      share_.className = "num";
-      share_.textContent = total ? `${((100 * r.total_s) / total).toFixed(0)} %` : "–";
-      row.append(name, count, total_, share_);
+      // Calendar time with at least one endpoint failing, as a range — the
+      // union across endpoints, never their sum (dashboard.py).
+      const affected = document.createElement("td");
+      affected.className = "num";
+      affected.textContent = durationRange(r.affected_min_s, r.affected_max_s);
+      affected.title = `Esimesest ebaõnnestunud kontrollist esimese õnnestununi: ${duration(r.affected_s)}`;
+      row.append(name, count, affected);
       return row;
     }),
   );
@@ -925,9 +1102,10 @@ function drawOutages(data) {
     return;
   }
   const top = rows[0];
+  const total = (r) => (r.total_min_s == null ? duration(r.total_s) : durationRange(r.total_min_s, r.total_max_s));
   setSummary(
     "summary-outages",
-    `Kõige rohkem katkestusi: ${top.name} (${top.count}, kokku ${duration(top.total_s)}). ` +
+    `Kõige rohkem katkestusi: ${top.name} (${top.count}, kokku ${total(top)}). ` +
       `Näidatud on kuni 10 kõige sagedamini katkenud otspunkti.`,
   );
   charts.push(
@@ -963,14 +1141,70 @@ function drawOutages(data) {
           tooltip: {
             ...baseOptions().plugins.tooltip,
             callbacks: {
-              label: (ctx) =>
-                `${ctx.parsed.x} katkestust · kokku ${duration(rows[ctx.dataIndex].total_s)}`,
+              label: (ctx) => `${ctx.parsed.x} katkestust · kokku ${total(rows[ctx.dataIndex])}`,
             },
           },
         },
       },
     }),
   );
+}
+
+/* ---------- the monitor's own health ---------- */
+
+/* Every other number on the page is only as fresh and as fine-grained as the
+ * checks behind it, so how often they actually ran comes first, not in small
+ * print. Reported as received against expected — the way WMO's WDQMS reports
+ * observation availability — plus the age of the newest check measured
+ * against the reader's own clock, which the generator cannot know. */
+function renderHealth(data) {
+  const box = $("monitor-health");
+  const nominal = data.interval_minutes || 30;
+  const cadence = data.cadence;
+  const newest = data.last_check || data.generated_at;
+  const ageMin = newest ? (Date.now() - Date.parse(newest)) / 60000 : null;
+  const sparse = cadence && cadence.median_gap_minutes > 2 * nominal;
+  const stale = ageMin != null && ageMin > 2 * Math.max(nominal, cadence?.median_gap_minutes || 0);
+
+  const lines = [];
+  if (sparse) {
+    const share = cadence.expected_runs ? Math.round((100 * cadence.runs) / cadence.expected_runs) : null;
+    lines.push(
+      [
+        "strong",
+        "Seire töötab kavandatust harvemini.",
+        ` Viimase ${cadence.days} päeva jooksul toimus ${cadence.runs} kontrollimiskorda` +
+          (cadence.expected_runs ? ` ${cadence.expected_runs} kavandatust (${share} %)` : "") +
+          `; kahe korra vahe mediaan oli ${cadence.median_gap_minutes} min, pikim ${cadence.max_gap_minutes} min. ` +
+          "Uus katkestus võib lehele jõuda tunde hiljem ning katkestuste algus ja lõpp on teada ainult " +
+          "selle täpsusega — seepärast on kestused allpool vahemikena.",
+      ],
+    );
+  } else if (cadence) {
+    lines.push([
+      "",
+      "",
+      `Seire töötab plaanipäraselt: viimase ${cadence.days} päeva jooksul ${cadence.runs} ` +
+        `kontrollimiskorda ${cadence.expected_runs ?? ""} kavandatust, vahe mediaan ${cadence.median_gap_minutes} min.`,
+    ]);
+  }
+  if (ageMin != null) {
+    lines.push([
+      stale ? "strong" : "",
+      stale ? "Andmed võivad olla vananenud. " : "",
+      `Viimane kontroll ${moment(newest)}, ${ageMin < 1 ? "alla minuti" : duration(ageMin * 60)} tagasi.`,
+    ]);
+  }
+  box.replaceChildren(
+    ...lines.map(([tag, lead, text]) => {
+      const para = document.createElement("p");
+      if (tag) para.append(Object.assign(document.createElement(tag), { textContent: lead }));
+      para.append(text);
+      return para;
+    }),
+  );
+  box.classList.toggle("warn", Boolean(sparse || stale));
+  box.hidden = lines.length === 0;
 }
 
 /* ---------- boot ---------- */
@@ -985,15 +1219,8 @@ function render(data) {
       Object.assign(document.createElement("option"), { value: name, textContent: name }),
     ),
   );
-  // The nominal interval is a schedule, not a measurement: GitHub may delay or
-  // drop scheduled runs. When the log shows the runs were much sparser, say so.
-  const cadence = data.cadence;
-  const cadenceText =
-    cadence && cadence.median_gap_minutes > 2 * data.interval_minutes
-      ? `kavandatud iga ${data.interval_minutes} min, tegelikult mediaan ${cadence.median_gap_minutes} min ` +
-        `(pikim vahe ${cadence.max_gap_minutes} min, ${cadence.runs} kontrolli ${cadence.days} päevas)`
-      : `kontroll iga ${data.interval_minutes} minuti järel`;
-  $("updated").textContent = `Viimati uuendatud ${moment(data.generated_at)} · ${cadenceText}`;
+  $("updated").textContent = `Leht koostati ${moment(data.generated_at)}.`;
+  renderHealth(data);
   const unverified = data.totals?.unverified ?? 0;
   $("provenance").textContent =
     `Näidatud on viimased ${data.window_days} päeva. Ajad on Eesti aja järgi. ` +
@@ -1003,7 +1230,7 @@ function render(data) {
   renderTiles(data);
   renderSystems(data);
   renderEndpoints(data);
-  renderIncidents(data);
+  renderEvents(data);
   renderSystemOutages(data);
   drawAvailability(data);
   drawLatency(data);
@@ -1041,7 +1268,7 @@ function redrawCharts() {
 }
 
 const refreshEndpoints = () => snapshot && renderEndpoints(snapshot);
-const refreshIncidents = () => snapshot && renderIncidents(snapshot);
+const refreshEvents = () => snapshot && renderEvents(snapshot);
 
 $("show-all").addEventListener("change", refreshEndpoints);
 $("filter-text").addEventListener("input", refreshEndpoints);
@@ -1052,7 +1279,8 @@ $("filter-reset").addEventListener("click", () => {
   refreshEndpoints();
 });
 attachSorting("endpoints", "endpoints", refreshEndpoints);
-attachSorting("incidents", "incidents", refreshIncidents);
+attachSorting("events", "events", refreshEvents);
+$("events-verified-only").addEventListener("change", refreshEvents);
 attachSorting("system-outages", "systemOutages", () => snapshot && renderSystemOutages(snapshot));
 
 document.querySelectorAll("#range-control button").forEach((btn) => {
@@ -1074,6 +1302,9 @@ fetch(`data/status.json?t=${Date.now()}`)
   .then((data) => {
     render(data);
     openDeepLink();
+    // The data's age is against the reader's clock, so it keeps moving while
+    // the page is open even though the data does not.
+    setInterval(() => renderHealth(data), 60000);
   })
   .catch((error) => {
     $("updated").textContent = `Andmete laadimine ebaõnnestus: ${error.message}`;

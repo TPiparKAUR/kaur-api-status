@@ -234,6 +234,43 @@ and `issues: write` running on every push is not somewhere to trust that only
 benign changes ever land there. Pinned SHAs carry the tagged version as a
 trailing comment so the intent stays readable.
 
+**The page states its own uncertainty (2026-10-29).** Four changes from one
+review of what a reader needs to decide quickly, each because the page
+claimed more precision than the log holds:
+
+- *The monitor's own health comes first.* A box under the title gives runs
+  received against expected over 7 days (`cadence.expected_runs`, the way
+  WMO's WDQMS reports observation availability) and the newest check's age
+  against the reader's clock (`last_check`). It turns into a warning when the
+  median gap exceeds twice the schedule or the data is older than twice the
+  gap. Every other number is only as fresh and as fine as this.
+- *Counts and a Wilson interval travel with every percentage.* `ok_24h`,
+  `checks_24h`, `ok_7d`, `checks_7d` on endpoints, systems and the overall
+  figure; `app.js` computes the 95 % Wilson interval (Brown, Cai & DasGupta
+  2001: the Wald interval is erratic at small n, and one unit has six checks a
+  day). "Nõrgim teenus" ranks by the interval's upper bound and says when the
+  top two overlap. The interval assumes independent checks; same-host,
+  same-run checks are not, and the method section says so.
+- *Events, not incidents.* `dashboard._events` groups incidents with the same
+  cause (`classify_cause`, words in `app.js`'s `CAUSE_WORD`) that began within
+  `_RUN_GAP` of each other; breaker-skipped endpoints join their host's
+  `no_response` event. Measured on the 2026-10-28 log: 691 incidents became
+  283 events, 7 of them touching a verified endpoint. Grouping states what was
+  seen together, not a shared root cause. Events carry only per-member
+  timing; names come from `endpoints` — repeating each member's 200-character
+  detail doubled `status.json`. `incidents` stays in its published shape for
+  the RSS feed and other readers.
+- *Durations are ranges, and nothing is summed across endpoints.* An
+  incident's true start lies after its last ok check (`analysis.incidents`'
+  new `after`); `analysis.duration_bounds` gives first-to-last failing check
+  as the lower bound and last-ok-before to first-ok-after as the upper — at a
+  median gap of ~4 h the median incident (4.7 h) was essentially one gap. A
+  series opening failing is bounded by the 31-day window start (`after_bound`),
+  never left as "at least". Per-service time is the union across endpoints
+  (`_union_seconds`); the "Otspunkte maas kokku" tile, which summed
+  overlapping outages to 56 days in a 31-day window, is gone with
+  `outage_total_s`.
+
 ## Commands
 
 ```bash
@@ -496,9 +533,13 @@ change to what the published numbers mean. All figures below are measured.
   Consequences while cadence is this sparse: an outage is first seen up to
   ~4 h late, and the two-strike Issue rule needs two checks, so a single
   service failure can take ~8 h to open an Issue. `_broad_outage` opens on one
-  check and is unaffected. Interval-weighted figures use the records' own
-  timestamps (`analysis.py`), so availability percentages stay honest; the
-  incident *durations* are only as fine as the check spacing.
+  check and is unaffected. **Correction (2026-10-29):** availability is *not*
+  interval-weighted — `analysis.uptime` is a plain share of checks, so a
+  multi-day figure spanning both cadences weights a 48-check September day
+  about eight times a 6-check October day. Per-day figures are unaffected.
+  Fixing it is a decision about what the published numbers mean, not yet
+  taken. Incident *durations* are only as fine as the check spacing, which
+  the page now shows as ranges (see "Design decisions").
 
 **Status-page comprehensibility round (2026-09-20).** The 2026-09-18 rewrite
 (sortable tables, per-row history strips, sparklines) left seven further
