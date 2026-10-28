@@ -1719,5 +1719,46 @@ class FeedBesideItsData(unittest.TestCase):
             self.assertEqual(before, after)
 
 
+class CadenceMeasurement(unittest.TestCase):
+    """The page must report how often checks really ran, not how often they were meant to."""
+
+    NOW = datetime(2026, 10, 28, 12, 0, tzinfo=UTC)
+
+    def _records(self, start_offsets_min, per_run=3):
+        out = []
+        for offset in start_offsets_min:
+            base = self.NOW - timedelta(minutes=offset)
+            for i in range(per_run):
+                out.append(
+                    {
+                        "id": f"e{i}",
+                        "ts": (base + timedelta(seconds=20 * i)).strftime("%Y-%m-%dT%H:%M:%SZ"),
+                    }
+                )
+        return out
+
+    def test_median_gap_is_taken_between_run_starts_not_records(self):
+        result = dashboard._cadence(self._records([600, 420, 240, 60]), self.NOW)
+        self.assertEqual(result["runs"], 4)
+        self.assertEqual(result["median_gap_minutes"], 180)
+        self.assertEqual(result["max_gap_minutes"], 180)
+
+    def test_runs_thirty_minutes_apart_are_not_merged(self):
+        result = dashboard._cadence(self._records([120, 90, 60, 30, 0]), self.NOW)
+        self.assertEqual(result["runs"], 5)
+        self.assertEqual(result["median_gap_minutes"], 30)
+
+    def test_too_few_runs_gives_no_cadence(self):
+        self.assertIsNone(dashboard._cadence(self._records([60, 30]), self.NOW))
+
+    def test_records_older_than_the_window_are_ignored(self):
+        old = self._records([60 * 24 * 10 + m for m in (0, 30, 60, 90)])
+        self.assertIsNone(dashboard._cadence(old, self.NOW))
+
+    def test_malformed_timestamps_are_skipped_not_fatal(self):
+        records = [*self._records([600, 420, 240, 60]), {"id": "x", "ts": "garbage"}, {"id": "y"}]
+        self.assertEqual(dashboard._cadence(records, self.NOW)["runs"], 4)
+
+
 if __name__ == "__main__":
     unittest.main()

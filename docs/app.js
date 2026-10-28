@@ -985,8 +985,15 @@ function render(data) {
       Object.assign(document.createElement("option"), { value: name, textContent: name }),
     ),
   );
-  $("updated").textContent =
-    `Viimati uuendatud ${moment(data.generated_at)} · kontroll iga ${data.interval_minutes} minuti järel`;
+  // The nominal interval is a schedule, not a measurement: GitHub may delay or
+  // drop scheduled runs. When the log shows the runs were much sparser, say so.
+  const cadence = data.cadence;
+  const cadenceText =
+    cadence && cadence.median_gap_minutes > 2 * data.interval_minutes
+      ? `kavandatud iga ${data.interval_minutes} min, tegelikult mediaan ${cadence.median_gap_minutes} min ` +
+        `(pikim vahe ${cadence.max_gap_minutes} min, ${cadence.runs} kontrolli ${cadence.days} päevas)`
+      : `kontroll iga ${data.interval_minutes} minuti järel`;
+  $("updated").textContent = `Viimati uuendatud ${moment(data.generated_at)} · ${cadenceText}`;
   const unverified = data.totals?.unverified ?? 0;
   $("provenance").textContent =
     `Näidatud on viimased ${data.window_days} päeva. Ajad on Eesti aja järgi. ` +

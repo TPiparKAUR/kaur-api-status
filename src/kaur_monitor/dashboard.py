@@ -14,6 +14,7 @@ import json
 import tomllib
 from datetime import UTC, datetime, timedelta
 from email.utils import format_datetime
+from itertools import pairwise
 from pathlib import Path
 from typing import Any
 from xml.sax.saxutils import escape
@@ -70,6 +71,51 @@ def _percentile(values: list[int], fraction: float) -> int | None:
     ordered = sorted(values)
     index = min(len(ordered) - 1, max(0, round(fraction * (len(ordered) - 1))))
     return ordered[index]
+
+
+_NOMINAL_INTERVAL_MIN = 30
+# Records written by one run are seconds to a few minutes apart; a longer silence
+# starts a new run. Well below the nominal interval, so two runs never merge.
+_RUN_GAP = timedelta(minutes=10)
+_CADENCE_DAYS = 7.0
+
+
+def _cadence(records: list[dict[str, Any]], now: datetime) -> dict[str, Any] | None:
+    """How often the checks actually ran, measured from the log itself.
+
+    GitHub treats a scheduled workflow as best effort and may delay or drop
+    runs, so the nominal interval is a wish, not a fact. Run starts are
+    recovered from record timestamps (a run is a cluster of records), and the
+    gaps between them are summarised. None when there are too few runs to say
+    anything — the page then states the nominal interval only, as before.
+    """
+    since = now - timedelta(days=_CADENCE_DAYS)
+    stamps: list[datetime] = []
+    for record in records:
+        try:
+            moment = datetime.fromisoformat(str(record["ts"]).replace("Z", "+00:00"))
+        except (KeyError, ValueError):
+            continue
+        if moment >= since:
+            stamps.append(moment)
+    stamps.sort()
+    starts: list[datetime] = []
+    previous: datetime | None = None
+    for moment in stamps:
+        if previous is None or moment - previous > _RUN_GAP:
+            starts.append(moment)
+        previous = moment
+    if len(starts) < 4:
+        return None
+    gaps = sorted((b - a).total_seconds() / 60 for a, b in pairwise(starts))
+    return {
+        "nominal_minutes": _NOMINAL_INTERVAL_MIN,
+        "days": _CADENCE_DAYS,
+        "runs": len(starts),
+        "median_gap_minutes": round(gaps[len(gaps) // 2]),
+        "p90_gap_minutes": round(gaps[min(len(gaps) - 1, int(0.9 * len(gaps)))]),
+        "max_gap_minutes": round(gaps[-1]),
+    }
 
 
 def _daily(records: list[dict[str, Any]], now: datetime) -> list[dict[str, Any]]:
@@ -288,7 +334,8 @@ def build(entries: list[dict[str, Any]]) -> dict[str, Any]:
 
     return {
         "generated_at": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "interval_minutes": 30,
+        "interval_minutes": _NOMINAL_INTERVAL_MIN,
+        "cadence": _cadence(records, now),
         "window_days": int(analysis.WINDOW_DAYS),
         "chart_days": _CHART_DAYS,
         "chart_dates": chart_dates,

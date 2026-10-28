@@ -246,7 +246,7 @@ python3 -m unittest discover -s tests
 
 ## What is monitored
 
-309 endpoints (308 enabled) across nine hosts, 42 units, every 30 minutes.
+309 endpoints (308 enabled) across nine hosts, 42 units, scheduled every 30 minutes (measured cadence is in `status.json` → `cadence`; see Open work).
 
 **Where the newer entries came from (2026-09-15).** The Teabevärav catalogue
 (andmed.eesti.ee) lists Keskkonnaagentuur's 9 data services and 24 datasets.
@@ -476,11 +476,29 @@ change to what the published numbers mean. All figures below are measured.
 - **Both pinned actions target Node 20**, which every run now warns is
   deprecated and force-runs on Node 24. Harmless today. When the SHAs are
   raised, verify the new SHA rather than deriving it from a tag.
-- **Do not "fix" the cron.** `*/30` delivered 23.7–35.2 minute intervals
-  (median 29.1) across those twenty runs. That is GitHub queueing scheduled
-  workflows, not a defect, and no cron spelling changes it. It does mean the
-  log's cadence is nominal: anything interval-weighted must use the records'
-  own timestamps, which `analysis.py` already does.
+- **The cron was "not a defect" until 2026-10-14; since then it is.** `*/30`
+  delivered 23.7–35.2 minute intervals (median 29.1) across runs 219–238 in
+  September, and a perfect 48 commits a day through 2026-10-13. From midday on
+  2026-10-14 it fires 4–8 times a day: over the 7 days to 2026-10-28, 41 runs,
+  median gap 238 min, p90 382, max 429 (log-derived, `dashboard._cadence`).
+  No commit to this repository precedes the step, and nothing the monitor
+  changed (the circuit breaker landed 2026-10-19, five days later) can explain
+  it. GitHub documents scheduled runs as best effort that "may be delayed or,
+  under high load, dropped", names the start of every hour as the worst time,
+  and advises a different minute; it publishes no throttle for a public
+  repository, so **the cause is unproven**. Done: cron moved to `13,43`, off
+  the :00/:30 marks, and the page now states the measured cadence instead of
+  "every 30 minutes". Not done, and not decided: an external trigger
+  (`workflow_dispatch` or `repository_dispatch` from an outside scheduler with
+  a fine-grained token) is the standard remedy but needs a secret and a service
+  outside this repository; a self-re-dispatching job or one long-lived job
+  that loops are possible but fragile or borderline against GitHub's terms.
+  Consequences while cadence is this sparse: an outage is first seen up to
+  ~4 h late, and the two-strike Issue rule needs two checks, so a single
+  service failure can take ~8 h to open an Issue. `_broad_outage` opens on one
+  check and is unaffected. Interval-weighted figures use the records' own
+  timestamps (`analysis.py`), so availability percentages stay honest; the
+  incident *durations* are only as fine as the check spacing.
 
 **Status-page comprehensibility round (2026-09-20).** The 2026-09-18 rewrite
 (sortable tables, per-row history strips, sparklines) left seven further

@@ -110,7 +110,7 @@ Seisund **TEADMATA** ei ava kunagi Issue't.
 
 | Töövoog | Millal | Mida teeb |
 |---|---|---|
-| `monitor.yml` | iga 30 min + käsitsi + `config/**` muudatusel | kontrollib, logib, uuendab raporti ja lehe, teavitab |
+| `monitor.yml` | kavandatud iga 30 min (13. ja 43. minutil) + käsitsi + `config/**` muudatusel | kontrollib, logib, uuendab raporti ja lehe, teavitab |
 | `discover.yml` | ainult käsitsi | avastab teenuse otspunktid selle enda kirjeldusest |
 | `tests.yml` | iga push | testid + inventari süntaks |
 

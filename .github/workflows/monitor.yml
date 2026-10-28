@@ -25,7 +25,10 @@ name: API monitor
 # more concurrency is fine, or go hourly.
 on:
   schedule:
-    - cron: "*/30 * * * *"
+    # Off the :00 and :30 marks. GitHub documents scheduled runs as best effort
+    # and says high-load times (the start of every hour) can delay or drop them;
+    # from 2026-10-14 only ~6 of 48 daily runs were firing on the :00/:30 cron.
+    - cron: "13,43 * * * *"
   workflow_dispatch:
     inputs:
       workers:
