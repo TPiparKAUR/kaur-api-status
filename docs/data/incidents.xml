@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
-<channel><title>Keskkonnaagentuuri API-de katkestused</title><link>https://tpiparkaur.github.io/kaur-api-status/</link><description>Keskkonnaagentuuri avalike andmeteenuste katkestused, uuemad eespool. Genereeritud automaatsest seirest iga kontrollitsükli järel.</description><language>et</language><lastBuildDate>Fri, 06 Nov 2026 07:25:34 +0000</lastBuildDate><item><title>PROTO: probleemtoodete avaandmed: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-proto-opendata</link><guid isPermaLink="false">proto-opendata-2026-11-06T00:17:09Z</guid><pubDate>Fri, 06 Nov 2026 00:17:09 +0000</pubDate><category>Probleemtooteregister</category><description><![CDATA[Teenus: Probleemtooteregister
+<channel><title>Keskkonnaagentuuri API-de katkestused</title><link>https://tpiparkaur.github.io/kaur-api-status/</link><description>Keskkonnaagentuuri avalike andmeteenuste katkestused, uuemad eespool. Genereeritud automaatsest seirest iga kontrollitsükli järel.</description><language>et</language><lastBuildDate>Fri, 06 Nov 2026 15:24:37 +0000</lastBuildDate><item><title>PROTO: probleemtoodete avaandmed: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-proto-opendata</link><guid isPermaLink="false">proto-opendata-2026-11-06T15:24:35Z</guid><pubDate>Fri, 06 Nov 2026 15:24:35 +0000</pubDate><category>Probleemtooteregister</category><description><![CDATA[Teenus: Probleemtooteregister
+Algus: 2026-11-06T15:24:35Z (UTC)
+Kestus: kestab endiselt
+Põhjus: http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en-US"> <![endif]--> <!--[if IE 7]> <html class="no-js ie7 oldie" lang="en-US"> <![endif]--> <!--[if ]]></description></item><item><title>Kütuseseire: ettevõtted: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kytus-bunkering-company</link><guid isPermaLink="false">kytus-bunkering-company-2026-11-06T15:24:35Z</guid><pubDate>Fri, 06 Nov 2026 15:24:35 +0000</pubDate><category>Kütuseseire</category><description><![CDATA[Teenus: Kütuseseire
+Algus: 2026-11-06T15:24:35Z (UTC)
+Kestus: kestab endiselt
+Põhjus: http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en-US"> <![endif]--> <!--[if IE 7]> <html class="no-js ie7 oldie" lang="en-US"> <![endif]--> <!--[if ]]></description></item><item><title>PROTO: probleemtoodete avaandmed: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-proto-opendata</link><guid isPermaLink="false">proto-opendata-2026-11-06T00:17:09Z</guid><pubDate>Fri, 06 Nov 2026 00:17:09 +0000</pubDate><category>Probleemtooteregister</category><description><![CDATA[Teenus: Probleemtooteregister
 Algus: 2026-11-06T00:17:09Z (UTC)
 Kestus: 7 h 8 min
 Põhjus: http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en-US"> <![endif]--> <!--[if IE 7]> <html class="no-js ie7 oldie" lang="en-US"> <![endif]--> <!--[if ]]></description></item><item><title>Kütuseseire: ettevõtted: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-kytus-bunkering-company</link><guid isPermaLink="false">kytus-bunkering-company-2026-11-06T00:17:09Z</guid><pubDate>Fri, 06 Nov 2026 00:17:09 +0000</pubDate><category>Kütuseseire</category><description><![CDATA[Teenus: Kütuseseire
@@ -142,12 +148,6 @@ Põhjus: not dialled: keskkonnaandmed.envir.ee gave no response to 6 connections
 Algus: 2026-11-03T00:05:46Z (UTC)
 Kestus: 6 h 40 min
 Põhjus: not dialled: keskkonnaandmed.envir.ee gave no response to 6 connections in a row earlier in this run]]></description></item><item><title>Kliima: kuuandmed Climate: monthly data: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-f-kliima-kuu</link><guid isPermaLink="false">f-kliima-kuu-2026-11-03T00:05:46Z</guid><pubDate>Tue, 03 Nov 2026 00:05:46 +0000</pubDate><category>Kliima</category><description><![CDATA[Teenus: Kliima
-Algus: 2026-11-03T00:05:46Z (UTC)
-Kestus: 6 h 40 min
-Põhjus: not dialled: keskkonnaandmed.envir.ee gave no response to 6 connections in a row earlier in this run]]></description></item><item><title>Kliima: jaamade metaandmed ja elementide mõõtmisperioodid Climate: station metadata and element measurement periods: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-f-kliima-jaam-vaatlus</link><guid isPermaLink="false">f-kliima-jaam-vaatlus-2026-11-03T00:05:46Z</guid><pubDate>Tue, 03 Nov 2026 00:05:46 +0000</pubDate><category>Kliima</category><description><![CDATA[Teenus: Kliima
-Algus: 2026-11-03T00:05:46Z (UTC)
-Kestus: 6 h 40 min
-Põhjus: not dialled: keskkonnaandmed.envir.ee gave no response to 6 connections in a row earlier in this run]]></description></item><item><title>f_kliima_element: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-f-kliima-element</link><guid isPermaLink="false">f-kliima-element-2026-11-03T00:05:46Z</guid><pubDate>Tue, 03 Nov 2026 00:05:46 +0000</pubDate><category>Kliima</category><description><![CDATA[Teenus: Kliima
 Algus: 2026-11-03T00:05:46Z (UTC)
 Kestus: 6 h 40 min
 Põhjus: not dialled: keskkonnaandmed.envir.ee gave no response to 6 connections in a row earlier in this run]]></description></item></channel></rss>
