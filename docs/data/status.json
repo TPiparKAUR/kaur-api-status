@@ -2,10 +2,10 @@
  "availability": {
   "checks_24h": 168,
   "checks_7d": 1134,
-  "d7": 89.51,
-  "h24": 91.67,
-  "ok_24h": 154,
-  "ok_7d": 1015
+  "d7": 88.89,
+  "h24": 88.1,
+  "ok_24h": 148,
+  "ok_7d": 1008
  },
  "cadence": {
   "days": 7.0,
@@ -17,7 +17,6 @@
   "runs": 27
  },
  "chart_dates": [
-  "2026-10-12",
   "2026-10-13",
   "2026-10-14",
   "2026-10-15",
@@ -47,24 +46,17 @@
   "2026-11-08",
   "2026-11-09",
   "2026-11-10",
-  "2026-11-11"
+  "2026-11-11",
+  "2026-11-12"
  ],
  "chart_days": 30,
  "daily": [
   {
-   "avail_pct": 98.05,
-   "checks": 462,
-   "date": "2026-10-12",
-   "ok": 453,
-   "p50_ms": 611,
-   "p95_ms": 2038
-  },
-  {
-   "avail_pct": 95.19,
-   "checks": 2016,
+   "avail_pct": 95.34,
+   "checks": 1932,
    "date": "2026-10-13",
-   "ok": 1919,
-   "p50_ms": 600,
+   "ok": 1842,
+   "p50_ms": 599,
    "p95_ms": 2240
   },
   {
@@ -298,24 +290,24 @@
    "ok": 116,
    "p50_ms": 550,
    "p95_ms": 1615
+  },
+  {
+   "avail_pct": 76.19,
+   "checks": 42,
+   "date": "2026-11-12",
+   "ok": 32,
+   "p50_ms": 618,
+   "p95_ms": 1068
   }
  ],
  "daily_kaia": [
   {
    "avail_pct": 100.0,
-   "checks": 55,
-   "date": "2026-10-12",
-   "ok": 55,
-   "p50_ms": 721,
-   "p95_ms": 948
-  },
-  {
-   "avail_pct": 100.0,
-   "checks": 240,
+   "checks": 230,
    "date": "2026-10-13",
-   "ok": 240,
+   "ok": 230,
    "p50_ms": 738,
-   "p95_ms": 1168
+   "p95_ms": 1197
   },
   {
    "avail_pct": 100.0,
@@ -548,24 +540,24 @@
    "ok": 15,
    "p50_ms": 768,
    "p95_ms": 983
+  },
+  {
+   "avail_pct": 100.0,
+   "checks": 5,
+   "date": "2026-11-12",
+   "ok": 5,
+   "p50_ms": 786,
+   "p95_ms": 912
   }
  ],
  "daily_postgrest": [
   {
-   "avail_pct": 97.79,
-   "checks": 407,
-   "date": "2026-10-12",
-   "ok": 398,
-   "p50_ms": 583,
-   "p95_ms": 2224
-  },
-  {
-   "avail_pct": 94.54,
-   "checks": 1776,
+   "avail_pct": 94.71,
+   "checks": 1702,
    "date": "2026-10-13",
-   "ok": 1679,
+   "ok": 1612,
    "p50_ms": 561,
-   "p95_ms": 2284
+   "p95_ms": 2281
   },
   {
    "avail_pct": 89.73,
@@ -798,6 +790,14 @@
    "ok": 101,
    "p50_ms": 531,
    "p95_ms": 1739
+  },
+  {
+   "avail_pct": 72.97,
+   "checks": 37,
+   "date": "2026-11-12",
+   "ok": 27,
+   "p50_ms": 567,
+   "p95_ms": 1787
   }
  ],
  "endpoints": [
@@ -808,7 +808,6 @@
    "checks_7d": 27,
    "days": {
     "checks": [
-     47,
      48,
      25,
      6,
@@ -838,10 +837,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "ok": [
-     46,
      48,
      25,
      6,
@@ -871,10 +870,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "p50_ms": [
-     441,
      438,
      450,
      447,
@@ -904,20 +903,21 @@
      476,
      433,
      507,
-     373
+     373,
+     469
     ]
    },
    "detail": "",
    "http": null,
    "id": "eelis",
    "members": 261,
-   "ms": 370,
+   "ms": 469,
    "name": "EELIS andmestikud",
    "ok_24h": 4,
    "ok_7d": 27,
    "status": "ok",
    "system": "EELIS",
-   "ts": "2026-11-11T18:41:55Z",
+   "ts": "2026-11-12T01:02:19Z",
    "url": "https://keskkonnaandmed.envir.ee/",
    "verified": true
   },
@@ -928,7 +928,6 @@
    "checks_7d": 27,
    "days": {
     "checks": [
-     47,
      48,
      25,
      6,
@@ -958,10 +957,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "ok": [
-     47,
      48,
      23,
      6,
@@ -991,10 +990,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "p50_ms": [
-     1047,
      788,
      672,
      698,
@@ -1024,20 +1023,21 @@
      785,
      737,
      822,
-     533
+     533,
+     802
     ]
    },
    "detail": "",
    "http": 200,
    "id": "estmodel-assessment-units",
    "members": null,
-   "ms": 533,
+   "ms": 802,
    "name": "EstModel: Hindamisüksused",
    "ok_24h": 4,
    "ok_7d": 27,
    "status": "ok",
    "system": "EstModel",
-   "ts": "2026-11-11T18:41:55Z",
+   "ts": "2026-11-12T01:02:19Z",
    "url": "https://estmodel.envir.ee/assessment-units",
    "verified": false
   },
@@ -1048,7 +1048,6 @@
    "checks_7d": 27,
    "days": {
     "checks": [
-     47,
      48,
      25,
      6,
@@ -1078,10 +1077,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "ok": [
-     47,
      48,
      23,
      6,
@@ -1111,10 +1110,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "p50_ms": [
-     676,
      583,
      589,
      543,
@@ -1144,20 +1143,21 @@
      632,
      460,
      559,
-     456
+     456,
+     697
     ]
    },
    "detail": "",
    "http": 200,
    "id": "estmodel-countries",
    "members": null,
-   "ms": 374,
+   "ms": 697,
    "name": "EstModel: Riigid",
    "ok_24h": 4,
    "ok_7d": 27,
    "status": "ok",
    "system": "EstModel",
-   "ts": "2026-11-11T18:41:55Z",
+   "ts": "2026-11-12T01:02:19Z",
    "url": "https://estmodel.envir.ee/countries",
    "verified": false
   },
@@ -1168,7 +1168,6 @@
    "checks_7d": 27,
    "days": {
     "checks": [
-     47,
      48,
      25,
      6,
@@ -1198,10 +1197,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "ok": [
-     47,
      48,
      23,
      6,
@@ -1231,10 +1230,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "p50_ms": [
-     627,
      629,
      603,
      607,
@@ -1264,20 +1263,21 @@
      659,
      448,
      632,
-     517
+     517,
+     664
     ]
    },
    "detail": "",
    "http": 200,
    "id": "estmodel-districts",
    "members": null,
-   "ms": 517,
+   "ms": 664,
    "name": "EstModel: Vesikonnad",
    "ok_24h": 4,
    "ok_7d": 27,
    "status": "ok",
    "system": "EstModel",
-   "ts": "2026-11-11T18:41:55Z",
+   "ts": "2026-11-12T01:02:19Z",
    "url": "https://estmodel.envir.ee/districts",
    "verified": false
   },
@@ -1288,7 +1288,6 @@
    "checks_7d": 27,
    "days": {
     "checks": [
-     47,
      48,
      25,
      6,
@@ -1318,10 +1317,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "ok": [
-     47,
      48,
      23,
      6,
@@ -1351,10 +1350,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "p50_ms": [
-     1302,
      1031,
      857,
      822,
@@ -1384,20 +1383,21 @@
      749,
      871,
      1023,
-     773
+     773,
+     848
     ]
    },
    "detail": "body truncated at 262144 bytes, parse skipped",
    "http": 200,
    "id": "estmodel-rivers",
    "members": null,
-   "ms": 773,
+   "ms": 848,
    "name": "EstModel: Vooluveekogud",
    "ok_24h": 4,
    "ok_7d": 27,
    "status": "ok",
    "system": "EstModel",
-   "ts": "2026-11-11T18:41:55Z",
+   "ts": "2026-11-12T01:02:19Z",
    "url": "https://estmodel.envir.ee/rivers",
    "verified": false
   },
@@ -1408,7 +1408,6 @@
    "checks_7d": 27,
    "days": {
     "checks": [
-     47,
      48,
      25,
      6,
@@ -1438,10 +1437,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "ok": [
-     47,
      48,
      23,
      6,
@@ -1471,10 +1470,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "p50_ms": [
-     797,
      670,
      595,
      644,
@@ -1504,20 +1503,21 @@
      675,
      514,
      709,
-     599
+     599,
+     733
     ]
    },
    "detail": "",
    "http": 200,
    "id": "estmodel-stations",
    "members": null,
-   "ms": 599,
+   "ms": 733,
    "name": "EstModel: Seirejaamad",
    "ok_24h": 4,
    "ok_7d": 27,
    "status": "ok",
    "system": "EstModel",
-   "ts": "2026-11-11T18:41:55Z",
+   "ts": "2026-11-12T01:02:19Z",
    "url": "https://estmodel.envir.ee/stations",
    "verified": false
   },
@@ -1528,7 +1528,6 @@
    "checks_7d": 27,
    "days": {
     "checks": [
-     47,
      48,
      25,
      6,
@@ -1558,10 +1557,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "ok": [
-     47,
      48,
      23,
      6,
@@ -1591,10 +1590,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "p50_ms": [
-     620,
      592,
      556,
      575,
@@ -1624,20 +1623,21 @@
      682,
      428,
      669,
-     465
+     465,
+     646
     ]
    },
    "detail": "",
    "http": 200,
    "id": "estmodel-subdistricts",
    "members": null,
-   "ms": 465,
+   "ms": 646,
    "name": "EstModel: Alamvesikonnad",
    "ok_24h": 4,
    "ok_7d": 27,
    "status": "ok",
    "system": "EstModel",
-   "ts": "2026-11-11T18:41:55Z",
+   "ts": "2026-11-12T01:02:19Z",
    "url": "https://estmodel.envir.ee/subdistricts",
    "verified": false
   },
@@ -1648,7 +1648,6 @@
    "checks_7d": 27,
    "days": {
     "checks": [
-     47,
      48,
      25,
      6,
@@ -1678,10 +1677,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "ok": [
-     47,
      48,
      23,
      6,
@@ -1711,10 +1710,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "p50_ms": [
-     1262,
      1024,
      892,
      741,
@@ -1744,20 +1743,21 @@
      1066,
      977,
      782,
-     777
+     777,
+     1068
     ]
    },
    "detail": "body truncated at 262144 bytes, parse skipped",
    "http": 200,
    "id": "estmodel-water-outlets",
    "members": null,
-   "ms": 777,
+   "ms": 1068,
    "name": "EstModel: Väljalasud",
    "ok_24h": 4,
    "ok_7d": 27,
    "status": "ok",
    "system": "EstModel",
-   "ts": "2026-11-11T18:41:55Z",
+   "ts": "2026-11-12T01:02:19Z",
    "url": "https://estmodel.envir.ee/water-outlets",
    "verified": false
   },
@@ -1768,7 +1768,6 @@
    "checks_7d": 27,
    "days": {
     "checks": [
-     47,
      48,
      25,
      6,
@@ -1798,10 +1797,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "ok": [
-     47,
      48,
      25,
      6,
@@ -1831,10 +1830,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "p50_ms": [
-     480,
      501,
      476,
      453,
@@ -1864,20 +1863,21 @@
      506,
      585,
      542,
-     532
+     532,
+     475
     ]
    },
    "detail": "",
    "http": 200,
    "id": "f-hydroseire",
    "members": null,
-   "ms": 589,
+   "ms": 475,
    "name": "Hüdroloogiliste seireandmete aegread",
    "ok_24h": 4,
    "ok_7d": 27,
    "status": "ok",
    "system": "Hüdroloogia",
-   "ts": "2026-11-11T18:42:00Z",
+   "ts": "2026-11-12T01:02:25Z",
    "url": "https://keskkonnaandmed.envir.ee/f_hydroseire?limit=1",
    "verified": false
   },
@@ -1888,7 +1888,6 @@
    "checks_7d": 27,
    "days": {
     "checks": [
-     47,
      48,
      25,
      6,
@@ -1918,10 +1917,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "ok": [
-     47,
      48,
      25,
      6,
@@ -1951,10 +1950,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "p50_ms": [
-     1985,
      3284,
      2521,
      1626,
@@ -1984,31 +1983,31 @@
      3176,
      3637,
      2642,
-     3526
+     3526,
+     1787
     ]
    },
    "detail": "",
    "http": 200,
    "id": "hydroseire",
    "members": null,
-   "ms": 1739,
+   "ms": 1787,
    "name": "Hüdroloogiline seire, veetase 2023-01-02",
    "ok_24h": 4,
    "ok_7d": 27,
    "status": "ok",
    "system": "Hüdroloogia",
-   "ts": "2026-11-11T18:42:22Z",
+   "ts": "2026-11-12T01:02:53Z",
    "url": "https://keskkonnaandmed.envir.ee/f_hydroseire?timeline_ts_utc=lt.2023-01-02T03:00:00&timeline_ts_utc=gt.2023-01-01T23:00:00&aegrida_nimi=eq.WL%20min&limit=5",
    "verified": true
   },
   {
-   "avail_24h": 75.0,
+   "avail_24h": 50.0,
    "avail_7d": 55.56,
    "checks_24h": 4,
    "checks_7d": 27,
    "days": {
     "checks": [
-     47,
      48,
      25,
      6,
@@ -2038,10 +2037,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "ok": [
-     47,
      43,
      17,
      5,
@@ -2071,10 +2070,10 @@
      1,
      2,
      3,
-     2
+     2,
+     0
     ],
     "p50_ms": [
-     1372,
      1311,
      1356,
      1362,
@@ -2104,31 +2103,31 @@
      1448,
      1164,
      1454,
-     997
+     997,
+     null
     ]
    },
-   "detail": "",
-   "http": 200,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 8]> <html class=\"no-js ie8 oldie\" lang=\"en-US\"> <![endif]--> <!--[if gt IE 8]><!--> <html class=\"no-js\" lang=\"en-US\"> <!--<![e",
+   "http": 429,
    "id": "ilmateenistus-hoiatused-rss",
    "members": null,
-   "ms": 997,
+   "ms": 500,
    "name": "Ilmateenistus: hoiatuste RSS",
-   "ok_24h": 3,
+   "ok_24h": 2,
    "ok_7d": 15,
-   "status": "ok",
+   "status": "down",
    "system": "Ilmateenistus",
-   "ts": "2026-11-11T18:42:23Z",
+   "ts": "2026-11-12T01:03:25Z",
    "url": "https://ilmateenistus.ee/ilma_andmed/rss/hoiatused_rss.php",
    "verified": false
   },
   {
-   "avail_24h": 75.0,
+   "avail_24h": 50.0,
    "avail_7d": 62.96,
    "checks_24h": 4,
    "checks_7d": 27,
    "days": {
     "checks": [
-     47,
      48,
      25,
      6,
@@ -2158,10 +2157,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "ok": [
-     47,
      45,
      22,
      6,
@@ -2191,10 +2190,10 @@
      0,
      2,
      3,
-     2
+     2,
+     0
     ],
     "p50_ms": [
-     1398,
      1275,
      1344,
      1217,
@@ -2224,31 +2223,31 @@
      null,
      1199,
      1354,
-     1006
+     1006,
+     null
     ]
    },
-   "detail": "",
-   "http": 200,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 8]> <html class=\"no-js ie8 oldie\" lang=\"en-US\"> <![endif]--> <!--[if gt IE 8]><!--> <html class=\"no-js\" lang=\"en-US\"> <!--<![e",
+   "http": 429,
    "id": "ilmateenistus-hoiatused-xml",
    "members": null,
-   "ms": 1006,
+   "ms": 505,
    "name": "Ilmateenistus: hoiatused XML",
-   "ok_24h": 3,
+   "ok_24h": 2,
    "ok_7d": 17,
-   "status": "ok",
+   "status": "down",
    "system": "Ilmateenistus",
-   "ts": "2026-11-11T18:42:23Z",
+   "ts": "2026-11-12T01:03:25Z",
    "url": "https://ilmateenistus.ee/ilma_andmed/xml/hoiatus.php",
    "verified": false
   },
   {
-   "avail_24h": 100.0,
-   "avail_7d": 81.48,
+   "avail_24h": 75.0,
+   "avail_7d": 77.78,
    "checks_24h": 4,
    "checks_7d": 27,
    "days": {
     "checks": [
-     47,
      48,
      25,
      6,
@@ -2278,10 +2277,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "ok": [
-     45,
      47,
      22,
      6,
@@ -2311,10 +2310,10 @@
      2,
      3,
      3,
-     3
+     3,
+     0
     ],
     "p50_ms": [
-     2306,
      2259,
      1950,
      1712,
@@ -2344,31 +2343,31 @@
      1848,
      1548,
      1720,
-     1537
+     1537,
+     null
     ]
    },
-   "detail": "",
-   "http": 200,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 8]> <html class=\"no-js ie8 oldie\" lang=\"en-US\"> <![endif]--> <!--[if gt IE 8]><!--> <html class=\"no-js\" lang=\"en-US\"> <!--<![e",
+   "http": 429,
    "id": "ilmateenistus-juur",
    "members": null,
-   "ms": 1508,
+   "ms": 483,
    "name": "Ilmateenistus: teenuse juur",
-   "ok_24h": 4,
-   "ok_7d": 22,
-   "status": "ok",
+   "ok_24h": 3,
+   "ok_7d": 21,
+   "status": "down",
    "system": "Ilmateenistus",
-   "ts": "2026-11-11T18:42:23Z",
+   "ts": "2026-11-12T01:03:25Z",
    "url": "https://www.ilmateenistus.ee/",
    "verified": false
   },
   {
-   "avail_24h": 75.0,
+   "avail_24h": 50.0,
    "avail_7d": 59.26,
    "checks_24h": 4,
    "checks_7d": 27,
    "days": {
     "checks": [
-     47,
      48,
      25,
      6,
@@ -2398,10 +2397,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "ok": [
-     47,
      43,
      18,
      6,
@@ -2431,10 +2430,10 @@
      2,
      2,
      3,
-     2
+     2,
+     0
     ],
     "p50_ms": [
-     1162,
      1103,
      1190,
      1075,
@@ -2464,31 +2463,31 @@
      1347,
      1154,
      1202,
-     846
+     846,
+     null
     ]
    },
-   "detail": "",
-   "http": 200,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 8]> <html class=\"no-js ie8 oldie\" lang=\"en-US\"> <![endif]--> <!--[if gt IE 8]><!--> <html class=\"no-js\" lang=\"en-US\"> <!--<![e",
+   "http": 429,
    "id": "ilmateenistus-prognoos-xml",
    "members": null,
-   "ms": 846,
+   "ms": 486,
    "name": "Ilmateenistus: Eesti prognoos XML",
-   "ok_24h": 3,
+   "ok_24h": 2,
    "ok_7d": 16,
-   "status": "ok",
+   "status": "down",
    "system": "Ilmateenistus",
-   "ts": "2026-11-11T18:42:23Z",
+   "ts": "2026-11-12T01:03:25Z",
    "url": "https://ilmateenistus.ee/ilma_andmed/xml/forecast.php",
    "verified": false
   },
   {
-   "avail_24h": 75.0,
-   "avail_7d": 62.96,
+   "avail_24h": 50.0,
+   "avail_7d": 59.26,
    "checks_24h": 4,
    "checks_7d": 27,
    "days": {
     "checks": [
-     47,
      48,
      25,
      6,
@@ -2518,10 +2517,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "ok": [
-     47,
      43,
      19,
      6,
@@ -2551,10 +2550,10 @@
      1,
      2,
      3,
-     2
+     2,
+     0
     ],
     "p50_ms": [
-     1259,
      1287,
      1333,
      1248,
@@ -2584,20 +2583,21 @@
      1351,
      1236,
      1346,
-     933
+     933,
+     null
     ]
    },
-   "detail": "",
-   "http": 200,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 8]> <html class=\"no-js ie8 oldie\" lang=\"en-US\"> <![endif]--> <!--[if gt IE 8]><!--> <html class=\"no-js\" lang=\"en-US\"> <!--<![e",
+   "http": 429,
    "id": "ilmateenistus-vaatlusandmed-xml",
    "members": null,
-   "ms": 933,
+   "ms": 488,
    "name": "Ilmateenistus: Eesti vaatlusandmed XML",
-   "ok_24h": 3,
-   "ok_7d": 17,
-   "status": "ok",
+   "ok_24h": 2,
+   "ok_7d": 16,
+   "status": "down",
    "system": "Ilmateenistus",
-   "ts": "2026-11-11T18:42:23Z",
+   "ts": "2026-11-12T01:03:25Z",
    "url": "https://ilmateenistus.ee/ilma_andmed/xml/observations.php",
    "verified": false
   },
@@ -2608,7 +2608,6 @@
    "checks_7d": 27,
    "days": {
     "checks": [
-     47,
      48,
      25,
      6,
@@ -2638,10 +2637,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "ok": [
-     47,
      48,
      25,
      6,
@@ -2671,10 +2670,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "p50_ms": [
-     668,
      627,
      615,
      628,
@@ -2704,20 +2703,21 @@
      751,
      603,
      693,
-     659
+     659,
+     745
     ]
    },
    "detail": "",
    "http": 200,
    "id": "kaia-items-query",
    "members": null,
-   "ms": 657,
+   "ms": 745,
    "name": "KAIA dokumentide metaandmete päring",
    "ok_24h": 4,
    "ok_7d": 27,
    "status": "ok",
    "system": "KAIA",
-   "ts": "2026-11-11T18:42:23Z",
+   "ts": "2026-11-12T01:02:54Z",
    "url": "https://avaandmed.keskkonnaportaal.ee/api/lists/active/items/query",
    "verified": true
   },
@@ -2728,7 +2728,6 @@
    "checks_7d": 27,
    "days": {
     "checks": [
-     47,
      48,
      25,
      6,
@@ -2758,10 +2757,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "ok": [
-     47,
      48,
      25,
      5,
@@ -2791,10 +2790,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "p50_ms": [
-     888,
      819,
      851,
      874,
@@ -2824,20 +2823,21 @@
      974,
      774,
      812,
-     795
+     795,
+     912
     ]
    },
    "detail": "",
    "http": 200,
    "id": "kaia-lists-active",
    "members": null,
-   "ms": 792,
+   "ms": 912,
    "name": "KAIA aktiivse valikuhierarhia metaandmed",
    "ok_24h": 4,
    "ok_7d": 27,
    "status": "ok",
    "system": "KAIA",
-   "ts": "2026-11-11T18:42:23Z",
+   "ts": "2026-11-12T01:02:54Z",
    "url": "https://avaandmed.keskkonnaportaal.ee/api/lists/active",
    "verified": true
   },
@@ -2848,7 +2848,6 @@
    "checks_7d": 27,
    "days": {
     "checks": [
-     47,
      48,
      25,
      6,
@@ -2878,10 +2877,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "ok": [
-     47,
      48,
      25,
      5,
@@ -2911,10 +2910,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "p50_ms": [
-     847,
      819,
      805,
      872,
@@ -2944,20 +2943,21 @@
      857,
      826,
      853,
-     804
+     804,
+     902
     ]
    },
    "detail": "",
    "http": 200,
    "id": "kaia-lists-archive",
    "members": null,
-   "ms": 768,
+   "ms": 902,
    "name": "KAIA arhiivi valikuhierarhia metaandmed",
    "ok_24h": 4,
    "ok_7d": 27,
    "status": "ok",
    "system": "KAIA",
-   "ts": "2026-11-11T18:42:23Z",
+   "ts": "2026-11-12T01:02:54Z",
    "url": "https://avaandmed.keskkonnaportaal.ee/api/lists/archive",
    "verified": true
   },
@@ -2968,7 +2968,6 @@
    "checks_7d": 27,
    "days": {
     "checks": [
-     47,
      48,
      25,
      6,
@@ -2998,10 +2997,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "ok": [
-     47,
      48,
      25,
      6,
@@ -3031,10 +3030,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "p50_ms": [
-     731,
      710,
      746,
      727,
@@ -3064,20 +3063,21 @@
      840,
      695,
      700,
-     690
+     690,
+     786
     ]
    },
    "detail": "",
    "http": 200,
    "id": "kaia-swagger",
    "members": null,
-   "ms": 690,
+   "ms": 786,
    "name": "KAIA OpenAPI teenusekirjeldus",
    "ok_24h": 4,
    "ok_7d": 27,
    "status": "ok",
    "system": "KAIA",
-   "ts": "2026-11-11T18:42:23Z",
+   "ts": "2026-11-12T01:02:55Z",
    "url": "https://avaandmed.keskkonnaportaal.ee/swagger/v1/swagger.json",
    "verified": true
   },
@@ -3088,7 +3088,6 @@
    "checks_7d": 27,
    "days": {
     "checks": [
-     47,
      48,
      25,
      6,
@@ -3118,10 +3117,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "ok": [
-     47,
      48,
      25,
      6,
@@ -3151,10 +3150,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "p50_ms": [
-     709,
      724,
      658,
      700,
@@ -3184,20 +3183,21 @@
      774,
      644,
      698,
-     604
+     604,
+     618
     ]
    },
    "detail": "",
    "http": null,
    "id": "kaia-vaated",
    "members": 7,
-   "ms": 604,
+   "ms": 618,
    "name": "KAIA avaandmete failivaated",
    "ok_24h": 4,
    "ok_7d": 27,
    "status": "ok",
    "system": "KAIA",
-   "ts": "2026-11-11T18:42:23Z",
+   "ts": "2026-11-12T01:02:55Z",
    "url": "https://avaandmed.keskkonnaportaal.ee/dhs/Active/documentList.aspx",
    "verified": false
   },
@@ -3208,7 +3208,6 @@
    "checks_7d": 27,
    "days": {
     "checks": [
-     47,
      48,
      25,
      6,
@@ -3238,10 +3237,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "ok": [
-     47,
      48,
      25,
      6,
@@ -3271,10 +3270,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "p50_ms": [
-     881,
      881,
      891,
      816,
@@ -3304,20 +3303,21 @@
      985,
      756,
      963,
-     816
+     816,
+     850
     ]
    },
    "detail": "body truncated at 65536 bytes, parse skipped",
    "http": 200,
    "id": "keskkonnaandmed-root",
    "members": null,
-   "ms": 665,
+   "ms": 850,
    "name": "Juur-URL, OpenAPI teenusekirjeldus",
    "ok_24h": 4,
    "ok_7d": 27,
    "status": "ok",
    "system": "Keskkonnaandmed",
-   "ts": "2026-11-11T18:42:25Z",
+   "ts": "2026-11-12T01:02:57Z",
    "url": "https://keskkonnaandmed.envir.ee",
    "verified": true
   },
@@ -3328,7 +3328,6 @@
    "checks_7d": 27,
    "days": {
     "checks": [
-     47,
      48,
      25,
      6,
@@ -3358,10 +3357,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "ok": [
-     47,
      48,
      25,
      6,
@@ -3391,10 +3390,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "p50_ms": [
-     483,
      501,
      478,
      461,
@@ -3424,20 +3423,21 @@
      492,
      420,
      545,
-     445
+     445,
+     597
     ]
    },
    "detail": "",
    "http": 200,
    "id": "f-keskkonnaseire",
    "members": null,
-   "ms": 374,
+   "ms": 597,
    "name": "Keskkonnaseire avaandmete andmeteenused",
    "ok_24h": 4,
    "ok_7d": 27,
    "status": "ok",
    "system": "Keskkonnaseire",
-   "ts": "2026-11-11T18:42:03Z",
+   "ts": "2026-11-12T01:02:29Z",
    "url": "https://keskkonnaandmed.envir.ee/f_keskkonnaseire?limit=1",
    "verified": false
   },
@@ -3448,7 +3448,6 @@
    "checks_7d": 27,
    "days": {
     "checks": [
-     47,
      48,
      25,
      6,
@@ -3478,10 +3477,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "ok": [
-     47,
      48,
      25,
      6,
@@ -3511,10 +3510,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "p50_ms": [
-     2540,
      2408,
      2505,
      2377,
@@ -3544,20 +3543,21 @@
      2517,
      2694,
      2789,
-     2755
+     2755,
+     2641
     ]
    },
    "detail": "",
    "http": 200,
    "id": "keskkonnaseire",
    "members": null,
-   "ms": 2414,
+   "ms": 2641,
    "name": "Keskkonnaseire, programm PR0127 aastal 2021",
    "ok_24h": 4,
    "ok_7d": 27,
    "status": "ok",
    "system": "Keskkonnaseire",
-   "ts": "2026-11-11T18:42:25Z",
+   "ts": "2026-11-12T01:02:57Z",
    "url": "https://keskkonnaandmed.envir.ee/f_keskkonnaseire?seiretoo_seotud_programmi_kood_iv=eq.PR0127&seireaeg_algus=gte.2021-01-01T00:00:00&seireaeg_algus=lt.2022-01-01T00:00:00&naitaja_nimetus=in.(Kloriid,%C3%9Cldraud,Vee%20temperatuur,Elavh%C3%B5be,PAH%20summa)&limit=5",
    "verified": true
   },
@@ -3568,7 +3568,6 @@
    "checks_7d": 27,
    "days": {
     "checks": [
-     47,
      48,
      25,
      6,
@@ -3598,10 +3597,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "ok": [
-     47,
      48,
      25,
      6,
@@ -3631,10 +3630,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "p50_ms": [
-     712,
      701,
      763,
      688,
@@ -3664,20 +3663,21 @@
      774,
      655,
      826,
-     563
+     563,
+     762
     ]
    },
    "detail": "",
    "http": 200,
    "id": "kese-juur",
    "members": null,
-   "ms": 563,
+   "ms": 762,
    "name": "KESE: teenuse juur",
    "ok_24h": 4,
    "ok_7d": 27,
    "status": "ok",
    "system": "Keskkonnaseire infosüsteem",
-   "ts": "2026-11-11T18:42:25Z",
+   "ts": "2026-11-12T01:02:57Z",
    "url": "https://kese.envir.ee",
    "verified": false
   },
@@ -3688,7 +3688,6 @@
    "checks_7d": 27,
    "days": {
     "checks": [
-     47,
      48,
      25,
      6,
@@ -3718,10 +3717,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "ok": [
-     47,
      48,
      25,
      6,
@@ -3751,10 +3750,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "p50_ms": [
-     475,
      473,
      450,
      452,
@@ -3784,20 +3783,21 @@
      484,
      408,
      539,
-     360
+     360,
+     464
     ]
    },
    "detail": "",
    "http": 200,
    "id": "f-kliima-element",
    "members": null,
-   "ms": 357,
+   "ms": 464,
    "name": "f_kliima_element",
    "ok_24h": 4,
    "ok_7d": 27,
    "status": "ok",
    "system": "Kliima",
-   "ts": "2026-11-11T18:42:04Z",
+   "ts": "2026-11-12T01:02:30Z",
    "url": "https://keskkonnaandmed.envir.ee/f_kliima_element?limit=1",
    "verified": false
   },
@@ -3808,7 +3808,6 @@
    "checks_7d": 27,
    "days": {
     "checks": [
-     47,
      48,
      25,
      6,
@@ -3838,10 +3837,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "ok": [
-     47,
      48,
      25,
      6,
@@ -3871,10 +3870,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "p50_ms": [
-     483,
      478,
      446,
      466,
@@ -3904,20 +3903,21 @@
      484,
      402,
      502,
-     537
+     537,
+     567
     ]
    },
    "detail": "",
    "http": 200,
    "id": "f-kliima-jaam-vaatlus",
    "members": null,
-   "ms": 597,
+   "ms": 567,
    "name": "Kliima: jaamade metaandmed ja elementide mõõtmisperioodid Climate: station metadata and element measurement periods",
    "ok_24h": 4,
    "ok_7d": 27,
    "status": "ok",
    "system": "Kliima",
-   "ts": "2026-11-11T18:42:04Z",
+   "ts": "2026-11-12T01:02:30Z",
    "url": "https://keskkonnaandmed.envir.ee/f_kliima_jaam_vaatlus?limit=1",
    "verified": false
   },
@@ -3928,7 +3928,6 @@
    "checks_7d": 27,
    "days": {
     "checks": [
-     47,
      48,
      25,
      6,
@@ -3958,10 +3957,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "ok": [
-     47,
      48,
      25,
      6,
@@ -3991,10 +3990,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "p50_ms": [
-     482,
      492,
      472,
      443,
@@ -4024,20 +4023,21 @@
      481,
      555,
      503,
-     505
+     505,
+     568
     ]
    },
    "detail": "",
    "http": 200,
    "id": "f-kliima-kuu",
    "members": null,
-   "ms": 609,
+   "ms": 568,
    "name": "Kliima: kuuandmed Climate: monthly data",
    "ok_24h": 4,
    "ok_7d": 27,
    "status": "ok",
    "system": "Kliima",
-   "ts": "2026-11-11T18:42:04Z",
+   "ts": "2026-11-12T01:02:30Z",
    "url": "https://keskkonnaandmed.envir.ee/f_kliima_kuu?limit=1",
    "verified": false
   },
@@ -4048,7 +4048,6 @@
    "checks_7d": 27,
    "days": {
     "checks": [
-     47,
      48,
      25,
      6,
@@ -4078,10 +4077,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "ok": [
-     47,
      48,
      25,
      6,
@@ -4111,10 +4110,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "p50_ms": [
-     474,
      491,
      484,
      454,
@@ -4144,20 +4143,21 @@
      479,
      562,
      531,
-     461
+     461,
+     465
     ]
    },
    "detail": "",
    "http": 200,
    "id": "f-kliima-minut",
    "members": null,
-   "ms": 461,
+   "ms": 465,
    "name": "Kliima: 10-minuti andmed Climate: 10-minute data",
    "ok_24h": 4,
    "ok_7d": 27,
    "status": "ok",
    "system": "Kliima",
-   "ts": "2026-11-11T18:42:04Z",
+   "ts": "2026-11-12T01:02:30Z",
    "url": "https://keskkonnaandmed.envir.ee/f_kliima_minut?limit=1",
    "verified": false
   },
@@ -4168,7 +4168,6 @@
    "checks_7d": 27,
    "days": {
     "checks": [
-     47,
      48,
      25,
      6,
@@ -4198,10 +4197,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "ok": [
-     47,
      48,
      25,
      6,
@@ -4231,10 +4230,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "p50_ms": [
-     475,
      474,
      478,
      447,
@@ -4264,20 +4263,21 @@
      488,
      418,
      530,
-     506
+     506,
+     464
     ]
    },
    "detail": "",
    "http": 200,
    "id": "f-kliima-paev",
    "members": null,
-   "ms": 462,
+   "ms": 464,
    "name": "Kliima: ööpäevaandmed Climate: daily data",
    "ok_24h": 4,
    "ok_7d": 27,
    "status": "ok",
    "system": "Kliima",
-   "ts": "2026-11-11T18:42:04Z",
+   "ts": "2026-11-12T01:02:30Z",
    "url": "https://keskkonnaandmed.envir.ee/f_kliima_paev?limit=1",
    "verified": false
   },
@@ -4288,7 +4288,6 @@
    "checks_7d": 27,
    "days": {
     "checks": [
-     47,
      48,
      25,
      6,
@@ -4318,10 +4317,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "ok": [
-     47,
      48,
      25,
      6,
@@ -4351,10 +4350,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "p50_ms": [
-     474,
      470,
      472,
      461,
@@ -4384,20 +4383,21 @@
      475,
      485,
      505,
-     447
+     447,
+     464
     ]
    },
    "detail": "",
    "http": 200,
    "id": "f-kliima-tund",
    "members": null,
-   "ms": 447,
+   "ms": 464,
    "name": "Kliima: tunniandmed  Climate: hourly data",
    "ok_24h": 4,
    "ok_7d": 27,
    "status": "ok",
    "system": "Kliima",
-   "ts": "2026-11-11T18:42:04Z",
+   "ts": "2026-11-12T01:02:30Z",
    "url": "https://keskkonnaandmed.envir.ee/f_kliima_tund?limit=1",
    "verified": false
   },
@@ -4408,7 +4408,6 @@
    "checks_7d": 27,
    "days": {
     "checks": [
-     47,
      48,
      25,
      6,
@@ -4438,10 +4437,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "ok": [
-     47,
      48,
      25,
      6,
@@ -4471,10 +4470,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "p50_ms": [
-     455,
      443,
      451,
      443,
@@ -4504,20 +4503,21 @@
      474,
      412,
      529,
-     365
+     365,
+     471
     ]
    },
    "detail": "",
    "http": 200,
    "id": "kliima-element",
    "members": null,
-   "ms": 365,
+   "ms": 471,
    "name": "Kliima elementide metaandmed",
    "ok_24h": 4,
    "ok_7d": 27,
    "status": "ok",
    "system": "Kliima",
-   "ts": "2026-11-11T18:42:25Z",
+   "ts": "2026-11-12T01:02:57Z",
    "url": "https://keskkonnaandmed.envir.ee/f_kliima_element",
    "verified": true
   },
@@ -4528,7 +4528,6 @@
    "checks_7d": 27,
    "days": {
     "checks": [
-     47,
      48,
      25,
      6,
@@ -4558,10 +4557,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "ok": [
-     47,
      48,
      25,
      6,
@@ -4591,10 +4590,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "p50_ms": [
-     445,
      444,
      450,
      450,
@@ -4624,20 +4623,21 @@
      473,
      417,
      500,
-     354
+     354,
+     477
     ]
    },
    "detail": "",
    "http": 200,
    "id": "kliima-jaam-vaatlus",
    "members": null,
-   "ms": 354,
+   "ms": 477,
    "name": "Kliima vaatlusjaamade metaandmed",
    "ok_24h": 4,
    "ok_7d": 27,
    "status": "ok",
    "system": "Kliima",
-   "ts": "2026-11-11T18:42:25Z",
+   "ts": "2026-11-12T01:02:58Z",
    "url": "https://keskkonnaandmed.envir.ee/f_kliima_jaam_vaatlus?limit=1",
    "verified": true
   },
@@ -4648,7 +4648,6 @@
    "checks_7d": 27,
    "days": {
     "checks": [
-     47,
      48,
      25,
      6,
@@ -4678,10 +4677,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "ok": [
-     47,
      48,
      25,
      6,
@@ -4711,10 +4710,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "p50_ms": [
-     460,
      440,
      455,
      448,
@@ -4744,20 +4743,21 @@
      474,
      406,
      541,
-     363
+     363,
+     477
     ]
    },
    "detail": "",
    "http": 200,
    "id": "kliima-kuu",
    "members": null,
-   "ms": 363,
+   "ms": 477,
    "name": "Kliima kuu andmed",
    "ok_24h": 4,
    "ok_7d": 27,
    "status": "ok",
    "system": "Kliima",
-   "ts": "2026-11-11T18:42:25Z",
+   "ts": "2026-11-12T01:02:58Z",
    "url": "https://keskkonnaandmed.envir.ee/f_kliima_kuu?limit=1",
    "verified": true
   },
@@ -4768,7 +4768,6 @@
    "checks_7d": 27,
    "days": {
     "checks": [
-     47,
      48,
      25,
      6,
@@ -4798,10 +4797,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "ok": [
-     47,
      48,
      25,
      6,
@@ -4831,10 +4830,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "p50_ms": [
-     456,
      438,
      443,
      443,
@@ -4864,20 +4863,21 @@
      473,
      423,
      493,
-     354
+     354,
+     465
     ]
    },
    "detail": "",
    "http": 200,
    "id": "kliima-minut",
    "members": null,
-   "ms": 354,
+   "ms": 465,
    "name": "Kliima 10-minuti andmed",
    "ok_24h": 4,
    "ok_7d": 27,
    "status": "ok",
    "system": "Kliima",
-   "ts": "2026-11-11T18:42:25Z",
+   "ts": "2026-11-12T01:02:58Z",
    "url": "https://keskkonnaandmed.envir.ee/f_kliima_minut?limit=1",
    "verified": true
   },
@@ -4888,7 +4888,6 @@
    "checks_7d": 27,
    "days": {
     "checks": [
-     47,
      48,
      25,
      6,
@@ -4918,10 +4917,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "ok": [
-     47,
      48,
      25,
      6,
@@ -4951,10 +4950,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "p50_ms": [
-     464,
      462,
      468,
      467,
@@ -4984,20 +4983,21 @@
      486,
      420,
      506,
-     402
+     402,
+     468
     ]
    },
    "detail": "",
    "http": 200,
    "id": "kliima-paev",
    "members": null,
-   "ms": 384,
+   "ms": 468,
    "name": "Kliima ööpäeva andmed, Ruhnu ja Kihnu õhuniiskus 2023",
    "ok_24h": 4,
    "ok_7d": 27,
    "status": "ok",
    "system": "Kliima",
-   "ts": "2026-11-11T18:42:25Z",
+   "ts": "2026-11-12T01:02:58Z",
    "url": "https://keskkonnaandmed.envir.ee/f_kliima_paev?aasta=eq.2023&kuu=gt.10&paev=lt.8&element_kood=eq.DRH08&jaam_kood=in.(AJRUHN01,AJKIHN01)&limit=5",
    "verified": true
   },
@@ -5008,7 +5008,6 @@
    "checks_7d": 27,
    "days": {
     "checks": [
-     47,
      48,
      25,
      6,
@@ -5038,10 +5037,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "ok": [
-     47,
      48,
      25,
      6,
@@ -5071,10 +5070,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "p50_ms": [
-     473,
      475,
      477,
      444,
@@ -5104,20 +5103,21 @@
      494,
      418,
      535,
-     411
+     411,
+     475
     ]
    },
    "detail": "",
    "http": 200,
    "id": "kliima-paev-nimefilter",
    "members": null,
-   "ms": 376,
+   "ms": 475,
    "name": "Kliima ööpäeva andmed, Võru 2006 (like-filter ja sortimine)",
    "ok_24h": 4,
    "ok_7d": 27,
    "status": "ok",
    "system": "Kliima",
-   "ts": "2026-11-11T18:42:25Z",
+   "ts": "2026-11-12T01:02:58Z",
    "url": "https://keskkonnaandmed.envir.ee/f_kliima_paev?jaam_nimi=like.V%C3%B5ru&aasta=eq.2006&element_kood=like.DTA08&order=kuu.asc,paev.asc&limit=5",
    "verified": true
   },
@@ -5128,7 +5128,6 @@
    "checks_7d": 27,
    "days": {
     "checks": [
-     47,
      48,
      25,
      6,
@@ -5158,10 +5157,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "ok": [
-     47,
      48,
      25,
      6,
@@ -5191,10 +5190,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "p50_ms": [
-     472,
      436,
      464,
      446,
@@ -5224,31 +5223,31 @@
      474,
      409,
      505,
-     363
+     363,
+     462
     ]
    },
    "detail": "",
    "http": 200,
    "id": "kliima-tund",
    "members": null,
-   "ms": 347,
+   "ms": 462,
    "name": "Kliima tunniandmed",
    "ok_24h": 4,
    "ok_7d": 27,
    "status": "ok",
    "system": "Kliima",
-   "ts": "2026-11-11T18:42:25Z",
+   "ts": "2026-11-12T01:02:58Z",
    "url": "https://keskkonnaandmed.envir.ee/f_kliima_tund?limit=1",
    "verified": true
   },
   {
    "avail_24h": 50.0,
-   "avail_7d": 51.85,
+   "avail_7d": 48.15,
    "checks_24h": 4,
    "checks_7d": 27,
    "days": {
     "checks": [
-     47,
      48,
      25,
      6,
@@ -5278,10 +5277,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "ok": [
-     38,
      34,
      17,
      4,
@@ -5311,10 +5310,10 @@
      0,
      2,
      2,
-     2
+     2,
+     0
     ],
     "p50_ms": [
-     659,
      629,
      667,
      685,
@@ -5344,31 +5343,31 @@
      null,
      593,
      756,
-     553
+     553,
+     null
     ]
    },
-   "detail": "",
-   "http": 200,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 8]> <html class=\"no-js ie8 oldie\" lang=\"en-US\"> <![endif]--> <!--[if gt IE 8]><!--> <html class=\"no-js\" lang=\"en-US\"> <!--<![e",
+   "http": 429,
    "id": "kytus-bunkering-company",
    "members": null,
-   "ms": 553,
+   "ms": 478,
    "name": "Kütuseseire: ettevõtted",
    "ok_24h": 2,
-   "ok_7d": 14,
-   "status": "ok",
+   "ok_7d": 13,
+   "status": "down",
    "system": "Kütuseseire",
-   "ts": "2026-11-11T18:42:25Z",
+   "ts": "2026-11-12T01:03:29Z",
    "url": "https://kytus.envir.ee/bunkering-company/itemlist",
    "verified": false
   },
   {
    "avail_24h": 50.0,
-   "avail_7d": 44.44,
+   "avail_7d": 40.74,
    "checks_24h": 4,
    "checks_7d": 27,
    "days": {
     "checks": [
-     47,
      48,
      25,
      6,
@@ -5398,10 +5397,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "ok": [
-     40,
      38,
      12,
      4,
@@ -5431,10 +5430,10 @@
      2,
      2,
      2,
-     2
+     2,
+     0
     ],
     "p50_ms": [
-     692,
      634,
      649,
      726,
@@ -5464,31 +5463,31 @@
      716,
      576,
      721,
-     565
+     565,
+     null
     ]
    },
-   "detail": "",
-   "http": 200,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 8]> <html class=\"no-js ie8 oldie\" lang=\"en-US\"> <![endif]--> <!--[if gt IE 8]><!--> <html class=\"no-js\" lang=\"en-US\"> <!--<![e",
+   "http": 429,
    "id": "kytus-monitoring",
    "members": null,
-   "ms": 565,
+   "ms": 498,
    "name": "Kütuseseire: seireandmed",
    "ok_24h": 2,
-   "ok_7d": 12,
-   "status": "ok",
+   "ok_7d": 11,
+   "status": "down",
    "system": "Kütuseseire",
-   "ts": "2026-11-11T18:42:25Z",
+   "ts": "2026-11-12T01:03:29Z",
    "url": "https://kytus.envir.ee/monitoring/itemlist",
    "verified": false
   },
   {
-   "avail_24h": 75.0,
-   "avail_7d": 51.85,
+   "avail_24h": 50.0,
+   "avail_7d": 48.15,
    "checks_24h": 4,
    "checks_7d": 27,
    "days": {
     "checks": [
-     47,
      48,
      25,
      6,
@@ -5518,10 +5517,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "ok": [
-     39,
      35,
      19,
      5,
@@ -5551,10 +5550,10 @@
      2,
      2,
      3,
-     2
+     2,
+     0
     ],
     "p50_ms": [
-     624,
      641,
      608,
      624,
@@ -5584,31 +5583,31 @@
      602,
      610,
      697,
-     429
+     429,
+     null
     ]
    },
-   "detail": "",
-   "http": 200,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 8]> <html class=\"no-js ie8 oldie\" lang=\"en-US\"> <![endif]--> <!--[if gt IE 8]><!--> <html class=\"no-js\" lang=\"en-US\"> <!--<![e",
+   "http": 429,
    "id": "kytus-source-of-pollution",
    "members": null,
-   "ms": 429,
+   "ms": 492,
    "name": "Kütuseseire: heiteallikad",
-   "ok_24h": 3,
-   "ok_7d": 14,
-   "status": "ok",
+   "ok_24h": 2,
+   "ok_7d": 13,
+   "status": "down",
    "system": "Kütuseseire",
-   "ts": "2026-11-11T18:42:25Z",
+   "ts": "2026-11-12T01:03:29Z",
    "url": "https://kytus.envir.ee/source-of-pollution/itemlist",
    "verified": false
   },
   {
    "avail_24h": 25.0,
-   "avail_7d": 37.04,
+   "avail_7d": 33.33,
    "checks_24h": 4,
    "checks_7d": 27,
    "days": {
     "checks": [
-     47,
      48,
      25,
      6,
@@ -5638,10 +5637,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "ok": [
-     35,
      28,
      13,
      4,
@@ -5671,10 +5670,10 @@
      0,
      2,
      2,
-     1
+     1,
+     0
     ],
     "p50_ms": [
-     621,
      574,
      672,
      625,
@@ -5704,31 +5703,31 @@
      null,
      589,
      620,
-     467
+     467,
+     null
     ]
    },
-   "detail": "",
-   "http": 200,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 8]> <html class=\"no-js ie8 oldie\" lang=\"en-US\"> <![endif]--> <!--[if gt IE 8]><!--> <html class=\"no-js\" lang=\"en-US\"> <!--<![e",
+   "http": 429,
    "id": "pakis-opendata",
    "members": null,
-   "ms": 467,
+   "ms": 497,
    "name": "PAKIS: pakendijäätmete avaandmed",
    "ok_24h": 1,
-   "ok_7d": 10,
-   "status": "ok",
+   "ok_7d": 9,
+   "status": "down",
    "system": "Pakendiregister",
-   "ts": "2026-11-11T18:42:26Z",
+   "ts": "2026-11-12T01:03:30Z",
    "url": "https://pakis.envir.ee/pakis/main/opendata",
    "verified": false
   },
   {
    "avail_24h": 50.0,
-   "avail_7d": 51.85,
+   "avail_7d": 48.15,
    "checks_24h": 4,
    "checks_7d": 27,
    "days": {
     "checks": [
-     47,
      48,
      25,
      6,
@@ -5758,10 +5757,10 @@
      4,
      3,
      4,
-     3
+     3,
+     1
     ],
     "ok": [
-     34,
      27,
      10,
      2,
@@ -5791,10 +5790,10 @@
      2,
      1,
      2,
-     2
+     2,
+     0
     ],
     "p50_ms": [
-     621,
      607,
      582,
      614,
@@ -5824,20 +5823,21 @@
      582,
      565,
      555,
-     458
+     458,
+     null
     ]
    },
-   "detail": "",
-   "http": 200,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 8]> <html class=\"no-js ie8 oldie\" lang=\"en-US\"> <![endif]--> <!--[if gt IE 8]><!--> <html class=\"no-js\" lang=\"en-US\"> <!--<![e",
+   "http": 429,
    "id": "proto-opendata",
    "members": null,
-   "ms": 458,
+   "ms": 503,
    "name": "PROTO: probleemtoodete avaandmed",
    "ok_24h": 2,
-   "ok_7d": 14,
-   "status": "ok",
+   "ok_7d": 13,
+   "status": "down",
    "system": "Probleemtooteregister",
-   "ts": "2026-11-11T18:42:56Z",
+   "ts": "2026-11-12T01:03:30Z",
    "url": "https://proto.envir.ee/proto/main/opendata",
    "verified": false
   }
@@ -5845,6 +5845,87 @@
  "event_count": 148,
  "event_count_verified": 5,
  "events": [
+  {
+   "after": "2026-11-11T18:42:23Z",
+   "cause": "rate_limited",
+   "count": 10,
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 5,
+   "end": null,
+   "last_ts": "2026-11-12T01:03:30Z",
+   "max_s": 22867,
+   "members": [
+    {
+     "end": null,
+     "id": "ilmateenistus-prognoos-xml",
+     "max_s": 22867,
+     "min_s": 0
+    },
+    {
+     "end": null,
+     "id": "ilmateenistus-vaatlusandmed-xml",
+     "max_s": 22867,
+     "min_s": 0
+    },
+    {
+     "end": null,
+     "id": "ilmateenistus-hoiatused-xml",
+     "max_s": 22867,
+     "min_s": 0
+    },
+    {
+     "end": null,
+     "id": "ilmateenistus-hoiatused-rss",
+     "max_s": 22867,
+     "min_s": 0
+    },
+    {
+     "end": null,
+     "id": "ilmateenistus-juur",
+     "max_s": 22867,
+     "min_s": 0
+    },
+    {
+     "end": null,
+     "id": "kytus-bunkering-company",
+     "max_s": 22865,
+     "min_s": 0
+    },
+    {
+     "end": null,
+     "id": "kytus-source-of-pollution",
+     "max_s": 22865,
+     "min_s": 0
+    },
+    {
+     "end": null,
+     "id": "kytus-monitoring",
+     "max_s": 22865,
+     "min_s": 0
+    },
+    {
+     "end": null,
+     "id": "pakis-opendata",
+     "max_s": 22864,
+     "min_s": 0
+    },
+    {
+     "end": null,
+     "id": "proto-opendata",
+     "max_s": 22834,
+     "min_s": 0
+    }
+   ],
+   "min_s": 0,
+   "start": "2026-11-12T01:03:25Z",
+   "systems": [
+    "Ilmateenistus",
+    "Kütuseseire",
+    "Pakendiregister",
+    "Probleemtooteregister"
+   ],
+   "verified": 0
+  },
   {
    "after": "2026-11-10T23:19:22Z",
    "cause": "rate_limited",
@@ -10003,43 +10084,112 @@
     "Probleemtooteregister"
    ],
    "verified": 0
-  },
-  {
-   "after": "2026-10-14T03:17:04Z",
-   "cause": "rate_limited",
-   "count": 2,
-   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
-   "duration_s": 4955,
-   "end": "2026-10-14T05:20:34Z",
-   "last_ts": "2026-10-14T04:57:42Z",
-   "max_s": 7410,
-   "members": [
-    {
-     "end": "2026-10-14T04:21:58Z",
-     "id": "kytus-source-of-pollution",
-     "max_s": 3894,
-     "min_s": 0
-    },
-    {
-     "end": "2026-10-14T05:20:34Z",
-     "id": "proto-opendata",
-     "max_s": 7410,
-     "min_s": 3583
-    }
-   ],
-   "min_s": 3583,
-   "start": "2026-10-14T03:57:59Z",
-   "systems": [
-    "Kütuseseire",
-    "Probleemtooteregister"
-   ],
-   "verified": 0
   }
  ],
- "first_record": "2026-10-11T18:43:07Z",
- "generated_at": "2026-11-11T18:42:57Z",
- "incident_count": 495,
+ "first_record": "2026-10-12T01:11:58Z",
+ "generated_at": "2026-11-12T01:03:30Z",
+ "incident_count": 505,
  "incidents": [
+  {
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 0,
+   "end": null,
+   "id": "proto-opendata",
+   "name": "PROTO: probleemtoodete avaandmed",
+   "start": "2026-11-12T01:03:30Z",
+   "system": "Probleemtooteregister",
+   "worst": "down"
+  },
+  {
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 0,
+   "end": null,
+   "id": "pakis-opendata",
+   "name": "PAKIS: pakendijäätmete avaandmed",
+   "start": "2026-11-12T01:03:30Z",
+   "system": "Pakendiregister",
+   "worst": "down"
+  },
+  {
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 1,
+   "end": null,
+   "id": "kytus-source-of-pollution",
+   "name": "Kütuseseire: heiteallikad",
+   "start": "2026-11-12T01:03:29Z",
+   "system": "Kütuseseire",
+   "worst": "down"
+  },
+  {
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 1,
+   "end": null,
+   "id": "kytus-monitoring",
+   "name": "Kütuseseire: seireandmed",
+   "start": "2026-11-12T01:03:29Z",
+   "system": "Kütuseseire",
+   "worst": "down"
+  },
+  {
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 1,
+   "end": null,
+   "id": "kytus-bunkering-company",
+   "name": "Kütuseseire: ettevõtted",
+   "start": "2026-11-12T01:03:29Z",
+   "system": "Kütuseseire",
+   "worst": "down"
+  },
+  {
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 5,
+   "end": null,
+   "id": "ilmateenistus-vaatlusandmed-xml",
+   "name": "Ilmateenistus: Eesti vaatlusandmed XML",
+   "start": "2026-11-12T01:03:25Z",
+   "system": "Ilmateenistus",
+   "worst": "down"
+  },
+  {
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 5,
+   "end": null,
+   "id": "ilmateenistus-prognoos-xml",
+   "name": "Ilmateenistus: Eesti prognoos XML",
+   "start": "2026-11-12T01:03:25Z",
+   "system": "Ilmateenistus",
+   "worst": "down"
+  },
+  {
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 5,
+   "end": null,
+   "id": "ilmateenistus-juur",
+   "name": "Ilmateenistus: teenuse juur",
+   "start": "2026-11-12T01:03:25Z",
+   "system": "Ilmateenistus",
+   "worst": "down"
+  },
+  {
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 5,
+   "end": null,
+   "id": "ilmateenistus-hoiatused-xml",
+   "name": "Ilmateenistus: hoiatused XML",
+   "start": "2026-11-12T01:03:25Z",
+   "system": "Ilmateenistus",
+   "worst": "down"
+  },
+  {
+   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
+   "duration_s": 5,
+   "end": null,
+   "id": "ilmateenistus-hoiatused-rss",
+   "name": "Ilmateenistus: hoiatuste RSS",
+   "start": "2026-11-12T01:03:25Z",
+   "system": "Ilmateenistus",
+   "worst": "down"
+  },
   {
    "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
    "duration_s": 28356,
@@ -11939,219 +12089,119 @@
    "start": "2026-10-27T02:16:39Z",
    "system": "Probleemtooteregister",
    "worst": "down"
-  },
-  {
-   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
-   "duration_s": 13647,
-   "end": "2026-10-26T23:27:34Z",
-   "id": "kytus-bunkering-company",
-   "name": "Kütuseseire: ettevõtted",
-   "start": "2026-10-26T19:40:07Z",
-   "system": "Kütuseseire",
-   "worst": "down"
-  },
-  {
-   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
-   "duration_s": 13647,
-   "end": "2026-10-26T23:27:31Z",
-   "id": "ilmateenistus-prognoos-xml",
-   "name": "Ilmateenistus: Eesti prognoos XML",
-   "start": "2026-10-26T19:40:04Z",
-   "system": "Ilmateenistus",
-   "worst": "down"
-  },
-  {
-   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
-   "duration_s": 13647,
-   "end": "2026-10-26T23:27:31Z",
-   "id": "ilmateenistus-hoiatused-xml",
-   "name": "Ilmateenistus: hoiatused XML",
-   "start": "2026-10-26T19:40:04Z",
-   "system": "Ilmateenistus",
-   "worst": "down"
-  },
-  {
-   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
-   "duration_s": 25689,
-   "end": "2026-10-26T13:43:37Z",
-   "id": "pakis-opendata",
-   "name": "PAKIS: pakendijäätmete avaandmed",
-   "start": "2026-10-26T06:35:28Z",
-   "system": "Pakendiregister",
-   "worst": "down"
-  },
-  {
-   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
-   "duration_s": 60726,
-   "end": "2026-10-26T23:27:34Z",
-   "id": "kytus-source-of-pollution",
-   "name": "Kütuseseire: heiteallikad",
-   "start": "2026-10-26T06:35:28Z",
-   "system": "Kütuseseire",
-   "worst": "down"
-  },
-  {
-   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
-   "duration_s": 60726,
-   "end": "2026-10-26T23:27:34Z",
-   "id": "kytus-monitoring",
-   "name": "Kütuseseire: seireandmed",
-   "start": "2026-10-26T06:35:28Z",
-   "system": "Kütuseseire",
-   "worst": "down"
-  },
-  {
-   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
-   "duration_s": 25689,
-   "end": "2026-10-26T13:43:34Z",
-   "id": "ilmateenistus-hoiatused-xml",
-   "name": "Ilmateenistus: hoiatused XML",
-   "start": "2026-10-26T06:35:25Z",
-   "system": "Ilmateenistus",
-   "worst": "down"
-  },
-  {
-   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
-   "duration_s": 25689,
-   "end": "2026-10-26T13:43:34Z",
-   "id": "ilmateenistus-hoiatused-rss",
-   "name": "Ilmateenistus: hoiatuste RSS",
-   "start": "2026-10-26T06:35:25Z",
-   "system": "Ilmateenistus",
-   "worst": "down"
-  },
-  {
-   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
-   "duration_s": 8231,
-   "end": "2026-10-25T23:24:18Z",
-   "id": "proto-opendata",
-   "name": "PROTO: probleemtoodete avaandmed",
-   "start": "2026-10-25T21:07:07Z",
-   "system": "Probleemtooteregister",
-   "worst": "down"
-  },
-  {
-   "detail": "http 429 Too Many Requests — <!doctype html> <!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]--> <!--[if IE 7]> <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]--> <!--[if ",
-   "duration_s": 8232,
-   "end": "2026-10-25T23:24:18Z",
-   "id": "kytus-monitoring",
-   "name": "Kütuseseire: seireandmed",
-   "start": "2026-10-25T21:07:06Z",
-   "system": "Kütuseseire",
-   "worst": "down"
   }
  ],
  "interval_minutes": 30,
- "last_check": "2026-11-11T18:42:56Z",
+ "last_check": "2026-11-12T01:03:30Z",
  "outages_by_endpoint": [
   {
-   "count": 66,
+   "count": 67,
    "id": "proto-opendata",
    "name": "PROTO: probleemtoodete avaandmed",
-   "total_max_s": 1827737,
-   "total_min_s": 405860,
-   "total_s": 1151087
+   "total_max_s": 1843444,
+   "total_min_s": 400250,
+   "total_s": 1145477
   },
   {
-   "count": 51,
+   "count": 52,
    "id": "kytus-monitoring",
    "name": "Kütuseseire: seireandmed",
-   "total_max_s": 1705016,
-   "total_min_s": 490836,
-   "total_s": 1117636
+   "total_max_s": 1722820,
+   "total_min_s": 486854,
+   "total_s": 1113655
   },
   {
-   "count": 51,
+   "count": 52,
    "id": "pakis-opendata",
    "name": "PAKIS: pakendijäätmete avaandmed",
-   "total_max_s": 1595964,
-   "total_min_s": 537951,
-   "total_s": 1087943
+   "total_max_s": 1611701,
+   "total_min_s": 532341,
+   "total_s": 1082333
   },
   {
-   "count": 51,
+   "count": 52,
    "id": "kytus-bunkering-company",
    "name": "Kütuseseire: ettevõtted",
-   "total_max_s": 1620272,
-   "total_min_s": 396333,
-   "total_s": 1012280
+   "total_max_s": 1636009,
+   "total_min_s": 390723,
+   "total_s": 1006671
   },
   {
-   "count": 48,
+   "count": 49,
    "id": "kytus-source-of-pollution",
    "name": "Kütuseseire: heiteallikad",
-   "total_max_s": 1476902,
-   "total_min_s": 413828,
-   "total_s": 977793
+   "total_max_s": 1492640,
+   "total_min_s": 408218,
+   "total_s": 972184
+  },
+  {
+   "count": 35,
+   "id": "ilmateenistus-hoiatused-rss",
+   "name": "Ilmateenistus: hoiatuste RSS",
+   "total_max_s": 1184021,
+   "total_min_s": 183040,
+   "total_s": 705949
   },
   {
    "count": 34,
-   "id": "ilmateenistus-hoiatused-rss",
-   "name": "Ilmateenistus: hoiatuste RSS",
-   "total_max_s": 1161154,
-   "total_min_s": 183040,
-   "total_s": 705944
-  },
-  {
-   "count": 33,
    "id": "ilmateenistus-prognoos-xml",
    "name": "Ilmateenistus: Eesti prognoos XML",
-   "total_max_s": 1079884,
+   "total_max_s": 1102751,
    "total_min_s": 117346,
-   "total_s": 622046
+   "total_s": 622051
   },
   {
-   "count": 31,
+   "count": 32,
    "id": "ilmateenistus-vaatlusandmed-xml",
    "name": "Ilmateenistus: Eesti vaatlusandmed XML",
-   "total_max_s": 952073,
+   "total_max_s": 974940,
    "total_min_s": 162022,
-   "total_s": 586977
+   "total_s": 586982
   },
   {
-   "count": 28,
+   "count": 29,
    "id": "ilmateenistus-hoiatused-xml",
    "name": "Ilmateenistus: hoiatused XML",
-   "total_max_s": 1048441,
+   "total_max_s": 1071308,
    "total_min_s": 191529,
-   "total_s": 641048
+   "total_s": 641053
   },
   {
-   "count": 17,
+   "count": 18,
    "id": "ilmateenistus-juur",
    "name": "Ilmateenistus: teenuse juur",
-   "total_max_s": 502073,
+   "total_max_s": 524940,
    "total_min_s": 52966,
-   "total_s": 291496
+   "total_s": 291501
   }
  ],
  "outages_by_system": [
   {
-   "affected_max_s": 2195896,
-   "affected_min_s": 749688,
-   "affected_s": 1539697,
-   "count": 150,
+   "affected_max_s": 2211633,
+   "affected_min_s": 744078,
+   "affected_s": 1534088,
+   "count": 153,
    "name": "Kütuseseire"
   },
   {
-   "affected_max_s": 1827737,
-   "affected_min_s": 405860,
-   "affected_s": 1151087,
-   "count": 66,
+   "affected_max_s": 1843444,
+   "affected_min_s": 400250,
+   "affected_s": 1145477,
+   "count": 67,
    "name": "Probleemtooteregister"
   },
   {
-   "affected_max_s": 1595964,
-   "affected_min_s": 537951,
-   "affected_s": 1087943,
-   "count": 51,
+   "affected_max_s": 1611701,
+   "affected_min_s": 532341,
+   "affected_s": 1082333,
+   "count": 52,
    "name": "Pakendiregister"
   },
   {
-   "affected_max_s": 1413977,
+   "affected_max_s": 1436844,
    "affected_min_s": 261822,
-   "affected_s": 873263,
-   "count": 143,
+   "affected_s": 873268,
+   "count": 148,
    "name": "Ilmateenistus"
   },
   {
@@ -12243,14 +12293,14 @@
    "problem": 0
   },
   {
-   "avail_24h": 80.0,
+   "avail_24h": 55.0,
    "checks_24h": 20,
    "description": "Riigi ilmateenistuse avalik teenus: ilmaprognoosid, hoiatused ohtliku ilma kohta, mereilmateade, mudelprognoosid ning ilmajaamade vaatlusandmed. Vaatlusandmed on masinliidesena saadaval XML-kujul.",
    "endpoints": 5,
    "name": "Ilmateenistus",
-   "ok": 5,
-   "ok_24h": 16,
-   "problem": 0
+   "ok": 0,
+   "ok_24h": 11,
+   "problem": 5
   },
   {
    "avail_24h": 100.0,
@@ -12303,14 +12353,14 @@
    "problem": 0
   },
   {
-   "avail_24h": 58.33,
+   "avail_24h": 50.0,
    "checks_24h": 12,
    "description": "Eesti turul müüdavate ja tarbitavate vedelkütuste keskkonnaparameetrite kvaliteedi ja koguste seire. Osa riiklikust kütusekvaliteedi juhtimissüsteemist, mille kaudu täidetakse Euroopa Liidu kütusedirektiivide nõudeid.",
    "endpoints": 3,
    "name": "Kütuseseire",
-   "ok": 3,
-   "ok_24h": 7,
-   "problem": 0
+   "ok": 0,
+   "ok_24h": 6,
+   "problem": 3
   },
   {
    "avail_24h": 25.0,
@@ -12318,9 +12368,9 @@
    "description": "Turule lastud kauba pakendite, Eestis tekkinud pakendijäätmete, korduskasutuse ja taaskasutuse sihtarvude arvestus. Andmeid kasutatakse pakendiseadusest tulenevate kohustuste täitmiseks ja Euroopa Komisjonile aruandmiseks.",
    "endpoints": 1,
    "name": "Pakendiregister",
-   "ok": 1,
+   "ok": 0,
    "ok_24h": 1,
-   "problem": 0
+   "problem": 1
   },
   {
    "avail_24h": 50.0,
@@ -12328,14 +12378,15 @@
    "description": "Arvestus Eestis turule lastud probleemtoodete ja neist tekkinud jäätmete taaskasutamise ning kõrvaldamise kohta, sealhulgas taaskasutuse sihtarvude täitmise ja Euroopa Komisjonile esitatava jäätmealase teabe jaoks.",
    "endpoints": 1,
    "name": "Probleemtooteregister",
-   "ok": 1,
+   "ok": 0,
    "ok_24h": 2,
-   "problem": 0
+   "problem": 1
   }
  ],
  "totals": {
+  "down": 10,
   "endpoints": 42,
-  "ok": 42,
+  "ok": 32,
   "unverified": 27
  },
  "window_days": 31
