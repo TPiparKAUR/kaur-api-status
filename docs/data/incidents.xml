@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
-<channel><title>Keskkonnaagentuuri API-de katkestused</title><link>https://tpiparkaur.github.io/kaur-api-status/</link><description>Keskkonnaagentuuri avalike andmeteenuste katkestused, uuemad eespool. Genereeritud automaatsest seirest iga kontrollitsükli järel.</description><language>et</language><lastBuildDate>Sat, 14 Nov 2026 07:03:28 +0000</lastBuildDate><item><title>EELIS andmestikud: ei vasta (kestab)</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-eelis</link><guid isPermaLink="false">eelis-2026-11-14T07:02:16Z</guid><pubDate>Sat, 14 Nov 2026 07:02:16 +0000</pubDate><category>EELIS</category><description><![CDATA[Teenus: EELIS
+<channel><title>Keskkonnaagentuuri API-de katkestused</title><link>https://tpiparkaur.github.io/kaur-api-status/</link><description>Keskkonnaagentuuri avalike andmeteenuste katkestused, uuemad eespool. Genereeritud automaatsest seirest iga kontrollitsükli järel.</description><language>et</language><lastBuildDate>Sat, 14 Nov 2026 14:09:09 +0000</lastBuildDate><item><title>EELIS andmestikud: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-eelis</link><guid isPermaLink="false">eelis-2026-11-14T07:02:16Z</guid><pubDate>Sat, 14 Nov 2026 07:02:16 +0000</pubDate><category>EELIS</category><description><![CDATA[Teenus: EELIS
 Algus: 2026-11-14T07:02:16Z (UTC)
-Kestus: kestab endiselt
+Kestus: 7 h 6 min
 Põhjus: 1/261 ei vasta: f-jaatmeliikumine-fix-riik (connection failed: The read operation timed out)]]></description></item><item><title>PROTO: probleemtoodete avaandmed: ei vasta</title><link>https://tpiparkaur.github.io/kaur-api-status/#row-proto-opendata</link><guid isPermaLink="false">proto-opendata-2026-11-14T00:20:52Z</guid><pubDate>Sat, 14 Nov 2026 00:20:52 +0000</pubDate><category>Probleemtooteregister</category><description><![CDATA[Teenus: Probleemtooteregister
 Algus: 2026-11-14T00:20:52Z (UTC)
 Kestus: 6 h 42 min
